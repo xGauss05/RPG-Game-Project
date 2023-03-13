@@ -1,0 +1,80 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "propertyTypes": [
+        {
+            "id": 3,
+            "name": "Direction",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Retain",
+                "Up",
+                "Down",
+                "Left",
+                "Right"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 4,
+            "name": "Maps",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Base",
+                "test"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "id": 2,
+            "members": [
+                {
+                    "name": "Destination Map",
+                    "propertyType": "Maps",
+                    "type": "string",
+                    "value": "Base"
+                },
+                {
+                    "name": "Destination X",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "Destination Y",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "Direction",
+                    "propertyType": "Direction",
+                    "type": "string",
+                    "value": "Retain"
+                },
+                {
+                    "name": "Fade",
+                    "type": "bool",
+                    "value": true
+                },
+                {
+                    "name": "FadeColor",
+                    "type": "color",
+                    "value": "#ff000000"
+                }
+            ],
+            "name": "Teleport",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object"
+            ]
+        }
+    ]
+}

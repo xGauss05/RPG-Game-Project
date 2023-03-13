@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
+      <Filter>External\PugiXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\App.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Source\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Textures.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Source\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Log.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fonts.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MapLayer.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TileSet.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectLayer.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiButton.cpp">
+      <Filter>Source\Scenes\Windows\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window_Base.cpp">
+      <Filter>Source\Scenes\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene_Map.cpp">
+      <Filter>Source\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Source\Scenes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Defs.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Point.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
+      <Filter>External\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp">
+      <Filter>External\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\App.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Render.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Textures.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Headers\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\dirent.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Log.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fonts.h">
+      <Filter>Headers\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TileSet.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MapLayer.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectLayer.h">
+      <Filter>Headers\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiElement.h">
+      <Filter>Headers\Scenes\Windows\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiButton.h">
+      <Filter>Headers\Scenes\Windows\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window_Base.h">
+      <Filter>Headers\Scenes\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene_Base.h">
+      <Filter>Headers\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene_Map.h">
+      <Filter>Headers\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneManager.h">
+      <Filter>Headers\Scenes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="External">
+      <UniqueIdentifier>{83a966c7-b4bb-4eff-9c2c-3ff3c7b55a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{2cad778a-d356-48b0-9fee-587f1bbb187e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\PugiXml">
+      <UniqueIdentifier>{2855ff7f-53a1-413d-a75b-18b4ade921dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{54bfbfb6-1638-493c-8ede-5dd35b994371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{592782ec-038b-4046-92a6-6f13cd1e5d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Entities">
+      <UniqueIdentifier>{7b1d8c75-2106-4c4d-8160-31c0e2720148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Modules">
+      <UniqueIdentifier>{6b667430-b37f-457e-9cfa-8fb163f45721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Modules">
+      <UniqueIdentifier>{1b4e9224-c7fd-49ec-865a-cc413018b6df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\XML">
+      <UniqueIdentifier>{faad78a2-af30-4a88-9522-b6f6f7f8cdd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\XML\Maps">
+      <UniqueIdentifier>{23cba917-080a-4b7f-9c07-f46725fb2734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Map">
+      <UniqueIdentifier>{a9e5ac6d-4793-46fc-a920-f0ccdd8436a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Map">
+      <UniqueIdentifier>{db2a1c10-ca41-434d-9f66-53a0cf80b4ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Entities">
+      <UniqueIdentifier>{4a83ab1c-6599-4948-99f5-58b87b211d84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Scenes">
+      <UniqueIdentifier>{65a14a5f-69b7-43f4-9cac-f433ea82007b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Scenes\Windows">
+      <UniqueIdentifier>{d3113b8f-5f6a-474a-8e01-cfdead9386df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Scenes\Windows\GUI">
+      <UniqueIdentifier>{2454c6bb-76d3-44d5-b57c-35a1c6ebc6ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scenes">
+      <UniqueIdentifier>{ad31252d-91d4-40d5-b58a-b73de12851d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scenes\Windows">
+      <UniqueIdentifier>{610718e3-7fee-4cc2-a5b0-2bf6f5c96573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scenes\Windows\GUI">
+      <UniqueIdentifier>{6125e119-a46f-486e-97ab-94af96818f3f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Output\save_game.xml">
+      <Filter>Utils\XML</Filter>
+    </Xml>
+    <Xml Include="..\Output\config.xml">
+      <Filter>Utils\XML</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Output\Assets\Maps\MapTemplate.tmx">
+      <Filter>Utils\XML\Maps</Filter>
+    </None>
+    <None Include="..\Output\Assets\Maps\hello.tmx">
+      <Filter>Utils\XML\Maps</Filter>
+    </None>
+    <None Include="..\Output\Assets\Maps\iso.tmx">
+      <Filter>Utils\XML\Maps</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Keeper.txt">
+      <Filter>Utils</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

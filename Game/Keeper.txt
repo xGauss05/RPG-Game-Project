@@ -1,0 +1,145 @@
+
+						<collidergroup name="Terrain" class="Dynamic" sensor="false" radius="7">
+						<circle name="Ground" friction="1" x="35" y="94" radius="17" />
+						<circle name="BottomRight" friction="0" x="41" y="87" radius="17" />
+						<circle name="PushRight" friction="0" x="46" y="75" radius="17" />
+						<circle name="HoldRight" friction="0" x="52" y="62" radius="17" />
+						<circle name="Top" friction="0" x="39" y="57" radius="17" />
+						<circle name="HoldLeft" friction="0" x="25" y="65" radius="17" />
+						<circle name="PushLeft" friction="0" x="28" y="91" radius="17" />
+						<circle name="BottomLeft" friction="0" x="27" y="87" radius="17" />
+
+// tag::code[]
+struct xml_string_writer : pugi::xml_writer
+{
+	std::string result;
+
+	virtual void write(const void *data, size_t size)
+	{
+		result.append(static_cast<const char *>(data), size);
+	}
+};
+// end::code[]
+
+std::string node_to_string(pugi::xml_node node)
+{
+	xml_string_writer writer;
+	node.print(writer);
+
+	return writer.result;
+}
+
+bool AppendXMLString(pugi::xml_node target, const std::string& srcString)
+{
+  // parse XML string as document
+  pugi::xml_document doc;
+  if (!doc.load_buffer(srcString.c_str(), srcString.length()))
+    return false;
+
+  for (pugi::xml_node child = doc.first_child(); child; child = child.next_sibling())
+    target.append_copy(child);
+  return true;
+}
+
+
+/*!
+    Return requested XmlNode value
+
+    @param name of the XmlNode
+    @param filter by given attribute(s) -> name:value   
+    @return value of XmlNode or empty string in case of error
+*/
+std::string XmlParser::GetNodeValue(std::string node, std::vector<std::pair<std::string,std::string>> &attributes /* = std::vector<std::pair<std::string,std::string>>() */)
+{   
+    try
+    {
+        std::string nodeValue = "";     
+
+        if(attributes.size() != 0) nodeValue = m_xmlDoc.select_node(CreateXPath(node, attributes).c_str()).node().child_value();            
+        else nodeValue = m_xmlDoc.select_node(("//" + node).c_str()).node().child_value();          
+
+        return nodeValue;
+    }
+    catch(std::exception exp) 
+    {           
+        return ""; 
+    }
+}
+
+
+/*!
+    Create XPath from node name and attributes
+
+    @param XML node name
+    @param vector of attribute name:value pairs
+    @return XPath string
+*/
+std::string XmlParser::CreateXPath(std::string node, std::vector<std::pair<std::string,std::string>> &attributes)
+{
+    try
+    {       
+        // create XPath
+        std::string xpath = node + "[";
+        for(auto it=attributes.begin(); it!=attributes.end(); it++)
+            xpath += "@" + it->first + "='" + it->second + "' and ";
+        xpath.replace(xpath.length()-5, 5, "]");        
+
+        return xpath;
+    }
+    catch(std::exception exp)
+    {       
+        return "";
+    }
+}
+
+
+namespace collisionFlags
+{
+	enum colliderLayers
+	{
+		PLATFORMS = 0x0001,
+		PLAYER = 0x0002,
+		ENEMIES = 0x0004,
+		ITEMS = 0x0008,
+		TRIGGERS = 0x0010,
+		CHECKPOINTS = 0x0020
+	};
+}
+
+/*
+#include "SDL/include/SDL.h"
+
+struct SDL_Deleter
+{
+	void operator()(SDL_Window *p) const { SDL_DestroyWindow(p); }
+	void operator()(SDL_Renderer *p) const { SDL_DestroyRenderer(p); }
+	void operator()(SDL_Texture *p) const { SDL_DestroyTexture(p); }
+};
+*/
+
+		switch(other.shape.get()->GetType())
+		{
+			case b2Shape::Type::e_circle:
+			{
+				shape = dynamic_cast<b2CircleShape *>(other.shape.get()) = std::move(other.shape);
+				break;
+			}
+			case b2Shape::Type::e_edge:
+			{
+				shape = dynamic_cast<b2EdgeShape *>(other.shape.get()) = std::move(other.shape);
+				break;
+			}
+			case b2Shape::Type::e_polygon:
+			{
+				shape = dynamic_cast<b2PolygonShape *>(other.shape.get()) = std::move(other.shape);
+				break;
+			}
+			case b2Shape::Type::e_chain:
+			{
+				shape = dynamic_cast<b2ChainShape *>(other.shape.get()) = std::move(other.shape);
+				break;
+			}
+			default:
+				LOG("Error in copying Shape (ShapeData).");
+				break;
+		}
