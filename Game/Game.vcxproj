@@ -115,7 +115,6 @@
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\TileSet.cpp" />
     <ClCompile Include="Source\Window.cpp" />
-    <ClInclude Include="Source\dirent.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Fonts.h" />

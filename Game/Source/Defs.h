@@ -1,8 +1,6 @@
 #ifndef __DEFS_H__
 #define __DEFS_H__
 
-#include "dirent.h"
-
 #include <string>
 #include <cstdio>
 
@@ -56,6 +54,12 @@ constexpr auto SHORT_STR = 32;
 constexpr auto MID_STR = 255;
 constexpr auto HUGE_STR = 8192;
 
+inline bool StrEquals(const std::string_view &lhs, const std::string_view &rhs)
+{
+	auto to_lower{ std::ranges::views::transform(std::tolower) };
+	return std::ranges::equal(lhs | to_lower, rhs | to_lower);
+}
+
 // Joins a path and file
 inline const char *PATH(const char *folder, const char *file)
 {
@@ -63,12 +67,6 @@ inline const char *PATH(const char *folder, const char *file)
 	path += file;
 	const char *ret = path.c_str();
 	return ret;
-}
-
-inline bool StrEquals(const std::string_view &lhs, const std::string_view &rhs)
-{
-	auto to_lower{std::ranges::views::transform(std::tolower)};
-	return std::ranges::equal(lhs | to_lower, rhs | to_lower);
 }
 
 inline const char *PATH(std::string const &folder, std::string const &file)
@@ -84,11 +82,6 @@ inline std::string PATH_STR(const char *folder, const char *file)
 inline std::string PATH_STR(std::string const &folder, std::string const &file)
 {
 	return folder + file;
-}
-
-inline int DescAlphasort(const struct dirent **c, const struct dirent **d)
-{
-	return alphasort(d, c);
 }
 
 struct StringHash

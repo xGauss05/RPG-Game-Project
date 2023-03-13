@@ -9,7 +9,6 @@
 #include "Log.h"
 
 // Libraries included
-#include "dirent.h"
 
 #include <regex>
 

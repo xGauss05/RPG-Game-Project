@@ -102,9 +102,6 @@
     <ClInclude Include="Source\EntityManager.h">
       <Filter>Headers\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\dirent.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Log.h">
       <Filter>Headers</Filter>
     </ClInclude>
