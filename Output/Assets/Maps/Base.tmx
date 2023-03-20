@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="23">
+ <tileset firstgid="1" source="Tiles.tsx"/>
+ <tileset firstgid="626" source="Props.tsx"/>
+ <tileset firstgid="1251" source="Slime.tsx"/>
+ <layer id="2" name="Floor" width="24" height="24">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,0,
+0,55,56,56,56,31,31,31,31,31,31,56,56,56,56,56,56,56,56,56,56,56,57,0,
+0,0,0,0,0,30,31,31,31,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,30,31,31,31,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,30,31,31,31,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,30,31,31,31,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,30,31,31,31,31,31,0,0,15,16,16,16,16,16,16,16,16,17,0,
+0,0,5,6,6,31,31,31,31,31,32,0,0,40,41,41,41,41,41,41,44,41,42,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,40,41,44,41,41,41,41,41,41,42,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,40,41,41,41,41,41,41,41,41,42,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,65,66,66,66,66,92,90,66,66,67,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,0,0,0,0,0,117,115,0,0,0,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,0,0,0,0,0,171,172,0,0,0,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,0,0,0,0,0,30,32,0,0,0,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,0,0,0,0,0,30,32,0,0,0,0,
+0,0,30,31,31,31,31,31,31,31,32,0,0,0,0,0,0,0,30,32,0,0,0,0,
+0,0,30,31,31,31,31,31,31,31,31,6,6,6,6,6,6,6,31,31,6,6,7,0,
+0,0,30,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,32,0,
+0,0,30,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,32,0,
+0,0,55,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,57,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="1" name="Walls" width="24" height="24">
+  <data encoding="csv">
+104,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,105,
+129,26,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,28,130,
+129,51,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,53,130,
+129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,
+129,0,0,0,0,0,0,0,0,0,0,76,78,0,0,0,0,0,0,0,0,0,0,130,
+154,77,77,77,78,0,0,0,0,0,0,130,154,77,77,77,77,77,77,77,77,77,77,155,
+211,211,211,211,129,0,0,0,0,0,0,130,104,2,2,165,2,2,165,2,2,165,2,105,
+211,104,251,252,103,0,0,0,0,0,0,130,129,26,28,190,26,28,190,26,28,190,26,130,
+211,129,276,277,28,0,0,0,0,0,0,130,129,51,53,215,51,53,215,51,53,215,51,130,
+211,129,301,302,53,0,0,0,0,0,0,130,129,0,0,240,0,0,240,0,0,240,0,130,
+211,129,0,0,0,0,0,0,0,0,0,130,129,0,0,0,0,0,0,0,0,0,0,130,
+211,129,0,0,0,0,0,0,0,0,0,130,129,0,0,0,0,0,0,0,0,0,0,130,
+211,129,0,0,0,0,0,0,0,0,0,130,129,0,0,0,0,0,0,0,0,0,0,130,
+211,129,0,0,0,0,0,0,0,0,0,130,129,0,0,0,0,0,0,0,0,0,0,130,
+211,129,0,0,0,0,0,0,0,0,0,130,154,77,77,77,77,78,0,0,76,77,77,155,
+211,129,0,0,0,0,0,0,0,0,0,130,211,211,211,211,211,129,0,0,130,211,211,211,
+211,129,0,0,0,0,0,0,0,0,0,101,2,4,2,4,2,103,0,0,101,2,2,105,
+211,129,0,0,0,0,0,0,0,0,0,26,28,29,360,29,26,28,0,0,26,27,28,130,
+211,129,0,0,0,0,0,0,0,0,0,51,53,54,385,54,51,53,0,0,51,52,53,130,
+211,129,0,0,0,0,0,0,0,0,0,0,0,79,0,79,0,0,0,0,0,0,0,130,
+211,129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,
+211,129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,
+211,129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,
+211,154,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,155
+</data>
+ </layer>
+ <objectgroup id="3" name="Events" class="Layer of Events">
+  <object id="1" name="10 Gold" type="Event Chest" gid="955" x="224" y="176" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2"/>
+      <property name="SwitchName" value="Potato"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="4"/>
+      <property name="SwitchName" value="Apple"/>
+     </properties>
+    </property>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Coins"/>
+      <property name="Quantity" type="int" value="19"/>
+     </properties>
+    </property>
+    <property name="Loot2" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="4"/>
+     </properties>
+    </property>
+    <property name="Loot3" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Revive"/>
+      <property name="Quantity" type="int" value="52"/>
+     </properties>
+    </property>
+    <property name="isLocked" type="bool" value="false"/>
+    <property name="isOpen" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="2" name="Unlock Chest" type="Event Lever" gid="781" x="336" y="192" width="16" height="16">
+   <properties>
+    <property name="Global Switch" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="1"/>
+      <property name="ID" type="int" value="1"/>
+      <property name="Name" value="DungeonChest"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="15" name="Boss Room" type="Event Teleport" x="29" y="144" width="35" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Trigger" type="qlonglong" propertytype="Helper Trigger" value="1"/>
+      <property name="isActive" type="bool" value="false"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="test"/>
+      <property name="Destination X" type="int" value="12"/>
+      <property name="Destination Y" type="int" value="11"/>
+     </properties>
+    </property>
+    <property name="Direction" propertytype="Helper Direction" value="Up"/>
+    <property name="Fade" type="class" propertytype="Helper Fade">
+     <properties>
+      <property name="Active" type="bool" value="false"/>
+      <property name="Fade Color" type="color" value="#7affffff"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="17" name="10 Gold" type="Event Chest" gid="955" x="112" y="224" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2"/>
+      <property name="SwitchName" value="Potato"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="4"/>
+      <property name="SwitchName" value="Apple"/>
+     </properties>
+    </property>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Coins"/>
+      <property name="Quantity" type="int" value="19"/>
+     </properties>
+    </property>
+    <property name="Loot2" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="4"/>
+     </properties>
+    </property>
+    <property name="Loot3" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Revive"/>
+      <property name="Quantity" type="int" value="52"/>
+     </properties>
+    </property>
+    <property name="isLocked" type="bool" value="false"/>
+    <property name="isOpen" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="18" name="10 Gold" type="Event Chest" gid="955" x="144" y="144" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2"/>
+      <property name="SwitchName" value="Potato"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="4"/>
+      <property name="SwitchName" value="Apple"/>
+     </properties>
+    </property>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Coins"/>
+      <property name="Quantity" type="int" value="19"/>
+     </properties>
+    </property>
+    <property name="Loot2" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="4"/>
+     </properties>
+    </property>
+    <property name="Loot3" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Revive"/>
+      <property name="Quantity" type="int" value="52"/>
+     </properties>
+    </property>
+    <property name="isLocked" type="bool" value="false"/>
+    <property name="isOpen" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="19" name="10 Gold" type="Event Chest" gid="955" x="144" y="304" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2"/>
+      <property name="SwitchName" value="Potato"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="4"/>
+      <property name="SwitchName" value="Apple"/>
+     </properties>
+    </property>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Coins"/>
+      <property name="Quantity" type="int" value="19"/>
+     </properties>
+    </property>
+    <property name="Loot2" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="4"/>
+     </properties>
+    </property>
+    <property name="Loot3" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Revive"/>
+      <property name="Quantity" type="int" value="52"/>
+     </properties>
+    </property>
+    <property name="isLocked" type="bool" value="false"/>
+    <property name="isOpen" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="22" gid="1252" x="48" y="272" width="48" height="48"/>
+ </objectgroup>
+ <layer id="4" name="Props" width="24" height="24">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,755,756,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,780,781,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
