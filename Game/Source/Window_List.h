@@ -12,6 +12,7 @@ public:
 
 private:
 	int NewGame();
+	int ExitGame();
 };
 
 #endif __WINDOW_LIST_H__

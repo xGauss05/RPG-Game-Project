@@ -13,3 +13,9 @@ int Window_List::NewGame()
 	LOG("NewGame function called");
 	return 1;
 }
+
+int Window_List::ExitGame() 
+{
+	return 0;
+
+}
