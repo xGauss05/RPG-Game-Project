@@ -12,7 +12,10 @@ public:
 
 private:
 	int NewGame();
+	int ContinueGame();
+	int OptionsWindow();
 	int ExitGame();
+
 };
 
 #endif __WINDOW_LIST_H__
