@@ -20,17 +20,17 @@ int Window_List::NewGame()
 int Window_List::ContinueGame()
 {
 	LOG("ContinueGame function called");
-	return 0;
+	return 2;
 }
 
 int Window_List::OptionsWindow()
 {
 	LOG("OptionsWindow function called");
-	return 0;
+	return 3;
 }
 
 int Window_List::ExitGame() 
 {
 	LOG("ExitGame function called");
-	return 0;
+	return 4;
 }

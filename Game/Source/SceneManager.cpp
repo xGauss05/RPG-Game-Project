@@ -79,14 +79,34 @@ bool SceneManager::Update(float dt)
 
 	currentScene->Draw();
 
-	if (currentScene->Update() == 1 || app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_UP)
+	switch (currentScene->Update()) {
+	case 1:
+		nextScene = std::make_unique<Scene_Map>();
+		break;
+
+	case 2:
+		// Continue game
+		break;
+	case 3:
+		// Options scene
+		break;
+	case 4:
+		return false;
+	default: // tus muertos
+		break;
+	}
+
+	/*if (currentScene->Update() == 1 || app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_UP)
 	{
 		if (CurrentlyMainMenu)
 			nextScene = std::make_unique<Scene_Map>();
 		else
 			nextScene = std::make_unique<Scene_Title>();
-	}
+	}*/
 	
+	
+		
+
 	return true;
 }
 
