@@ -79,6 +79,15 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Scene_Map Components\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene_Battle.cpp">
+      <Filter>Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene_Boot.cpp">
+      <Filter>Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene_GameOver.cpp">
+      <Filter>Scenes\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -185,6 +194,15 @@
     </ClInclude>
     <ClInclude Include="Source\Transform_Movable.h">
       <Filter>Scene_Map Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene_Battle.h">
+      <Filter>Scenes\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene_Boot.h">
+      <Filter>Scenes\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene_GameOver.h">
+      <Filter>Scenes\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
