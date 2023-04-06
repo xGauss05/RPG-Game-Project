@@ -1,5 +1,5 @@
 #include "Scene_Title.h"
-
+#include "Render.h"
 #include "Log.h"
 
 bool Scene_Title::isReady()
@@ -26,14 +26,17 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 			windows.push_back(std::move(result));
 		}
 	}
+	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
 }
 
 void Scene_Title::Start()
 {
+	
 }
 
 void Scene_Title::Draw()
 {
+	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
 	for (auto const& elem : windows)
 	{
 		elem->Draw();
