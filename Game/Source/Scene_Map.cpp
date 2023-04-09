@@ -31,7 +31,7 @@ void Scene_Map::Draw()
 	player.Draw();
 }
 
-int Scene_Map::Update()
+TransitionScene Scene_Map::Update()
 {
 	auto playerAction = player.HandleInput();
 
@@ -47,7 +47,7 @@ int Scene_Map::Update()
 
 	player.Update();
 
-	return 0;
+	return TransitionScene::NONE;
 }
 
 int Scene_Map::CheckNextScene()

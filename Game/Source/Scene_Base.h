@@ -8,6 +8,18 @@
 #include <vector>
 #include <memory>
 
+enum class TransitionScene
+{
+	NONE,
+	BOOT_COMPLETE,
+	NEW_GAME,
+	CONTINUE_GAME,
+	START_BATTLE,
+	WIN_BATTLE,
+	LOSE_BATTLE,
+	EXIT_GAME
+};
+
 class Scene_Base
 {
 public:
@@ -21,7 +33,7 @@ public:
 		Window_Factory const &windowFactory
 	) = 0;
 	virtual void Start() = 0;
-	virtual int Update() = 0;
+	virtual TransitionScene Update() = 0;
 	virtual void Draw() = 0;
 	virtual int CheckNextScene() = 0;
 

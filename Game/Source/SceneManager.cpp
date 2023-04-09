@@ -79,21 +79,24 @@ bool SceneManager::Update(float dt)
 
 	currentScene->Draw();
 
-	switch (currentScene->Update()) {
-	case 1:
-		nextScene = std::make_unique<Scene_Map>();
-		break;
+	using enum TransitionScene;
+	switch (currentScene->Update())
+	{
+		case BOOT_COMPLETE:
+			break;
+		case NEW_GAME:
+			nextScene = std::make_unique<Scene_Map>();
+			break;
+		case CONTINUE_GAME:
+			break;
+		case START_BATTLE:
+			break;
+		case WIN_BATTLE:
+		case LOSE_BATTLE:
+			break;
 
-	case 2:
-		// Continue game
-		break;
-	case 3:
-		// Options scene
-		break;
-	case 4:
-		return false;
-	default: // tus muertos
-		break;
+		case NONE: // tus muertos
+			break;
 	}
 
 	/*if (currentScene->Update() == 1 || app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_UP)

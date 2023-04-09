@@ -43,15 +43,28 @@ void Scene_Title::Draw()
 	}
 }
 
-int Scene_Title::Update()
+TransitionScene Scene_Title::Update()
 {
+	using enum TransitionScene;
+	
 	for (auto const& elem : windows)
 	{
-		if (auto result = elem->Update();
-			result != 0)
-			return result;
+		switch (elem->Update())
+		{
+		case 1:
+			return NEW_GAME;
+		case 2:
+			return CONTINUE_GAME;
+		case 3:
+			// Create new options window
+			break;
+		case 4:
+			return EXIT_GAME;
+		default:
+			continue;
+		}
 	}
-	return 0;
+	return NONE;
 }
 
 int Scene_Title::CheckNextScene()
