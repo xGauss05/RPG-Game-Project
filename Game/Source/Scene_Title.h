@@ -8,6 +8,8 @@
 class Scene_Title : public Scene_Base
 {
 public:
+    ~Scene_Title();
+
     bool isReady() override;
     void Load(
         std::string const& path,

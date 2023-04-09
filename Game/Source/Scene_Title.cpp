@@ -2,6 +2,11 @@
 #include "Render.h"
 #include "Log.h"
 
+Scene_Title::~Scene_Title()
+{
+	app->tex->Unload(backgroundTexture);
+}
+
 bool Scene_Title::isReady()
 {
 	return true;
