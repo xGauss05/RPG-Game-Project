@@ -61,9 +61,9 @@ int GuiButton::Update()
 	{
 		currentState = NORMAL;
 	}
-	return 0;
-
-	if (!playedSound) {
+	
+	if (!playedSound) 
+	{
 		switch (currentState) 
 		{
 		case NORMAL:
@@ -82,6 +82,8 @@ int GuiButton::Update()
 			break;
 		}
 	}
+
+	return 0;
 }
 
 bool GuiButton::Draw() const

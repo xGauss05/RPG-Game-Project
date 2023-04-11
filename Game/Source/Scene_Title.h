@@ -23,6 +23,8 @@ public:
 
 private:
     int backgroundTexture;
+    int logoFx = 0;
+    bool playedLogo = false;
 };
 
 #endif __SCENE_TITLE_H__

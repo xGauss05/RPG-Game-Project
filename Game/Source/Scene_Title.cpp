@@ -33,8 +33,9 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 		}
 	}
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
-	//app->audio->PlayMusic("Assets/Audio/Music/bgm_title_placeholder.ogg");
-	
+	app->audio->PlayMusic("Assets/Audio/Music/bgm_title_placeholder.ogg");
+	logoFx = app->audio->LoadFx("Assets/Audio/Fx/button_placeholder.wav");
+	playedLogo = false;
 }
 
 void Scene_Title::Start()
@@ -53,6 +54,12 @@ void Scene_Title::Draw()
 
 int Scene_Title::Update()
 {
+	if (!playedLogo)
+	{
+		app->audio->PlayFx(logoFx);
+		playedLogo = true;
+	}
+
 	for (auto const& elem : windows)
 	{
 		if (auto result = elem->Update();
