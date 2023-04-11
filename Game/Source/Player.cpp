@@ -44,31 +44,32 @@ Player::PlayerAction Player::HandleInput() const
 	PlayerAction returnAction = { position, NONE };
 
 	if (!moveVector.IsZero())
-	{
-		lastPos = GetPosition(); // The GHOST in question
 		return returnAction;
-	}
 
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.y -= tileSize;
+		lastPos = GetPosition(); //GHOST
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.x -= tileSize;
+		lastPos = GetPosition(); //GHOST
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.y += tileSize;
+		lastPos = GetPosition(); //GHOST
 		
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.x += tileSize;
+		lastPos = GetPosition(); //GHOST
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
