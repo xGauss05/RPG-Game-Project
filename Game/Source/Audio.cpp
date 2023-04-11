@@ -64,7 +64,7 @@ bool Audio::CleanUp()
 	if(music) Mix_FreeMusic(music);
 
 	for (auto const &item : fx)
-		Mix_FreeChunk(item.get());
+		Mix_FreeChunk(item);
 
 	Mix_CloseAudio();
 	Mix_Quit();
@@ -121,7 +121,7 @@ int Audio::LoadFx(const char* path)
 {
 	if(!active) return 0;
 
-	fx.push_back(std::unique_ptr<Mix_Chunk>(Mix_LoadWAV(path)));
+	fx.push_back(Mix_LoadWAV(path));
 	if (!fx.back())
 	{
 		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());

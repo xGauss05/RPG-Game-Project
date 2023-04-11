@@ -36,7 +36,7 @@ public:
 private:
 
 	_Mix_Music* music = nullptr;
-	std::list<std::unique_ptr<Mix_Chunk>> fx;
+	std::list<Mix_Chunk*> fx;
 };
 
 #endif // __AUDIO_H__
