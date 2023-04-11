@@ -117,7 +117,7 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 }
 
 // Load WAV
-unsigned int Audio::LoadFx(const char* path)
+int Audio::LoadFx(const char* path)
 {
 	if(!active) return 0;
 

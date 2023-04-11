@@ -85,12 +85,13 @@ bool SceneManager::Update(float dt)
 		break;
 
 	case 2:
-		// Continue game
+		app->LoadGameRequest();
+		nextScene = std::make_unique<Scene_Map>();
 		break;
 	case 3:
-		// Options scene
+		// options
 		break;
-	case 4:
+	case 4: // exit button
 		return false;
 	default: // tus muertos
 		break;

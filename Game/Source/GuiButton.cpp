@@ -3,7 +3,7 @@
 #include "Render.h"
 #include "Input.h"
 #include "TextManager.h"
-
+//#include "Audio.h"
 #include "Log.h"
 
 #include <map>
@@ -23,7 +23,7 @@ GuiButton::GuiButton(uPoint pos, uPoint size, std::string const &str, std::funct
 	Initialize(funcPtr, pos, size);
 
 	int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-
+	//pressedFx = app->audio->LoadFx("Assets/Audio/Fx/button_placeholder.wav");
 	for (int i = 0; auto const& elem : buttonStates)
 	{
 		panels.try_emplace(i, elem, 4, textureID, iPoint(3, 3));
@@ -42,6 +42,7 @@ int GuiButton::Update()
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 		{
 			currentState = PRESSED;
+
 		}
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 		{

@@ -1,4 +1,5 @@
 #include "Scene_Title.h"
+#include "Audio.h"
 #include "Render.h"
 #include "Log.h"
 
@@ -32,6 +33,8 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 		}
 	}
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
+	app->audio->PlayMusic("Assets/Audio/Music/bgm_title_placeholder.ogg");
+	
 }
 
 void Scene_Title::Start()

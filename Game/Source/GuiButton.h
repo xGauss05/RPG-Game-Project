@@ -43,6 +43,7 @@ public:
 private:
     std::string text = "";
 	int font = 0;
+	int pressedFx = 0;
 
 	std::map<int, GuiPanelSegmented> panels;
 
