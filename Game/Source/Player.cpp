@@ -50,26 +50,26 @@ Player::PlayerAction Player::HandleInput() const
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.y -= tileSize;
-		lastPos = GetPosition(); //GHOST
+		//lastPos = GetPosition(); //GHOST
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.x -= tileSize;
-		lastPos = GetPosition(); //GHOST
+		//lastPos = GetPosition(); //GHOST
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.y += tileSize;
-		lastPos = GetPosition(); //GHOST
+		//lastPos = GetPosition(); //GHOST
 		
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.x += tileSize;
-		lastPos = GetPosition(); //GHOST
+		//lastPos = GetPosition(); //GHOST
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
@@ -110,6 +110,8 @@ void Player::StartMovement()
 		moveVector.x = 1;
 		currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
 	}
+
+	lastDir = moveVector;
 }
 
 void Player::Update()

@@ -46,7 +46,14 @@ int Scene_Map::Update()
 	}
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
-		if (map.IsEvent(playerAction.lookingAtTile))
+		/*iPoint playerPos = player.GetPosition();
+		iPoint lastDir = player.lastDir;
+		int tileSize = map.GetTileWidth();*/
+
+
+		iPoint checktile = player.GetPosition() + (player.lastDir * map.GetTileWidth());
+
+		if (map.IsEvent(checktile))
 		{
 			//Do interaction
 			//player.position.x += 40;

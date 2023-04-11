@@ -56,6 +56,8 @@ public:
 	
 	void Update();
 
+	iPoint lastDir{ 0 };
+
 private:
 	void AnimateMove();
 	void SmoothMove();
@@ -63,7 +65,6 @@ private:
 
 	int moveTimer = 0;
 	iPoint moveVector{ 0 };
-	iPoint lastPos{ 0 };
 	int speed = 1;
 	const int timeForATile = 2;
 	const int tileSize = 16;
