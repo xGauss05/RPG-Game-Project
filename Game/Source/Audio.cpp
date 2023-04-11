@@ -140,7 +140,7 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	{
 		for (int i = 0; auto const &item : fx)
 		{
-			//if (i == id) Mix_PlayChannel(-1, item.get(), repeat);
+			if (i == id) Mix_PlayChannel(-1, item, repeat);
 			++i;
 		}
 	}
