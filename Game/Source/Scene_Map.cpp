@@ -46,8 +46,12 @@ int Scene_Map::Update()
 	}
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
-		//Interact with whatever
-		player.position.x += 20;
+		if (map.IsEvent(playerAction.lookingAtTile))
+		{
+			//Do interaction
+			//player.position.x += 40;
+			LOG("WTF is going on");
+		}
 	}
 
 	player.Update();

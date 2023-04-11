@@ -211,9 +211,12 @@ bool Map::IsWalkable(iPoint pos) const
 
 bool Map::IsEvent(iPoint pos) const
 {
-	for (auto const& Event_Base : eventManager.events)
+	for (auto const& elem : eventManager.events)
 	{
-		if (Event_Base)
+		if (elem->base_Pos == pos)
+		{
+			return true;
+		}
 	}
 
 	return false;

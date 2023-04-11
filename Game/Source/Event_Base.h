@@ -176,6 +176,7 @@ public:
 
 	std::string name = "";
 	EventProperties::CommonProperties common;
+	iPoint base_Pos; //this is a crime, I know
 };
 
 #endif // __EVENT_BASE_H__

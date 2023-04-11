@@ -27,7 +27,7 @@ void Player::Create()
 {
 	Sprite::Initialize("Assets/Maps/Slime.png", 4);
 	position = { 48, 272 };
-	size = { 48, 48 };
+	size = { 16, 16 };
 	currentSpriteSlice = {
 		(GetTextureIndex().x + 1) * size.x,
 		GetTextureIndex().y * size.y,
@@ -41,39 +41,34 @@ Player::PlayerAction Player::HandleInput() const
 	using enum KeyState;
 	using enum Player::PlayerAction::Action;
 
-	PlayerAction returnAction = { position, position, NONE };
+	PlayerAction returnAction = { position, NONE };
 
 	if (!moveVector.IsZero())
+	{
+		lastPos = GetPosition(); // The GHOST in question
 		return returnAction;
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.y -= tileSize;
-		returnAction.lookingAtTile.x = returnAction.destinationTile.x;
-		returnAction.lookingAtTile.y = returnAction.destinationTile.y - 1;
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.x -= tileSize;
-		returnAction.lookingAtTile.x = returnAction.destinationTile.x - 1;
-		returnAction.lookingAtTile.y = returnAction.destinationTile.y;
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.y += tileSize;
-		returnAction.lookingAtTile.x = returnAction.destinationTile.x;
-		returnAction.lookingAtTile.y = returnAction.destinationTile.y + 1;
 		
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.x += tileSize;
-		returnAction.lookingAtTile.x = returnAction.destinationTile.x + 1;
-		returnAction.lookingAtTile.y = returnAction.destinationTile.y;
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
