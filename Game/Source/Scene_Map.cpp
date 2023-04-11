@@ -19,6 +19,24 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	}
 
 	player.Create();
+
+	auto sceneHash = info.find("Title");
+	if (sceneHash == info.end())
+	{
+		LOG("Title scene not found in XML.");
+		return;
+	}
+
+	auto scene = sceneHash->second;
+
+	for (auto const& window : scene.children("window"))
+	{
+		if (auto result = windowFactory.CreateWindow(window.attribute("name").as_string());
+			result != nullptr)
+		{
+			windows.push_back(std::move(result));
+		}
+	}
 }
 
 void Scene_Map::Start()
@@ -29,6 +47,10 @@ void Scene_Map::Draw()
 {
 	map.Draw();
 	player.Draw();
+	for (auto const& elem : windows)
+	{
+		elem->Draw();
+	}
 }
 
 int Scene_Map::Update()
@@ -46,7 +68,12 @@ int Scene_Map::Update()
 	}
 
 	player.Update();
-
+	for (auto const& elem : windows)
+	{
+		if (auto result = elem->Update();
+			result != 0)
+			return result;
+	}
 	return 0;
 }
 

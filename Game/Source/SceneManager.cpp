@@ -99,13 +99,13 @@ bool SceneManager::Update(float dt)
 		break;
 	}
 
-	/*if (currentScene->Update() == 1 || app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_UP)
+	if (currentScene->Update() == 1 || app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_UP)
 	{
 		if (CurrentlyMainMenu)
 			nextScene = std::make_unique<Scene_Map>();
 		else
 			nextScene = std::make_unique<Scene_Title>();
-	}*/
+	}
 	
 	
 		
