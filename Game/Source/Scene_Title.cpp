@@ -33,7 +33,7 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 		}
 	}
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
-	app->audio->PlayMusic("Assets/Audio/Music/bgm_title_placeholder.ogg");
+	//app->audio->PlayMusic("Assets/Audio/Music/bgm_title_placeholder.ogg");
 	
 }
 

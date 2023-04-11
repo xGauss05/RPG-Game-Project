@@ -44,6 +44,9 @@ private:
     std::string text = "";
 	int font = 0;
 	int pressedFx = 0;
+	int focusedFx = 0;
+
+	bool playedSound = true;
 
 	std::map<int, GuiPanelSegmented> panels;
 
