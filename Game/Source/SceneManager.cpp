@@ -5,6 +5,7 @@
 #include "Scene_Map.h"
 #include "Scene_Title.h"
 
+#include "Render.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -44,7 +45,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 bool SceneManager::Start()
 {
 	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
-
+	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
 	return true;
 }
 
@@ -57,6 +58,7 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Pause(int phase)
 {
+	app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
 	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN)
 		app->SaveGameRequest();

@@ -53,6 +53,7 @@ public:
 	LookUpXMLNodeFromString mapInfo;
 
 	bool CurrentlyMainMenu = true;
+	int pauseMenuBackground = 0;
 };
 
 #endif // __SCENE_H__
