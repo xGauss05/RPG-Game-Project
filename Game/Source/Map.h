@@ -64,6 +64,7 @@ public:
 	int GetTileSetSize() const;
 
 	bool IsWalkable(iPoint pos) const;
+	bool IsEvent(iPoint pos) const;
 
 private:
 	std::vector<TileSet> tilesets;

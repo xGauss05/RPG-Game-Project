@@ -44,6 +44,11 @@ int Scene_Map::Update()
 			player.StartAction(playerAction);
 		}
 	}
+	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+	{
+		//Interact with whatever
+		player.position.x += 20;
+	}
 
 	player.Update();
 

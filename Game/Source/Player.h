@@ -40,6 +40,7 @@ public:
 
 
 		iPoint destinationTile = { 0, 0 };
+		iPoint lookingAtTile = { 0, 0 };
 
 		Action action = Player::PlayerAction::Action::NONE;
 	};

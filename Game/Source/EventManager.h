@@ -32,6 +32,8 @@ private:
 	std::vector<std::unique_ptr<Event_Base>> events;
 
 	std::vector<std::unique_ptr<Event_Base>>::const_iterator drawIterator;
+
+	friend class Map;
 };
 
 
