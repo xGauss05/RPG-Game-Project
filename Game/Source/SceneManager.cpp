@@ -28,7 +28,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 
 	windowFactory = std::make_unique<Window_Factory>(config);
 
-	for (auto const& node : config.child("scene_info").children("scene"))
+	for (auto const& node : config.child("title_info").children("scene"))
 	{
 		sceneInfo[node.attribute("name").as_string()] = node;
 	}
@@ -116,14 +116,15 @@ bool SceneManager::PostUpdate()
 {
 	if (nextScene && nextScene->isReady())
 	{
+		currentScene = std::move(nextScene);
 		if(CurrentlyMainMenu)
-			nextScene.get()->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+			currentScene.get()->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 		else
-			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+			currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 
 		CurrentlyMainMenu = !CurrentlyMainMenu;
 
-		currentScene = std::move(nextScene);
+
 	}
 
 
