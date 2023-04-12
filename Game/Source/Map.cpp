@@ -211,15 +211,7 @@ bool Map::IsWalkable(iPoint pos) const
 
 bool Map::IsEvent(iPoint checkPos) const
 {
-	for (auto const& elem : eventManager.events)
-	{
-		if (elem->base_Pos == checkPos)
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return eventManager.isEvent(checkPos);
 }
 
 int Map::GetWidth() const { return size.x; }

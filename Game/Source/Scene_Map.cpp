@@ -18,6 +18,8 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		LOG("Map %s couldn't be loaded.", mapToLoad);
 	}
 
+	//this->windowFactory = windowFactory;
+	//xmlNode = info;
 	player.Create();
 }
 
@@ -29,6 +31,11 @@ void Scene_Map::Draw()
 {
 	map.Draw();
 	player.Draw();
+
+	/*for (auto const& elem : windows)
+	{
+		elem->Draw();
+	}*/
 }
 
 int Scene_Map::Update()
@@ -56,12 +63,36 @@ int Scene_Map::Update()
 		if (map.IsEvent(checktile))
 		{
 			//Do interaction
-			//player.position.x += 40;
 			LOG("WTF is going on");
+
+			/*auto sceneHash = xmlNode.find("Map");
+			if (sceneHash == xmlNode.end())
+			{
+				LOG("Map scene not found in XML.");
+				return -1;
+			}
+
+			auto scene = sceneHash->second;
+
+			for (auto const& window : scene.children("window"))
+			{
+				if (auto result = windowFactory.CreateWindow(window.attribute("name").as_string());
+					result != nullptr)
+				{
+					windows.push_back(std::move(result));
+				}
+			}*/
 		}
 	}
 
 	player.Update();
+
+	/*for (auto const& elem : windows)
+	{
+		if (auto result = elem->Update();
+			result != 0)
+			return result;
+	}*/
 
 	return 0;
 }

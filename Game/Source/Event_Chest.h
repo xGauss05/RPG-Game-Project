@@ -3,11 +3,10 @@
 
 #include "Event_Base.h"
 #include "Sprite.h"
-#include "Transform.h"
 
 #include <memory>
 
-class Event_Chest : public Event_Base, public Sprite, public Transform
+class Event_Chest : public Event_Base, public Sprite
 {
 public:
 	// Inherited via Scene_Base

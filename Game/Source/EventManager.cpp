@@ -50,6 +50,16 @@ int EventManager::GetEventLayerSize() const
 {
 	return events.size();
 }
+
+bool EventManager::isEvent(iPoint destination) const
+{
+	for (auto const &elem :events)
+	{
+		if (elem->position == destination)
+			return true;
+	}
+	return false;
+}
  
 std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] int index)
 {

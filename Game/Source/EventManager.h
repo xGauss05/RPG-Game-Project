@@ -25,6 +25,7 @@ public:
 	bool CreateEvent(pugi::xml_node const &node = pugi::xml_node());
 
 	int GetEventLayerSize() const;
+	bool isEvent(iPoint destination) const;
 
 	// Returns Gid, position, keepDrawing ? true : false;
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);
@@ -32,8 +33,6 @@ private:
 	std::vector<std::unique_ptr<Event_Base>> events;
 
 	std::vector<std::unique_ptr<Event_Base>>::const_iterator drawIterator;
-
-	friend class Map;
 };
 
 

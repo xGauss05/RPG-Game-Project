@@ -3,6 +3,7 @@
 
 
 #include "Point.h"
+#include "Transform.h"
 #include "Defs.h"
 #include "PugiXml/src/pugixml.hpp"
 #include <SDL/include/SDL_pixels.h>
@@ -150,7 +151,7 @@ namespace EventProperties
 
 }
 
-class Event_Base
+class Event_Base : public Transform
 {
 public:
 	Event_Base() = default;
@@ -160,6 +161,8 @@ public:
 
 	void Initialize(pugi::xml_node const &node)
 	{
+		Transform::Initialize(node);
+
 		name = node.attribute("name").as_string();
 
 		if (auto propertiesNode = node.child("properties");
@@ -176,7 +179,6 @@ public:
 
 	std::string name = "";
 	EventProperties::CommonProperties common;
-	iPoint base_Pos; //this is a crime, I know
 };
 
 #endif // __EVENT_BASE_H__

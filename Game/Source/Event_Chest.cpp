@@ -44,9 +44,6 @@ void Event_Chest::parseXMLProperties(pugi::xml_node const& node)
 
 void Event_Chest::Create(pugi::xml_node const& node)
 {
-	Transform::Initialize(node);
 	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
-
-	base_Pos = position; //this is a crime, I know
 }
