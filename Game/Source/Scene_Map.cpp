@@ -20,10 +20,10 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 
 	player.Create();
 
-	auto sceneHash = info.find("Title");
+	auto sceneHash = info.find("Map");
 	if (sceneHash == info.end())
 	{
-		LOG("Title scene not found in XML.");
+		LOG("Map scene not found in XML.");
 		return;
 	}
 

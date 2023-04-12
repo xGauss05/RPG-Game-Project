@@ -22,13 +22,16 @@
     <map_info>
       <map id="0" name="Base"/>
       <map id="1" name="Test"/>
+      <map id="2" name="Map"> <!--This is working. WTF. It should read it from below-->
+        <window name="PauseMenu"/>
+      </map>
     </map_info>
 
     <scene_info>
       <scene name="Title">
         <window name="MainMenu"/>
       </scene>
-	    <scene name="Map">
+	    <scene name="Map"> <!--This is not working-->
 		    <window name="PauseMenu"/>
 	    </scene>
     </scene_info>
