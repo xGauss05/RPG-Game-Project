@@ -57,6 +57,7 @@ public:
 	void Update();
 
 	iPoint lastDir{ 0 };
+	bool interacting = false;
 
 private:
 	void AnimateMove();
