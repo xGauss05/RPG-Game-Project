@@ -1,5 +1,5 @@
 #include "Scene_Map.h"
-
+#include "Audio.h"
 #include "Log.h"
 
 bool Scene_Map::isReady()
@@ -37,6 +37,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 			windows.push_back(std::move(result));
 		}
 	}
+	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
 }
 
 void Scene_Map::Start()

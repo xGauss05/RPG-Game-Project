@@ -65,7 +65,7 @@
         </button>
       </window>
       <window name="PauseMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
-        <button x="1100" y="600" width="100" height="65" text="Pause" function="PauseGame" segmentwidth="32" segmentheight="32">
+        <button x="1155" y="25" width="65" height="65" text="||" function="PauseGame" segmentwidth="32" segmentheight="32">
           <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
