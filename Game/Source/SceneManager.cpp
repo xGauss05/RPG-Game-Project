@@ -95,6 +95,7 @@ bool SceneManager::Update(float dt)
 		break;
 	case 4: // exit button
 		return false;
+	
 	default: // tus muertos
 		break;
 	}
@@ -107,9 +108,6 @@ bool SceneManager::Update(float dt)
 			nextScene = std::make_unique<Scene_Title>();
 	}
 	
-	
-		
-
 	return true;
 }
 

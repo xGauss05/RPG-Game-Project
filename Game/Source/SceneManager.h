@@ -51,7 +51,7 @@ public:
 	std::unique_ptr<Window_Factory> windowFactory;
 	LookUpXMLNodeFromString sceneInfo;
 	LookUpXMLNodeFromString mapInfo;
-
+	
 	bool CurrentlyMainMenu = true;
 	int pauseMenuBackground = 0;
 };
