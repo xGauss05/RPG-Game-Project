@@ -79,6 +79,29 @@ void Window_Base::CreateButtons(pugi::xml_node const& node)
 	}
 }
 
+void Window_Base::CreatePanels(pugi::xml_node const& node)
+{
+	for (auto const& child : node.children("panel"))
+	{
+		uPoint pos = { child.attribute("x").as_uint(), child.attribute("y").as_uint() };
+		uPoint area = { child.attribute("width").as_uint(), child.attribute("height").as_uint() };
+		const std::string text = child.attribute("text").as_string();
+
+		SDL_Rect rect = { pos.x,pos.y,area.x,area.y };
+		int advance = child.attribute("advance").as_int();
+		int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
+
+		iPoint segments = { child.attribute("horizontalsegments").as_int(), child.attribute("verticalsegments").as_int() };
+				
+		//I need a rect, advance, textureID and segments
+		//SDL_Rect const& r, int a, int id, iPoint tSegments
+		
+		//Everithing works until this line down here 
+		//widgets.emplace_back(std::make_unique<GuiPanelSegmented>(rect, advance, textureID, segments));
+		LOG("ola");
+	}
+}
+
 void Window_Base::AddFunctionToMap(std::string const& str, std::function<int()> const &funcPtr)
 {
 	strToFuncPtr[str] = funcPtr;

@@ -88,6 +88,9 @@
     <ClCompile Include="Source\Scene_GameOver.cpp">
       <Filter>Scenes\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Window_Panel.cpp">
+      <Filter>GUI\Windows\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -203,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scene_GameOver.h">
       <Filter>Scenes\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window_Panel.h">
+      <Filter>GUI\Windows\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

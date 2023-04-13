@@ -124,6 +124,7 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Window_Factory.cpp" />
     <ClCompile Include="Source\Window_List.cpp" />
+    <ClCompile Include="Source\Window_Panel.cpp" />
     <ClInclude Include="Source\Event_Base.h" />
     <ClInclude Include="Source\EventManager.h" />
     <ClInclude Include="Source\Event_Chest.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
     <ClInclude Include="Source\Window_Factory.h" />
     <ClInclude Include="Source\Window_List.h" />
+    <ClInclude Include="Source\Window_Panel.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />
