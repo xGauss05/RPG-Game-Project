@@ -25,7 +25,8 @@ void Player::Draw() const
 
 void Player::Create()
 {
-	Sprite::Initialize("Assets/Maps/Slime.png", 4);
+	app->tex->Load("Assets/Maps/Slime_Smol.png");
+	Sprite::Initialize("Assets/Maps/Slime_Smol.png", 0);
 	position = { 48, 272 };
 	size = { 16, 16 };
 	currentSpriteSlice = {
