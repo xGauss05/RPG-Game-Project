@@ -29,7 +29,7 @@ public:
 	void DebugDraw() const;
 
 private:
-	GuiPanelSegmented panel;
+	std::unique_ptr<GuiPanelSegmented> panel;
 
 	iPoint offset;
 };
