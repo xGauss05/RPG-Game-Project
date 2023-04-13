@@ -67,6 +67,16 @@ public:
 
 protected:
 
+	void Initialize(uPoint pos, uPoint widthHeight)
+	{
+		position = pos;
+		if (!(widthHeight % 32).IsZero())
+		{
+			widthHeight += uPoint(32, 32) - (widthHeight % 32);
+		}
+		size = widthHeight;
+	}
+
 	void Initialize(std::function<int()> const& funcPtr, uPoint pos, uPoint widthHeight)
 	{
 		func = funcPtr;

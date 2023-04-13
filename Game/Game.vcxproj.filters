@@ -91,6 +91,9 @@
     <ClCompile Include="Source\Window_Panel.cpp">
       <Filter>GUI\Windows\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GuiBox.cpp">
+      <Filter>GUI\Widgets\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="Source\Window_Panel.h">
       <Filter>GUI\Windows\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiBox.h">
+      <Filter>GUI\Widgets\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

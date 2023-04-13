@@ -1,5 +1,6 @@
 #include "Window_Base.h"
 #include "GuiButton.h"
+#include "GuiBox.h"
 
 #include "Log.h"
 
@@ -89,15 +90,14 @@ void Window_Base::CreatePanels(pugi::xml_node const& node)
 
 		SDL_Rect rect = { pos.x,pos.y,area.x,area.y };
 		int advance = child.attribute("advance").as_int();
-		int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 
 		iPoint segments = { child.attribute("horizontalsegments").as_int(), child.attribute("verticalsegments").as_int() };
 				
 		//I need a rect, advance, textureID and segments
 		//SDL_Rect const& r, int a, int id, iPoint tSegments
 		
-		//Everithing works until this line down here 
-		//widgets.emplace_back(std::make_unique<GuiPanelSegmented>(rect, advance, textureID, segments));
+		//Everything works until this line down here 
+		widgets.emplace_back(std::make_unique<GuiBox>(pos, area, rect, advance, 0, segments));
 		LOG("ola");
 	}
 }
