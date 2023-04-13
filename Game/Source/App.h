@@ -135,6 +135,7 @@ private:
 	bool saveGameRequested;
 	bool loadGameRequested;
 	bool resetLevelRequested;
+	bool unpause = false;
 
 	uint levelNumber = 1;
 };

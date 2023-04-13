@@ -58,8 +58,7 @@ int Window_List::ResumeGame()
 int Window_List::ExitMainMenu() 
 {
 	LOG("ExitMainMenu function called");
-
+	app->PauseGame();
+	
 	return 7;
 }
-
-

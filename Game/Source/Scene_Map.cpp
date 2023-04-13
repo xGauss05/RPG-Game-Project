@@ -2,6 +2,7 @@
 #include "Audio.h"
 #include "Log.h"
 
+
 bool Scene_Map::isReady()
 {
 	return true;
@@ -99,12 +100,15 @@ int Scene_Map::Update()
 
 int Scene_Map::OnPause() 
 {
+	
+
 	for (auto const& elem : pauseWindow)
 	{
 		if (auto result = elem->Update();
 			result != 0)
 			return result;
 	}
+
 	for (auto const& elem : pauseWindow)
 	{
 		elem->Draw();

@@ -27,6 +27,7 @@ private:
 
     Map map;
     Player player;
+    
 };
 
 
