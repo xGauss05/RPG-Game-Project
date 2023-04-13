@@ -34,9 +34,26 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		if (auto result = windowFactory.CreateWindow(window.attribute("name").as_string());
 			result != nullptr)
 		{
-			windows.push_back(std::move(result));
+			std::string s1 = window.attribute("name").as_string();
+			int val = s1.compare("PauseButtonMenu");
+			if (val == 0) 
+			{
+				windows.push_back(std::move(result));
+			}
+			else {
+				pauseWindow.push_back(std::move(result));
+			}
+			/*if (window.attribute("name").as_string() == "PauseButtonMenu") 
+			{
+				
+			}
+			else if (window.attribute("name").as_string() == "PauseMenu") 
+			{
+				pauseWindow.push_back(std::move(result));
+			}*/
 		}
 	}
+
 	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
 }
 
@@ -69,11 +86,28 @@ int Scene_Map::Update()
 	}
 
 	player.Update();
+
 	for (auto const& elem : windows)
 	{
 		if (auto result = elem->Update();
 			result != 0)
 			return result;
+	}
+
+	return 0;
+}
+
+int Scene_Map::OnPause() 
+{
+	for (auto const& elem : pauseWindow)
+	{
+		if (auto result = elem->Update();
+			result != 0)
+			return result;
+	}
+	for (auto const& elem : pauseWindow)
+	{
+		elem->Draw();
 	}
 	return 0;
 }

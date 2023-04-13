@@ -16,6 +16,8 @@ private:
 	int OptionsWindow();
 	int ExitGame();
 	int PauseGame();
+	int ResumeGame();
+	int ExitMainMenu();
 
 };
 

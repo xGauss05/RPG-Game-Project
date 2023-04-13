@@ -19,6 +19,7 @@ public:
     void Start() override;
     void Draw() override;
     int Update() override;
+    int OnPause() override;
     int CheckNextScene() override;
 
 private:

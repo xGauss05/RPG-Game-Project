@@ -9,6 +9,9 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 	AddFunctionToMap("OptionsWindow", std::bind_front(&Window_List::OptionsWindow, this));
 	AddFunctionToMap("ExitGame", std::bind_front(&Window_List::ExitGame, this));
 	AddFunctionToMap("PauseGame", std::bind_front(&Window_List::PauseGame, this));
+	AddFunctionToMap("ResumeGame", std::bind_front(&Window_List::ResumeGame, this));
+	AddFunctionToMap("ExitMainMenu", std::bind_front(&Window_List::ExitMainMenu, this));
+	
 	CreateButtons(node);
 }
 
@@ -43,3 +46,20 @@ int Window_List::PauseGame() {
 		
 	return 5;
 }
+
+int Window_List::ResumeGame() 
+{
+	LOG("ResumeGame function called");
+	app->PauseGame();
+
+	return 6;
+}
+
+int Window_List::ExitMainMenu() 
+{
+	LOG("ExitMainMenu function called");
+
+	return 7;
+}
+
+

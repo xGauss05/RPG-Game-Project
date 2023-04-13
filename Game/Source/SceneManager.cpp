@@ -58,13 +58,15 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Pause(int phase)
 {
-	app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
+	//app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
 	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN)
 		app->SaveGameRequest();
 
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
 		app->LoadGameRequest();
+
+	currentScene->OnPause();
 
 	return true;
 }
@@ -95,7 +97,9 @@ bool SceneManager::Update(float dt)
 		break;
 	case 4: // exit button
 		return false;
-	
+	case 7:
+		nextScene = std::make_unique<Scene_Title>();
+		break;
 	default: // tus muertos
 		break;
 	}
