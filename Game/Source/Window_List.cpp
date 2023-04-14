@@ -14,6 +14,11 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 	AddFunctionToMap("ResumeGame", std::bind_front(&Window_List::ResumeGame, this));
 	AddFunctionToMap("ExitMainMenu", std::bind_front(&Window_List::ExitMainMenu, this));
 	AddFunctionToMap("ExitGameFromMap", std::bind_front(&Window_List::ExitGameFromMap, this));
+
+	AddFunctionToMap("BattleAttack", std::bind_front(&Window_List::BattleAttack, this));
+	AddFunctionToMap("BattleSpecialAttack", std::bind_front(&Window_List::BattleSpecialAttack, this));
+	AddFunctionToMap("BattleDefend", std::bind_front(&Window_List::BattleDefend, this));
+	AddFunctionToMap("BattleRun", std::bind_front(&Window_List::BattleRun, this));
 	
 	CreateButtons(node);
 }
@@ -64,7 +69,6 @@ int Window_List::ExitMainMenu()
 {
 	LOG("ExitMainMenu function called");
 	
-	app->scene->nextScene = std::make_unique<Scene_Title>();
 	app->pause = false;
 	app->PauseGame();
 
@@ -78,4 +82,24 @@ int Window_List::ExitGameFromMap()
 	app->PauseGame();
 
 	return 4;
+}
+
+int Window_List::BattleAttack()
+{
+	return 100;
+}
+
+int Window_List::BattleSpecialAttack()
+{
+	return 101;
+}
+
+int Window_List::BattleDefend()
+{
+	return 102;
+}
+
+int Window_List::BattleRun()
+{
+	return 103;
 }

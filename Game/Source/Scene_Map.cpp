@@ -8,7 +8,7 @@ bool Scene_Map::isReady()
 	return true;
 }
 
-void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
+void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFac)
 {
 	// Load map
 	currentMap = "Base";
@@ -19,7 +19,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		LOG("Map %s couldn't be loaded.", mapToLoad);
 	}
 
-	this->windowFactory = &windowFactory;
+	this->windowFactory = &windowFac;
 	xmlNode = info;
 	player.Create();
 
@@ -34,10 +34,9 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 
 	for (auto const& window : scene.children("window"))
 	{
-		if (auto result = windowFactory.CreateWindow(window.attribute("name").as_string());
+		if (auto result = windowFac.CreateWindow(window.attribute("name").as_string());
 			result != nullptr)
 		{
-			
 			if (StrEquals("PauseButtonMenu", window.attribute("name").as_string()))
 			{
 				windows.push_back(std::move(result));
@@ -55,6 +54,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 
 void Scene_Map::Start()
 {
+	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 }
 
 void Scene_Map::Draw()
@@ -143,6 +143,12 @@ TransitionScene Scene_Map::Update()
 		}
 	}
 
+	if (transitionTo == TransitionScene::MAIN_MENU)
+	{
+		transitionTo = TransitionScene::NONE;
+		return TransitionScene::MAIN_MENU;
+	}
+
 	return TransitionScene::NONE;
 }
 
@@ -152,7 +158,10 @@ int Scene_Map::OnPause()
 	{
 		if (auto result = elem->Update();
 			result != 0)
+		{
+			if (result == 7) transitionTo = TransitionScene::MAIN_MENU;
 			return result;
+		}
 	}
 
 	for (auto const& elem : pauseWindow)

@@ -47,6 +47,7 @@ public:
 
 	std::string assetPath;
 	std::unique_ptr<Scene_Base> currentScene;
+	std::unique_ptr<Scene_Base> sceneOnHold;
 	std::unique_ptr<Scene_Base> nextScene;
 
 	std::unique_ptr<Window_Factory> windowFactory;

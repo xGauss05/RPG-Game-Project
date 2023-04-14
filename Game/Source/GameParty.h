@@ -32,8 +32,8 @@ struct PartyCharacter
 	int level;
 
 	std::vector<int> stats;
+	bool isDefending = false;
 	std::vector<int> equipment;
-
 	std::vector<int> skills;
 };
 

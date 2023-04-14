@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="23">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="26">
  <tileset firstgid="1" source="Tiles.tsx"/>
  <tileset firstgid="626" source="Props.tsx"/>
  <tileset firstgid="1251" source="Slime.tsx"/>
@@ -184,7 +184,7 @@
     <property name="isOpen" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="18" name="10 Gold" type="Event Chest" gid="955" x="144" y="144" width="16" height="16">
+  <object id="18" name="20asfijdasfsa" type="Event Chest" gid="955" x="144" y="144" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -272,19 +272,20 @@
     <property name="isOpen" type="bool" value="true"/>
    </properties>
   </object>
-   <object id="20" name="NPC Test" type="Event NPC" gid="963" x="112" y="272" width="16" height="16">
+  <object id="20" name="NPC Test" type="Event NPC" gid="963" x="112" y="272" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
      <properties>
-       <property name="Base" type="class" propertytype="Base Event">
-         <properties>
-           <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-           <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-           <property name="Static" type="bool" value="true"/>
-           <property name="Dialogue" type="bool" value="true"/>
-         </properties>
-       </property>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
-   </object>
+    </property>
+   </properties>
+  </object>
   <object id="22" gid="1252" x="48" y="272" width="48" height="48"/>
+  <object id="23" type="Event Chest" gid="955" x="144" y="192" width="16" height="16"/>
  </objectgroup>
  <layer id="4" name="Props" width="24" height="24">
   <data encoding="csv">

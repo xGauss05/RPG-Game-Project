@@ -12,7 +12,7 @@ public:
     void Load(
         std::string const& path,
         LookUpXMLNodeFromString const& info,
-        Window_Factory const& windowFactory
+        Window_Factory const& windowFac
     ) override;
     void Start() override;
     void Draw() override;
@@ -30,6 +30,8 @@ private:
 
    
     bool exit = false;
+
+    TransitionScene transitionTo = TransitionScene::NONE;
 
     const Window_Factory* windowFactory;
     LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?

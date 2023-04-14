@@ -99,8 +99,14 @@ bool SceneManager::Update(float dt)
 		{
 		case BOOT_COMPLETE:
 			break;
+		case MAIN_MENU:
+			nextScene = std::make_unique<Scene_Title>();
+			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+			break;
 		case NEW_GAME:
 			nextScene = std::make_unique<Scene_Map>();
+			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+			nextScene->Start();
 			break;
 		case CONTINUE_GAME:
 			break;
@@ -109,10 +115,13 @@ bool SceneManager::Update(float dt)
 			break;
 		case WIN_BATTLE:
 		case LOSE_BATTLE:
+		case RUN_BATTLE:
+			nextScene = std::move(sceneOnHold);
+			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 			break;
 		case EXIT_GAME:
 			return false;
-		case NONE: // tus muertos
+		case NONE:
 			break;
 	}
 	
@@ -122,17 +131,6 @@ bool SceneManager::Update(float dt)
 // Called each loop iteration
 bool SceneManager::PostUpdate()
 {
-	if (nextScene && nextScene->isReady())
-	{
-		currentScene = std::move(nextScene);
-		if(CurrentlyMainMenu)
-			currentScene.get()->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-		else
-			currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
-
-		CurrentlyMainMenu = !CurrentlyMainMenu;
-	}
-
 	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
 	{
 		pugi::xml_document troopsFile;
@@ -159,7 +157,16 @@ bool SceneManager::PostUpdate()
 			combat.troop.emplace_back(enemyToAdd);
 		}
 		nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
+		nextScene->Load("", sceneInfo, *windowFactory);
+		sceneOnHold = std::move(currentScene);
 	}
+
+	if (nextScene && nextScene->isReady())
+	{
+		currentScene = std::move(nextScene);
+		currentScene->Start();
+	}
+
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 		return false;

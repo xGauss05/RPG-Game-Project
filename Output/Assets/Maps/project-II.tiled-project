@@ -281,7 +281,8 @@
             "type": "enum",
             "values": [
                 "Base",
-                "test"
+                "test",
+                "Helper Maps_3"
             ],
             "valuesAsFlags": false
         },

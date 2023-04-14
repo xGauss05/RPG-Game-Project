@@ -13,11 +13,10 @@ GuiBox::~GuiBox()
 	panel->Unload();
 }
 
-GuiBox::GuiBox(uPoint pos, uPoint widthHeight,SDL_Rect const& rect,int advance,int id,iPoint tSegments, std::string text)
+GuiBox::GuiBox(uPoint pos, uPoint widthHeight,SDL_Rect const& rect,int advance,int id, iPoint tSegments, std::string const &t)
+	: text(t)
 {
 	Initialize(pos, widthHeight);
-
-	this->text = text;
 
 	int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 	panel = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments);

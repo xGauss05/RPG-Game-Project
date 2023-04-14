@@ -14,7 +14,7 @@ struct Enemy
 
 	std::vector<int> stats;
 	std::vector<int> equipment;
-
+	bool isDefending = false;
 	std::vector<int> skills;
 };
 

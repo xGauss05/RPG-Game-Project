@@ -19,7 +19,12 @@ private:
 	int ResumeGame();
 	int ExitMainMenu();
 	int ExitGameFromMap();
+	
 
+	int BattleAttack();
+	int BattleSpecialAttack();
+	int BattleDefend();
+	int BattleRun();
 };
 
 #endif __WINDOW_LIST_H__

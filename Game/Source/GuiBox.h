@@ -22,7 +22,7 @@ public:
 		int advance,
 		int id,
 		iPoint tSegments,
-		std::string text
+		std::string const &t
 	);
 
 	bool Draw() const override;

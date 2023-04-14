@@ -3,6 +3,8 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 
+#include <queue>
+
 enum class BattleState
 {
     PLAYER_INPUT,
@@ -30,5 +32,15 @@ private:
     GameParty* party;
     EnemyTroops troop;
     BattleState state = BattleState::PLAYER_INPUT;
+    int currentPlayer = 0;
+
+    struct BattleAction
+    {
+        int action;
+        int source;
+        int target;
+        bool friendly;
+    };
+    std::queue<BattleAction> actionQueue;
 };
 
