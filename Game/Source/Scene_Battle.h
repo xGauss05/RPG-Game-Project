@@ -24,6 +24,7 @@ public:
     void Draw() override;
     TransitionScene Update() override;
     int CheckNextScene() override;
+    int OnPause() override;
 
 private:
     GameParty* party;

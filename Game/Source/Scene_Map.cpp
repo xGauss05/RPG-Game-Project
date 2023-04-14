@@ -104,7 +104,7 @@ TransitionScene Scene_Map::Update()
 				if (sceneHash == xmlNode.end())
 				{
 					LOG("Map scene not found in XML.");
-					return -1;
+					return TransitionScene::NONE;
 				}
 
 				auto scene = sceneHash->second;

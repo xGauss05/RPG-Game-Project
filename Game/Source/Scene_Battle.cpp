@@ -57,3 +57,8 @@ int Scene_Battle::CheckNextScene()
 {
 	return 0;
 }
+
+int Scene_Battle::OnPause()
+{
+	return 0;
+}
