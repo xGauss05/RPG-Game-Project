@@ -25,8 +25,6 @@ public:
 	bool CreateEvent(pugi::xml_node const &node = pugi::xml_node());
 
 	int GetEventLayerSize() const;
-	bool isEvent(iPoint destination) const;
-	bool isNPC(iPoint destination) const;
 
 	EventTrigger TriggerEvent(iPoint destination) const;
 
