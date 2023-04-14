@@ -69,6 +69,11 @@ int Scene_Title::Update()
 	return 0;
 }
 
+int Scene_Title::OnPause() 
+{
+	return 0;
+}
+
 int Scene_Title::CheckNextScene()
 {
 	return 1;

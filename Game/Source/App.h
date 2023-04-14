@@ -96,6 +96,8 @@ public:
 	std::unique_ptr<SceneManager> scene;
 	std::unique_ptr<TextManager> fonts;
 
+	bool pause = false;
+
 private:
 
 	// Load config file

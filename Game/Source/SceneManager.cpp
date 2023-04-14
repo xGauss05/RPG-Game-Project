@@ -17,7 +17,10 @@ SceneManager::SceneManager() : Module()
 }
 
 // Destructor
-SceneManager::~SceneManager() = default;
+SceneManager::~SceneManager() 
+{
+	app->tex->Unload(pauseMenuBackground);
+}
 
 // Called before render is available
 bool SceneManager::Awake(pugi::xml_node& config)
@@ -38,6 +41,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 	}
 
 	currentScene = std::make_unique<Scene_Title>();
+
 	return true;
 }
 
@@ -58,13 +62,16 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Pause(int phase)
 {
-	app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
 	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN)
 		app->SaveGameRequest();
 
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
 		app->LoadGameRequest();
+
+	app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
+
+	if(currentScene->OnPause() == 4) return false;
 
 	return true;
 }
@@ -94,8 +101,8 @@ bool SceneManager::Update(float dt)
 		// options
 		break;
 	case 4: // exit button
+
 		return false;
-	
 	default: // tus muertos
 		break;
 	}
@@ -124,9 +131,7 @@ bool SceneManager::PostUpdate()
 
 		CurrentlyMainMenu = !CurrentlyMainMenu;
 
-
 	}
-
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 		return false;

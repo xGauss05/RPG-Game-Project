@@ -22,6 +22,7 @@ public:
 	) = 0;
 	virtual void Start() = 0;
 	virtual int Update() = 0;
+	virtual int OnPause() = 0;
 	virtual void Draw() = 0;
 	virtual int CheckNextScene() = 0;
 

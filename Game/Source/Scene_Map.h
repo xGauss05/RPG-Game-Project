@@ -17,15 +17,23 @@ public:
     void Start() override;
     void Draw() override;
     int Update() override;
+    int OnPause() override;
     int CheckNextScene() override;
+
+    std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 
 private:
     std::string currentMap = "";
 
     Map map;
     Player player;
+
+   
+    bool exit = false;
+
     const Window_Factory* windowFactory;
     LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
+
 };
 
 

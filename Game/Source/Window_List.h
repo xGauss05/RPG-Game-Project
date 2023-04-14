@@ -14,8 +14,11 @@ private:
 	int NewGame();
 	int ContinueGame();
 	int OptionsWindow();
-	int ExitGame();
+	int ExitGameFromTitle();
 	int PauseGame();
+	int ResumeGame();
+	int ExitMainMenu();
+	int ExitGameFromMap();
 
 };
 
