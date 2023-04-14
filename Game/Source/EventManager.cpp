@@ -3,6 +3,7 @@
 
 #include "Event_Chest.h"
 #include "Event_Teleport.h"
+#include "NPC_Generic.h"
 
 #include "Sprite.h"
 
@@ -33,6 +34,10 @@ bool EventManager::CreateEvent(pugi::xml_node const& node)
 		{
 			event = std::make_unique<Event_Teleport>();
 		}
+		else if (StrEquals("Event NPC", child.attribute("type").as_string()))
+		{
+			event = std::make_unique<NPC_Generic>();
+		}
 
 		if (!event)
 		{
@@ -40,6 +45,7 @@ bool EventManager::CreateEvent(pugi::xml_node const& node)
 			continue;
 		}
 
+		event->type = child.attribute("type").as_string();
 		event->Create(child);
 		events.push_back(std::move(event));
 	}
@@ -49,6 +55,25 @@ bool EventManager::CreateEvent(pugi::xml_node const& node)
 int EventManager::GetEventLayerSize() const
 {
 	return events.size();
+}
+
+bool EventManager::isEvent(iPoint destination) const
+{
+	for (auto const &elem :events)
+	{
+		if (elem->position == destination)
+			return true;
+	}
+	return false;
+}
+bool EventManager::isNPC(iPoint destination) const
+{
+	for (auto const& elem : events)
+	{
+		if (elem->position == destination && StrEquals("Event NPC", elem->type))
+			return true;
+	}
+	return false;
 }
  
 std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] int index)

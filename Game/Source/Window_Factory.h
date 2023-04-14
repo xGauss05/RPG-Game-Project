@@ -3,6 +3,7 @@
 
 #include "Window_Base.h"
 #include "Window_List.h"
+#include "Window_Panel.h"
 
 #include "PugiXml/src/pugixml.hpp"
 

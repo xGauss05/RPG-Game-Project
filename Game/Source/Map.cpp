@@ -209,6 +209,16 @@ bool Map::IsWalkable(iPoint pos) const
 	return true;
 }
 
+bool Map::IsEvent(iPoint checkPos) const
+{
+	return eventManager.isEvent(checkPos);
+}
+
+bool Map::IsNPC(iPoint checkPos) const
+{
+	return eventManager.isNPC(checkPos);
+}
+
 int Map::GetWidth() const { return size.x; }
 int Map::GetHeight() const { return size.y; }
 int Map::GetTileWidth() const { return tileSize.x; }

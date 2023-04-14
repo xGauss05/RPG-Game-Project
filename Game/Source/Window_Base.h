@@ -26,6 +26,7 @@ public:
 protected:
 
 	void CreateButtons(pugi::xml_node const &node);
+	void CreatePanels(pugi::xml_node const& node);
 	void AddFunctionToMap(std::string const& str, std::function<int()> const& funcPtr);
 	// If string is not found in pointer map, it fallbacks to this
 	int FallbackFunction() const;

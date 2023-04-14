@@ -27,8 +27,13 @@ private:
 
     Map map;
     Player player;
+
    
     bool exit = false;
+
+    const Window_Factory* windowFactory;
+    LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
+
 };
 
 

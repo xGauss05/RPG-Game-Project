@@ -18,21 +18,23 @@
 
   <scene>
     <general assetpath="Assets/"/>
+    
+    <map_info>
+      <map id="0" name="Base"/>
+      <map id="1" name="Test"/>
+
+      <map id="2" name="Map"> <!--This is working. WTF. It should read it from below-->
+        <window name="PauseButtonMenu"/>
+        <window name="PauseMenu"/>
+        <window name="ChatBox"/>
+      </map>
+    </map_info>
 
     <title_info>
       <scene name="Title">
         <window name="MainMenu"/>
       </scene>
     </title_info>
-
-    <map_info>
-      <map id="0" name="Base"/>
-      <map id="1" name="Test"/>
-      <map id="2" name="Map"> <!--This is working. WTF. It should read it from below-->
-        <window name="PauseButtonMenu"/>
-        <window name="PauseMenu"/>
-      </map>
-    </map_info>
     
     <window_info>
       <window name="MainMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
@@ -96,6 +98,11 @@
           <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
         </button>
+      <window name="ChatBox" class="Panel" type="Base" x="50" y="50" width="200" height="100">
+        <panel x="50" y="530" width="1175" height="150" path ="Assets/UI/GUI_4x_sliced.png">
+          <texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3"/>
+          <text chatBoxText="Hey, you are finally awake. Take this, it is dangerous to go alone."/>
+        </panel>
       </window>
     </window_info>
    
