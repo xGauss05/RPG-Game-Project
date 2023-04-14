@@ -23,8 +23,8 @@ GuiButton::GuiButton(uPoint pos, uPoint size, std::string const& str, std::funct
 	Initialize(funcPtr, pos, size);
 
 	int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/button_placeholder.wav");
-	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/button_placeholder.wav");
+	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Pressed.wav");
+	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Focused.wav");
 	for (int i = 0; auto const& elem : buttonStates)
 	{
 		panels.try_emplace(i, elem, 4, textureID, iPoint(3, 3));
@@ -53,13 +53,18 @@ int GuiButton::Update()
 		}
 		else
 		{
-			currentState = FOCUSED;
-			playedSound = false;
+			if (currentState != FOCUSED) 
+			{
+				currentState = FOCUSED;
+				playedSound = false;
+			}
+			
 		}
 	}
 	else
 	{
 		currentState = NORMAL;
+		playedSound = true;
 	}
 	
 	if (!playedSound) 

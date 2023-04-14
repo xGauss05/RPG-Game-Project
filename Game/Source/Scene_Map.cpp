@@ -1,5 +1,5 @@
 #include "Scene_Map.h"
-
+#include "Audio.h"
 #include "Log.h"
 
 bool Scene_Map::isReady()
@@ -21,6 +21,25 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	this->windowFactory = &windowFactory;
 	xmlNode = info;
 	player.Create();
+
+	auto sceneHash = info.find("Map");
+	if (sceneHash == info.end())
+	{
+		LOG("Map scene not found in XML.");
+		return;
+	}
+
+	auto scene = sceneHash->second;
+
+	for (auto const& window : scene.children("window"))
+	{
+		if (auto result = windowFactory.CreateWindow(window.attribute("name").as_string());
+			result != nullptr)
+		{
+			windows.push_back(std::move(result));
+		}
+	}
+	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
 }
 
 void Scene_Map::Start()
@@ -31,7 +50,6 @@ void Scene_Map::Draw()
 {
 	map.Draw();
 	player.Draw();
-
 	for (auto const& elem : windows)
 	{
 		elem->Draw();
@@ -91,14 +109,12 @@ int Scene_Map::Update()
 	}
 
 	player.Update();
-
 	for (auto const& elem : windows)
 	{
 		if (auto result = elem->Update();
 			result != 0)
 			return result;
 	}
-
 	return 0;
 }
 

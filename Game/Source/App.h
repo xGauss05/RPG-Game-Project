@@ -86,7 +86,7 @@ public:
 	
 	// Utils
 	bool PauseGame();
-
+	
 	// Modules
 	std::unique_ptr<Window> win;
 	std::unique_ptr<Input> input;

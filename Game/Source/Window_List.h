@@ -15,6 +15,7 @@ private:
 	int ContinueGame();
 	int OptionsWindow();
 	int ExitGame();
+	int PauseGame();
 
 };
 
