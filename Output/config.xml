@@ -57,7 +57,7 @@
           <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
         </button>
-        <button x="1100" y="600" width="100" height="65" text="Exit" function="ExitGame" segmentwidth="32" segmentheight="32">
+        <button x="1100" y="600" width="100" height="65" text="Exit" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
           <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
@@ -89,7 +89,7 @@
           <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
         </button>
-        <button x="525" y="360" width="200" height="65" text="Exit to desktop" function="ExitGame" segmentwidth="32" segmentheight="32">
+        <button x="525" y="360" width="200" height="65" text="Exit to desktop" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
           <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>

@@ -27,8 +27,8 @@ private:
 
     Map map;
     Player player;
-    
-    bool isPaused = false;
+   
+    bool exit = false;
 };
 
 

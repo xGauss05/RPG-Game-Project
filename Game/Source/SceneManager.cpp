@@ -101,10 +101,8 @@ bool SceneManager::Update(float dt)
 		// options
 		break;
 	case 4: // exit button
+
 		return false;
-	case 7:
-		nextScene = std::make_unique<Scene_Title>();
-		break;
 	default: // tus muertos
 		break;
 	}
@@ -134,7 +132,6 @@ bool SceneManager::PostUpdate()
 		CurrentlyMainMenu = !CurrentlyMainMenu;
 
 	}
-
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 		return false;
