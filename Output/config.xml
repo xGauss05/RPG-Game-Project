@@ -22,8 +22,7 @@
     <map_info>
       <map id="0" name="Base"/>
       <map id="1" name="Test"/>
-
-      <map id="2" name="Map"> <!--This is working. WTF. It should read it from below-->
+      <map id="2" name="Map">
         <window name="PauseButtonMenu"/>
         <window name="PauseMenu"/>
         <window name="ChatBox"/>
@@ -98,6 +97,7 @@
           <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
           <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
         </button>
+      </window>
       <window name="ChatBox" class="Panel" type="Base" x="50" y="50" width="200" height="100">
         <panel x="50" y="530" width="1175" height="150" path ="Assets/UI/GUI_4x_sliced.png">
           <texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3"/>
