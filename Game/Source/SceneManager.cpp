@@ -4,10 +4,13 @@
 
 #include "Scene_Map.h"
 #include "Scene_Title.h"
+#include "Scene_Battle.h"
 
 #include "Render.h"
 #include "Defs.h"
 #include "Log.h"
+
+#include "PugiXml/src/pugixml.hpp"
 
 #include <format>
 
@@ -40,6 +43,8 @@ bool SceneManager::Awake(pugi::xml_node& config)
 		mapInfo[node.attribute("name").as_string()] = node;
 	}
 
+	party = std::make_unique<GameParty>();
+
 	currentScene = std::make_unique<Scene_Title>();
 
 	return true;
@@ -49,6 +54,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 bool SceneManager::Start()
 {
 	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
 	return true;
 }
@@ -88,31 +94,26 @@ bool SceneManager::Update(float dt)
 
 	currentScene->Draw();
 
-	switch (currentScene->Update()) {
-	case 1:
-		nextScene = std::make_unique<Scene_Map>();
-		break;
-
-	case 2:
-		app->LoadGameRequest();
-		nextScene = std::make_unique<Scene_Map>();
-		break;
-	case 3:
-		// options
-		break;
-	case 4: // exit button
-
-		return false;
-	default: // tus muertos
-		break;
-	}
-
-	if (currentScene->Update() == 1 || app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_UP)
-	{
-		if (CurrentlyMainMenu)
+	using enum TransitionScene;
+	switch (currentScene->Update()) 
+		{
+		case BOOT_COMPLETE:
+			break;
+		case NEW_GAME:
 			nextScene = std::make_unique<Scene_Map>();
-		else
-			nextScene = std::make_unique<Scene_Title>();
+			break;
+		case CONTINUE_GAME:
+			break;
+		case START_BATTLE:
+			//nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
+			break;
+		case WIN_BATTLE:
+		case LOSE_BATTLE:
+			break;
+		case EXIT_GAME:
+			return false;
+		case NONE: // tus muertos
+			break;
 	}
 	
 	return true;
@@ -130,7 +131,34 @@ bool SceneManager::PostUpdate()
 			currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 
 		CurrentlyMainMenu = !CurrentlyMainMenu;
+	}
 
+	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
+	{
+		pugi::xml_document troopsFile;
+		if (auto result = troopsFile.load_file("data/Troops.xml"); !result)
+		{
+			LOG("Could not load troops xml file. Pugi error: %s", result.description());
+		}
+		pugi::xml_document enemiesFile;
+		if (auto result = enemiesFile.load_file("data/Enemies.xml"); !result)
+		{
+			LOG("Could not load enemies xml file. Pugi error: %s", result.description());
+		}
+
+		EnemyTroops combat;
+		for (auto const& enemy : troopsFile.child("basicslime"))
+		{
+			auto currentEnemy = enemiesFile.child(enemy.name());
+			Enemy enemyToAdd;
+			enemyToAdd.textureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
+			for (auto const& stat : enemiesFile.child("stats").children())
+			{
+				enemyToAdd.stats.emplace_back(stat.attribute("value").as_int());
+			}
+			combat.troop.emplace_back(enemyToAdd);
+		}
+		nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
 	}
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)

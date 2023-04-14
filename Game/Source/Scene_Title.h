@@ -18,7 +18,7 @@ public:
     ) override;
     void Start() override;
     void Draw() override;
-    int Update() override;
+    TransitionScene Update() override;
     int OnPause() override;
     int CheckNextScene() override;
 

@@ -75,7 +75,7 @@ void Scene_Map::Draw()
 	}
 }
 
-int Scene_Map::Update()
+TransitionScene Scene_Map::Update()
 {
 	auto playerAction = player.HandleInput();
 
@@ -128,15 +128,27 @@ int Scene_Map::Update()
 	}
 
 	player.Update();
-
+	
+	using enum TransitionScene;
 	for (auto const& elem : windows)
 	{
-		if (auto result = elem->Update();
-			result != 0)
-			return result;
+		switch (elem->Update())
+		{
+		case 1:
+			return NEW_GAME;
+		case 2:
+			return CONTINUE_GAME;
+		case 3:
+			// Create new options window
+			break;
+		case 4:
+			return EXIT_GAME;
+		default:
+			continue;
+		}
 	}
 
-	return 0;
+	return TransitionScene::NONE;
 }
 
 int Scene_Map::OnPause() 

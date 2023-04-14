@@ -43,9 +43,6 @@
     <ClCompile Include="Source\App.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene_Map.cpp">
-      <Filter>Scenes\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GuiButton.cpp">
       <Filter>GUI\Widgets\Source</Filter>
     </ClCompile>
@@ -79,15 +76,23 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Scene_Map Components\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene_Battle.cpp">
-      <Filter>Scenes\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene_Boot.cpp">
       <Filter>Scenes\Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene_GameOver.cpp">
       <Filter>Scenes\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene_Map.cpp">
+      <Filter>Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene_Battle.cpp">
+      <Filter>Scene_Battle\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameParty.cpp">
+      <Filter>Scene_Battle\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyTroops.cpp">
+      <Filter>Scene_Battle\Source</Filter>
     <ClCompile Include="Source\Window_Panel.cpp">
       <Filter>GUI\Windows\Source</Filter>
     </ClCompile>
@@ -204,15 +209,20 @@
     <ClInclude Include="Source\Transform_Movable.h">
       <Filter>Scene_Map Components\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene_Battle.h">
-      <Filter>Scenes\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene_Boot.h">
       <Filter>Scenes\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene_GameOver.h">
       <Filter>Scenes\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene_Battle.h">
+      <Filter>Scene_Battle\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameParty.h">
+      <Filter>Scene_Battle\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyTroops.h">
+      <Filter>Scene_Battle\Headers</Filter>
     <ClInclude Include="Source\Window_Panel.h">
       <Filter>GUI\Windows\Headers</Filter>
     </ClInclude>
@@ -302,6 +312,14 @@
     <Filter Include="Scene_Map Components\Components">
       <UniqueIdentifier>{91c6f8a8-4cb2-44a6-863d-0730c930582c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene_Battle">
+      <UniqueIdentifier>{f0249c3a-4045-4c2b-b543-8d466c511067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene_Battle\Headers">
+      <UniqueIdentifier>{d831562c-73e9-4c2b-934f-11c1f0a7956f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene_Battle\Source">
+      <UniqueIdentifier>{6ac72f40-c880-4002-86c9-ff1b9f2ac694}</UniqueIdentifier>
     <Filter Include="Scene_Map Components\Headers\Events\NPCs">
       <UniqueIdentifier>{5a4eeb71-01f0-41af-9cf8-f6976b4d1e2a}</UniqueIdentifier>
     </Filter>

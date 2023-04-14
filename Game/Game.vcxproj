@@ -97,9 +97,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\EnemyTroops.cpp" />
     <ClCompile Include="Source\EventManager.cpp" />
     <ClCompile Include="Source\Event_Chest.cpp" />
     <ClCompile Include="Source\Event_Teleport.cpp" />
+    <ClCompile Include="Source\GameParty.cpp" />
     <ClCompile Include="Source\GuiBox.cpp" />
     <ClCompile Include="Source\GuiPanelSegmented.cpp" />
     <ClCompile Include="Source\NPC_Generic.cpp" />
@@ -126,11 +128,13 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Window_Factory.cpp" />
     <ClCompile Include="Source\Window_List.cpp" />
+    <ClInclude Include="Source\EnemyTroops.h" />
     <ClCompile Include="Source\Window_Panel.cpp" />
     <ClInclude Include="Source\Event_Base.h" />
     <ClInclude Include="Source\EventManager.h" />
     <ClInclude Include="Source\Event_Chest.h" />
     <ClInclude Include="Source\Event_Teleport.h" />
+    <ClInclude Include="Source\GameParty.h" />
     <ClInclude Include="Source\GuiBox.h" />
     <ClInclude Include="Source\GuiPanelSegmented.h" />
     <ClInclude Include="Source\NPC_Generic.h" />
