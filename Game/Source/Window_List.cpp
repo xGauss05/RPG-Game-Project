@@ -46,9 +46,9 @@ int Window_List::ExitGameFromTitle()
 int Window_List::PauseGame() {
 	LOG("PauseGame function called");
 	app->pause = true;
-	app->PauseGame();
+	if(!app->PauseGame()) return 4;
 		
-	return 5;
+	return 0;
 }
 
 int Window_List::ResumeGame() 

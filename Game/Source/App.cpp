@@ -327,7 +327,7 @@ bool App::DoPaused()
 
 	// Update
 	phase++;
-	scene->Pause(phase);
+	if(!scene->Pause(phase)) return false;
 
 	// PostUpdate
 	phase++;
@@ -337,7 +337,7 @@ bool App::DoPaused()
 	phase++;
 	FinishUpdate();
 
-	return false;
+	return true;
 }
 
 bool App::PauseGame()
@@ -347,16 +347,12 @@ bool App::PauseGame()
 	while ((input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) &&
 		   pause)
 	{
-		DoPaused();
-	
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
+		if (!DoPaused()) return false;
 	}
 	while ((input->GetKey(SDL_SCANCODE_P) == KEY_IDLE || input->GetKey(SDL_SCANCODE_P) == KEY_UP) &&
 			pause)
 	{
-		DoPaused();
-		
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
+		if(!DoPaused()) return false;
 	}
 
 	pause = false;

@@ -71,7 +71,7 @@ bool SceneManager::Pause(int phase)
 
 	app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
 
-	currentScene->OnPause();
+	if(currentScene->OnPause() == 4) return false;
 
 	return true;
 }
