@@ -272,6 +272,18 @@
     <property name="isOpen" type="bool" value="true"/>
    </properties>
   </object>
+   <object id="20" name="NPC Test" type="Event NPC" gid="963" x="112" y="272" width="16" height="16">
+     <properties>
+       <property name="Base" type="class" propertytype="Base Event">
+         <properties>
+           <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+           <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+           <property name="Static" type="bool" value="true"/>
+           <property name="Dialogue" type="bool" value="true"/>
+         </properties>
+       </property>
+     </properties>
+   </object>
   <object id="22" gid="1252" x="48" y="272" width="48" height="48"/>
  </objectgroup>
  <layer id="4" name="Props" width="24" height="24">

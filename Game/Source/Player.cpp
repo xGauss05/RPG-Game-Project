@@ -25,9 +25,10 @@ void Player::Draw() const
 
 void Player::Create()
 {
-	Sprite::Initialize("Assets/Maps/Slime.png", 4);
+	app->tex->Load("Assets/Maps/Slime_Smol.png");	//This should not be done like this, all of this should load from the map XML.
+	Sprite::Initialize("Assets/Maps/Slime_Smol.png", 0);
 	position = { 48, 272 };
-	size = { 48, 48 };
+	size = { 16, 16 };
 	currentSpriteSlice = {
 		(GetTextureIndex().x + 1) * size.x,
 		GetTextureIndex().y * size.y,
@@ -60,11 +61,16 @@ Player::PlayerAction Player::HandleInput() const
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.y += tileSize;
+		
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		returnAction.action |= MOVE;
 		returnAction.destinationTile.x += tileSize;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		returnAction.action |= INTERACT;
 	}
 
 	return returnAction;
@@ -101,6 +107,8 @@ void Player::StartMovement()
 		moveVector.x = 1;
 		currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
 	}
+
+	lastDir = moveVector;
 }
 
 void Player::Update()
