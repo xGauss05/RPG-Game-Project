@@ -1,4 +1,5 @@
 <character>
+	<general name="First" level="1"/>
 	<texture path="Assets/Textures/Battlers/First.png"/>
 	<stats>
 		<maxhp value="100"/>
@@ -7,10 +8,11 @@
 		<defense value="100"/>
 		<specialattack value="100"/>
 		<specialdefense value="100"/>
-		<speed value="4"/>
+		<speed value="5"/>
 	</stats>
 </character>
 <character>
+	<general name="Second" level="1"/>
 	<texture path="Assets/Textures/Battlers/Second.png"/>
 	<stats>
 		<maxhp value="100"/>
@@ -23,6 +25,7 @@
 	</stats>
 </character>
 <character>
+	<general name="Third" level="1"/>
 	<texture path="Assets/Textures/Battlers/Third.png"/>
 	<stats>
 		<maxhp value="100"/>
@@ -31,10 +34,11 @@
 		<defense value="100"/>
 		<specialattack value="100"/>
 		<specialdefense value="100"/>
-		<speed value="4"/>
+		<speed value="1"/>
 	</stats>
 </character>
 <character>
+	<general name="Fourth" level="1"/>
 	<texture path="Assets/Textures/Battlers/Fourth.png"/>
 	<stats>
 		<maxhp value="100"/>
@@ -43,7 +47,7 @@
 		<defense value="100"/>
 		<specialattack value="100"/>
 		<specialdefense value="100"/>
-		<speed value="4"/>
+		<speed value="7"/>
 	</stats>
 </character>
 		

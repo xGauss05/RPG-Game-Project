@@ -73,7 +73,7 @@ TransitionScene Scene_Map::Update()
 
 	using PA = Player::PlayerAction::Action;
 
-	if ((playerAction.action & PA::MOVE) == PA::MOVE && !player.interacting)
+	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
 	{
 		if (map.IsWalkable(playerAction.destinationTile))
 		{
@@ -82,47 +82,79 @@ TransitionScene Scene_Map::Update()
 	}
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
-		iPoint checktile = player.GetPosition() + (player.lastDir * map.GetTileWidth());
-
-		if (map.IsEvent(checktile) && map.IsNPC(checktile))
+		if (state == MapState::ON_MESSAGE)
 		{
-			if (!player.interacting)
+			windows.pop_back();
+			state = MapState::NORMAL;
+		}
+		else if (state == MapState::ON_DIALOG)
+		{
+			auto nextDialogNode = currentDialogNode.attribute("next").as_string();
+
+			if (StrEquals(nextDialogNode, "end"))
 			{
-				//Do interaction
-				player.interacting = true;
-
-				//This loading should not go here, or at least not this way. WIP
-				auto sceneHash = xmlNode.find("Map");
-				if (sceneHash == xmlNode.end())
-				{
-					LOG("Map scene not found in XML.");
-					return TransitionScene::NONE;
-				}
-
-				auto scene = sceneHash->second;
-
-				for (auto const& window : scene.children("window"))
-				{
-					if (StrEquals("ChatBox", window.attribute("name").as_string()))
-					{
-						if (auto result = windowFactory->CreateWindow(window.attribute("name").as_string());
-							result != nullptr)
-						{
-							windows.push_back(std::move(result));
-						}
-					}
-				}
+				windows.pop_back();
+				state = MapState::NORMAL;
+			}
+			else if (StrEquals(nextDialogNode, "Confirmation"))
+			{
+				// Create Yes/No window
 			}
 			else
 			{
-				//Remove windows
-				player.interacting = false;
-				windows.pop_back();
+				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+			}
+		}
+		else if (state == MapState::NORMAL)
+		{
+			iPoint checktile = player.GetPosition() + (player.lastDir * map.GetTileWidth());
+
+			EventTrigger action = map.TriggerEvent(checktile);
+
+			switch (action.eventFunction)
+			{
+				using enum EventTrigger::WhatToDo;
+			case NO_EVENT:
+			{
+				break;
+			}
+			case SHOW_MESSAGE:
+			{
+				windows.emplace_back(windowFactory->CreateWindow("Message"));
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				currentPanel->ModifyLastWidgetText(action.text);
+				state = MapState::ON_MESSAGE;
+				break;
+			}
+			case DIALOG_PATH:
+			{
+				if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
+				{
+					LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+					break;
+				}
+				windows.emplace_back(windowFactory->CreateWindow("Message"));
+				currentDialogNode = currentDialogDocument.child("dialog").child("message1");
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+				state = MapState::ON_DIALOG;
+				break;
+			}
+			case TELEPORT:
+			{
+				//teleport player
+			}
+			case LOOT:
+			{
+				//give items to player
+			}
 			}
 		}
 	}
 
-	player.Update();
+	if(state == MapState::NORMAL) player.Update();
 	
 	using enum TransitionScene;
 	for (auto const& elem : windows)

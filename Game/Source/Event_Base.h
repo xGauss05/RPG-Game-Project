@@ -151,6 +151,22 @@ namespace EventProperties
 
 }
 
+struct EventTrigger
+{
+	std::string text; // Can be a path (dialog), message (loot/show_message) or map name (teleport)
+	std::vector<std::pair<std::string, int>> values; // e.g.: Loot 5 of item 6, tp to x = 10, y = 20
+
+	enum class WhatToDo
+	{
+		NO_EVENT,
+		LOOT,
+		SHOW_MESSAGE,
+		TELEPORT,
+		DIALOG_PATH
+	};
+
+	WhatToDo eventFunction = WhatToDo::NO_EVENT;
+};
 class Event_Base : public Transform
 {
 public:
@@ -158,6 +174,7 @@ public:
 	virtual ~Event_Base() = default;
 	virtual void parseXMLProperties(pugi::xml_node const& node) = 0;
 	virtual void Create(pugi::xml_node const &node) = 0;
+	virtual EventTrigger OnTrigger() = 0;
 
 	void Initialize(pugi::xml_node const &node)
 	{

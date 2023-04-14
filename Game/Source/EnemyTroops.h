@@ -3,8 +3,11 @@
 
 #include <vector>
 
+#include "PugiXml/src/pugixml.hpp"
+
 struct Enemy
 {
+	std::string name;
 	int textureID;
 	int currentHP;
 	int currentMana;
@@ -22,6 +25,8 @@ class EnemyTroops
 {
 public:
 	EnemyTroops() = default;
+
+	void CreateFight(std::string const &nodeName);
 
 	std::vector<Enemy> troop;
 };

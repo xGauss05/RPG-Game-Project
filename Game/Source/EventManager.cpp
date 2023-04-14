@@ -75,6 +75,19 @@ bool EventManager::isNPC(iPoint destination) const
 	}
 	return false;
 }
+
+EventTrigger EventManager::TriggerEvent(iPoint destination) const
+{
+	for (auto const& event : events)
+	{
+		if (event->position == destination)
+		{
+			return event->OnTrigger();
+		}
+	}
+
+	return EventTrigger();
+}
  
 std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] int index)
 {

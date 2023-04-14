@@ -282,6 +282,7 @@
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC1.xml"/>
    </properties>
   </object>
   <object id="22" gid="1252" x="48" y="272" width="48" height="48"/>

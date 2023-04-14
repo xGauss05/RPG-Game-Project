@@ -181,6 +181,11 @@ iPoint Map::WorldToMap(iPoint position) const
 	return { position.x / tileSize.x, position.y / tileSize.y };
 }
 
+EventTrigger Map::TriggerEvent(iPoint position) const
+{
+	return eventManager.TriggerEvent(position);
+}
+
 bool Map::IsWalkable(iPoint pos) const
 {
 	pos = WorldToMap(pos);

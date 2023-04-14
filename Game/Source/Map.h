@@ -64,6 +64,9 @@ public:
 
 	int GetTileSetSize() const;
 
+	// Returns path to XML
+	EventTrigger TriggerEvent(iPoint Position) const;
+
 	bool IsWalkable(iPoint pos) const;
 	bool IsEvent(iPoint checkPos) const;
 	bool IsNPC(iPoint checkPos) const;

@@ -28,14 +28,22 @@ bool GuiBox::Draw() const
 
 	panel->Draw(centerPoint, iPoint(GetSize().x, GetSize().y));
 
-	centerPoint += iPoint(GetSize().x / 2, GetSize().y / 2);
+	if(!text.empty())
+	{
+		centerPoint += iPoint(GetSize().x / 2, GetSize().y / 2);
 
-	TextParameters params(0, DrawParameters(0, centerPoint));
-	params.align = AlignTo::ALIGN_CENTER;
+		TextParameters params(0, DrawParameters(0, centerPoint));
+		params.align = AlignTo::ALIGN_CENTER;
 
-	app->fonts->DrawText(text, params);
+		app->fonts->DrawText(text, params);
+	}
 
 	return true;
+}
+
+void GuiBox::ModifyText(std::string_view newText)
+{
+	text = newText;
 }
 
 void GuiBox::DebugDraw() const

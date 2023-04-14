@@ -10,14 +10,15 @@ class NPC_Generic : public Event_Base, public Sprite
 {
 public:
 	// Inherited via Scene_Base
-	void parseXMLProperties(pugi::xml_node const& node);
+	void parseXMLProperties(pugi::xml_node const& node) override;
 	
-
-	void Create(pugi::xml_node const& node);
+	EventTrigger OnTrigger() override;
+	void Create(pugi::xml_node const& node) override;
 
 private:
 	bool isStatic = false;
 	bool hasDialogue = false;
+	std::string dialoguePath = "";
 };
 
 #endif __NPC_GENERIC_H__

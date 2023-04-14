@@ -1,0 +1,4 @@
+<dialog>
+	<message1 text="Hey, you are finally awake. Take this, it is dangerous to go alone." next="message2"/>
+	<message2 text="I hope it will be useful on your adventures." next="end"/>
+</dialog>

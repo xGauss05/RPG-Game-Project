@@ -36,6 +36,10 @@ std::unique_ptr<Window_Base> Window_Factory::CreateWindow(std::string_view const
 		{
 			returnPtr = std::make_unique<Window_Panel>(windowHash->second);
 		}
+		else if (StrEquals("Message", windowHash->second.attribute("type").as_string()))
+		{
+			returnPtr = std::make_unique<Window_Panel>(windowHash->second);
+		}
 	}
 
 	return returnPtr;

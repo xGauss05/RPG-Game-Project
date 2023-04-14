@@ -17,6 +17,8 @@ void GameParty::CreateParty()
 	for (auto const& character : battlersFile.children("character"))
 	{
 		PartyCharacter memberToAdd;
+		memberToAdd.name = character.child("general").attribute("name").as_string();
+		memberToAdd.level = character.child("general").attribute("level").as_int();
 		memberToAdd.battlerTextureID = app->tex->Load(character.child("texture").attribute("path").as_string());
 		for (auto const& stat : character.child("stats").children())
 		{

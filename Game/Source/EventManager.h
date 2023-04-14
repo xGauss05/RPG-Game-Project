@@ -28,6 +28,8 @@ public:
 	bool isEvent(iPoint destination) const;
 	bool isNPC(iPoint destination) const;
 
+	EventTrigger TriggerEvent(iPoint destination) const;
+
 	// Returns Gid, position, keepDrawing ? true : false;
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);
 private:

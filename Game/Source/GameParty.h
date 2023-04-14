@@ -5,7 +5,7 @@
 
 enum class BaseStats
 {
-	MAX_HP,
+	MAX_HP = 0,
 	MAX_MANA,
 	ATTACK,
 	DEFENSE,
@@ -24,6 +24,7 @@ enum class EquipmentSlots
 
 struct PartyCharacter
 {
+	std::string name;
 	int battlerTextureID;
 	int currentHP;
 	int currentMana;

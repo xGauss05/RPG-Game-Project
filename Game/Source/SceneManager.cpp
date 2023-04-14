@@ -133,30 +133,9 @@ bool SceneManager::PostUpdate()
 {
 	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
 	{
-		pugi::xml_document troopsFile;
-		if (auto result = troopsFile.load_file("data/Troops.xml"); !result)
-		{
-			LOG("Could not load troops xml file. Pugi error: %s", result.description());
-		}
-		pugi::xml_document enemiesFile;
-		if (auto result = enemiesFile.load_file("data/Enemies.xml"); !result)
-		{
-			LOG("Could not load enemies xml file. Pugi error: %s", result.description());
-		}
-
-		EnemyTroops combat;
-		for (auto const& enemy : troopsFile.child("basicslime"))
-		{
-			auto currentEnemy = enemiesFile.child(enemy.name());
-			Enemy enemyToAdd;
-			enemyToAdd.textureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
-			for (auto const& stat : enemiesFile.child("stats").children())
-			{
-				enemyToAdd.stats.emplace_back(stat.attribute("value").as_int());
-			}
-			combat.troop.emplace_back(enemyToAdd);
-		}
-		nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
+		
+		
+		nextScene = std::make_unique<Scene_Battle>(party.get(), "basicslime");
 		nextScene->Load("", sceneInfo, *windowFactory);
 		sceneOnHold = std::move(currentScene);
 	}

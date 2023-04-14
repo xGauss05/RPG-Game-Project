@@ -1,0 +1,6 @@
+<dialog>
+	<message1 text="Hey, you are finally awake. Take this, it is dangerous to go alone." next="message2"/>
+	<message2 text="Did you like it?" next="confirmation" yes="message3" no="message4"/>
+	<message3 text="I'm glad!" next="end"/>
+	<message4 text="I put a lot of effort on it..." next="confirmation" yes="message2" no="message3"/>
+</dialog>

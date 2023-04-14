@@ -14,7 +14,6 @@ public:
 	GuiBox() = default;
 	~GuiBox() override;
 
-
 	explicit GuiBox(
 		uPoint pos,
 		uPoint widthHeight,
@@ -22,11 +21,11 @@ public:
 		int advance,
 		int id,
 		iPoint tSegments,
-		std::string const &t
+		std::string const &t = ""
 	);
 
 	bool Draw() const override;
-
+	void ModifyText(std::string_view newText);
 	void DebugDraw() const;
 
 private:

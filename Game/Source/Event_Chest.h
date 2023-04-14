@@ -12,8 +12,7 @@ public:
 	// Inherited via Scene_Base
 	void parseXMLProperties(pugi::xml_node const& node) override;
 	// No longer inherited
-	
-
+	EventTrigger OnTrigger() override;
 	void Create(pugi::xml_node const& node) override;
 
 private:

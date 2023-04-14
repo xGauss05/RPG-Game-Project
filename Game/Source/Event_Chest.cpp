@@ -42,6 +42,34 @@ void Event_Chest::parseXMLProperties(pugi::xml_node const& node)
 	}
 }
 
+EventTrigger Event_Chest::OnTrigger()
+{
+	EventTrigger returnTrigger;
+
+	if (isOpen)
+	{
+		returnTrigger.eventFunction = EventTrigger::WhatToDo::NO_EVENT;
+		return returnTrigger;
+	}
+
+	if (isLocked)
+	{
+		returnTrigger.text = "Chest is locked.";
+		returnTrigger.eventFunction = EventTrigger::WhatToDo::SHOW_MESSAGE;
+		return returnTrigger;
+	}
+	
+	isOpen = true;
+	returnTrigger.text = "You find {} {}.";
+	returnTrigger.eventFunction = EventTrigger::WhatToDo::LOOT;
+	for (auto const& elem : loot)
+	{
+		returnTrigger.values.emplace_back(elem->item, elem->quantity);
+	}
+
+	return returnTrigger;
+}
+
 void Event_Chest::Create(pugi::xml_node const& node)
 {
 	Sprite::Initialize(node);

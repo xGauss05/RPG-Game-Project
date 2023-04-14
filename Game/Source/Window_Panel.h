@@ -9,6 +9,7 @@ class Window_Panel : public Window_Base
 {
 public:
 	explicit Window_Panel(pugi::xml_node const& node);
+	void ModifyLastWidgetText(std::string_view s);
 
 private:
 

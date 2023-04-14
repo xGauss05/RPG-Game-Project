@@ -30,3 +30,13 @@ void Event_Teleport::Create(pugi::xml_node const &node)
 {
 	Event_Base::Initialize(node);
 }
+
+EventTrigger Event_Teleport::OnTrigger()
+{
+	EventTrigger returnTrigger;
+	returnTrigger.text = destination.destinationMap;
+	returnTrigger.eventFunction = EventTrigger::WhatToDo::TELEPORT;
+	returnTrigger.values.emplace_back("x", destination.destination.x);
+	returnTrigger.values.emplace_back("y", destination.destination.y);
+	return returnTrigger;
+}

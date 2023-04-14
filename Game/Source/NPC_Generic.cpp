@@ -19,7 +19,15 @@ void NPC_Generic::parseXMLProperties(pugi::xml_node const& node)
 		{
 			hasDialogue = child.attribute("value").as_bool();
 		}
-		if (StrEquals("Base", attributeName))
+		else if (StrEquals("DialoguePath", attributeName))
+		{
+			dialoguePath = child.attribute("value").as_string();
+			if(!dialoguePath.empty() && dialoguePath.size() >= 6) 
+			{
+				dialoguePath.erase(0, 6);
+			}
+		}
+		else if (StrEquals("Base", attributeName))
 		{
 			common.ReadProperty(child);
 		}
@@ -28,6 +36,15 @@ void NPC_Generic::parseXMLProperties(pugi::xml_node const& node)
 			LOG("NPC_Base property %s not implemented.", attributeName);
 		}
 	}
+}
+
+EventTrigger NPC_Generic::OnTrigger()
+{
+	EventTrigger returnTrigger;
+	returnTrigger.text = dialoguePath;
+	returnTrigger.eventFunction = EventTrigger::WhatToDo::DIALOG_PATH;
+
+	return returnTrigger;
 }
 
 void NPC_Generic::Create(pugi::xml_node const& node)

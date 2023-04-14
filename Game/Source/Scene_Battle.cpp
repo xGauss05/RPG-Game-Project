@@ -2,9 +2,10 @@
 #include "App.h"
 #include "Render.h"
 
-Scene_Battle::Scene_Battle(GameParty* gameParty, EnemyTroops enemyTroops)
-	: party(gameParty), troop(enemyTroops)
+Scene_Battle::Scene_Battle(GameParty* gameParty, std::string const &fightName)
+	: party(gameParty)
 {
+	enemies.CreateFight(fightName);
 }
 
 bool Scene_Battle::isReady()
@@ -16,6 +17,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 {
 	windows.clear();
 	windows.emplace_back(windowFactory.CreateWindow("BattleActions"));
+	//windows.emplace_back(windowFactory.CreateWindow(""))
 }
 
 void Scene_Battle::Start()
@@ -35,7 +37,7 @@ void Scene_Battle::Draw()
 			DrawParameters(elem.battlerTextureID, iPoint(50, 50+(125*i++)))
 		);
 	}
-	for (int i = 0; auto const& elem : troop.troop)
+	for (int i = 0; auto const& elem : enemies.troop)
 	{
 		app->render->DrawTexture(
 			DrawParameters(elem.textureID, iPoint(800, 50 + (125 * i++)))
@@ -51,29 +53,30 @@ TransitionScene Scene_Battle::Update()
 	using enum BattleState;
 	case PLAYER_INPUT:
 	{
+		auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
 		switch (windows.front()->Update())
 		{
 			case 100:
 			{
-				actionQueue.emplace(0, currentPlayer, 0, true);
+				actionQueue.emplace(0, currentPlayer, 0, true, actionSpeed);
 				currentPlayer++;
 				break;
 			}
 			case 101:
 			{
-				actionQueue.emplace(1, currentPlayer, 0, true);
+				actionQueue.emplace(1, currentPlayer, 0, true, actionSpeed);
 				currentPlayer++;
 				break;
 			}
 			case 102:
 			{
-				actionQueue.emplace(2, currentPlayer, 0, true);
+				actionQueue.emplace(2, currentPlayer, 0, true, INT_MAX);
 				currentPlayer++;
 				break;
 			}
 			case 103:
 			{
-				actionQueue.emplace(3, currentPlayer, 0, true);
+				actionQueue.emplace(3, currentPlayer, 0, true, INT_MAX);
 				if (currentPlayer == 0)
 				{
 					currentPlayer = party->party.size();
@@ -93,41 +96,43 @@ TransitionScene Scene_Battle::Update()
 		break;
 	}
 	case ENEMY_INPUT:
-		for (int i = 0; auto const& elem : troop.troop)
+		for (int i = 0; auto const& elem : enemies.troop)
 		{
-			actionQueue.emplace(0, i, 0, false);
+			auto actionSpeed = elem.stats[static_cast<int>(BaseStats::SPEED)];
+			actionQueue.emplace(0, i, 0, false, actionSpeed);
+			i++;
 		}
 		state = RESOLUTION;
 		break;
 	case RESOLUTION:
 		while (!actionQueue.empty())
 		{
-			BattleAction currentAction = actionQueue.front();
+			BattleAction currentAction = actionQueue.top();
 			if (currentAction.friendly)
 			{
 				if (currentAction.action == 0)
 				{
 					int attack = party->party[currentAction.source].stats[2];
-					int defense = troop.troop[currentAction.target].stats[3];
-					if (troop.troop[currentAction.target].isDefending) 
+					int defense = enemies.troop[currentAction.target].stats[3];
+					if (enemies.troop[currentAction.target].isDefending) 
 					{
 						defense *= 2;
-						troop.troop[currentAction.target].isDefending = false;
+						enemies.troop[currentAction.target].isDefending = false;
 					}
 					int damage = attack - defense;
-					troop.troop[currentAction.target].currentHP -= damage;
+					enemies.troop[currentAction.target].currentHP -= damage;
 				}
-				if (currentAction.action == 1)
+				else if (currentAction.action == 1)
 				{
 					int attack = party->party[currentAction.source].stats[4];
-					int defense = troop.troop[currentAction.target].stats[5];
-					if (troop.troop[currentAction.target].isDefending) 
+					int defense = enemies.troop[currentAction.target].stats[5];
+					if (enemies.troop[currentAction.target].isDefending) 
 					{
 						defense *= 2;
-						troop.troop[currentAction.target].isDefending = false;
+						enemies.troop[currentAction.target].isDefending = false;
 					}
 					int damage = attack - defense;
-					troop.troop[currentAction.target].currentHP -= damage;
+					enemies.troop[currentAction.target].currentHP -= damage;
 				}
 				else if (currentAction.action == 2)
 				{
@@ -142,7 +147,7 @@ TransitionScene Scene_Battle::Update()
 			{
 				if (currentAction.action == 0)
 				{
-					int attack = troop.troop[currentAction.source].stats[2];
+					int attack = enemies.troop[currentAction.source].stats[2];
 					int defense = party->party[currentAction.target].stats[3];
 					if (party->party[currentAction.target].isDefending)
 					{
@@ -154,7 +159,7 @@ TransitionScene Scene_Battle::Update()
 				}
 				else if (currentAction.action == 1)
 				{
-					int attack = troop.troop[currentAction.source].stats[4];
+					int attack = enemies.troop[currentAction.source].stats[4];
 					int defense = party->party[currentAction.target].stats[5];
 					if (party->party[currentAction.target].isDefending)
 					{
@@ -166,10 +171,12 @@ TransitionScene Scene_Battle::Update()
 				}
 				else if (currentAction.action == 2)
 				{
-					troop.troop[currentAction.target].isDefending = true;
+					enemies.troop[currentAction.target].isDefending = true;
 				}
 			}
+			actionQueue.pop();
 		}
+		currentPlayer = 0;
 		state = PLAYER_INPUT;
 		break;
 	}

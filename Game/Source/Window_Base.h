@@ -31,6 +31,8 @@ protected:
 	// If string is not found in pointer map, it fallbacks to this
 	int FallbackFunction() const;
 
+	GuiElement* AccessLastWidget();
+
 private:
 	uPoint position = { 0, 0 };
 	uPoint size = { 0, 0 };

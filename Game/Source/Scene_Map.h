@@ -8,34 +8,46 @@
 class Scene_Map : public Scene_Base
 {
 public:
-    bool isReady() override;
-    void Load(
-        std::string const& path,
-        LookUpXMLNodeFromString const& info,
-        Window_Factory const& windowFac
-    ) override;
-    void Start() override;
-    void Draw() override;
-    TransitionScene Update() override;
-    int OnPause() override;
-    int CheckNextScene() override;
+	bool isReady() override;
+	void Load(
+		std::string const& path,
+		LookUpXMLNodeFromString const& info,
+		Window_Factory const& windowFac
+	) override;
+	void Start() override;
+	void Draw() override;
+	TransitionScene Update() override;
+	int OnPause() override;
+	int CheckNextScene() override;
 
-    std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 
 private:
-    std::string currentMap = "";
 
-    Map map;
-    Player player;
+	enum class MapState
+	{
+		NORMAL,
+		ON_MESSAGE,
+		ON_DIALOG
+	};
 
-   
-    bool exit = false;
+	std::string currentMap = "";
 
-    TransitionScene transitionTo = TransitionScene::NONE;
+	Map map;
+	Player player;
 
-    const Window_Factory* windowFactory;
-    LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
+	MapState state = MapState::NORMAL;
 
+	pugi::xml_document currentDialogDocument;
+	pugi::xml_node currentDialogNode;
+
+	bool exit = false;
+
+	TransitionScene transitionTo = TransitionScene::NONE;
+
+	const Window_Factory* windowFactory;
+	LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
+
+	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 };
 
 

@@ -87,18 +87,25 @@ void Window_Base::CreatePanels(pugi::xml_node const& node)
 		uPoint pos = { panel.attribute("x").as_uint(), panel.attribute("y").as_uint() };
 		uPoint area = { panel.attribute("width").as_uint(), panel.attribute("height").as_uint() };
 		
-		auto const& texProperties = panel.child("texture_properties");
+		auto texProperties = panel.child("texture_properties");
 		//This is position of the first tile in the UI sheet and size of each tile.
-		SDL_Rect rect = { texProperties.attribute("tileX").as_int(),
-						  texProperties.attribute("tileY").as_int(),
-						  texProperties.attribute("tileW").as_int(),
-						  texProperties.attribute("tileH").as_int() };
+		SDL_Rect rect =
+		{ 
+			texProperties.attribute("tileX").as_int(),
+			texProperties.attribute("tileY").as_int(),
+			texProperties.attribute("tileW").as_int(),
+			texProperties.attribute("tileH").as_int()
+		};
 
 		int advance = texProperties.attribute("advance").as_int();
-		iPoint segments = { texProperties.attribute("horizontalsegments").as_int(), texProperties.attribute("verticalsegments").as_int() };
+		iPoint segments =
+		{ 
+			texProperties.attribute("horizontalsegments").as_int(),
+			texProperties.attribute("verticalsegments").as_int()
+		};
 		
 		//This path could be changed to a dialogue-exclusive XML file
-		const std::string text = panel.child("text").attribute("chatBoxText").as_string();
+		auto text = panel.child("text").attribute("chatBoxText").as_string();
 
 		widgets.emplace_back(std::make_unique<GuiBox>(pos, area, rect, advance, 0, segments, text));
 	}
@@ -113,5 +120,12 @@ int Window_Base::FallbackFunction() const
 {
 	LOG("No function found for widget.");
 	return 0;
+}
+
+GuiElement* Window_Base::AccessLastWidget()
+{
+	if(widgets.empty())
+		return nullptr;
+	return widgets.back().get();
 }
 

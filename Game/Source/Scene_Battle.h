@@ -15,7 +15,7 @@ enum class BattleState
 class Scene_Battle : public Scene_Base
 {
 public:
-    explicit Scene_Battle(GameParty *gameParty, EnemyTroops enemyTroops);
+    explicit Scene_Battle(GameParty *gameParty, std::string const &fightName);
     bool isReady() override;
     void Load(
         std::string const& path,
@@ -30,7 +30,7 @@ public:
 
 private:
     GameParty* party;
-    EnemyTroops troop;
+    EnemyTroops enemies;
     BattleState state = BattleState::PLAYER_INPUT;
     int currentPlayer = 0;
 
@@ -40,7 +40,17 @@ private:
         int source;
         int target;
         bool friendly;
+        int speed;
     };
-    std::queue<BattleAction> actionQueue;
+
+    struct CompareActionSpeed
+    {
+        bool operator()(const BattleAction& a1, const BattleAction& a2) const
+        {
+            return a1.speed < a2.speed;
+        }
+    };
+
+    std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
 };
 
