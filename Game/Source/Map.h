@@ -6,6 +6,7 @@
 #include "MapLayer.h"
 #include "ObjectLayer.h"
 #include "EventManager.h"
+#include "Event_Chest.h"//Testing
 
 #include "Defs.h"
 
@@ -64,6 +65,8 @@ public:
 	int GetTileSetSize() const;
 
 	bool IsWalkable(iPoint pos) const;
+	bool IsEvent(iPoint checkPos) const;
+	bool IsNPC(iPoint checkPos) const;
 
 private:
 	std::vector<TileSet> tilesets;

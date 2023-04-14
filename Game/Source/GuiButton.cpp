@@ -3,27 +3,28 @@
 #include "Render.h"
 #include "Input.h"
 #include "TextManager.h"
-
+#include "Audio.h"
 #include "Log.h"
 
 #include <map>
 
 GuiButton::~GuiButton()
 {
-	for (auto const &[index, panel] : panels)
+	for (auto const& [index, panel] : panels)
 	{
 		panel.Unload();
 	}
 }
 
-GuiButton::GuiButton(uPoint pos, uPoint size, std::string const &str, std::function<int()> const& funcPtr, std::vector<SDL_Rect> const &buttonStates) :
+GuiButton::GuiButton(uPoint pos, uPoint size, std::string const& str, std::function<int()> const& funcPtr, std::vector<SDL_Rect> const& buttonStates) :
 	text(str),
 	currentState(ButtonState::NORMAL)
 {
 	Initialize(funcPtr, pos, size);
 
 	int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-
+	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Pressed.wav");
+	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Focused.wav");
 	for (int i = 0; auto const& elem : buttonStates)
 	{
 		panels.try_emplace(i, elem, 4, textureID, iPoint(3, 3));
@@ -42,6 +43,8 @@ int GuiButton::Update()
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 		{
 			currentState = PRESSED;
+			playedSound = false;
+
 		}
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 		{
@@ -50,13 +53,41 @@ int GuiButton::Update()
 		}
 		else
 		{
-			currentState = FOCUSED;
+			if (currentState != FOCUSED) 
+			{
+				currentState = FOCUSED;
+				playedSound = false;
+			}
+			
 		}
 	}
 	else
 	{
 		currentState = NORMAL;
+		playedSound = true;
 	}
+	
+	if (!playedSound) 
+	{
+		switch (currentState) 
+		{
+		case NORMAL:
+			break;
+		case PRESSED:
+			playedSound = true;
+			app->audio->PlayFx(pressedFx);
+			break;
+		case FOCUSED:
+			playedSound = true;
+			app->audio->PlayFx(focusedFx);
+			break;
+		case DISABLED:
+			break;
+		default:
+			break;
+		}
+	}
+
 	return 0;
 }
 
@@ -70,7 +101,7 @@ bool GuiButton::Draw() const
 		result->second.Draw(centerPoint, iPoint(GetSize().x, GetSize().y));
 	}
 
-	centerPoint += iPoint(GetSize().x/2, GetSize().y/2);
+	centerPoint += iPoint(GetSize().x / 2, GetSize().y / 2);
 
 	TextParameters params(0, DrawParameters(0, centerPoint));
 	params.align = AlignTo::ALIGN_CENTER;

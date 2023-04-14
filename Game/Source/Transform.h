@@ -12,13 +12,14 @@ public:
 	iPoint GetSize() const { return size; };
 
 	iPoint position = { 0 };
+	iPoint originalPosition = { 0 };
 	iPoint size = { 0 };
 protected:
 	void Initialize(pugi::xml_node const& node)
 	{
-		position = { node.attribute("x").as_int(), node.attribute("y").as_int() };
+		originalPosition = { node.attribute("x").as_int(), node.attribute("y").as_int() };
+		position = originalPosition;
 		size = { node.attribute("width").as_int(), node.attribute("height").as_int() };
-
 	}
 };
 

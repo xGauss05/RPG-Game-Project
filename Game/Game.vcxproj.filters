@@ -93,6 +93,14 @@
     </ClCompile>
     <ClCompile Include="Source\EnemyTroops.cpp">
       <Filter>Scene_Battle\Source</Filter>
+    <ClCompile Include="Source\Window_Panel.cpp">
+      <Filter>GUI\Windows\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiBox.cpp">
+      <Filter>GUI\Widgets\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NPC_Generic.cpp">
+      <Filter>Scene_Map Components\Source\Events\NPCs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +223,14 @@
     </ClInclude>
     <ClInclude Include="Source\EnemyTroops.h">
       <Filter>Scene_Battle\Headers</Filter>
+    <ClInclude Include="Source\Window_Panel.h">
+      <Filter>GUI\Windows\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiBox.h">
+      <Filter>GUI\Widgets\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NPC_Generic.h">
+      <Filter>Scene_Map Components\Headers\Events\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +320,11 @@
     </Filter>
     <Filter Include="Scene_Battle\Source">
       <UniqueIdentifier>{6ac72f40-c880-4002-86c9-ff1b9f2ac694}</UniqueIdentifier>
+    <Filter Include="Scene_Map Components\Headers\Events\NPCs">
+      <UniqueIdentifier>{5a4eeb71-01f0-41af-9cf8-f6976b4d1e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene_Map Components\Source\Events\NPCs">
+      <UniqueIdentifier>{dbdfb12d-068c-4356-a9e0-a4c0b452c00f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

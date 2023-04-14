@@ -86,7 +86,7 @@ public:
 	
 	// Utils
 	bool PauseGame();
-
+	
 	// Modules
 	std::unique_ptr<Window> win;
 	std::unique_ptr<Input> input;
@@ -95,6 +95,8 @@ public:
 	std::unique_ptr<Audio> audio;
 	std::unique_ptr<SceneManager> scene;
 	std::unique_ptr<TextManager> fonts;
+
+	bool pause = false;
 
 private:
 

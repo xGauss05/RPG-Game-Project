@@ -6,7 +6,7 @@
 
 #include <memory>
 
-class Event_Teleport : public Event_Base, public Transform
+class Event_Teleport : public Event_Base
 {
 public:
 	// Inherited via Scene_Base

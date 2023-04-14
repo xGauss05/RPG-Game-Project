@@ -8,6 +8,8 @@
 class Scene_Title : public Scene_Base
 {
 public:
+    ~Scene_Title();
+
     bool isReady() override;
     void Load(
         std::string const& path,
@@ -17,10 +19,13 @@ public:
     void Start() override;
     void Draw() override;
     TransitionScene Update() override;
+    int OnPause() override;
     int CheckNextScene() override;
 
 private:
     int backgroundTexture;
+    int logoFx = 0;
+    bool playedLogo = false;
 };
 
 #endif __SCENE_TITLE_H__

@@ -6,6 +6,7 @@
 #include "Scene_Title.h"
 #include "Scene_Battle.h"
 
+#include "Render.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -19,7 +20,10 @@ SceneManager::SceneManager() : Module()
 }
 
 // Destructor
-SceneManager::~SceneManager() = default;
+SceneManager::~SceneManager() 
+{
+	app->tex->Unload(pauseMenuBackground);
+}
 
 // Called before render is available
 bool SceneManager::Awake(pugi::xml_node& config)
@@ -30,7 +34,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 
 	windowFactory = std::make_unique<Window_Factory>(config);
 
-	for (auto const& node : config.child("scene_info").children("scene"))
+	for (auto const& node : config.child("title_info").children("scene"))
 	{
 		sceneInfo[node.attribute("name").as_string()] = node;
 	}
@@ -42,6 +46,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 	party = std::make_unique<GameParty>();
 
 	currentScene = std::make_unique<Scene_Title>();
+
 	return true;
 }
 
@@ -50,6 +55,7 @@ bool SceneManager::Start()
 {
 	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 	party->CreateParty();
+	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
 	return true;
 }
 
@@ -69,6 +75,10 @@ bool SceneManager::Pause(int phase)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
 		app->LoadGameRequest();
 
+	app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
+
+	if(currentScene->OnPause() == 4) return false;
+
 	return true;
 }
 
@@ -85,8 +95,8 @@ bool SceneManager::Update(float dt)
 	currentScene->Draw();
 
 	using enum TransitionScene;
-	switch (currentScene->Update())
-	{
+	switch (currentScene->Update()) 
+		{
 		case BOOT_COMPLETE:
 			break;
 		case NEW_GAME:
@@ -105,7 +115,7 @@ bool SceneManager::Update(float dt)
 		case NONE: // tus muertos
 			break;
 	}
-
+	
 	return true;
 }
 
@@ -114,14 +124,13 @@ bool SceneManager::PostUpdate()
 {
 	if (nextScene && nextScene->isReady())
 	{
-		if (CurrentlyMainMenu)
-			nextScene.get()->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+		currentScene = std::move(nextScene);
+		if(CurrentlyMainMenu)
+			currentScene.get()->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 		else
-			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+			currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 
 		CurrentlyMainMenu = !CurrentlyMainMenu;
-
-		currentScene = std::move(nextScene);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
