@@ -37,23 +37,15 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		if (auto result = windowFactory.CreateWindow(window.attribute("name").as_string());
 			result != nullptr)
 		{
-			std::string s1 = window.attribute("name").as_string();
-			int val = s1.compare("PauseButtonMenu");
-			if (val == 0) 
+			
+			if (StrEquals("PauseButtonMenu", window.attribute("name").as_string()))
 			{
 				windows.push_back(std::move(result));
 			}
-			else {
-				pauseWindow.push_back(std::move(result));
-			}
-			/*if (window.attribute("name").as_string() == "PauseButtonMenu") 
-			{
-				
-			}
-			else if (window.attribute("name").as_string() == "PauseMenu") 
+			else if (StrEquals("PauseMenu", window.attribute("name").as_string()))
 			{
 				pauseWindow.push_back(std::move(result));
-			}*/
+			}
 		}
 	}
 
@@ -111,10 +103,13 @@ TransitionScene Scene_Map::Update()
 
 				for (auto const& window : scene.children("window"))
 				{
-					if (auto result = windowFactory->CreateWindow(window.attribute("name").as_string());
-						result != nullptr)
+					if (StrEquals("ChatBox", window.attribute("name").as_string()))
 					{
-						windows.push_back(std::move(result));
+						if (auto result = windowFactory->CreateWindow(window.attribute("name").as_string());
+							result != nullptr)
+						{
+							windows.push_back(std::move(result));
+						}
 					}
 				}
 			}
@@ -122,7 +117,7 @@ TransitionScene Scene_Map::Update()
 			{
 				//Remove windows
 				player.interacting = false;
-				windows.clear();
+				windows.pop_back();
 			}
 		}
 	}
