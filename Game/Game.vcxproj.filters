@@ -93,6 +93,7 @@
     </ClCompile>
     <ClCompile Include="Source\EnemyTroops.cpp">
       <Filter>Scene_Battle\Source</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Window_Panel.cpp">
       <Filter>GUI\Windows\Source</Filter>
     </ClCompile>
