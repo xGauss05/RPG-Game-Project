@@ -21,7 +21,8 @@ public:
 		SDL_Rect const &rect,
 		int advance,
 		int id,
-		iPoint tSegments
+		iPoint tSegments,
+		std::string text
 	);
 
 	bool Draw() const override;
@@ -32,6 +33,7 @@ private:
 	std::unique_ptr<GuiPanelSegmented> panel;
 
 	iPoint offset;
+	std::string text = "";
 };
 
 #endif //__GUIBOX_H__

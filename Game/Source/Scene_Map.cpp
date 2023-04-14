@@ -60,7 +60,6 @@ int Scene_Map::Update()
 			if (!player.interacting)
 			{
 				//Do interaction
-				LOG("WTF is going on");
 				player.interacting = true;
 
 				//This loading should not go here, or at least not this way. WIP

@@ -82,23 +82,25 @@ void Window_Base::CreateButtons(pugi::xml_node const& node)
 
 void Window_Base::CreatePanels(pugi::xml_node const& node)
 {
-	for (auto const& child : node.children("panel"))
+	for (auto const& panel : node.children("panel"))
 	{
-		uPoint pos = { child.attribute("x").as_uint(), child.attribute("y").as_uint() };
-		uPoint area = { child.attribute("width").as_uint(), child.attribute("height").as_uint() };
-		const std::string text = child.attribute("text").as_string();
-
-		SDL_Rect rect = { pos.x,pos.y,area.x,area.y };
-		int advance = child.attribute("advance").as_int();
-
-		iPoint segments = { child.attribute("horizontalsegments").as_int(), child.attribute("verticalsegments").as_int() };
-				
-		//I need a rect, advance, textureID and segments
-		//SDL_Rect const& r, int a, int id, iPoint tSegments
+		uPoint pos = { panel.attribute("x").as_uint(), panel.attribute("y").as_uint() };
+		uPoint area = { panel.attribute("width").as_uint(), panel.attribute("height").as_uint() };
 		
-		//Everything works until this line down here 
-		widgets.emplace_back(std::make_unique<GuiBox>(pos, area, rect, advance, 0, segments));
-		LOG("ola");
+		auto const& texProperties = panel.child("texture_properties");
+		//This is position of the first tile in the UI sheet and size of each tile.
+		SDL_Rect rect = { texProperties.attribute("tileX").as_int(),
+						  texProperties.attribute("tileY").as_int(),
+						  texProperties.attribute("tileW").as_int(),
+						  texProperties.attribute("tileH").as_int() };
+
+		int advance = texProperties.attribute("advance").as_int();
+		iPoint segments = { texProperties.attribute("horizontalsegments").as_int(), texProperties.attribute("verticalsegments").as_int() };
+		
+		//This path could be changed to a dialogue-exclusive XML file
+		const std::string text = panel.child("text").attribute("chatBoxText").as_string();
+
+		widgets.emplace_back(std::make_unique<GuiBox>(pos, area, rect, advance, 0, segments, text));
 	}
 }
 

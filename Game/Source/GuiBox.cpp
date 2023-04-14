@@ -13,9 +13,11 @@ GuiBox::~GuiBox()
 	panel->Unload();
 }
 
-GuiBox::GuiBox(uPoint pos, uPoint widthHeight,SDL_Rect const& rect,int advance,int id,iPoint tSegments)
+GuiBox::GuiBox(uPoint pos, uPoint widthHeight,SDL_Rect const& rect,int advance,int id,iPoint tSegments, std::string text)
 {
 	Initialize(pos, widthHeight);
+
+	this->text = text;
 
 	int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 	panel = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments);
@@ -23,7 +25,16 @@ GuiBox::GuiBox(uPoint pos, uPoint widthHeight,SDL_Rect const& rect,int advance,i
 
 bool GuiBox::Draw() const
 {
-	
+	auto centerPoint = iPoint(GetPosition().x, GetPosition().y);
+
+	panel->Draw(centerPoint, iPoint(GetSize().x, GetSize().y));
+
+	centerPoint += iPoint(GetSize().x / 2, GetSize().y / 2);
+
+	TextParameters params(0, DrawParameters(0, centerPoint));
+	params.align = AlignTo::ALIGN_CENTER;
+
+	app->fonts->DrawText(text, params);
 
 	return true;
 }
