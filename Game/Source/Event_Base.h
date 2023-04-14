@@ -178,6 +178,7 @@ public:
 	}
 
 	std::string name = "";
+	std::string type = "";
 	EventProperties::CommonProperties common;
 };
 

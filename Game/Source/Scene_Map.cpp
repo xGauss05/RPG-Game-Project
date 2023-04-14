@@ -55,7 +55,7 @@ int Scene_Map::Update()
 	{
 		iPoint checktile = player.GetPosition() + (player.lastDir * map.GetTileWidth());
 
-		if (map.IsEvent(checktile))
+		if (map.IsEvent(checktile) && map.IsNPC(checktile))
 		{
 			if (!player.interacting)
 			{

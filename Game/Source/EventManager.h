@@ -26,6 +26,7 @@ public:
 
 	int GetEventLayerSize() const;
 	bool isEvent(iPoint destination) const;
+	bool isNPC(iPoint destination) const;
 
 	// Returns Gid, position, keepDrawing ? true : false;
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);

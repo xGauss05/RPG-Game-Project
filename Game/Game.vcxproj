@@ -102,6 +102,7 @@
     <ClCompile Include="Source\Event_Teleport.cpp" />
     <ClCompile Include="Source\GuiBox.cpp" />
     <ClCompile Include="Source\GuiPanelSegmented.cpp" />
+    <ClCompile Include="Source\NPC_Generic.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Scene_Battle.cpp" />
     <ClCompile Include="Source\Scene_Boot.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Source\Event_Teleport.h" />
     <ClInclude Include="Source\GuiBox.h" />
     <ClInclude Include="Source\GuiPanelSegmented.h" />
+    <ClInclude Include="Source\NPC_Generic.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Scene_Battle.h" />
     <ClInclude Include="Source\Scene_Boot.h" />
