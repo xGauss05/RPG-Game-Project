@@ -4,9 +4,12 @@
 
 #include "Scene_Map.h"
 #include "Scene_Title.h"
+#include "Scene_Battle.h"
 
 #include "Defs.h"
 #include "Log.h"
+
+#include "PugiXml/src/pugixml.hpp"
 
 #include <format>
 
@@ -36,6 +39,8 @@ bool SceneManager::Awake(pugi::xml_node& config)
 		mapInfo[node.attribute("name").as_string()] = node;
 	}
 
+	party = std::make_unique<GameParty>();
+
 	currentScene = std::make_unique<Scene_Title>();
 	return true;
 }
@@ -44,7 +49,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 bool SceneManager::Start()
 {
 	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
-
+	party->CreateParty();
 	return true;
 }
 
@@ -90,25 +95,16 @@ bool SceneManager::Update(float dt)
 		case CONTINUE_GAME:
 			break;
 		case START_BATTLE:
+			//nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
 			break;
 		case WIN_BATTLE:
 		case LOSE_BATTLE:
 			break;
-
+		case EXIT_GAME:
+			return false;
 		case NONE: // tus muertos
 			break;
 	}
-
-	/*if (currentScene->Update() == 1 || app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_UP)
-	{
-		if (CurrentlyMainMenu)
-			nextScene = std::make_unique<Scene_Map>();
-		else
-			nextScene = std::make_unique<Scene_Title>();
-	}*/
-	
-	
-		
 
 	return true;
 }
@@ -118,7 +114,7 @@ bool SceneManager::PostUpdate()
 {
 	if (nextScene && nextScene->isReady())
 	{
-		if(CurrentlyMainMenu)
+		if (CurrentlyMainMenu)
 			nextScene.get()->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 		else
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
@@ -128,6 +124,33 @@ bool SceneManager::PostUpdate()
 		currentScene = std::move(nextScene);
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
+	{
+		pugi::xml_document troopsFile;
+		if (auto result = troopsFile.load_file("data/Troops.xml"); !result)
+		{
+			LOG("Could not load troops xml file. Pugi error: %s", result.description());
+		}
+		pugi::xml_document enemiesFile;
+		if (auto result = enemiesFile.load_file("data/Enemies.xml"); !result)
+		{
+			LOG("Could not load enemies xml file. Pugi error: %s", result.description());
+		}
+
+		EnemyTroops combat;
+		for (auto const& enemy : troopsFile.child("basicslime"))
+		{
+			auto currentEnemy = enemiesFile.child(enemy.name());
+			Enemy enemyToAdd;
+			enemyToAdd.textureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
+			for (auto const& stat : enemiesFile.child("stats").children())
+			{
+				enemyToAdd.stats.emplace_back(stat.attribute("value").as_int());
+			}
+			combat.troop.emplace_back(enemyToAdd);
+		}
+		nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
+	}
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 		return false;

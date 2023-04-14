@@ -4,6 +4,7 @@
 #include "Module.h"
 
 #include "Scene_Base.h"
+#include "GameParty.h"
 
 #include "Defs.h"		//StringHash
 
@@ -51,6 +52,8 @@ public:
 	std::unique_ptr<Window_Factory> windowFactory;
 	LookUpXMLNodeFromString sceneInfo;
 	LookUpXMLNodeFromString mapInfo;
+
+	std::unique_ptr<GameParty> party;
 
 	bool CurrentlyMainMenu = true;
 };

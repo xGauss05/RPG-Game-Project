@@ -1,0 +1,12 @@
+<slime>
+	<texture path="Assets/Textures/Battlers/First.png"/>
+	<stats>
+		<maxhp value="100"/>
+		<maxmana value="100"/>
+		<attack value="100"/>
+		<defense value="100"/>
+		<specialattack value="100"/>
+		<specialdefense value="100"/>
+		<speed value="4"/>
+	</stats>
+</slime>
