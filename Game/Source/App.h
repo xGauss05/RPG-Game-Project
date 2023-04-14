@@ -96,6 +96,8 @@ public:
 	std::unique_ptr<SceneManager> scene;
 	std::unique_ptr<TextManager> fonts;
 
+	bool pause = false;
+
 private:
 
 	// Load config file
@@ -135,7 +137,6 @@ private:
 	bool saveGameRequested;
 	bool loadGameRequested;
 	bool resetLevelRequested;
-	bool unpause = false;
 
 	uint levelNumber = 1;
 };

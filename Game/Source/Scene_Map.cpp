@@ -56,6 +56,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	}
 
 	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
+	isPaused = false;
 }
 
 void Scene_Map::Start()
@@ -100,8 +101,6 @@ int Scene_Map::Update()
 
 int Scene_Map::OnPause() 
 {
-	
-
 	for (auto const& elem : pauseWindow)
 	{
 		if (auto result = elem->Update();
@@ -113,6 +112,7 @@ int Scene_Map::OnPause()
 	{
 		elem->Draw();
 	}
+
 	return 0;
 }
 

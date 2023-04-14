@@ -28,6 +28,7 @@ private:
     Map map;
     Player player;
     
+    bool isPaused = false;
 };
 
 

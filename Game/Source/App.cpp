@@ -43,7 +43,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 // Destructor
 App::~App() = default;
 
-void App::AddModule(Module* mod)
+void App::AddModule(Module * mod)
 {
 	mod->Init();
 	modules.push_back(mod);
@@ -52,14 +52,14 @@ void App::AddModule(Module* mod)
 // Called before render is available
 bool App::Awake()
 {
-	if(!LoadConfig()) return false;
+	if (!LoadConfig()) return false;
 
-	title = configNode.child("app").child("title").child_value(); 
+	title = configNode.child("app").child("title").child_value();
 
-	for(auto const &item : modules)
+	for (auto const& item : modules)
 	{
-		if(pugi::xml_node node = configNode.child(item->name.c_str());
-		   !item->Awake(node))
+		if (pugi::xml_node node = configNode.child(item->name.c_str());
+			!item->Awake(node))
 		{
 			return false;
 		}
@@ -71,9 +71,9 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
-	for(auto const &item : modules)
+	for (auto const& item : modules)
 	{
-		if(!item->Start()) return false;
+		if (!item->Start()) return false;
 	}
 
 	return true;
@@ -86,14 +86,15 @@ bool App::Update()
 
 	if (input->GetWindowEvent(EventWindow::WE_QUIT)) return false;
 
-	if(!PreUpdate()) return false;
-	if(!DoUpdate()) return false;
-	if(!PostUpdate()) return false;
+	if (!PreUpdate()) return false;
+	if (!DoUpdate()) return false;
+	if (!PostUpdate()) return false;
 
 	FinishUpdate();
 
 	if (input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN)
 	{
+		pause = !pause;
 		return PauseGame();
 	}
 
@@ -103,8 +104,8 @@ bool App::Update()
 // Load config from XML file
 bool App::LoadConfig()
 {
-	if (pugi::xml_parse_result parseResult = configFile.load_file("config.xml"); 
-		parseResult) 
+	if (pugi::xml_parse_result parseResult = configFile.load_file("config.xml");
+		parseResult)
 	{
 		configNode = configFile.child("config");
 	}
@@ -132,10 +133,10 @@ void App::FinishUpdate()
 // Call modules before each loop iteration
 bool App::PreUpdate()
 {
-	for(auto const &item : modules)
+	for (auto const& item : modules)
 	{
-		if(!item->active) continue;
-		if(!item->PreUpdate()) return false;
+		if (!item->active) continue;
+		if (!item->PreUpdate()) return false;
 	}
 
 	return true;
@@ -144,10 +145,10 @@ bool App::PreUpdate()
 // Call modules on each loop iteration
 bool App::DoUpdate()
 {
-	for(auto const &item : modules)
+	for (auto const& item : modules)
 	{
-		if(!item->active) continue;
-		if(!item->Update(dt)) return false;
+		if (!item->active) continue;
+		if (!item->Update(dt)) return false;
 	}
 
 	return true;
@@ -156,10 +157,10 @@ bool App::DoUpdate()
 // Call modules after each loop iteration
 bool App::PostUpdate()
 {
-	for(auto const &item : modules)
+	for (auto const& item : modules)
 	{
-		if(!item->active) continue;
-		if(!item->PostUpdate()) return false;
+		if (!item->active) continue;
+		if (!item->PostUpdate()) return false;
 	}
 
 	return true;
@@ -168,9 +169,9 @@ bool App::PostUpdate()
 // Called before quitting
 bool App::CleanUp()
 {
-	for(auto const &item : modules)
-		if(!item->CleanUp()) return false;
-	
+	for (auto const& item : modules)
+		if (!item->CleanUp()) return false;
+
 	return true;
 }
 
@@ -203,7 +204,7 @@ std::string App::GetOrganization() const
 
 void App::LoadGameRequest()
 {
-	if(!loadGameRequested)
+	if (!loadGameRequested)
 	{
 		loadGameRequested = true;
 
@@ -213,14 +214,14 @@ void App::LoadGameRequest()
 // ---------------------------------------
 void App::ResetLevelRequest()
 {
-	if(!resetLevelRequested)
+	if (!resetLevelRequested)
 	{
 		resetLevelRequested = true;
 	}
 }
-void App::SaveGameRequest() 
+void App::SaveGameRequest()
 {
-	if(!saveGameRequested)
+	if (!saveGameRequested)
 	{
 		saveGameRequested = true;
 	}
@@ -240,11 +241,11 @@ bool App::LoadFromFile()
 		LOG("Could not load xml file savegame.xml. pugi error: %s", result.description());
 		return false;
 	}
-	
-	for(auto const &item : modules)
+
+	for (auto const& item : modules)
 	{
-		if(const auto moduleName = item->name.c_str();
-		   !item->LoadState(gameStateFile.child("save_state").child(moduleName)))
+		if (const auto moduleName = item->name.c_str();
+			!item->LoadState(gameStateFile.child("save_state").child(moduleName)))
 		{
 			return false;
 		}
@@ -256,15 +257,15 @@ bool App::LoadFromFile()
 }
 
 // check https://pugixml.org/docs/quickstart.html#modify
-bool App::SaveToFile() 
+bool App::SaveToFile()
 {
 	auto saveDoc = std::make_unique<pugi::xml_document>();
 	pugi::xml_node saveStateNode = saveDoc->append_child("save_state");
-	for(auto const &item : modules)
+	for (auto const& item : modules)
 	{
-		if(item->HasSaveData())
+		if (item->HasSaveData())
 		{
-			if(auto ret = item->SaveState(saveStateNode); !ret.empty())
+			if (auto ret = item->SaveState(saveStateNode); !ret.empty())
 				saveStateNode.child("save_state").append_copy(ret);
 			else
 				LOG("Error saving state of module %s", item->name.c_str());
@@ -274,7 +275,7 @@ bool App::SaveToFile()
 	return saveDoc->save_file("save_game.xml");
 }
 
-bool App::SaveAttributeToConfig(std::string const &moduleName, std::string const &node, std::string const &attribute, std::string const &value)
+bool App::SaveAttributeToConfig(std::string const& moduleName, std::string const& node, std::string const& attribute, std::string const& value)
 {
 	auto m = moduleName.c_str();
 	auto n = node.c_str();
@@ -342,16 +343,23 @@ bool App::DoPaused()
 bool App::PauseGame()
 {
 	using enum KeyState;
-	while (input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
+	
+	while ((input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) &&
+		   pause)
 	{
 		DoPaused();
+	
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 	}
-	while (input->GetKey(SDL_SCANCODE_P) == KEY_IDLE || input->GetKey(SDL_SCANCODE_P) == KEY_UP)
+	while ((input->GetKey(SDL_SCANCODE_P) == KEY_IDLE || input->GetKey(SDL_SCANCODE_P) == KEY_UP) &&
+			pause)
 	{
 		DoPaused();
+		
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 	}
+
+	pause = false;
 
 	return true;
 }
@@ -371,17 +379,17 @@ SDL_Renderer* App::GetRender() const
 	return render->GetRender();
 }
 
-bool App::AppendFragment(pugi::xml_node target, const char *data) const
+bool App::AppendFragment(pugi::xml_node target, const char* data) const
 {
 	pugi::xml_document doc;
-	if(auto result = doc.load_string(data);
-	   !result)
+	if (auto result = doc.load_string(data);
+		!result)
 	{
 		LOG("Error parsing XML: ", result.description());
 		return false;
 	}
 
-	for(auto const &child : doc)
+	for (auto const& child : doc)
 		target.append_copy(child);
 
 	return true;
