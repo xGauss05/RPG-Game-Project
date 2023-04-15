@@ -81,9 +81,9 @@ TransitionScene Scene_Map::Update()
 			{
 				LOG("Said yes");
 				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("yes").as_string());
-				playerAction.action = PA::INTERACT;
 				state = MapState::ON_DIALOG;
 				windows.pop_back();
+				app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 				break;
@@ -92,9 +92,9 @@ TransitionScene Scene_Map::Update()
 			{
 				LOG("Said no");
 				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("no").as_string());
-				playerAction.action = PA::INTERACT;
 				state = MapState::ON_DIALOG;
 				windows.pop_back();
+				app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 				break;
