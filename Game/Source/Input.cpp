@@ -122,6 +122,35 @@ bool Input::PreUpdate()
 			mouseButtons[i] = KEY_IDLE;
 	}
 
+	for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+		if (SDL_IsGameController(i)) {
+			controllers[i]->j1_x = SDL_GameControllerGetAxis(SDLcontrollers[i], SDL_CONTROLLER_AXIS_LEFTX);
+			controllers[i]->j1_y = SDL_GameControllerGetAxis(SDLcontrollers[i], SDL_CONTROLLER_AXIS_LEFTY);
+			controllers[i]->j2_x = SDL_GameControllerGetAxis(SDLcontrollers[i], SDL_CONTROLLER_AXIS_RIGHTX);
+			controllers[i]->j2_y = SDL_GameControllerGetAxis(SDLcontrollers[i], SDL_CONTROLLER_AXIS_RIGHTY);
+			controllers[i]->LT = SDL_GameControllerGetAxis(SDLcontrollers[i], SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+			controllers[i]->RT = SDL_GameControllerGetAxis(SDLcontrollers[i], SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+
+			//Uint8* gamepad = (Uint8*)SDL_GameControllerEventState(SDL_QUERY);
+			for (size_t j = 0; j < SDL_CONTROLLER_BUTTON_MAX; j++)
+			{
+				//if (gamepad[j])
+				if (SDL_GameControllerGetButton(SDLcontrollers[i], (SDL_GameControllerButton)j))
+				{
+					controllers[i]->buttons[j] = (controllers[i]->buttons[j] == KEY_IDLE) ? KEY_DOWN : KEY_REPEAT;
+				}
+				else
+				{
+					controllers[i]->buttons[j] = (controllers[i]->buttons[j] == KEY_REPEAT || (controllers[i]->buttons[j] == KEY_DOWN)) ? KEY_UP : KEY_IDLE;
+				}
+			}
+		}
+		else
+		{
+			controllers[i] = nullptr;
+		}
+	}
+
 	while(SDL_PollEvent(&event) != 0)
 	{
 		switch(event.type)

@@ -24,6 +24,61 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 	AddFunctionToMap("DialogNo", std::bind_front(&Window_List::DialogNo, this));
 	
 	CreateButtons(node);
+
+	if (app->input->controllerCount > 0)
+	{
+		ControllerHoveringWidget(currentHoveredButton);
+	}
+}
+
+void Window_List::HandleInput()
+{
+	if (app->input->controllerCount > 0)
+	{
+		//LOG("Handling Controller");
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KeyState::KEY_DOWN)
+		{
+			ControllerHoveringWidget(currentHoveredButton);
+
+			if (currentHoveredButton >= GetNumberWidgets() - 1) [[unlikely]]
+			{
+				currentHoveredButton = 0;
+			}
+			else [[likely]]
+			{
+				currentHoveredButton++;
+			}
+
+			LOG("Currently hovering %i", currentHoveredButton);
+			ControllerHoveringWidget(currentHoveredButton);
+		}
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KeyState::KEY_DOWN)
+		{
+			ControllerHoveringWidget(currentHoveredButton);
+
+			if (currentHoveredButton <= 0) [[unlikely]]
+			{
+				currentHoveredButton = GetNumberWidgets() - 1;
+			}
+			else [[likely]]
+			{
+				currentHoveredButton--;
+			}
+
+			LOG("Currently hovering %i", currentHoveredButton);
+			ControllerHoveringWidget(currentHoveredButton);
+		}
+	}
+	else
+	{
+		LOG("Handling Keyboard");
+	}
+}
+
+int Window_List::Update()
+{
+	HandleInput();
+	return UpdateWidgets();
 }
 
 int Window_List::NewGame()

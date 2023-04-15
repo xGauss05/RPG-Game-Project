@@ -34,17 +34,9 @@ void Window_Base::Draw() const
 	}
 }
 
-int Window_Base::Update() const
+int Window_Base::Update()
 {
-	for (auto const& elem : widgets)
-	{
-		if (auto result = elem->Update();
-			result != 0)
-		{
-			return result;
-		}
-	}
-	return 0;
+	return UpdateWidgets();
 }
 
 void Window_Base::CreateButtons(pugi::xml_node const& node)
@@ -120,6 +112,30 @@ int Window_Base::FallbackFunction() const
 {
 	LOG("No function found for widget.");
 	return 0;
+}
+
+int Window_Base::UpdateWidgets() const
+{
+	for (auto const& elem : widgets)
+	{
+		if (auto result = elem->Update();
+			result != 0)
+		{
+			return result;
+		}
+	}
+	return 0;
+}
+
+size_t Window_Base::GetNumberWidgets() const
+{
+	return widgets.size();
+}
+
+void Window_Base::ControllerHoveringWidget(int index)
+{
+	if (index < widgets.size())	
+		widgets[index]->ToogleIsHovered();
 }
 
 GuiElement* Window_Base::AccessLastWidget()

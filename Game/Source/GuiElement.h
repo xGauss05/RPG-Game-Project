@@ -65,6 +65,11 @@ public:
 		return false;
 	}
 
+	void ToogleIsHovered()
+	{
+		bIsHovered = !bIsHovered;
+	}
+
 protected:
 
 	void Initialize(uPoint pos, uPoint widthHeight)
@@ -101,6 +106,11 @@ protected:
 	uPoint GetSize() const
 	{
 		return size;
+	}
+
+	bool IsControllerHovered() const
+	{
+		return bIsHovered;
 	}
 
 private:
