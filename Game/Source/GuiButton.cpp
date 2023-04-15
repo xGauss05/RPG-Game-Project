@@ -51,16 +51,33 @@ int GuiButton::Update()
 			return ExecuteFunction();
 			currentState = NORMAL;
 		}
-		else
+		else if (currentState != FOCUSED)
 		{
-			if (currentState != FOCUSED) 
-			{
-				currentState = FOCUSED;
-				playedSound = false;
-			}
+			currentState = FOCUSED;
+			playedSound = false;
 			
 		}
 	}
+	else if (IsControllerHovered())
+	{
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_REPEAT)
+		{
+			currentState = PRESSED;
+			playedSound = false;
+
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
+		{
+			return ExecuteFunction();
+			currentState = NORMAL;
+		}
+		else if (currentState != FOCUSED)
+		{
+			currentState = FOCUSED;
+			playedSound = false;
+		}
+	}
+
 	else
 	{
 		currentState = NORMAL;

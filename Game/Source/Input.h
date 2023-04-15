@@ -61,9 +61,13 @@ public:
 	bool CleanUp() final;
 
 	// Check key states (includes mouse and joy buttons)
-	KeyState GetKey(uint id) const
+	KeyState GetKey(SDL_Scancode id) const
 	{
 		return keyboard[id];
+	}
+	KeyState GetControllerKey(uint controllerId, SDL_GameControllerButton key) const
+	{
+		return controllers[controllerId]->buttons[key];
 	}
 
 	KeyState GetMouseButtonDown(uint id) const

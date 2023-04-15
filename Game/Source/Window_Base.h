@@ -21,7 +21,7 @@ public:
 	bool IsMouseHovering() const;
 	virtual void Draw() const;
 
-	int Update() const;
+	virtual int Update();
 
 protected:
 
@@ -30,6 +30,11 @@ protected:
 	void AddFunctionToMap(std::string const& str, std::function<int()> const& funcPtr);
 	// If string is not found in pointer map, it fallbacks to this
 	int FallbackFunction() const;
+
+	int UpdateWidgets() const;
+	size_t GetNumberWidgets() const;
+
+	void ControllerHoveringWidget(int index);
 
 	GuiElement* AccessLastWidget();
 

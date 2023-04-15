@@ -11,7 +11,7 @@ bool Scene_Map::isReady()
 void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFac)
 {
 	// Load map
-	currentMap = "Village";
+	currentMap = "Base";
 
 	if (std::string mapToLoad = currentMap + ".tmx";
 		!map.Load(path, mapToLoad))
@@ -103,6 +103,10 @@ TransitionScene Scene_Map::Update()
 				break;
 		}
 	}
+	else
+	{
+		windows.back()->Update();
+	}
 
 	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
 	{
@@ -190,30 +194,15 @@ TransitionScene Scene_Map::Update()
 	}
 
 	if(state == MapState::NORMAL) player.Update();
-	
-	using enum TransitionScene;
-	for (auto const& elem : windows)
-	{
-		switch (elem->Update())
-		{
-		case 1:
-			return NEW_GAME;
-		case 2:
-			return CONTINUE_GAME;
-		case 3:
-			// Create new options window
-			break;
-		case 4:
-			return EXIT_GAME;
-		default:
-			continue;
-		}
-	}
 
 	if (transitionTo == TransitionScene::MAIN_MENU)
 	{
 		transitionTo = TransitionScene::NONE;
 		return TransitionScene::MAIN_MENU;
+	}
+	if (transitionTo == TransitionScene::EXIT_GAME)
+	{
+		return TransitionScene::EXIT_GAME;
 	}
 
 	return TransitionScene::NONE;
@@ -226,6 +215,7 @@ int Scene_Map::OnPause()
 		if (auto result = elem->Update();
 			result != 0)
 		{
+			if (result == 4) transitionTo = TransitionScene::EXIT_GAME;
 			if (result == 7) transitionTo = TransitionScene::MAIN_MENU;
 			return result;
 		}
