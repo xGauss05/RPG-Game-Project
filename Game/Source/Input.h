@@ -10,6 +10,7 @@
 constexpr auto NUM_MOUSE_BUTTONS = 5;
 constexpr auto NUM_EVENT_WINDOW = 4;
 constexpr auto MAX_KEYS = 300;
+constexpr auto MAX_CONTROLLERS = 8;
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;
@@ -28,6 +29,11 @@ enum class KeyState : uint
 	KEY_DOWN,
 	KEY_REPEAT,
 	KEY_UP
+};
+
+struct GameController {
+	float j1_x, j1_y, j2_x, j2_y, LT, RT;
+	KeyState buttons[SDL_CONTROLLER_BUTTON_MAX];
 };
 
 class Input : public Module
@@ -74,6 +80,10 @@ public:
 	uPoint GetUnsignedMousePosition() const;
 	void GetMousePosition(int &x, int &y) const;
 	void GetMouseMotion(int& x, int& y) const;
+
+	SDL_GameController* SDLcontrollers[MAX_CONTROLLERS];
+	GameController* controllers[MAX_CONTROLLERS];
+	int controllerCount = 0;
 
 private:
 	std::array<bool, NUM_EVENT_WINDOW> windowEvents{};

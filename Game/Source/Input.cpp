@@ -30,6 +30,53 @@ bool Input::Awake(pugi::xml_node& config)
 		return false;
 	}
 
+	if (SDL_Init(SDL_INIT_GAMECONTROLLER) != 0) {
+		SDL_Log("Unable to initialize SDL controllers: %s", SDL_GetError());
+		return false;
+	}
+
+#pragma region Controller initialization
+
+	//Count the numbers of compatible controllers to display it
+	for (int i = 0; i < SDL_NumJoysticks(); ++i) { if (SDL_IsGameController(i)) { controllerCount++; } }
+	SDL_Log("Controllers found: %i\n", controllerCount);
+
+	for (int i = 0; i < SDL_NumJoysticks(); ++i)
+	{
+		if (SDL_IsGameController(i))
+		{
+			SDLcontrollers[i] = SDL_GameControllerOpen(i);
+
+			if (SDLcontrollers[i])
+			{
+				SDL_Log("Index \'%i\' is a compatible controller, named \'%s\'", i, SDL_GameControllerNameForIndex(i));
+				break;
+			}
+			else
+			{
+				SDL_Log("Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+			}
+		}
+		else
+		{
+			SDL_Log("Index \'%i\' is empty\n", i);
+		}
+	}
+	for (size_t i = 0; i < controllerCount; i++)
+	{
+		if (controllerCount < MAX_CONTROLLERS)
+		{
+			controllers[i] = new GameController;
+		}
+
+		for (size_t j = 0; j < SDL_CONTROLLER_BUTTON_MAX; j++)
+		{
+			controllers[i]->buttons[j] = KeyState::KEY_IDLE;
+		}
+	}
+
+#pragma endregion
+
 	return true;
 }
 
