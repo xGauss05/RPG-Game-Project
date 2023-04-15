@@ -57,25 +57,6 @@ int EventManager::GetEventLayerSize() const
 	return events.size();
 }
 
-bool EventManager::isEvent(iPoint destination) const
-{
-	for (auto const &elem :events)
-	{
-		if (elem->position == destination)
-			return true;
-	}
-	return false;
-}
-bool EventManager::isNPC(iPoint destination) const
-{
-	for (auto const& elem : events)
-	{
-		if (elem->position == destination && StrEquals("Event NPC", elem->type))
-			return true;
-	}
-	return false;
-}
-
 EventTrigger EventManager::TriggerEvent(iPoint destination) const
 {
 	for (auto const& event : events)

@@ -68,8 +68,6 @@ public:
 	EventTrigger TriggerEvent(iPoint Position) const;
 
 	bool IsWalkable(iPoint pos) const;
-	bool IsEvent(iPoint checkPos) const;
-	bool IsNPC(iPoint checkPos) const;
 
 private:
 	std::vector<TileSet> tilesets;
