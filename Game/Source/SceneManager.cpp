@@ -145,10 +145,6 @@ bool SceneManager::PostUpdate()
 		currentScene = std::move(nextScene);
 		currentScene->Start();
 	}
-
-
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
-		return false;
 	
 	return true;
 }

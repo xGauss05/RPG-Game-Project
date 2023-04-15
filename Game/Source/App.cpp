@@ -92,12 +92,6 @@ bool App::Update()
 
 	FinishUpdate();
 
-	if (input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN)
-	{
-		pause = !pause;
-		return PauseGame();
-	}
-
 	return true;
 }
 
@@ -344,15 +338,37 @@ bool App::PauseGame()
 {
 	using enum KeyState;
 	
-	while ((input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) &&
-		   pause)
+	pause = true;
+	bool escapeNotPressed = false;
+	
+	while (pause)
 	{
+		if (input->controllerCount > 0)
+		{
+			if (input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KEY_UP)
+			{
+				escapeNotPressed = true;
+			}
+			if (input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KEY_DOWN
+				&& escapeNotPressed)
+			{
+				pause = false;
+			}
+		}
+		else
+		{
+			if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP)
+			{
+				escapeNotPressed = true;
+			}
+			if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN 
+				&& escapeNotPressed)
+			{
+				pause = false;
+			}
+		}
+		
 		if (!DoPaused()) return false;
-	}
-	while ((input->GetKey(SDL_SCANCODE_P) == KEY_IDLE || input->GetKey(SDL_SCANCODE_P) == KEY_UP) &&
-			pause)
-	{
-		if(!DoPaused()) return false;
 	}
 
 	pause = false;

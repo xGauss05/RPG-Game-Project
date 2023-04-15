@@ -103,9 +103,13 @@ TransitionScene Scene_Map::Update()
 				break;
 		}
 	}
-	else
+	else if (app->input->controllerCount <= 0)
 	{
 		windows.back()->Update();
+	}
+	else if (state == MapState::NORMAL 
+		&& app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KeyState::KEY_DOWN)
+	{
 	}
 
 	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
@@ -193,7 +197,23 @@ TransitionScene Scene_Map::Update()
 		}
 	}
 
-	if(state == MapState::NORMAL) player.Update();
+	if (state == MapState::NORMAL)
+	{
+		player.Update();
+
+		if (app->input->controllerCount > 0)
+		{
+			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KeyState::KEY_DOWN)
+			{
+				dynamic_cast<Window_List*>(pauseWindow.back().get())->ResetHoveredButton();
+				app->PauseGame();
+			}
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
+		{
+			app->PauseGame();
+		}
+	}
 
 	if (transitionTo == TransitionScene::MAIN_MENU)
 	{

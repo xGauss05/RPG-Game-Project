@@ -81,6 +81,16 @@ int Window_List::Update()
 	return UpdateWidgets();
 }
 
+void Window_List::ResetHoveredButton()
+{
+	if (GetNumberWidgets() > 0)
+	{
+		ControllerHoveringWidget(currentHoveredButton);
+		currentHoveredButton = 0;
+		ControllerHoveringWidget(currentHoveredButton);
+	}
+}
+
 int Window_List::NewGame()
 {
 	LOG("NewGame function called");
@@ -118,7 +128,6 @@ int Window_List::ResumeGame()
 {
 	LOG("ResumeGame function called");
 	app->pause = false;
-	app->PauseGame();
 
 	return 6;
 }
@@ -128,7 +137,6 @@ int Window_List::ExitMainMenu()
 	LOG("ExitMainMenu function called");
 	
 	app->pause = false;
-	app->PauseGame();
 
 	return 7;
 }
@@ -137,7 +145,6 @@ int Window_List::ExitGameFromMap()
 {
 	LOG("ExitGameFromMap function called");
 	app->pause = false;
-	app->PauseGame();
 
 	return 4;
 }

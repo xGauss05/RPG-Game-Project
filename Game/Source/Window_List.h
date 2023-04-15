@@ -12,6 +12,8 @@ public:
 	void HandleInput();
 	int Update() override;
 
+	void ResetHoveredButton();
+
 private:
 	int NewGame();
 	int ContinueGame();

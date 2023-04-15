@@ -38,7 +38,7 @@ int GuiButton::Update()
 	if (currentState == DISABLED)
 		return 0;
 
-	if (IsMouseHovering())
+	if (IsMouseHovering() && app->input->controllerCount <= 0)
 	{
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 		{
@@ -77,7 +77,6 @@ int GuiButton::Update()
 			playedSound = false;
 		}
 	}
-
 	else
 	{
 		currentState = NORMAL;
