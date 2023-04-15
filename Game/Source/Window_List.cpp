@@ -19,6 +19,9 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 	AddFunctionToMap("BattleSpecialAttack", std::bind_front(&Window_List::BattleSpecialAttack, this));
 	AddFunctionToMap("BattleDefend", std::bind_front(&Window_List::BattleDefend, this));
 	AddFunctionToMap("BattleRun", std::bind_front(&Window_List::BattleRun, this));
+
+	AddFunctionToMap("DialogYes", std::bind_front(&Window_List::DialogYes, this));
+	AddFunctionToMap("DialogNo", std::bind_front(&Window_List::DialogNo, this));
 	
 	CreateButtons(node);
 }
@@ -102,4 +105,14 @@ int Window_List::BattleDefend()
 int Window_List::BattleRun()
 {
 	return 103;
+}
+
+int Window_List::DialogYes()
+{
+	return 200;
+}
+
+int Window_List::DialogNo()
+{
+	return 201;
 }

@@ -41,6 +41,11 @@ bool GuiBox::Draw() const
 	return true;
 }
 
+std::string_view GuiBox::GetText()
+{
+	return text;
+}
+
 void GuiBox::ModifyText(std::string_view newText)
 {
 	text = newText;

@@ -73,6 +73,29 @@ TransitionScene Scene_Map::Update()
 
 	using PA = Player::PlayerAction::Action;
 
+	if (state == MapState::ON_MENU_SELECTION)
+	{
+		switch (windows.back()->Update())
+		{
+		case 200: //Yes
+			LOG("Said yes");
+			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("yes").as_string());
+			playerAction.action = PA::INTERACT;
+			state = MapState::ON_DIALOG;
+			windows.pop_back();
+			break;
+		case 201: //No
+			LOG("Said no");
+			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("no").as_string());
+			playerAction.action = PA::INTERACT;
+			state = MapState::ON_DIALOG;
+			windows.pop_back();
+			break;
+		default:
+			break;
+		}
+	}
+
 	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
 	{
 		if (map.IsWalkable(playerAction.destinationTile))
@@ -93,12 +116,23 @@ TransitionScene Scene_Map::Update()
 
 			if (StrEquals(nextDialogNode, "end"))
 			{
-				windows.pop_back();
-				state = MapState::NORMAL;
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				
+				if (StrEquals(currentPanel->ReadLastWidgetText(), currentDialogNode.attribute("text").as_string()))
+				{
+					windows.pop_back();
+					state = MapState::NORMAL;
+				}
+				else 
+				{
+					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+				}
 			}
 			else if (StrEquals(nextDialogNode, "Confirmation"))
 			{
 				// Create Yes/No window
+				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
+				state = MapState::ON_MENU_SELECTION;
 			}
 			else
 			{

@@ -27,7 +27,8 @@ private:
 	{
 		NORMAL,
 		ON_MESSAGE,
-		ON_DIALOG
+		ON_DIALOG,
+		ON_MENU_SELECTION
 	};
 
 	std::string currentMap = "";

@@ -25,6 +25,7 @@ public:
 	);
 
 	bool Draw() const override;
+	std::string_view GetText();
 	void ModifyText(std::string_view newText);
 	void DebugDraw() const;
 

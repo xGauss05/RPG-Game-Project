@@ -25,6 +25,9 @@ private:
 	int BattleSpecialAttack();
 	int BattleDefend();
 	int BattleRun();
+
+	int DialogYes();
+	int DialogNo();
 };
 
 #endif __WINDOW_LIST_H__

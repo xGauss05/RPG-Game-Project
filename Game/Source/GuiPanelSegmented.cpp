@@ -82,5 +82,6 @@ void GuiPanelSegmented::DrawHorizontalSegment(iPoint topLeftPosition, SDL_Rect c
 
 void GuiPanelSegmented::Unload() const
 {
-	app->tex->Unload(textureID);
+	app->tex->Unload(textureID);	//I don't know if removing this line will cause memory leaks (probably), but if you pop a
+									//Window_List out of a vector the texture is deleted from the scene and nothing else can use it.
 }
