@@ -1,7 +1,10 @@
 #include "App.h"
+#include "Window.h"
 
 #include "Defs.h"
 #include "Log.h"
+#include <chrono>
+#include <string>
 
 // NOTE: SDL redefines main function
 #include "SDL/include/SDL.h"
@@ -35,6 +38,8 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
+		std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+
 		switch(state)
 		{
 			// Allocate the engine --------------------------------------------
@@ -89,6 +94,16 @@ int main(int argc, char* args[])
 			case EXIT:
 				break;
 		}
+
+		//Time per cycles
+		std::chrono::high_resolution_clock::time_point endFrame = std::chrono::high_resolution_clock::now();
+		std::chrono::microseconds ms = std::chrono::duration_cast<std::chrono::microseconds>(endFrame - timeStart);
+
+		//Calculate FPSs
+		float FPS = 1 / ((float)ms.count() * 10E-7);
+
+		std::string s = std::format("{}", FPS);
+		app->win->SetTitle("Return | FPS: " + s);
 	}
 
 	LOG("... Bye! :)\n");
