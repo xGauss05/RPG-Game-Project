@@ -77,22 +77,30 @@ TransitionScene Scene_Map::Update()
 	{
 		switch (windows.back()->Update())
 		{
-		case 200: //Yes
-			LOG("Said yes");
-			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("yes").as_string());
-			playerAction.action = PA::INTERACT;
-			state = MapState::ON_DIALOG;
-			windows.pop_back();
-			break;
-		case 201: //No
-			LOG("Said no");
-			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("no").as_string());
-			playerAction.action = PA::INTERACT;
-			state = MapState::ON_DIALOG;
-			windows.pop_back();
-			break;
-		default:
-			break;
+			case 200: //Yes
+			{
+				LOG("Said yes");
+				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("yes").as_string());
+				playerAction.action = PA::INTERACT;
+				state = MapState::ON_DIALOG;
+				windows.pop_back();
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+				break;
+			}
+			case 201: //No
+			{
+				LOG("Said no");
+				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("no").as_string());
+				playerAction.action = PA::INTERACT;
+				state = MapState::ON_DIALOG;
+				windows.pop_back();
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+				break;
+			}
+			default:
+				break;
 		}
 	}
 
@@ -116,17 +124,10 @@ TransitionScene Scene_Map::Update()
 
 			if (StrEquals(nextDialogNode, "end"))
 			{
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				windows.pop_back();
+				state = MapState::NORMAL;
+				app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 				
-				if (StrEquals(currentPanel->ReadLastWidgetText(), currentDialogNode.attribute("text").as_string()))
-				{
-					windows.pop_back();
-					state = MapState::NORMAL;
-				}
-				else 
-				{
-					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-				}
 			}
 			else if (StrEquals(nextDialogNode, "Confirmation"))
 			{
