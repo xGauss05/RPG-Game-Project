@@ -208,7 +208,7 @@
  </tile>
  <tile id="41">
   <properties>
-   <property name="isWalkable" type="bool" value="true"/>
+   <property name="isWalkable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="42">
@@ -283,7 +283,7 @@
  </tile>
  <tile id="56">
   <properties>
-   <property name="isWalkable" type="bool" value="true"/>
+   <property name="isWalkable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="57">
