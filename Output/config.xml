@@ -27,6 +27,11 @@
         <window name="PauseMenu"/>
         <window name="ChatBox"/>
       </map>
+      <map id="3" name="Village">
+        <window name="PauseButtonMenu"/>
+        <window name="PauseMenu"/>
+        <window name="ChatBox"/>
+      </map>
     </map_info>
 
     <title_info>
