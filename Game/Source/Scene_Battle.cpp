@@ -25,8 +25,8 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	// Don't ask. I have no idea of what this does.
 	
 
+	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
 	// This produces random values uniformly distributed from 1 to 100
-	random20.param(std::uniform_int_distribution<>::param_type(1, 20));
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 }
 
@@ -258,6 +258,7 @@ TransitionScene Scene_Battle::Update()
 		}
 		case RESOLUTION:
 		{
+			std::mt19937 gen(rd());
 			if (!actionQueue.empty() && showNextText && actionSelected != 3)
 			{
 				BattleAction currentAction = actionQueue.top();
@@ -287,11 +288,17 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
-							int damage = attack - defense;
+							int damage = attack - defense + (random40(gen) - 20);
+							std::string damageMessage = "{} attacks {}! Deals {} damage.";
+							if (random100(gen) <= 10)
+							{
+								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							}
 							if (damage <= 0) damage = 1;
 							enemies.troop[currentAction.target].currentHP -= damage;
 
-							text = std::format("{} attacks {}! Deals {} damage.", party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
+							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
 						}
 						else if (currentAction.action == 1)
 						{
@@ -302,11 +309,17 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
-							int damage = attack - defense;
+							int damage = attack - defense + (random40(gen) - 20);
+							std::string damageMessage = "{} attacks {}! Deals {} damage.";
+							if (random100(gen) <= 10)
+							{
+								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							}
 							if (damage <= 0) damage = 1;
 							enemies.troop[currentAction.target].currentHP -= damage;
 
-							text = std::format("{} uses magic on {}! Deals {} damage.", party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
+							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
 						}
 					}
 
@@ -328,11 +341,17 @@ TransitionScene Scene_Battle::Update()
 							defense *= 2;
 							party->party[currentAction.target].isDefending = false;
 						}
-						int damage = attack - defense;
+						int damage = attack - defense + (random40(gen) - 20);
+						std::string damageMessage = "{} attacks {}! Deals {} damage.";
+						if (random100(gen) <= 10)
+						{
+							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
 
-						text = std::format("{} attacks {}! Deals {} damage.", enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
+						text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
 					}
 					else if (currentAction.action == 1)
 					{
@@ -343,11 +362,17 @@ TransitionScene Scene_Battle::Update()
 							defense *= 2;
 							party->party[currentAction.target].isDefending = false;
 						}
-						int damage = attack - defense;
+						int damage = attack - defense + (random40(gen) - 20);
+						std::string damageMessage = "{} attacks {}! Deals {} damage.";
+						if (random100(gen) <= 10)
+						{
+							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
 
-						text = std::format("{} uses magic on {}! Deals {} damage.", enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
+						text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
 					}
 				}
 

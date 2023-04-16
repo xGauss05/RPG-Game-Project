@@ -3,10 +3,10 @@
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="100"/>
-		<defense value="50"/>
-		<specialattack value="100"/>
-		<specialdefense value="100"/>
+		<attack value="20"/>
+		<defense value="5"/>
+		<specialattack value="20"/>
+		<specialdefense value="5"/>
 		<speed value="2"/>
 	</stats>
 </Slime>
@@ -15,10 +15,10 @@
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="100"/>
-		<defense value="50"/>
-		<specialattack value="100"/>
-		<specialdefense value="100"/>
+		<attack value="20"/>
+		<defense value="5"/>
+		<specialattack value="20"/>
+		<specialdefense value="5"/>
 		<speed value="4"/>
 	</stats>
 </Orangutan>

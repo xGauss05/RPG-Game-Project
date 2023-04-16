@@ -45,7 +45,7 @@ private:
     int actionSelected = -1;
 
     std::uniform_int_distribution<> random;
-    std::uniform_int_distribution<> random20;
+    std::uniform_int_distribution<> random40;
     std::uniform_int_distribution<> random100;
     
     std::random_device rd;
