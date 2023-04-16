@@ -35,7 +35,6 @@ void Window_List::HandleInput()
 {
 	if (app->input->controllerCount > 0)
 	{
-		//LOG("Handling Controller");
 		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KeyState::KEY_DOWN)
 		{
 			ControllerHoveringWidget(currentHoveredButton);
@@ -49,7 +48,6 @@ void Window_List::HandleInput()
 				currentHoveredButton++;
 			}
 
-			LOG("Currently hovering %i", currentHoveredButton);
 			ControllerHoveringWidget(currentHoveredButton);
 		}
 		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KeyState::KEY_DOWN)
@@ -65,13 +63,11 @@ void Window_List::HandleInput()
 				currentHoveredButton--;
 			}
 
-			LOG("Currently hovering %i", currentHoveredButton);
 			ControllerHoveringWidget(currentHoveredButton);
 		}
 	}
 	else
 	{
-		LOG("Handling Keyboard");
 	}
 }
 

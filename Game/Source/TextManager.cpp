@@ -38,6 +38,8 @@ bool TextManager::Awake(pugi::xml_node &config)
 
 bool TextManager::Start()
 {
+	app->fonts->Load("BoldBlocks");
+	app->fonts->Load("CleanPlate");
 	app->fonts->Load("CleanCraters");
 	return true;
 }

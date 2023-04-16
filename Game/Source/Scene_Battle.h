@@ -29,10 +29,16 @@ public:
     int OnPause() override;
 
 private:
+    void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
+    void ChooseTarget();
+
     GameParty* party;
     EnemyTroops enemies;
     BattleState state = BattleState::PLAYER_INPUT;
     int currentPlayer = 0;
+    bool showNextText = true;
+    int targetSelected = -1;
+    int actionSelected = -1;
 
     struct BattleAction
     {

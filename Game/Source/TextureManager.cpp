@@ -143,7 +143,7 @@ void TextureManager::Unload(int index)
 }
 
 // Retrieve size of a texture
-void TextureManager::GetSize(SDL_Texture* const texture, uint &width, uint &height) const
+void TextureManager::GetSize(SDL_Texture* const texture, int &width, int &height) const
 {
 	SDL_QueryTexture(texture, nullptr, nullptr, (int*) &width, (int*) &height);
 }

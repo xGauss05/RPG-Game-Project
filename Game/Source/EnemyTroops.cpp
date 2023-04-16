@@ -2,6 +2,8 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 #include "TextureManager.h"
+#include "Input.h"
+#include "Render.h"
 #include "Log.h"
 
 void EnemyTroops::CreateFight(std::string const &nodeName)
@@ -19,6 +21,8 @@ void EnemyTroops::CreateFight(std::string const &nodeName)
 
 	for (auto const& enemy : troopsFile.child(nodeName.c_str()))
 	{
+		iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
+
 		Enemy enemyToAdd;
 		enemyToAdd.name = enemy.name();
 		enemyToAdd.level = enemy.attribute("level").as_int();
@@ -29,6 +33,34 @@ void EnemyTroops::CreateFight(std::string const &nodeName)
 		{
 			enemyToAdd.stats.emplace_back(stat.attribute("value").as_int());
 		}
+		enemyToAdd.currentHP = enemyToAdd.stats[0];
+		enemyToAdd.currentMana = enemyToAdd.stats[1];
+
+		int w = 0;
+		int h = 0;
+		app->tex->GetSize(app->GetTexture(enemyToAdd.textureID), w, h);
+
+		enemyToAdd.size.x = w;
+		enemyToAdd.size.y = h;
+
+		enemyToAdd.index = troop.size();
+
+		enemyToAdd.position.x = 800 - camera.x;
+		enemyToAdd.position.y = 50 + (125 * enemyToAdd.index) - camera.y;
+
 		troop.emplace_back(enemyToAdd);
 	}
+}
+
+bool Enemy::IsMouseHovering() const
+{
+	iPoint mousePos = app->input->GetMousePosition();
+	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
+	if (mousePos.x >= position.x + camera.x && mousePos.x <= position.x + size.x + camera.x &&
+		mousePos.y >= position.y + camera.y && mousePos.y <= position.y + size.y + camera.y)
+	{
+		return true;
+	}
+
+	return false;
 }

@@ -31,7 +31,7 @@ public:
 	int Load(std::string const &path);
 	int GetTextureID(std::string const &path);
 	void Unload(int index);
-	void GetSize(SDL_Texture* const texture, uint& width, uint& height) const;
+	void GetSize(SDL_Texture* const texture, int& width, int& height) const;
 	SDL_Texture* GetTexture(int textureID) const;
 
 	// Path to pair<Index, references> look up table

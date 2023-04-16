@@ -4,7 +4,7 @@
 		<maxhp value="100"/>
 		<maxmana value="100"/>
 		<attack value="100"/>
-		<defense value="100"/>
+		<defense value="50"/>
 		<specialattack value="100"/>
 		<specialdefense value="100"/>
 		<speed value="2"/>
@@ -16,7 +16,7 @@
 		<maxhp value="100"/>
 		<maxmana value="100"/>
 		<attack value="100"/>
-		<defense value="100"/>
+		<defense value="50"/>
 		<specialattack value="100"/>
 		<specialdefense value="100"/>
 		<speed value="4"/>
