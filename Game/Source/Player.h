@@ -65,9 +65,9 @@ private:
 
 	int moveTimer = 0;
 	iPoint moveVector{ 0 };
-	int speed = 1;
+	int speed = 4;
 	const int timeForATile = 2;
-	const int tileSize = 16;
+	const int tileSize = 48;
 
 	int animTimer = 0;
 

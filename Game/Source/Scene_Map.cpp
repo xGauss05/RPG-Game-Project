@@ -11,7 +11,7 @@ bool Scene_Map::isReady()
 void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFac)
 {
 	// Load map
-	currentMap = "Base";
+	currentMap = "Village";
 
 	if (std::string mapToLoad = currentMap + ".tmx";
 		!map.Load(path, mapToLoad))

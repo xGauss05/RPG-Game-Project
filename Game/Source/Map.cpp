@@ -56,6 +56,8 @@ bool Map::Load(const std::string& directory, const std::string& level)
 	tileSize.x = map.attribute("tileheight").as_int();
 	tileSize.y = map.attribute("tilewidth").as_int();
 
+	app->render->SetMapAndTileSize(size, tileSize);
+
 	for (auto const& child : mapFile.child("map"))
 	{
 		if (StrEquals(child.name(), "tileset"))
@@ -129,33 +131,31 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 	camera.y *= -1;
 
 	iPoint cameraPosition = { camera.x, camera.y };
-	cameraPosition = WorldToMap(cameraPosition);
+	cameraPosition = WorldToMap((cameraPosition / 3) - tileSize);
 
 	iPoint cameraSize = { camera.w, camera.h };
 	cameraSize = WorldToMap(cameraSize);
 
-	SDL_Rect renderView;
+	SDL_Rect renderView{};
 
-	renderView.x = cameraPosition.x - tileSize.x;
+	renderView.x = cameraPosition.x;
 	if (renderView.x < 0) renderView.x = 0;
 
 	renderView.w = cameraPosition.x + cameraSize.x + tileSize.x;
 	if (renderView.w > layer.GetSize().x) renderView.w = layer.GetSize().x;
 	
-	renderView.y = cameraPosition.y - tileSize.y;
+	renderView.y = cameraPosition.y;
 	if (renderView.y < 0) renderView.y = 0;
 
 	renderView.h = cameraPosition.y + cameraSize.y + tileSize.y;
 	if (renderView.h > layer.GetSize().y) renderView.h = layer.GetSize().y;
 
-	renderView.x *= 3;
-	renderView.y *= 3;
 	renderView.w /= 3;
 	renderView.h /= 3;
 
-	for (int x = renderView.x; x < renderView.w; x++)
+	for (int x = renderView.x; x < renderView.x + renderView.w; x++)
 	{
-		for (int y = renderView.y; y < renderView.h; y++)
+		for (int y = renderView.y; y < renderView.y + renderView.h; y++)
 		{
 			int gid = layer.GetTileGid(x, y);
 
@@ -218,7 +218,7 @@ EventTrigger Map::TriggerEvent(iPoint position) const
 
 bool Map::IsWalkable(iPoint pos) const
 {
-	pos = WorldToMap(pos);
+	pos = WorldToMap(pos) / 3;
 
 	for (auto const &layer : tileLayers)
 	{

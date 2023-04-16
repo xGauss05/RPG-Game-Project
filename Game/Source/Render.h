@@ -121,7 +121,10 @@ public:
 
 	bool HasSaveData() const final;
 
+	void SetMapAndTileSize(iPoint mSize, iPoint tSize);
+
 	SDL_Rect GetCamera() const;
+	void AdjustCamera(iPoint position);
 
 	SDL_Renderer* GetRender() const;
 
@@ -135,6 +138,9 @@ private:
 	SDL_Rect viewport;
 	SDL_Color background;
 	SDL_Rect camera;
+
+	iPoint mapSize = { 0, 0 };
+	iPoint tileSize = { 0, 0 };
 
 	// -------- Vsync
 	bool vSyncActive = true;

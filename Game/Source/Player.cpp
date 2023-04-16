@@ -27,22 +27,24 @@ void Player::Create()
 {
 	app->tex->Load("Assets/Maps/Slime_Smol.png");	//This should not be done like this, all of this should load from the map XML.
 	Sprite::Initialize("Assets/Maps/Slime_Smol.png", 0);
-	position = { 48, 272 };
-	size = { 16, 16 };
+	position = { 864, 768 };
+	size = { 48, 96 };
 	currentSpriteSlice = {
 		(GetTextureIndex().x + 1) * size.x,
 		GetTextureIndex().y * size.y,
 		size.x,
 		size.y
 	};
+	app->render->AdjustCamera(position);
 }
 
 Player::PlayerAction Player::HandleInput() const
 {
 	using enum KeyState;
 	using enum Player::PlayerAction::Action;
-
-	PlayerAction returnAction = { position, NONE };
+	auto positionCheck = position;
+	positionCheck.y += tileSize;
+	PlayerAction returnAction = { positionCheck, NONE };
 
 	if (!moveVector.IsZero())
 		return returnAction;
@@ -175,6 +177,7 @@ void Player::Update()
 	{
 		AnimateMove();
 		SmoothMove();
+		app->render->AdjustCamera(position);
 	}
 }
 
