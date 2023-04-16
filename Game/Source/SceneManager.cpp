@@ -100,6 +100,8 @@ bool SceneManager::Update(float dt)
 		{
 		case BOOT_COMPLETE:
 			break;
+		case LOSE_BATTLE:
+			sceneOnHold.reset();
 		case MAIN_MENU:
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
@@ -112,13 +114,11 @@ bool SceneManager::Update(float dt)
 		case CONTINUE_GAME:
 			break;
 		case START_BATTLE:
-			//nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
+			StartBattle("bat2slime");
 			break;
 		case WIN_BATTLE:
-		case LOSE_BATTLE:
 		case RUN_BATTLE:
 			nextScene = std::move(sceneOnHold);
-			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 			break;
 		case EXIT_GAME:
 			return false;
@@ -134,11 +134,7 @@ bool SceneManager::PostUpdate()
 {
 	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
 	{
-		
-		
-		nextScene = std::make_unique<Scene_Battle>(party.get(), "basicslime");
-		nextScene->Load("", sceneInfo, *windowFactory);
-		sceneOnHold = std::move(currentScene);
+		StartBattle("bat2slime");
 	}
 
 	if (nextScene && nextScene->isReady())
@@ -148,6 +144,13 @@ bool SceneManager::PostUpdate()
 	}
 	
 	return true;
+}
+
+void SceneManager::StartBattle(std::string const& troopName)
+{
+	nextScene = std::make_unique<Scene_Battle>(party.get(), troopName);
+	nextScene->Load("", sceneInfo, *windowFactory);
+	sceneOnHold = std::move(currentScene);
 }
 
 // Called before quitting

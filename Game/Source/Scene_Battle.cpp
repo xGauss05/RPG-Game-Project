@@ -37,14 +37,13 @@ void Scene_Battle::Start()
 
 void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const
 {
-
 	int w = 0;
 	int h = 0;
 	app->tex->GetSize(app->GetTexture(textureID), w, h);
 
 	SDL_Rect hpBar{};
 	hpBar.x = position.x;
-	hpBar.y = position.y + h - 10;
+	hpBar.y = position.y + h + 10;
 
 	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
 	hpBar.w = hp > 0 ? static_cast<int>(hp * 50.0f) : 0;
