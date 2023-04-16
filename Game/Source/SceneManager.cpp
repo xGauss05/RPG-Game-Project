@@ -99,34 +99,34 @@ bool SceneManager::Update(float dt)
 	currentScene->Draw();
 
 	using enum TransitionScene;
-	switch (currentScene->Update())
-	{
-	case BOOT_COMPLETE:
-		break;
-	case MAIN_MENU:
-		nextScene = std::make_unique<Scene_Title>();
-		nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
-		break;
-	case NEW_GAME:
-		nextScene = std::make_unique<Scene_Map>();
-		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-		nextScene->Start();
-		break;
-	case CONTINUE_GAME:
-		break;
-	case START_BATTLE:
-		//nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
-		break;
-	case WIN_BATTLE:
-	case LOSE_BATTLE:
-	case RUN_BATTLE:
-		nextScene = std::move(sceneOnHold);
-		app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-		break;
-	case EXIT_GAME:
-		return false;
-	case NONE:
-		break;
+	switch (currentScene->Update()) 
+		{
+		case BOOT_COMPLETE:
+			break;
+		case LOSE_BATTLE:
+			sceneOnHold.reset();
+		case MAIN_MENU:
+			nextScene = std::make_unique<Scene_Title>();
+			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+			break;
+		case NEW_GAME:
+			nextScene = std::make_unique<Scene_Map>();
+			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+			nextScene->Start();
+			break;
+		case CONTINUE_GAME:
+			break;
+		case START_BATTLE:
+			StartBattle("bat2slime");
+			break;
+		case WIN_BATTLE:
+		case RUN_BATTLE:
+			nextScene = std::move(sceneOnHold);
+			break;
+		case EXIT_GAME:
+			return false;
+		case NONE:
+			break;
 	}
 
 	return true;
@@ -137,11 +137,7 @@ bool SceneManager::PostUpdate()
 {
 	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
 	{
-
-
-		nextScene = std::make_unique<Scene_Battle>(party.get(), "basicslime");
-		nextScene->Load("", sceneInfo, *windowFactory);
-		sceneOnHold = std::move(currentScene);
+		StartBattle("bat2slime");
 	}
 
 	if (nextScene && nextScene->isReady())
@@ -151,6 +147,13 @@ bool SceneManager::PostUpdate()
 	}
 
 	return true;
+}
+
+void SceneManager::StartBattle(std::string const& troopName)
+{
+	nextScene = std::make_unique<Scene_Battle>(party.get(), troopName);
+	nextScene->Load("", sceneInfo, *windowFactory);
+	sceneOnHold = std::move(currentScene);
 }
 
 // Called before quitting

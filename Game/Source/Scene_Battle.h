@@ -3,13 +3,17 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 
+#include <random>
+
 #include <queue>
 
 enum class BattleState
 {
     PLAYER_INPUT,
     ENEMY_INPUT,
-    RESOLUTION
+    RESOLUTION,
+    BATTLE_WON,
+    BATTLE_LOSS
 };
 
 class Scene_Battle : public Scene_Base
@@ -25,6 +29,8 @@ public:
     void Start() override;
     void Draw() override;
     TransitionScene Update() override;
+    bool CheckBattleWin() const;
+    bool CheckBattleLoss() const;
     int CheckNextScene() override;
     int OnPause() override;
 
@@ -39,6 +45,12 @@ private:
     bool showNextText = true;
     int targetSelected = -1;
     int actionSelected = -1;
+
+    std::uniform_int_distribution<> random;
+    std::uniform_int_distribution<> random40;
+    std::uniform_int_distribution<> random100;
+    
+    std::random_device rd;
 
     struct BattleAction
     {

@@ -2,6 +2,8 @@
 #include "App.h"
 #include "Render.h"
 
+#include <random>
+
 Scene_Battle::Scene_Battle(GameParty* gameParty, std::string const &fightName)
 	: party(gameParty)
 {
@@ -18,7 +20,11 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	windows.clear();
 	windows.emplace_back(windowFactory.CreateWindow("BattleActions"));
 	windows.emplace_back(windowFactory.CreateWindow("Message"));
-	//windows.emplace_back(windowFactory.CreateWindow(""))
+	
+
+	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
+	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
+	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 }
 
 void Scene_Battle::Start()
@@ -28,20 +34,25 @@ void Scene_Battle::Start()
 
 void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const
 {
-
 	int w = 0;
 	int h = 0;
 	app->tex->GetSize(app->GetTexture(textureID), w, h);
 
 	SDL_Rect hpBar{};
-	hpBar.x = position.x;
-	hpBar.y = position.y + h - 10;
-
-	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
-	hpBar.w = hp > 0 ? static_cast<int>(hp * 50.0f) : 0;
+	hpBar.x = position.x + 2;
+	hpBar.y = position.y + h * 2 + 10;
 	hpBar.h = 10;
 
-	app->render->DrawShape(hpBar, true, SDL_Color(255, 0, 0, 255));
+	hpBar.w = 100;
+	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
+
+	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
+	hpBar.w = hp > 0 ? static_cast<int>(hp * 100.0f) : 0;
+
+	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
+	auto green = static_cast<Uint8>(250.0f * hp);
+
+	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
 }
 
 void Scene_Battle::ChooseTarget()
@@ -128,6 +139,8 @@ void Scene_Battle::Draw()
 
 		DrawParameters drawEnemy(elem.textureID, elem.position);
 		drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
+		drawEnemy.Scale(fPoint(2,2));
+
 
 		if (elem.currentHP <= 0)
 		{
@@ -155,7 +168,7 @@ TransitionScene Scene_Battle::Update()
 		case PLAYER_INPUT:
 		{
 			auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
-			if(actionSelected != -1)
+			if(actionSelected == 0 || actionSelected == 1)
 			{
 				ChooseTarget();
 				if(targetSelected != -1)
@@ -166,7 +179,8 @@ TransitionScene Scene_Battle::Update()
 					currentPlayer++;
 				}
 			}
-			else
+
+			if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 			{
 				switch (windows.front()->Update())
 				{
@@ -199,6 +213,11 @@ TransitionScene Scene_Battle::Update()
 					{}
 				}
 			}
+			else
+			{
+				currentPlayer++;
+			}
+
 			if (actionSelected == -1 && currentPlayer >= party->party.size())
 			{
 				state = ENEMY_INPUT;
@@ -207,10 +226,35 @@ TransitionScene Scene_Battle::Update()
 		}
 		case ENEMY_INPUT:
 		{
+			std::mt19937 gen(rd());
+			random.param(std::uniform_int_distribution<>::param_type(0, party->party.size()-1));
+
 			for (int i = 0; auto const& elem : enemies.troop)
 			{
 				auto actionSpeed = elem.stats[static_cast<int>(BaseStats::SPEED)];
-				actionQueue.emplace(0, i, 0, false, actionSpeed);
+
+				int target = 0;
+				do
+				{
+					target = random(gen);
+				} while (party->party[target].currentHP <= 0);
+
+				int action = random100(gen);
+				if (action <= 40)		// 40% chance
+				{
+					actionQueue.emplace(0, i, target, false, actionSpeed);
+				}
+				else if (action <= 80)	// 40% chance
+				{
+					actionQueue.emplace(1, i, target, false, actionSpeed);
+				}
+				else					//20% chance
+				{
+					actionQueue.emplace(2, i, target, false, INT_MAX);
+				}
+
+				LOG("Target: %i || Action: %i", target, action);
+				
 				i++;
 			}
 			state = RESOLUTION;
@@ -218,6 +262,7 @@ TransitionScene Scene_Battle::Update()
 		}
 		case RESOLUTION:
 		{
+			std::mt19937 gen(rd());
 			if (!actionQueue.empty() && showNextText && actionSelected != 3)
 			{
 				BattleAction currentAction = actionQueue.top();
@@ -247,11 +292,27 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
+							int randomVariance = random40(gen);
 							int damage = attack - defense;
+							if (randomVariance > 20)
+							{
+								randomVariance -= 20;
+								damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
+							else
+							{
+								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
+							std::string damageMessage = "{} attacks {}! Deals {} damage.";
+							if (random100(gen) <= 10)
+							{
+								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							}
 							if (damage <= 0) damage = 1;
 							enemies.troop[currentAction.target].currentHP -= damage;
 
-							text = std::format("{} attacks {}! Deals {} damage.", party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
+							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
 						}
 						else if (currentAction.action == 1)
 						{
@@ -262,11 +323,27 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
+							int randomVariance = random40(gen);
 							int damage = attack - defense;
+							if (randomVariance > 20)
+							{
+								randomVariance -= 20;
+								damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
+							else
+							{
+								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
+							std::string damageMessage = "{} attacks {}! Deals {} damage.";
+							if (random100(gen) <= 10)
+							{
+								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							}
 							if (damage <= 0) damage = 1;
 							enemies.troop[currentAction.target].currentHP -= damage;
 
-							text = std::format("{} uses magic on {}! Deals {} damage.", party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
+							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
 						}
 					}
 
@@ -288,11 +365,27 @@ TransitionScene Scene_Battle::Update()
 							defense *= 2;
 							party->party[currentAction.target].isDefending = false;
 						}
+						int randomVariance = random40(gen);
 						int damage = attack - defense;
+						if (randomVariance > 20)
+						{
+							randomVariance -= 20;
+							damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+						else
+						{
+							damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+						std::string damageMessage = "{} attacks {}! Deals {} damage.";
+						if (random100(gen) <= 10)
+						{
+							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
 
-						text = std::format("{} attacks {}! Deals {} damage.", enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
+						text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
 					}
 					else if (currentAction.action == 1)
 					{
@@ -303,11 +396,27 @@ TransitionScene Scene_Battle::Update()
 							defense *= 2;
 							party->party[currentAction.target].isDefending = false;
 						}
+						int randomVariance = random40(gen);
 						int damage = attack - defense;
+						if (randomVariance > 20)
+						{
+							randomVariance -= 20;
+							damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+						else
+						{
+							damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+						std::string damageMessage = "{} attacks {}! Deals {} damage.";
+						if (random100(gen) <= 10)
+						{
+							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
 
-						text = std::format("{} attacks {}! Deals {} damage.", enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
+						text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
 					}
 				}
 
@@ -320,11 +429,24 @@ TransitionScene Scene_Battle::Update()
 			}
 			else if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
+				showNextText = true;
+
+				if (CheckBattleWin())
+				{
+					LOG("Battle won.");
+					state = BATTLE_WON;
+					break;
+				}
+				if (CheckBattleLoss())
+				{
+					LOG("Battle loss.");
+					state = BATTLE_LOSS;
+					break;
+				}
 				if (actionSelected == 3)
 				{
 					return TransitionScene::RUN_BATTLE;
 				}
-				showNextText = true;
 			}
 
 			if (showNextText && actionQueue.empty())
@@ -335,9 +457,39 @@ TransitionScene Scene_Battle::Update()
 			}
 			break;
 		}
+		case BATTLE_WON:
+		{
+			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You won the battle!");
+			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+			{
+				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				return TransitionScene::WIN_BATTLE;
+			}
+			break;
+		}
+		case BATTLE_LOSS:
+		{
+			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You lost the battle...");
+			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+			{
+				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				return TransitionScene::LOSE_BATTLE;
+			}
+			break;
+		}
 	}
 
 	return TransitionScene::NONE;
+}
+
+bool Scene_Battle::CheckBattleWin() const
+{
+	return !std::ranges::any_of(enemies.troop, [](Enemy const& e) { return e.currentHP > 0; });
+}
+
+bool Scene_Battle::CheckBattleLoss() const
+{
+	return !std::ranges::any_of(party->party, [](PartyCharacter const& PC) { return PC.currentHP > 0; });
 }
 
 int Scene_Battle::CheckNextScene()

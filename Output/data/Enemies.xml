@@ -1,24 +1,36 @@
-<Slime>
-	<texture path="Assets/Textures/Battlers/First.png"/>
+<Bat_B>
+	<texture path="Assets/Textures/Battlers/Bat_B.png"/>
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="100"/>
-		<defense value="50"/>
-		<specialattack value="100"/>
-		<specialdefense value="100"/>
+		<attack value="20"/>
+		<defense value="5"/>
+		<specialattack value="20"/>
+		<specialdefense value="5"/>
 		<speed value="2"/>
 	</stats>
-</Slime>
-<Orangutan>
-	<texture path="Assets/Textures/Battlers/Second.png"/>
+</Bat_B>
+<Slime_G>
+	<texture path="Assets/Textures/Battlers/Slime_G.png"/>
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="100"/>
-		<defense value="50"/>
-		<specialattack value="100"/>
-		<specialdefense value="100"/>
+		<attack value="20"/>
+		<defense value="5"/>
+		<specialattack value="20"/>
+		<specialdefense value="5"/>
 		<speed value="4"/>
 	</stats>
-</Orangutan>
+</Slime_G>
+<Bat_R>
+	<texture path="Assets/Textures/Battlers/Bat_R.png"/>
+	<stats>
+		<maxhp value="100"/>
+		<maxmana value="100"/>
+		<attack value="20"/>
+		<defense value="5"/>
+		<specialattack value="20"/>
+		<specialdefense value="5"/>
+		<speed value="2"/>
+	</stats>
+</Bat_R>
