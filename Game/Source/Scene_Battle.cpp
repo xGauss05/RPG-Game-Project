@@ -20,13 +20,10 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	windows.clear();
 	windows.emplace_back(windowFactory.CreateWindow("BattleActions"));
 	windows.emplace_back(windowFactory.CreateWindow("Message"));
-	//windows.emplace_back(windowFactory.CreateWindow(""))
-
-	// Don't ask. I have no idea of what this does.
 	
 
+	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
-	// This produces random values uniformly distributed from 1 to 100
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 }
 
