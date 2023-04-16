@@ -41,8 +41,6 @@ private:
 	pugi::xml_document currentDialogDocument;
 	pugi::xml_node currentDialogNode;
 
-	bool exit = false;
-
 	TransitionScene transitionTo = TransitionScene::NONE;
 
 	const Window_Factory* windowFactory;

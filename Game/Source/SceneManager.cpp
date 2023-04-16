@@ -20,7 +20,7 @@ SceneManager::SceneManager() : Module()
 }
 
 // Destructor
-SceneManager::~SceneManager() 
+SceneManager::~SceneManager()
 {
 	app->tex->Unload(pauseMenuBackground);
 }
@@ -75,10 +75,10 @@ bool SceneManager::Pause(int phase)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
 		app->LoadGameRequest();
 
-	iPoint camera = { app->render->GetCamera().x * -1, app->render->GetCamera().y * -1};
+	iPoint camera = { app->render->GetCamera().x * -1, app->render->GetCamera().y * -1 };
 	app->render->DrawTexture(DrawParameters(pauseMenuBackground, camera));
 
-	if(currentScene->OnPause() == 4) return false;
+	if (currentScene->OnPause() == 4) return false;
 
 	return true;
 }
@@ -87,45 +87,48 @@ bool SceneManager::Pause(int phase)
 bool SceneManager::Update(float dt)
 {
 	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN) {
+		LOG("Save Game requested");
 		app->SaveGameRequest();
+	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN) {
+		LOG("Load Game requested");
 		app->LoadGameRequest();
-
+	}
 	currentScene->Draw();
 
 	using enum TransitionScene;
-	switch (currentScene->Update()) 
-		{
-		case BOOT_COMPLETE:
-			break;
-		case MAIN_MENU:
-			nextScene = std::make_unique<Scene_Title>();
-			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
-			break;
-		case NEW_GAME:
-			nextScene = std::make_unique<Scene_Map>();
-			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-			nextScene->Start();
-			break;
-		case CONTINUE_GAME:
-			break;
-		case START_BATTLE:
-			//nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
-			break;
-		case WIN_BATTLE:
-		case LOSE_BATTLE:
-		case RUN_BATTLE:
-			nextScene = std::move(sceneOnHold);
-			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-			break;
-		case EXIT_GAME:
-			return false;
-		case NONE:
-			break;
+	switch (currentScene->Update())
+	{
+	case BOOT_COMPLETE:
+		break;
+	case MAIN_MENU:
+		nextScene = std::make_unique<Scene_Title>();
+		nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+		break;
+	case NEW_GAME:
+		nextScene = std::make_unique<Scene_Map>();
+		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+		nextScene->Start();
+		break;
+	case CONTINUE_GAME:
+		break;
+	case START_BATTLE:
+		//nextScene = std::make_unique<Scene_Battle>(party.get(), combat);
+		break;
+	case WIN_BATTLE:
+	case LOSE_BATTLE:
+	case RUN_BATTLE:
+		nextScene = std::move(sceneOnHold);
+		app->tex->Load("Assets/UI/GUI_4x_sliced.png");
+		break;
+	case EXIT_GAME:
+		return false;
+	case NONE:
+		break;
 	}
-	
+
 	return true;
 }
 
@@ -134,8 +137,8 @@ bool SceneManager::PostUpdate()
 {
 	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
 	{
-		
-		
+
+
 		nextScene = std::make_unique<Scene_Battle>(party.get(), "basicslime");
 		nextScene->Load("", sceneInfo, *windowFactory);
 		sceneOnHold = std::move(currentScene);
@@ -146,7 +149,7 @@ bool SceneManager::PostUpdate()
 		currentScene = std::move(nextScene);
 		currentScene->Start();
 	}
-	
+
 	return true;
 }
 
@@ -163,25 +166,41 @@ bool SceneManager::HasSaveData() const
 	return true;
 }
 
-bool SceneManager::LoadState(pugi::xml_node const &data)
+bool SceneManager::LoadState(pugi::xml_node const& data)
 {
-	return false;
+	pugi::xml_node node = data.child("party_member");
+
+	for (auto& character : party->party)
+	{
+		character.SetLevel(data.attribute("level").as_int());
+		character.SetCurrentHP(data.attribute("currentHP").as_int());
+		character.SetCurrentMana(data.attribute("currentMP").as_int());
+		character.SetCurrentXP(data.attribute("currentXP").as_int());
+
+		node.next_sibling("party_member");
+	}
+
+	return true;
 }
 
-pugi::xml_node SceneManager::SaveState(pugi::xml_node const &data) const
+pugi::xml_node SceneManager::SaveState(pugi::xml_node const& data) const
 {
-	std::string saveData2 = "<{} {}=\"{}\"/>\n";
-	std::string saveOpenData2 = "<{} {}=\"{}\">\n";
-	std::string saveData4 = "<{} {}=\"{}\" {}=\"{}\"/>\n";
-	std::string saveOpenData4 = "<{} {}=\"{}\" {}=\"{}\">\n";
-	std::string saveData6 = "<{} {}=\"{}\" {}=\"{}\" {}=\"{}\"/>\n";
-	std::string saveData6OneFloat = "<{} {}=\"{}\" {}=\"{}\" {}=\"{}\" {}=\"{:.2f}\"/>\n";
-	std::string saveData6OneInt = "<{} {}=\"{}\" {}=\"{:.2f}\" {}=\"{:.2f}\" {}=\"{:.2f}\"/>\n";
-	std::string saveFloatData = "<{} {}=\"{:.2f}\" {}=\"{:.2f}\"/>\n";
-	std::string dataToSave = "<scene>\n";
-	dataToSave += "</scene>";
+	pugi::xml_node node = data;
+	node = node.append_child("scene");
 
-	app->AppendFragment(data, dataToSave.c_str());
+	node.append_child("player");
+	
+	for (auto const& character : party->party)
+	{
 
-	return data;
+		auto currentNode = node.append_child("party_member");
+		currentNode.append_attribute("name").set_value(character.name.c_str());
+		currentNode.append_attribute("level").set_value(character.level);
+		currentNode.append_attribute("currentHP").set_value(character.currentHP);
+		currentNode.append_attribute("currentMP").set_value(character.currentMana);
+		currentNode.append_attribute("currentXP").set_value(character.currentXP);
+
+	}
+
+	return node;
 }

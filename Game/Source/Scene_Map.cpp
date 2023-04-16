@@ -49,7 +49,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	}
 
 	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
-	exit =  false;
+
 }
 
 void Scene_Map::Start()

@@ -36,6 +36,20 @@ struct PartyCharacter
 	bool isDefending = false;
 	std::vector<int> equipment;
 	std::vector<int> skills;
+
+public: 
+	void SetCurrentHP(int hp) {
+		currentHP = hp;
+	}
+	void SetCurrentMana(int mp) {
+		currentMana = mp;
+	}
+	void SetCurrentXP(int xp) {
+		currentXP = xp;
+	}
+	void SetLevel(int lvl) {
+		level = lvl;
+	}
 };
 
 class GameParty
