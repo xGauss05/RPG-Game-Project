@@ -1,0 +1,4 @@
+<dialog>
+  <message1 text="THE MARKET" next="message2"/>
+  <message2 text="We need people" next="end"/>
+</dialog>

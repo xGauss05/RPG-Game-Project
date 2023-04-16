@@ -1,0 +1,4 @@
+<dialog>
+  <message1 text="DANGER" next="message2"/>
+  <message2 text="DO NOT PASS" next="end"/>
+</dialog>

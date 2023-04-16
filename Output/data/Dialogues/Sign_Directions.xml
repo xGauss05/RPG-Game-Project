@@ -1,0 +1,4 @@
+<dialog>
+  <message1 text="West - Market" next="message2"/>
+  <message2 text="South - Airport" next="end"/>
+</dialog>
