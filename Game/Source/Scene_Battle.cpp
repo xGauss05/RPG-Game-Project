@@ -44,12 +44,18 @@ void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint pos
 	SDL_Rect hpBar{};
 	hpBar.x = position.x;
 	hpBar.y = position.y + h + 10;
+	hpBar.h = 10;
+
+	hpBar.w = 50;
+	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
 
 	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
 	hpBar.w = hp > 0 ? static_cast<int>(hp * 50.0f) : 0;
-	hpBar.h = 10;
 
-	app->render->DrawShape(hpBar, true, SDL_Color(255, 0, 0, 255));
+	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
+	auto green = static_cast<Uint8>(250.0f * hp);
+
+	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
 }
 
 void Scene_Battle::ChooseTarget()
