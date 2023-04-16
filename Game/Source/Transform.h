@@ -17,7 +17,7 @@ public:
 protected:
 	void Initialize(pugi::xml_node const& node)
 	{
-		originalPosition = { node.attribute("x").as_int(), node.attribute("y").as_int() };
+		originalPosition = { node.attribute("x").as_int() * 3, node.attribute("y").as_int() * 3 };
 		position = originalPosition;
 		size = { node.attribute("width").as_int(), node.attribute("height").as_int() };
 	}

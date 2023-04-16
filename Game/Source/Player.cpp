@@ -25,15 +25,15 @@ void Player::Draw() const
 
 void Player::Create()
 {
-	app->tex->Load("Assets/Maps/Slime_Smol.png");	//This should not be done like this, all of this should load from the map XML.
-	Sprite::Initialize("Assets/Maps/Slime_Smol.png", 0);
-	position = { 864, 768 };
-	size = { 48, 96 };
+	app->tex->Load("Assets/Textures/NPCs/Forewoman_NPC.png");	//This should not be done like this, all of this should load from the map XML.
+	Sprite::Initialize("Assets/Textures/NPCs/Forewoman_NPC.png", 0);
+	position = { 192, 2304 }; // 64 * 3, 786 * 3
+	size = { 48, 96 }; //16 * 3, 32 * 3
 	currentSpriteSlice = {
-		(GetTextureIndex().x + 1) * size.x,
-		GetTextureIndex().y * size.y,
-		size.x,
-		size.y
+		(GetTextureIndex().x + 1) * (size.x / 3),
+		GetTextureIndex().y * (size.y / 3),
+		size.x / 3,
+		size.y / 3
 	};
 	app->render->AdjustCamera(position);
 }
@@ -125,23 +125,23 @@ void Player::StartMovement()
 		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_REPEAT)
 		{
 			moveVector.y = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
+			currentSpriteSlice.y = (GetTextureIndex().y + 3) * (size.y / 3);
 		}
 		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
 		{
 			moveVector.x = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
+			currentSpriteSlice.y = (GetTextureIndex().y + 1) * (size.y / 3);
 		}
 		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_REPEAT)
 		{
 			moveVector.y = 1;
-			currentSpriteSlice.y = GetTextureIndex().y * size.y;
+			currentSpriteSlice.y = GetTextureIndex().y * (size.y / 3);
 
 		}
 		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_REPEAT)
 		{
 			moveVector.x = 1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
+			currentSpriteSlice.y = (GetTextureIndex().y + 2) * (size.y / 3);
 		}
 	}
 	else
@@ -149,22 +149,22 @@ void Player::StartMovement()
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			moveVector.y = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
+			currentSpriteSlice.y = (GetTextureIndex().y + 3) * (size.y / 3);
 		}
 		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			moveVector.x = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
+			currentSpriteSlice.y = (GetTextureIndex().y + 1) * (size.y / 3);
 		}
 		else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
 			moveVector.y = 1;
-			currentSpriteSlice.y = GetTextureIndex().y * size.y;
+			currentSpriteSlice.y = GetTextureIndex().y * (size.y / 3);
 		}
 		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			moveVector.x = 1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
+			currentSpriteSlice.y = (GetTextureIndex().y + 2) * (size.y / 3);
 		}
 	}
 
@@ -185,10 +185,10 @@ void Player::AnimateMove()
 {
 	if (animTimer == 8)
 	{
-		currentSpriteSlice.x += size.x;
-		if (currentSpriteSlice.x == size.x * (GetTextureIndex().x + 3))
+		currentSpriteSlice.x += (size.x / 3);
+		if (currentSpriteSlice.x == (size.x / 3) * (GetTextureIndex().x + 3))
 		{
-			currentSpriteSlice.x = GetTextureIndex().x * size.x;
+			currentSpriteSlice.x = GetTextureIndex().x * (size.x / 3);
 		}
 		animTimer = 0;
 	}

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="58">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="62">
  <tileset firstgid="1" source="Village.tsx"/>
+ <tileset firstgid="257" source="NPCs.tsx"/>
  <layer id="1" name="Ground" width="144" height="64">
   <data encoding="csv">
 87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,88,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,86,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,
@@ -137,7 +138,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="9" name="Interactible" class="Layer of Events">
+ <objectgroup id="9" name="Events" class="Layer of Events">
   <object id="14" name="To Lab Sign" x="1328" y="176" width="32" height="32">
    <properties>
     <property name="Text" value="North - Aether's Lab"/>
@@ -162,7 +163,7 @@
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC1.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
     <property name="Text">West - Market
 South - Airport</property>
    </properties>
@@ -177,7 +178,7 @@ South - Airport</property>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC1.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
     <property name="Text">THE MARKET
 we need people</property>
    </properties>
@@ -192,7 +193,7 @@ we need people</property>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC1.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
     <property name="Text" value="CLOSED"/>
    </properties>
   </object>
@@ -206,7 +207,7 @@ we need people</property>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC1.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
     <property name="Text" value="CLOSED"/>
    </properties>
   </object>
@@ -220,9 +221,48 @@ we need people</property>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC1.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
     <property name="Text">DANGER
 DO NOT PASS</property>
+   </properties>
+  </object>
+  <object id="59" name="Tycoon" type="Event NPC" gid="257" x="432" y="800" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Tycoon01.xml"/>
+   </properties>
+  </object>
+  <object id="60" name="Captain" type="Event NPC" gid="258" x="464" y="800" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Captain01.xml"/>
+   </properties>
+  </object>
+  <object id="61" name="Aether" type="Event NPC" gid="259" x="496" y="800" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Aether01.xml"/>
    </properties>
   </object>
  </objectgroup>

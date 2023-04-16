@@ -148,7 +148,7 @@ TransitionScene Scene_Map::Update()
 		}
 		else if (state == MapState::NORMAL)
 		{
-			iPoint checktile = player.GetPosition() + (player.lastDir * map.GetTileWidth());
+			iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
 
 			EventTrigger action = map.TriggerEvent(checktile);
 
