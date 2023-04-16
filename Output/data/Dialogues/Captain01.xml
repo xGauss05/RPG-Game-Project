@@ -1,0 +1,5 @@
+<dialog>
+	<message1 text="Hello there! I’m the pilot managing this facility! Would you like to know what kind of place this is?" next="confirmation" yes="message2" no="message3"/>
+	<message2 text="In this facility we fly airships, we can take you up to the sky to places beyond your reach by foot!"next="end"/>
+	<message3 text="Oh, alright then, have a nice day!" next="end"/>
+</dialog>/>

@@ -1,0 +1,8 @@
+<dialog>
+    <message1 text=""Arrr, so ye be comin' from another realm, aye? That be quite interestin' matey! Do ye be wieldin' some sort o' mystical powers in yer world?" next="confirmation" yes="message2" no="message3"/>
+	<message2 text="Blimey! Be that so, ye scallywag? What manner o' sorcery might that be, arrr? Though, fer now scratch that... ye seem untrained..." next="message4"/>
+    <message3 text="Avast ye! Me tiny brain can't reckon how that might be, ye savvy? Ye'll have to fill me sails with more details, arrr! But not now." next="message4"/>
+	<message4 text="I reckon ye might need sum trainin', wanna fight?" next="confirmation" yes="message5" no="message6"/>
+    <message5 text="Let's do this!" next="Combat" win="end" lose="message6"/>
+    <message6 text="You should train harder." next="message4"/>
+</dialog>
