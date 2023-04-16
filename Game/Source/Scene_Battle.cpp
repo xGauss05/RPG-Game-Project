@@ -155,7 +155,7 @@ TransitionScene Scene_Battle::Update()
 		case PLAYER_INPUT:
 		{
 			auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
-			if(actionSelected != -1)
+			if(actionSelected == 0 || actionSelected == 1)
 			{
 				ChooseTarget();
 				if(targetSelected != -1)
@@ -166,7 +166,8 @@ TransitionScene Scene_Battle::Update()
 					currentPlayer++;
 				}
 			}
-			else
+
+			if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 			{
 				switch (windows.front()->Update())
 				{
@@ -199,6 +200,11 @@ TransitionScene Scene_Battle::Update()
 					{}
 				}
 			}
+			else
+			{
+				currentPlayer++;
+			}
+
 			if (actionSelected == -1 && currentPlayer >= party->party.size())
 			{
 				state = ENEMY_INPUT;

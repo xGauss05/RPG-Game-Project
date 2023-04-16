@@ -2,7 +2,7 @@
 <save_state>
 	<scene />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="-224" y="-408" />
 		<graphics vsync="false" targetfps="60" />
 	</renderer>
 </save_state>
