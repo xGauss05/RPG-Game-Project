@@ -24,6 +24,8 @@ void GameParty::CreateParty()
 		{
 			memberToAdd.stats.emplace_back(stat.attribute("value").as_int());
 		}
+		memberToAdd.currentHP = memberToAdd.stats[0];
+		memberToAdd.currentMana = memberToAdd.stats[1];
 		party.emplace_back(memberToAdd);
 	}
 }

@@ -1,4 +1,4 @@
-<slime>
+<Slime>
 	<texture path="Assets/Textures/Battlers/First.png"/>
 	<stats>
 		<maxhp value="100"/>
@@ -9,8 +9,8 @@
 		<specialdefense value="100"/>
 		<speed value="2"/>
 	</stats>
-</slime>
-<orangutan>
+</Slime>
+<Orangutan>
 	<texture path="Assets/Textures/Battlers/Second.png"/>
 	<stats>
 		<maxhp value="100"/>
@@ -21,4 +21,4 @@
 		<specialdefense value="100"/>
 		<speed value="4"/>
 	</stats>
-</orangutan>
+</Orangutan>
