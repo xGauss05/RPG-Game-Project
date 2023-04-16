@@ -75,7 +75,8 @@ bool SceneManager::Pause(int phase)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
 		app->LoadGameRequest();
 
-	app->render->DrawTexture(DrawParameters(pauseMenuBackground, iPoint(0, 0)));
+	iPoint camera = { app->render->GetCamera().x * -1, app->render->GetCamera().y * -1};
+	app->render->DrawTexture(DrawParameters(pauseMenuBackground, camera));
 
 	if(currentScene->OnPause() == 4) return false;
 

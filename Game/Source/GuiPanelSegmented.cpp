@@ -48,6 +48,8 @@ void GuiPanelSegmented::Draw(iPoint originalPosition, iPoint size) const
 
 void GuiPanelSegmented::DrawHorizontalSegment(iPoint topLeftPosition, SDL_Rect currentSegment, iPoint size) const
 {
+	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
+	topLeftPosition -= camera;
 	// Draw left corner texture
 	app->render->DrawTexture(DrawParameters(textureID, topLeftPosition).Section(&currentSegment));
 

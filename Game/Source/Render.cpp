@@ -406,6 +406,12 @@ void Render::AdjustCamera(iPoint position)
 		camera.y = -1 * (mapSize.y * tileSize.y * 3 - camera.h);
 }
 
+void Render::ResetCamera()
+{
+	camera.x = 0;
+	camera.y = 0;
+}
+
 SDL_Renderer* Render::GetRender() const
 {
 	return renderer.get();

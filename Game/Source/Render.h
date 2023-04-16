@@ -125,6 +125,7 @@ public:
 
 	SDL_Rect GetCamera() const;
 	void AdjustCamera(iPoint position);
+	void ResetCamera();
 
 	SDL_Renderer* GetRender() const;
 

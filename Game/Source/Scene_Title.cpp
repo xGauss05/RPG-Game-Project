@@ -36,6 +36,8 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 	playedLogo = false;
+	
+	app->render->ResetCamera();
 }
 
 void Scene_Title::Start()
