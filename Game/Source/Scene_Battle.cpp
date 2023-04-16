@@ -42,15 +42,15 @@ void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint pos
 	app->tex->GetSize(app->GetTexture(textureID), w, h);
 
 	SDL_Rect hpBar{};
-	hpBar.x = position.x;
-	hpBar.y = position.y + h + 10;
+	hpBar.x = position.x + 2;
+	hpBar.y = position.y + h * 2 + 10;
 	hpBar.h = 10;
 
-	hpBar.w = 50;
+	hpBar.w = 100;
 	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
 
 	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
-	hpBar.w = hp > 0 ? static_cast<int>(hp * 50.0f) : 0;
+	hpBar.w = hp > 0 ? static_cast<int>(hp * 100.0f) : 0;
 
 	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
 	auto green = static_cast<Uint8>(250.0f * hp);
@@ -142,6 +142,8 @@ void Scene_Battle::Draw()
 
 		DrawParameters drawEnemy(elem.textureID, elem.position);
 		drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
+		drawEnemy.Scale(fPoint(2,2));
+
 
 		if (elem.currentHP <= 0)
 		{
