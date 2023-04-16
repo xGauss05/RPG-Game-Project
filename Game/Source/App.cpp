@@ -321,7 +321,7 @@ bool App::DoPaused()
 
 	// Update
 	phase++;
-	if(!scene->Pause(phase))
+	if (!scene->Pause(phase))
 		return false;
 
 	// PostUpdate
@@ -338,12 +338,16 @@ bool App::DoPaused()
 bool App::PauseGame()
 {
 	using enum KeyState;
-	
+
 	pause = true;
 	bool escapeNotPressed = false;
-	
+
+	app->audio->SetBGMVolume(app->audio->GetBGMVolume() / 3);
+	app->audio->SetSFXVolume(app->audio->GetSFXVolume() / 3);
+
 	while (pause)
 	{
+		
 		if (input->controllerCount > 0)
 		{
 			if (input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KEY_UP)
@@ -362,15 +366,21 @@ bool App::PauseGame()
 			{
 				escapeNotPressed = true;
 			}
-			if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN 
+			if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN
 				&& escapeNotPressed)
 			{
 				pause = false;
 			}
 		}
-		
-		if (!DoPaused()) return false;
+
+		if (!DoPaused()) {
+			
+			return false;
+		}
 	}
+
+	app->audio->SetBGMVolume(app->audio->GetBGMVolume() * 3);
+	app->audio->SetSFXVolume(app->audio->GetSFXVolume() * 3);
 
 	pause = false;
 

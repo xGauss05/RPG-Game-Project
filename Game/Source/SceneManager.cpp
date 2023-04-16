@@ -96,6 +96,7 @@ bool SceneManager::Update(float dt)
 		LOG("Load Game requested");
 		app->LoadGameRequest();
 	}
+
 	currentScene->Draw();
 
 	using enum TransitionScene;
@@ -115,6 +116,10 @@ bool SceneManager::Update(float dt)
 			nextScene->Start();
 			break;
 		case CONTINUE_GAME:
+			nextScene = std::make_unique<Scene_Map>();
+			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+			nextScene->Start();
+			app->LoadGameRequest();
 			break;
 		case START_BATTLE:
 			StartBattle("bat2slime");

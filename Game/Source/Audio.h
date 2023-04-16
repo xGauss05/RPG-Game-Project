@@ -33,10 +33,27 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	void SetBGMVolume(int value);
+
+	void SetSFXVolume(int value);
+
+	int GetBGMVolume()
+	{
+		return BGMVolume;
+	}
+
+	int GetSFXVolume()
+	{
+		return SFXVolume;
+	}
+
 private:
 
 	_Mix_Music* music = nullptr;
 	std::list<Mix_Chunk*> fx;
+
+	int BGMVolume;
+	int SFXVolume;
 };
 
 #endif // __AUDIO_H__

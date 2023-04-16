@@ -51,6 +51,11 @@ bool Audio::Awake(pugi::xml_node& config)
 		active = false;
 	}
 
+	BGMVolume = 64;
+	SFXVolume = 64;
+	SetBGMVolume(BGMVolume);
+	SetSFXVolume(SFXVolume);
+
 	return true;
 }
 
@@ -146,4 +151,16 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return true;
+}
+
+void Audio::SetSFXVolume(int value)
+{
+	SFXVolume = value;
+	Mix_Volume(-1, value);
+}
+
+void Audio::SetBGMVolume(int value)
+{
+	BGMVolume = value;
+	Mix_VolumeMusic(value);
 }
