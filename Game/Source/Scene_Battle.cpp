@@ -288,7 +288,17 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
-							int damage = attack - defense + (random40(gen) - 20);
+							int randomVariance = random40(gen);
+							int damage = attack - defense;
+							if (randomVariance > 20)
+							{
+								randomVariance -= 20;
+								damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
+							else
+							{
+								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
 							std::string damageMessage = "{} attacks {}! Deals {} damage.";
 							if (random100(gen) <= 10)
 							{
@@ -309,7 +319,17 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
-							int damage = attack - defense + (random40(gen) - 20);
+							int randomVariance = random40(gen);
+							int damage = attack - defense;
+							if (randomVariance > 20)
+							{
+								randomVariance -= 20;
+								damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
+							else
+							{
+								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+							}
 							std::string damageMessage = "{} attacks {}! Deals {} damage.";
 							if (random100(gen) <= 10)
 							{
@@ -341,7 +361,17 @@ TransitionScene Scene_Battle::Update()
 							defense *= 2;
 							party->party[currentAction.target].isDefending = false;
 						}
-						int damage = attack - defense + (random40(gen) - 20);
+						int randomVariance = random40(gen);
+						int damage = attack - defense;
+						if (randomVariance > 20)
+						{
+							randomVariance -= 20;
+							damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+						else
+						{
+							damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
 						std::string damageMessage = "{} attacks {}! Deals {} damage.";
 						if (random100(gen) <= 10)
 						{
@@ -362,7 +392,17 @@ TransitionScene Scene_Battle::Update()
 							defense *= 2;
 							party->party[currentAction.target].isDefending = false;
 						}
-						int damage = attack - defense + (random40(gen) - 20);
+						int randomVariance = random40(gen);
+						int damage = attack - defense;
+						if (randomVariance > 20)
+						{
+							randomVariance -= 20;
+							damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+						else
+						{
+							damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
 						std::string damageMessage = "{} attacks {}! Deals {} damage.";
 						if (random100(gen) <= 10)
 						{
@@ -385,21 +425,24 @@ TransitionScene Scene_Battle::Update()
 			}
 			else if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
+				showNextText = true;
+
 				if (CheckBattleWin())
 				{
 					LOG("Battle won.");
-					return TransitionScene::WIN_BATTLE;
+					state = BATTLE_WON;
+					break;
 				}
 				if (CheckBattleLoss())
 				{
 					LOG("Battle loss.");
-					return TransitionScene::LOSE_BATTLE;
+					state = BATTLE_LOSS;
+					break;
 				}
 				if (actionSelected == 3)
 				{
 					return TransitionScene::RUN_BATTLE;
 				}
-				showNextText = true;
 			}
 
 			if (showNextText && actionQueue.empty())
@@ -407,6 +450,26 @@ TransitionScene Scene_Battle::Update()
 				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
 				currentPlayer = 0;
 				state = PLAYER_INPUT;
+			}
+			break;
+		}
+		case BATTLE_WON:
+		{
+			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You won the battle!");
+			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+			{
+				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				return TransitionScene::WIN_BATTLE;
+			}
+			break;
+		}
+		case BATTLE_LOSS:
+		{
+			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You lost the battle...");
+			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+			{
+				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				return TransitionScene::LOSE_BATTLE;
 			}
 			break;
 		}

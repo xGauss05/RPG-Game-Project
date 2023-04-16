@@ -11,7 +11,9 @@ enum class BattleState
 {
     PLAYER_INPUT,
     ENEMY_INPUT,
-    RESOLUTION
+    RESOLUTION,
+    BATTLE_WON,
+    BATTLE_LOSS
 };
 
 class Scene_Battle : public Scene_Base
