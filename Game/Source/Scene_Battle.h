@@ -3,6 +3,8 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 
+#include <random>
+
 #include <queue>
 
 enum class BattleState
@@ -41,6 +43,12 @@ private:
     bool showNextText = true;
     int targetSelected = -1;
     int actionSelected = -1;
+
+    std::uniform_int_distribution<> random;
+    std::uniform_int_distribution<> random20;
+    std::uniform_int_distribution<> random100;
+    
+    std::random_device rd;
 
     struct BattleAction
     {

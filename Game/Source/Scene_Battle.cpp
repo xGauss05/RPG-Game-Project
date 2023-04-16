@@ -2,6 +2,8 @@
 #include "App.h"
 #include "Render.h"
 
+#include <random>
+
 Scene_Battle::Scene_Battle(GameParty* gameParty, std::string const &fightName)
 	: party(gameParty)
 {
@@ -19,6 +21,13 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	windows.emplace_back(windowFactory.CreateWindow("BattleActions"));
 	windows.emplace_back(windowFactory.CreateWindow("Message"));
 	//windows.emplace_back(windowFactory.CreateWindow(""))
+
+	// Don't ask. I have no idea of what this does.
+	
+
+	// This produces random values uniformly distributed from 1 to 100
+	random20.param(std::uniform_int_distribution<>::param_type(1, 20));
+	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 }
 
 void Scene_Battle::Start()
@@ -213,10 +222,35 @@ TransitionScene Scene_Battle::Update()
 		}
 		case ENEMY_INPUT:
 		{
+			std::mt19937 gen(rd());
+			random.param(std::uniform_int_distribution<>::param_type(0, party->party.size()-1));
+
 			for (int i = 0; auto const& elem : enemies.troop)
 			{
 				auto actionSpeed = elem.stats[static_cast<int>(BaseStats::SPEED)];
-				actionQueue.emplace(0, i, 0, false, actionSpeed);
+
+				int target = 0;
+				do
+				{
+					target = random(gen);
+				} while (party->party[target].currentHP <= 0);
+
+				int action = random100(gen);
+				if (action <= 40)		// 40% chance
+				{
+					actionQueue.emplace(0, i, target, false, actionSpeed);
+				}
+				else if (action <= 80)	// 40% chance
+				{
+					actionQueue.emplace(1, i, target, false, actionSpeed);
+				}
+				else					//20% chance
+				{
+					actionQueue.emplace(2, i, target, false, INT_MAX);
+				}
+
+				LOG("Target: %i || Action: %i", target, action);
+				
 				i++;
 			}
 			state = RESOLUTION;
@@ -313,7 +347,7 @@ TransitionScene Scene_Battle::Update()
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
 
-						text = std::format("{} attacks {}! Deals {} damage.", enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
+						text = std::format("{} uses magic on {}! Deals {} damage.", enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
 					}
 				}
 
