@@ -320,6 +320,16 @@ TransitionScene Scene_Battle::Update()
 			}
 			else if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
+				if (CheckBattleWin())
+				{
+					LOG("Battle won.");
+					return TransitionScene::WIN_BATTLE;
+				}
+				if (CheckBattleLoss())
+				{
+					LOG("Battle loss.");
+					return TransitionScene::LOSE_BATTLE;
+				}
 				if (actionSelected == 3)
 				{
 					return TransitionScene::RUN_BATTLE;
@@ -338,6 +348,16 @@ TransitionScene Scene_Battle::Update()
 	}
 
 	return TransitionScene::NONE;
+}
+
+bool Scene_Battle::CheckBattleWin() const
+{
+	return !std::ranges::any_of(enemies.troop, [](Enemy const& e) { return e.currentHP > 0; });
+}
+
+bool Scene_Battle::CheckBattleLoss() const
+{
+	return !std::ranges::any_of(party->party, [](PartyCharacter const& PC) { return PC.currentHP > 0; });
 }
 
 int Scene_Battle::CheckNextScene()

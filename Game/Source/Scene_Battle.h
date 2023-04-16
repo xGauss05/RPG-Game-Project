@@ -25,6 +25,8 @@ public:
     void Start() override;
     void Draw() override;
     TransitionScene Update() override;
+    bool CheckBattleWin() const;
+    bool CheckBattleLoss() const;
     int CheckNextScene() override;
     int OnPause() override;
 
