@@ -107,10 +107,6 @@ TransitionScene Scene_Map::Update()
 	{
 		windows.back()->Update();
 	}
-	else if (state == MapState::NORMAL 
-		&& app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KeyState::KEY_DOWN)
-	{
-	}
 
 	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
 	{

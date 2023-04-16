@@ -46,31 +46,61 @@ Player::PlayerAction Player::HandleInput() const
 
 	if (!moveVector.IsZero())
 		return returnAction;
+	if (app->input->controllerCount > 0)
+	{
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.y -= tileSize;
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.x -= tileSize;
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.y += tileSize;
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		returnAction.action |= MOVE;
-		returnAction.destinationTile.y -= tileSize;
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.x += tileSize;
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			returnAction.action |= INTERACT;
+		}
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	else
 	{
-		returnAction.action |= MOVE;
-		returnAction.destinationTile.x -= tileSize;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		returnAction.action |= MOVE;
-		returnAction.destinationTile.y += tileSize;
-		
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		returnAction.action |= MOVE;
-		returnAction.destinationTile.x += tileSize;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-	{
-		returnAction.action |= INTERACT;
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.y -= tileSize;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.x -= tileSize;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.y += tileSize;
+
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			returnAction.action |= MOVE;
+			returnAction.destinationTile.x += tileSize;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			returnAction.action |= INTERACT;
+		}
 	}
 
 	return returnAction;
@@ -87,25 +117,53 @@ void Player::StartAction(PlayerAction playerAction)
 void Player::StartMovement()
 {
 	using enum KeyState;
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+
+	if (app->input->controllerCount > 0)
 	{
-		moveVector.y = -1;
-		currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_REPEAT)
+		{
+			moveVector.y = -1;
+			currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
+		{
+			moveVector.x = -1;
+			currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_REPEAT)
+		{
+			moveVector.y = 1;
+			currentSpriteSlice.y = GetTextureIndex().y * size.y;
+
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_REPEAT)
+		{
+			moveVector.x = 1;
+			currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
+		}
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	else
 	{
-		moveVector.x = -1;
-		currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		moveVector.y = 1;
-		currentSpriteSlice.y = GetTextureIndex().y * size.y;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		moveVector.x = 1;
-		currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			moveVector.y = -1;
+			currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			moveVector.x = -1;
+			currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			moveVector.y = 1;
+			currentSpriteSlice.y = GetTextureIndex().y * size.y;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			moveVector.x = 1;
+			currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
+		}
 	}
 
 	lastDir = moveVector;
