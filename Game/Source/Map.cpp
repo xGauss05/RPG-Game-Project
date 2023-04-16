@@ -148,6 +148,10 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 	renderView.h = cameraPosition.y + cameraSize.y + tileSize.y;
 	if (renderView.h > layer.GetSize().y) renderView.h = layer.GetSize().y;
 
+	renderView.x *= 3;
+	renderView.y *= 3;
+	renderView.w /= 3;
+	renderView.h /= 3;
 
 	for (int x = renderView.x; x < renderView.w; x++)
 	{
@@ -157,7 +161,7 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 
 			if (gid == 0) continue;
 
-			DrawTile(gid, MapToWorld(x, y));
+			DrawTile(gid, MapToWorld(x*3, y*3));
 		}
 	}
 }
@@ -180,6 +184,7 @@ void Map::DrawTile(int gid, iPoint pos) const
 	app->render->DrawTexture(
 		DrawParameters((*result).GetTextureID(), iPoint(pos.x, pos.y))
 		.Section(&r)
+		.Scale(fPoint(3.0, 3.0))
 	);
 }
 

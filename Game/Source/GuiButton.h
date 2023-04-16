@@ -46,6 +46,8 @@ private:
 	int pressedFx = 0;
 	int focusedFx = 0;
 
+	int textureID = 0;
+
 	bool playedSound = true;
 
 	std::map<int, GuiPanelSegmented> panels;

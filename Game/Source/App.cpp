@@ -321,7 +321,8 @@ bool App::DoPaused()
 
 	// Update
 	phase++;
-	if(!scene->Pause(phase)) return false;
+	if(!scene->Pause(phase))
+		return false;
 
 	// PostUpdate
 	phase++;

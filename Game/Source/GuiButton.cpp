@@ -10,10 +10,7 @@
 
 GuiButton::~GuiButton()
 {
-	for (auto const& [index, panel] : panels)
-	{
-		panel.Unload();
-	}
+	app->tex->Unload(textureID);
 }
 
 GuiButton::GuiButton(uPoint pos, uPoint size, std::string const& str, std::function<int()> const& funcPtr, std::vector<SDL_Rect> const& buttonStates) :
@@ -22,7 +19,7 @@ GuiButton::GuiButton(uPoint pos, uPoint size, std::string const& str, std::funct
 {
 	Initialize(funcPtr, pos, size);
 
-	int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
+	textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Pressed.wav");
 	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Focused.wav");
 	for (int i = 0; auto const& elem : buttonStates)
