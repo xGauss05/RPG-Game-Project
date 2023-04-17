@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="31" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="31" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="15">
  <tileset firstgid="1" source="Market.tsx"/>
+ <tileset firstgid="257" source="NPCs.tsx"/>
  <layer id="1" name="Ground" width="31" height="14">
   <data encoding="csv">
 66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,
@@ -102,6 +103,58 @@
       <property name="Destination Y" type="int" value="45"/>
      </properties>
     </property>
+   </properties>
+  </object>
+  <object id="9" name="Tycoon" type="Event NPC" gid="257" x="240" y="80" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Tycoon01.xml"/>
+   </properties>
+  </object>
+  <object id="10" name="NPC_Generic_02" type="Event NPC" gid="258" x="176" y="16" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
+   </properties>
+  </object>
+  <object id="11" name="NPC_Generic_01" type="Event NPC" gid="258" x="80" y="0" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+   </properties>
+  </object>
+  <object id="14" name="NPC_Generic_01" type="Event NPC" gid="258" x="400" y="0" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
  </objectgroup>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="11">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="12">
  <tileset firstgid="1" source="Lab_Inside.tsx"/>
+ <tileset firstgid="257" source="NPCs.tsx"/>
  <layer id="1" name="Ground" width="20" height="15">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -71,6 +72,19 @@
       <property name="Destination Y" type="int" value="10"/>
      </properties>
     </property>
+   </properties>
+  </object>
+  <object id="11" name="Aether" type="Event NPC" gid="259" x="224" y="128" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Aether01.xml"/>
    </properties>
   </object>
  </objectgroup>

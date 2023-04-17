@@ -1,9 +1,10 @@
 <dialog>
 	<message1 text="Hello traveler!" next="message2"/>
 	<message2 text="Are you having fun in your adventures?" next="confirmation" yes="message3" no="message4"/>
-	<message3 text="Glad to hear that! Need directions?" next="confirmation" yes="message5" no="message6"/>
-	<message4 text="That's a pity" next="message6"/>
-	<message5 text="Try to enter that dark room and see what happens!" next="end"/>
-	<message6 text="I'll let you continue then" next="message7"/>
-	<message7 text="Goodbye!" next="end"/>
+	<message3 text="Glad to hear that! Need directions?" next="confirmation" yes="message5" no="message7"/>
+	<message4 text="That's a pity" next="message7"/>
+	<message5 text="If you go north you can find Aether's lab" next="message6"/>
+	<message6 text="He must be waiting for you" next="end"/>
+	<message7 text="I'll let you continue then" next="message8"/>
+	<message8 text="Goodbye!" next="end"/>
 </dialog>
