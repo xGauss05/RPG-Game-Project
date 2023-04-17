@@ -22,6 +22,7 @@ GuiButton::GuiButton(uPoint pos, uPoint size, std::string const& str, std::funct
 	textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Pressed.wav");
 	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Focused.wav");
+
 	for (int i = 0; auto const& elem : buttonStates)
 	{
 		panels.try_emplace(i, elem, 4, textureID, iPoint(3, 3));
@@ -39,8 +40,11 @@ int GuiButton::Update()
 	{
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 		{
-			currentState = PRESSED;
-			playedSound = false;
+			if (currentState != PRESSED) 
+			{
+				currentState = PRESSED;
+				playedSound = false;
+			}
 
 		}
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
@@ -52,7 +56,7 @@ int GuiButton::Update()
 		{
 			currentState = FOCUSED;
 			playedSound = false;
-			
+
 		}
 	}
 	else if (IsControllerHovered())
@@ -79,10 +83,10 @@ int GuiButton::Update()
 		currentState = NORMAL;
 		playedSound = true;
 	}
-	
-	if (!playedSound) 
+
+	if (!playedSound)
 	{
-		switch (currentState) 
+		switch (currentState)
 		{
 		case NORMAL:
 			break;
