@@ -40,8 +40,8 @@ void Player::Draw() const
 
 void Player::Create()
 {
-	app->tex->Load("Assets/Textures/NPCs/Forewoman_NPC.png");	//This should not be done like this, all of this should load from the map XML.
-	Sprite::Initialize("Assets/Textures/NPCs/Forewoman_NPC.png", 0);
+	app->tex->Load("Assets/Textures/Main_Characters/Antonio/Antonio.png");	//This should not be done like this, all of this should load from the map XML.
+	Sprite::Initialize("Assets/Textures/Main_Characters/Antonio/Antonio.png", 0);
 	
 	if(position.IsZero())
 		position = { 192, 2304 }; // 64 * 3 (192), 768 * 3 (2358)
