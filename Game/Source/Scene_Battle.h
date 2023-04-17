@@ -38,6 +38,8 @@ private:
     void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
     void ChooseTarget();
 
+    int backgroundTexture;
+
     GameParty* party;
     EnemyTroops enemies;
     BattleState state = BattleState::PLAYER_INPUT;

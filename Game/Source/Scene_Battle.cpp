@@ -19,12 +19,14 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 {
 	windows.clear();
 	windows.emplace_back(windowFactory.CreateWindow("BattleActions"));
-	windows.emplace_back(windowFactory.CreateWindow("Message"));
+	windows.emplace_back(windowFactory.CreateWindow("BattleMessage"));
 	
 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
+
+	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
 void Scene_Battle::Start()
@@ -74,16 +76,19 @@ void Scene_Battle::Draw()
 {
 	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 
+	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(-camera.x, -camera.y)));
+
 	for (auto const& elem : windows)
 	{
 		elem->Draw();
 	}
 	for (int i = 0; auto const& elem : party->party)
 	{
-		iPoint position(50 - camera.x, 50 + (125 * i) - camera.y);
-		DrawHPBar(elem.battlerTextureID, elem.currentHP, elem.stats[0], position);
+		iPoint allyPosition(240 - camera.x, (120 * i) - camera.y - 30);
+		iPoint hpBarPosition(270 - camera.x, (120 * i) - camera.y - 210);
+		DrawHPBar(elem.battlerTextureID, elem.currentHP, elem.stats[0], hpBarPosition);
 
-		DrawParameters drawAlly(elem.battlerTextureID, position);
+		DrawParameters drawAlly(elem.battlerTextureID, allyPosition);
 
 		if (elem.currentHP <= 0)
 		{

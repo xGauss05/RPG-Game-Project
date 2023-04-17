@@ -40,8 +40,8 @@ void EnemyTroops::CreateFight(std::string const &nodeName)
 		int h = 0;
 		app->tex->GetSize(app->GetTexture(enemyToAdd.textureID), w, h);
 
-		enemyToAdd.size.x = w;
-		enemyToAdd.size.y = h;
+		enemyToAdd.size.x = w * 2;
+		enemyToAdd.size.y = h * 2;
 
 		enemyToAdd.index = troop.size();
 

@@ -20,7 +20,10 @@ void Player::DebugDraw() const
 void Player::Draw() const
 {
 	DebugDraw();
-	app->render->DrawTexture(DrawParameters(GetTextureID(), position).Section(&currentSpriteSlice));
+
+	DrawParameters drawPlayer(GetTextureID(), position);
+	drawPlayer.Scale(fPoint(3, 3));
+	app->render->DrawTexture(drawPlayer.Section(&currentSpriteSlice));
 }
 
 void Player::Create()
