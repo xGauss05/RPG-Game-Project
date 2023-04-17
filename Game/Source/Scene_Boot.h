@@ -5,6 +5,9 @@
 #include "TextureManager.h"
 #include "Log.h"
 
+#include <chrono>
+#include <stdlib.h>
+
 class Scene_Boot : public Scene_Base
 {
 public:
@@ -28,6 +31,11 @@ private:
     int backgroundTexture;
     int logoFx = 0;
     bool playedLogo = false;
+    bool transition = false;
+
+    std::chrono::high_resolution_clock::time_point start;
+    std::chrono::high_resolution_clock::time_point currentTime;
+    std::chrono::milliseconds elapsed;
 };
 
 #endif __SCENE_BOOT_H__

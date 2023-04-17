@@ -1,7 +1,12 @@
 #include "Scene_Boot.h"
 #include "Audio.h"
 #include "Render.h"
+
+#include "Defs.h"
 #include "Log.h"
+
+#include <chrono>
+#include <stdlib.h>
 
 Scene_Boot::~Scene_Boot()
 {
@@ -15,10 +20,11 @@ bool Scene_Boot::isReady()
 
 void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
 {
-	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
-	
+	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/boot_bg.png");
+
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 	playedLogo = false;
+	start = std::chrono::high_resolution_clock::now();
 }
 
 void Scene_Boot::Start()
@@ -37,8 +43,15 @@ TransitionScene Scene_Boot::Update()
 		app->audio->PlayFx(logoFx);
 		playedLogo = true;
 	}
+	
+	currentTime = std::chrono::high_resolution_clock::now();
 
+	elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - start);
+
+	if (elapsed >= std::chrono::milliseconds(3000)) return TransitionScene::MAIN_MENU;
+	
 	return TransitionScene::NONE;
+
 }
 
 int Scene_Boot::OnPause()
