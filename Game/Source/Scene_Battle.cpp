@@ -214,8 +214,7 @@ TransitionScene Scene_Battle::Update()
 					currentPlayer++;
 				}
 			}
-
-			if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
+			else if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 			{
 				switch (windows.front()->Update())
 				{

@@ -148,7 +148,7 @@
   <object id="26" name="To Lab" type="Event Teleport" x="1248" y="80" width="112" height="48"/>
   <object id="28" name="To Market Left" type="Event Teleport" x="224" y="688" width="48" height="32"/>
   <object id="29" name="To Market Right" type="Event Teleport" x="544" y="688" width="48" height="32"/>
-  <object id="39" name="Directions" type="Event NPC" gid="25" x="832" y="720" width="16" height="16">
+  <object id="39" name="Directions" type="Event NPC" gid="25" x="832" y="704" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -161,7 +161,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Directions.xml"/>
    </properties>
   </object>
-  <object id="41" name="Market Sign" type="Event NPC" gid="42" x="400" y="800" width="16" height="16">
+  <object id="41" name="Market Sign" type="Event NPC" gid="42" x="400" y="768" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -174,7 +174,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Market.xml"/>
    </properties>
   </object>
-  <object id="42" name="Closed 1" type="Event NPC" gid="42" x="1184" y="464" width="16" height="16">
+  <object id="42" name="Closed 1" type="Event NPC" gid="42" x="1184" y="448" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -187,7 +187,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Closed.xml"/>
    </properties>
   </object>
-  <object id="43" name="Closed 2" type="Event NPC" gid="42" x="1424" y="464" width="16" height="16">
+  <object id="43" name="Closed 2" type="Event NPC" gid="42" x="1424" y="448" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -200,7 +200,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Closed.xml"/>
    </properties>
   </object>
-  <object id="44" name="Danger 1" type="Event NPC" gid="42" x="1872" y="656" width="16" height="16">
+  <object id="44" name="Danger 1" type="Event NPC" gid="42" x="1872" y="640" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -213,7 +213,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Danger.xml"/>
    </properties>
   </object>
-  <object id="59" name="Tycoon" type="Event NPC" gid="257" x="432" y="800" width="16" height="32">
+  <object id="59" name="Tycoon" type="Event NPC" gid="257" x="432" y="768" width="16" height="32">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -226,7 +226,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Tycoon01.xml"/>
    </properties>
   </object>
-  <object id="60" name="Captain" type="Event NPC" gid="258" x="464" y="800" width="16" height="32">
+  <object id="60" name="Captain" type="Event NPC" gid="258" x="464" y="768" width="16" height="32">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -239,7 +239,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Captain01.xml"/>
    </properties>
   </object>
-  <object id="61" name="Aether" type="Event NPC" gid="259" x="496" y="800" width="16" height="32">
+  <object id="61" name="Aether" type="Event NPC" gid="259" x="496" y="768" width="16" height="32">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -252,7 +252,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Aether01.xml"/>
    </properties>
   </object>
-  <object id="62" name="To Lab Sign" type="Event NPC" gid="42" x="1344" y="208" width="16" height="16">
+  <object id="62" name="To Lab Sign" type="Event NPC" gid="42" x="1344" y="192" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
