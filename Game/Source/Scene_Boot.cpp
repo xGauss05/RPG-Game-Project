@@ -22,7 +22,8 @@ void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& in
 {
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/boot_bg.png");
 
-	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
+	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
 	playedLogo = false;
 	start = std::chrono::high_resolution_clock::now();
 }
