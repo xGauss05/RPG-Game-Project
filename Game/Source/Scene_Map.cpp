@@ -79,6 +79,9 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	 
 	app->audio->PlayMusic(musicname.c_str());
 
+	battleSFX = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+
+	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 }
 
 void Scene_Map::Start()
@@ -160,6 +163,8 @@ TransitionScene Scene_Map::Update()
 		if (map.IsWalkable(playerAction.destinationTile) && !godMode)
 		{
 			player.StartAction(playerAction);
+
+			return TryRandomBattle();
 		}
 		else if (godMode)
 		{
@@ -293,6 +298,21 @@ std::string_view Scene_Map::GetNextMap() const
 iPoint Scene_Map::GetTPCoordinates() const
 {
 	return iPoint(tpInfo.values[0].second, tpInfo.values[1].second);
+}
+
+TransitionScene Scene_Map::TryRandomBattle()
+{
+	if (currentMap == "Village" || currentMap == "Lab_Exterior")
+	{
+		std::mt19937 gen(rd());
+		int randomValue = random100(gen);
+		if (randomValue <= 3)
+		{
+			app->audio->PlayFx(battleSFX);
+			return TransitionScene::START_BATTLE;
+		}
+	}
+	return TransitionScene::NONE;
 }
 
 int Scene_Map::OnPause() 

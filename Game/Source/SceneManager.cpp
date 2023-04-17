@@ -153,7 +153,7 @@ bool SceneManager::Update(float dt)
 			break;
 		}
 		case START_BATTLE:
-			StartBattle("bat2slime");
+			StartBattle();
 			break;
 		case WIN_BATTLE:
 		case RUN_BATTLE:

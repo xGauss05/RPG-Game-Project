@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Map.h"
 
+#include <random>
+
 class Scene_Map : public Scene_Base
 {
 public:
@@ -29,6 +31,7 @@ public:
 
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;
+	TransitionScene TryRandomBattle();
 
 private:
 
@@ -41,6 +44,9 @@ private:
 	};
 
 	bool godMode = false;
+	int battleSFX = 0;
+	std::random_device rd;
+	std::uniform_int_distribution<> random100;
 
 	std::string currentMap = "";
 
