@@ -282,7 +282,11 @@
             "values": [
                 "Base",
                 "test",
-                "Helper Maps_3"
+                "Village",
+                "Airport",
+                "Lab_Exterior",
+                "Lab_Inside",
+                "Market"
             ],
             "valuesAsFlags": false
         },
