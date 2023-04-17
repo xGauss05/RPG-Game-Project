@@ -124,6 +124,10 @@ bool SceneManager::Update(float dt)
 			break;
 		case LOSE_BATTLE:
 			sceneOnHold.reset();
+			for (auto& character : party->party)
+			{
+				character.SetCurrentHP(1);
+			}
 		case MAIN_MENU:
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
@@ -154,6 +158,7 @@ bool SceneManager::Update(float dt)
 		case WIN_BATTLE:
 		case RUN_BATTLE:
 			nextScene = std::move(sceneOnHold);
+			nextScene->isReady(); //Re plays music
 			break;
 		case EXIT_GAME:
 			return false;

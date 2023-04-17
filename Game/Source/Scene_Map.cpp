@@ -13,6 +13,16 @@ Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords)
 
 bool Scene_Map::isReady()
 {
+	std::string musicname;
+	if (currentMap == "Lab_Inside" || currentMap == "Lab_Exterior")
+	{
+		musicname = "Assets/Audio/Music/M_Town-Lab.ogg";
+	}
+	else {
+		musicname = "Assets/Audio/Music/M_Town-" + currentMap + ".ogg";
+	}
+	app->audio->PlayMusic(musicname.c_str());
+
 	return true;
 }
 
