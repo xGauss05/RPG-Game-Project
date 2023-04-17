@@ -103,7 +103,7 @@ int main(int argc, char* args[])
 		float FPS = 1 / ((float)ms.count() * 10E-7);
 
 		std::string s = std::format("{}", FPS);
-		app->win->SetTitle("Return | FPS: " + s);
+		app->win->SetTitle("Return -A JRPG Parody- | FPS: " + s);
 	}
 
 	LOG("... Bye! :)\n");

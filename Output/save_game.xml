@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <save_state>
 	<scene>
-		<player />
 		<party_member name="First" level="0" currentHP="0" currentMP="0" currentXP="0" />
 		<party_member name="Second" level="0" currentHP="0" currentMP="0" currentXP="0" />
 		<party_member name="Third" level="0" currentHP="0" currentMP="0" currentXP="0" />
 		<party_member name="Fourth" level="0" currentHP="0" currentMP="0" currentXP="0" />
 	</scene>
+	<player x="0" y="0" currentMap="" />
 	<renderer>
-		<camera x="-272" y="-696" />
+		<camera x="0" y="0" />
 		<graphics vsync="false" targetfps="0" />
 	</renderer>
 </save_state>

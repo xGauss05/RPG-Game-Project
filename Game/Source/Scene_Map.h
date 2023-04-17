@@ -23,6 +23,8 @@ public:
 	TransitionScene Update() override;
 	int OnPause() override;
 	int CheckNextScene() override;
+	bool SaveScene(pugi::xml_node const&) override;
+	bool LoadScene(pugi::xml_node const&) override;
 
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;

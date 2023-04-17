@@ -351,8 +351,8 @@ bool Render::DrawShape(iPoint center, int radius, SDL_Color color, bool use_came
 
 bool Render::LoadState(pugi::xml_node const &data)
 {
-	camera.x = data.child("camera").attribute("x").as_int();
-	camera.y = data.child("camera").attribute("y").as_int();
+	camera.x = -data.child("camera").attribute("x").as_int();
+	camera.y = -data.child("camera").attribute("y").as_int();
 
 	vSyncOnRestart = data.child("graphics").attribute("vsync").as_bool();
 	fpsTarget = data.child("graphics").attribute("targetfps").as_uint();

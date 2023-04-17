@@ -56,6 +56,7 @@ bool SceneManager::Start()
 	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
+
 	return true;
 }
 
@@ -69,11 +70,11 @@ bool SceneManager::PreUpdate()
 bool SceneManager::Pause(int phase)
 {
 	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN)
+	/*if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN)
 		app->SaveGameRequest();
 
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
-		app->LoadGameRequest();
+		app->LoadGameRequest();*/
 
 	iPoint camera = { app->render->GetCamera().x * -1, app->render->GetCamera().y * -1 };
 	app->render->DrawTexture(DrawParameters(pauseMenuBackground, camera));
@@ -87,12 +88,14 @@ bool SceneManager::Pause(int phase)
 bool SceneManager::Update(float dt)
 {
 	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN) 
+	{
 		LOG("Save Game requested");
 		app->SaveGameRequest();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN) 
+	{
 		LOG("Load Game requested");
 		app->LoadGameRequest();
 	}
@@ -185,6 +188,8 @@ bool SceneManager::LoadState(pugi::xml_node const& data)
 {
 	pugi::xml_node node = data.child("party_member");
 
+	currentScene->LoadScene(data);
+
 	for (auto& character : party->party)
 	{
 		character.SetLevel(data.attribute("level").as_int());
@@ -195,6 +200,7 @@ bool SceneManager::LoadState(pugi::xml_node const& data)
 		node.next_sibling("party_member");
 	}
 
+	
 	return true;
 }
 
@@ -203,8 +209,8 @@ pugi::xml_node SceneManager::SaveState(pugi::xml_node const& data) const
 	pugi::xml_node node = data;
 	node = node.append_child("scene");
 
-	node.append_child("player");
-	
+	currentScene->SaveScene(data);
+
 	for (auto const& character : party->party)
 	{
 

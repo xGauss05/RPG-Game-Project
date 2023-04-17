@@ -268,3 +268,27 @@ int Scene_Map::CheckNextScene()
 {
 	return 0;
 }
+
+bool Scene_Map::SaveScene(pugi::xml_node const& info)
+{
+	pugi::xml_node data = info;
+	auto currentNode = data.append_child("player");
+	currentNode.append_attribute("x").set_value(player.GetPosition().x);
+	currentNode.append_attribute("y").set_value(player.GetPosition().y);
+	currentNode.append_attribute("currentMap").set_value(currentMap.c_str());
+	
+	return false;
+}
+
+bool Scene_Map::LoadScene(pugi::xml_node const& info)
+{
+	pugi::xml_node data = info.child("player");
+
+	player.SetPosition(iPoint{ data.attribute("x").as_int(),
+							   data.attribute("y").as_int() });
+
+	currentMap = data.attribute("currentMap").as_string();
+	
+
+	return false;
+}

@@ -1,6 +1,7 @@
 #include "Scene_Battle.h"
 #include "App.h"
 #include "Render.h"
+#include "Audio.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
@@ -56,6 +57,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 
+	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
@@ -535,4 +537,14 @@ int Scene_Battle::CheckNextScene()
 int Scene_Battle::OnPause()
 {
 	return 0;
+}
+
+bool Scene_Battle::SaveScene(pugi::xml_node const& info)
+{
+	return false;
+}
+
+bool Scene_Battle::LoadScene(pugi::xml_node const& info)
+{
+	return false;
 }

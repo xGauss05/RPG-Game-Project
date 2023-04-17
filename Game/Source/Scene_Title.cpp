@@ -95,3 +95,13 @@ int Scene_Title::CheckNextScene()
 {
 	return 1;
 }
+
+bool Scene_Title::SaveScene(pugi::xml_node const& info)
+{
+	return false;
+}
+
+bool Scene_Title::LoadScene(pugi::xml_node const& info)
+{
+	return false;
+}
