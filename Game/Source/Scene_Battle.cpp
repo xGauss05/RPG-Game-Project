@@ -2,12 +2,42 @@
 #include "App.h"
 #include "Render.h"
 
+#include "PugiXml/src/pugixml.hpp"
+
 #include <random>
 
-Scene_Battle::Scene_Battle(GameParty* gameParty, std::string const &fightName)
+Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 	: party(gameParty)
 {
-	enemies.CreateFight(fightName);
+	if (fightName.empty())
+		enemies.CreateFight(GetRandomEncounter());
+	else
+		enemies.CreateFight(fightName);
+}
+
+std::string_view Scene_Battle::GetRandomEncounter()
+{
+	pugi::xml_document encountersFile;
+	if (auto result = encountersFile.load_file("data/Troops.xml");
+		!result)
+	{
+		LOG("Could not load troops xml file. Pugi error: %s", result.description());
+		return "fallback";
+	}
+
+	int maxEncounters = std::distance(encountersFile.children().begin(), encountersFile.children().end()) - 1;
+
+	random.param(std::uniform_int_distribution<>::param_type(0, maxEncounters));
+
+	std::mt19937 gen(rd());
+
+	int newEncounter = random(gen);
+
+	pugi::xml_node currentNode = encountersFile.first_child();
+
+	for (int i = 0; i < newEncounter; i++, currentNode = currentNode.next_sibling());
+
+	return currentNode.name();
 }
 
 bool Scene_Battle::isReady()

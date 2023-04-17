@@ -6,7 +6,7 @@
 #include "Render.h"
 #include "Log.h"
 
-void EnemyTroops::CreateFight(std::string const &nodeName)
+void EnemyTroops::CreateFight(std::string_view nodeName)
 {
 	pugi::xml_document troopsFile;
 	if (auto result = troopsFile.load_file("data/Troops.xml"); !result)
@@ -19,7 +19,7 @@ void EnemyTroops::CreateFight(std::string const &nodeName)
 		LOG("Could not load enemies xml file. Pugi error: %s", result.description());
 	}
 
-	for (auto const& enemy : troopsFile.child(nodeName.c_str()))
+	for (auto const& enemy : troopsFile.child(std::string(nodeName).c_str()))
 	{
 		iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 

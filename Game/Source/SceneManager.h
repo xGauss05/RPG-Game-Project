@@ -46,7 +46,7 @@ public:
 	pugi::xml_node SaveState(pugi::xml_node const &) const final;
 
 private:
-	void StartBattle(std::string const &troopName);
+	void StartBattle(std::string_view troopName = "");
 
 	std::string assetPath;
 	std::unique_ptr<Scene_Base> currentScene;

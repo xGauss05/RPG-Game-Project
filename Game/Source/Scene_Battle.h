@@ -19,7 +19,7 @@ enum class BattleState
 class Scene_Battle : public Scene_Base
 {
 public:
-    explicit Scene_Battle(GameParty *gameParty, std::string const &fightName);
+    explicit Scene_Battle(GameParty *gameParty, std::string_view fightName = "");
     bool isReady() override;
     void Load(
         std::string const& path,
@@ -37,8 +37,9 @@ public:
 private:
     void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
     void ChooseTarget();
+    std::string_view GetRandomEncounter();
 
-    int backgroundTexture;
+    int backgroundTexture = 0;
 
     GameParty* party;
     EnemyTroops enemies;

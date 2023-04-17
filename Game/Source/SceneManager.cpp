@@ -123,9 +123,8 @@ bool SceneManager::Update(float dt)
 			break;
 		case LOAD_MAP_FROM_MAP:
 		{
-
-			auto* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
-			nextScene = std::make_unique<Scene_Map>(mapScene->GetNextMap(), mapScene->GetTPCoordinates());
+			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
+			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates());
 			nextScene->Start();
 			break;
 		}
@@ -150,7 +149,7 @@ bool SceneManager::PostUpdate()
 {
 	if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
 	{
-		StartBattle("bat2slime");
+		StartBattle();
 	}
 
 	if (nextScene && nextScene->isReady())
@@ -162,7 +161,7 @@ bool SceneManager::PostUpdate()
 	return true;
 }
 
-void SceneManager::StartBattle(std::string const& troopName)
+void SceneManager::StartBattle(std::string_view troopName)
 {
 	nextScene = std::make_unique<Scene_Battle>(party.get(), troopName);
 	nextScene->Load("", sceneInfo, *windowFactory);

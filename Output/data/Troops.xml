@@ -1,5 +1,19 @@
-<bat2slime>
+<fallback>
 	<Bat_B name="Bat" level="1"/>
 	<Slime_G name="Slime" level="2"/>
 	<Bat_R name="Bat" level="1"/>
-</bat2slime>
+</fallback>
+<potato>
+	<Bat_B name="Bat" level="1"/>
+</potato>
+<lemon>
+	<Bat_B name="Bat" level="1"/>
+	<Slime_G name="Slime" level="2"/>
+</lemon>
+<banana>
+	<Slime_G name="Slime" level="2"/>
+	<Bat_R name="Bat" level="1"/>
+</banana>
+<orangutan>
+	<Slime_G name="Slime" level="2"/>
+</orangutan>

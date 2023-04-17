@@ -240,7 +240,7 @@ std::string_view Scene_Map::GetNextMap() const
 
 iPoint Scene_Map::GetTPCoordinates() const
 {
-	return iPoint(tpInfo.values[0].second, tpInfo.values[1].second)
+	return iPoint(tpInfo.values[0].second, tpInfo.values[1].second);
 }
 
 int Scene_Map::OnPause() 

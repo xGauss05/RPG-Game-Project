@@ -38,7 +38,7 @@ class EnemyTroops
 public:
 	EnemyTroops() = default;
 
-	void CreateFight(std::string const &nodeName);
+	void CreateFight(std::string_view nodeName);
 	
 
 	std::vector<Enemy> troop;
