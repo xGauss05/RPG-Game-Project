@@ -46,7 +46,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 
 	party = std::make_unique<GameParty>();
 
-	currentScene = std::make_unique<Scene_Boot>();
+	currentScene = std::make_unique<Scene_Title>();
 
 	return true;
 }
@@ -54,7 +54,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool SceneManager::Start()
 {
-	//currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
 

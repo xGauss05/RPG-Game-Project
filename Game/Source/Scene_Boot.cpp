@@ -60,3 +60,8 @@ bool Scene_Boot::LoadScene(pugi::xml_node const&)
 {
 	return false;
 }
+
+void Scene_Boot::DebugDraw()
+{
+	return;
+}
