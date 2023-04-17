@@ -122,10 +122,13 @@ bool SceneManager::Update(float dt)
 			app->LoadGameRequest();
 			break;
 		case LOAD_MAP_FROM_MAP:
-			auto * mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
+		{
+
+			auto* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
 			nextScene = std::make_unique<Scene_Map>(mapScene->GetNextMap(), mapScene->GetTPCoordinates());
 			nextScene->Start();
 			break;
+		}
 		case START_BATTLE:
 			StartBattle("bat2slime");
 			break;
