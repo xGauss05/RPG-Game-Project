@@ -18,7 +18,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 {
 	if (currentMap.empty())
 	{
-		currentMap = "Village";
+		currentMap = "Airport";
 	}
 
 	if (std::string mapToLoad = currentMap + ".tmx";

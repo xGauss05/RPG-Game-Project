@@ -387,9 +387,9 @@ SDL_Rect Render::GetCamera() const
 
 void Render::AdjustCamera(iPoint position)
 {
-	camera.x = -1 * (position.x - camera.w/2);
-	camera.y = -1 * (position.y - camera.h/2);
-
+	camera.x = (-1 * position.x) + camera.w/2;
+	camera.y = (-1 * position.y) + camera.h/2;
+	/*
 	if (camera.x > 0)
 		camera.x = 0;
 	else if (camera.x < -1 * (mapSize.x * tileSize.x * 3 - camera.w))
@@ -398,7 +398,7 @@ void Render::AdjustCamera(iPoint position)
 	if (camera.y > 0)
 		camera.y = 0;
 	else if (camera.y < -1 * (mapSize.y * tileSize.y * 3 - camera.h))
-		camera.y = -1 * (mapSize.y * tileSize.y * 3 - camera.h);
+		camera.y = -1 * (mapSize.y * tileSize.y * 3 - camera.h);*/
 }
 
 void Render::ResetCamera()
