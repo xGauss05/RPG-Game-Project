@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="67">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="93">
  <tileset firstgid="1" source="Village.tsx"/>
  <tileset firstgid="257" source="NPCs.tsx"/>
  <layer id="1" name="Ground" width="144" height="64">
@@ -140,12 +140,6 @@
  </layer>
  <objectgroup id="9" name="Events" class="Layer of Events">
   <object id="24" name="Spawn" x="64" y="768" width="16" height="16"/>
-  <object id="25" name="To Airport" type="Event Teleport" x="592" y="960" width="256" height="64">
-   <properties>
-    <property name="Teleport" value=""/>
-   </properties>
-  </object>
-  <object id="26" name="To Lab" type="Event Teleport" x="1248" y="80" width="112" height="48"/>
   <object id="28" name="To Market Left" type="Event Teleport" x="224" y="688" width="16" height="16">
    <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
@@ -157,7 +151,6 @@
     </property>
    </properties>
   </object>
-  <object id="29" name="To Market Right" type="Event Teleport" x="544" y="688" width="48" height="32"/>
   <object id="39" name="Directions" type="Event NPC" gid="25" x="832" y="704" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
@@ -171,7 +164,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Directions.xml"/>
    </properties>
   </object>
-  <object id="41" name="Market Sign" type="Event NPC" gid="42" x="400" y="768" width="16" height="16">
+  <object id="41" name="Market Sign" type="Event NPC" gid="42" x="400" y="784" width="16" height="16">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -293,6 +286,292 @@
       <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
       <property name="Destination X" type="int" value="6"/>
       <property name="Destination Y" type="int" value="11"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="67" name="To Market Right" type="Event Teleport" x="544" y="688" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
+      <property name="Destination X" type="int" value="24"/>
+      <property name="Destination Y" type="int" value="11"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="68" name="To Market Right" type="Event Teleport" x="560" y="688" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
+      <property name="Destination X" type="int" value="25"/>
+      <property name="Destination Y" type="int" value="11"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="69" name="To Market Right" type="Event Teleport" x="576" y="688" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
+      <property name="Destination X" type="int" value="26"/>
+      <property name="Destination Y" type="int" value="11"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="70" name="To Airport" type="Event Teleport" x="592" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="71" name="To Airport" type="Event Teleport" x="608" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="72" name="To Airport" type="Event Teleport" x="704" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="73" name="To Airport" type="Event Teleport" x="688" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="74" name="To Airport" type="Event Teleport" x="672" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="75" name="To Airport" type="Event Teleport" x="656" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="76" name="To Airport" type="Event Teleport" x="640" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="77" name="To Airport" type="Event Teleport" x="624" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="78" name="To Airport" type="Event Teleport" x="736" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="79" name="To Airport" type="Event Teleport" x="752" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="80" name="To Airport" type="Event Teleport" x="768" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="81" name="To Airport" type="Event Teleport" x="784" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="82" name="To Airport" type="Event Teleport" x="800" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="83" name="To Airport" type="Event Teleport" x="816" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="84" name="To Airport" type="Event Teleport" x="832" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="85" name="To Airport" type="Event Teleport" x="720" y="960" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
+      <property name="Destination X" type="int" value="14"/>
+      <property name="Destination Y" type="int" value="2"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="86" name="To Lab" type="Event Teleport" x="1248" y="112" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="14"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="87" name="To Lab" type="Event Teleport" x="1264" y="112" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="14"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="88" name="To Lab" type="Event Teleport" x="1280" y="112" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="14"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="89" name="To Lab" type="Event Teleport" x="1296" y="112" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="14"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="90" name="To Lab" type="Event Teleport" x="1312" y="112" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="14"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="91" name="To Lab" type="Event Teleport" x="1328" y="112" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="14"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="92" name="To Lab" type="Event Teleport" x="1344" y="112" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="14"/>
      </properties>
     </property>
    </properties>
