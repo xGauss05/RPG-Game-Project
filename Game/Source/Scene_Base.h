@@ -40,6 +40,8 @@ public:
 	virtual int OnPause() = 0;
 	virtual void Draw() = 0;
 	virtual int CheckNextScene() = 0;
+	virtual bool SaveScene(pugi::xml_node const&) = 0;
+	virtual bool LoadScene(pugi::xml_node const&) = 0;
 
 	bool bActive = false;
 	// TODO Fade-in/Fade-out variables (colour, duration)

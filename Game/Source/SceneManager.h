@@ -60,6 +60,8 @@ private:
 
 	bool CurrentlyMainMenu = true;
 	int pauseMenuBackground = 0;
+
+	bool loadNextMap = false;
 };
 
 #endif // __SCENE_H__

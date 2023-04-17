@@ -351,9 +351,7 @@ bool Render::DrawShape(iPoint center, int radius, SDL_Color color, bool use_came
 
 bool Render::LoadState(pugi::xml_node const &data)
 {
-	camera.x = data.child("camera").attribute("x").as_int();
-	camera.y = data.child("camera").attribute("y").as_int();
-
+	
 	vSyncOnRestart = data.child("graphics").attribute("vsync").as_bool();
 	fpsTarget = data.child("graphics").attribute("targetfps").as_uint();
 
@@ -364,9 +362,6 @@ pugi::xml_node Render::SaveState(pugi::xml_node const &data) const
 {
 	pugi::xml_node cam = data;
 	cam = cam.append_child("renderer");
-
-	cam.append_child("camera").append_attribute("x").set_value(camera.x);
-	cam.child("camera").append_attribute("y").set_value(camera.y);
 	
 	cam.append_child("graphics").append_attribute("vsync").set_value(vSyncOnRestart ? "true" : "false");
 	cam.child("graphics").append_attribute("targetfps").set_value(std::to_string(fpsTarget).c_str());

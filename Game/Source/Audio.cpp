@@ -53,6 +53,7 @@ bool Audio::Awake(pugi::xml_node& config)
 
 	BGMVolume = 64;
 	SFXVolume = 64;
+
 	SetBGMVolume(BGMVolume);
 	SetSFXVolume(SFXVolume);
 
