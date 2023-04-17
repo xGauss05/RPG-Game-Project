@@ -23,6 +23,16 @@ void Player::SetPosition(iPoint newPosition)
 	app->render->AdjustCamera(position);
 }
 
+iPoint Player::GetPosition() const
+{
+	return position;
+}
+
+bool Player::FinishedMoving() const
+{
+	return moveVector.IsZero();
+}
+
 void Player::Draw() const
 {
 	DebugDraw();

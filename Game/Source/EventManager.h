@@ -27,6 +27,7 @@ public:
 	int GetEventLayerSize() const;
 
 	EventTrigger TriggerEvent(iPoint destination) const;
+	EventTrigger TriggerFloorEvent(iPoint destination) const;
 
 	// Returns Gid, position, keepDrawing ? true : false;
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);

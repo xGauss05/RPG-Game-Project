@@ -26,6 +26,7 @@ void Event_Teleport::parseXMLProperties(pugi::xml_node const& node)
 			globalSwitch.back()->ReadProperty(child);
 		}
 	}
+	common.trigger = EventProperties::EventTriggerOn::EVENT_TOUCH;
 }
 
 void Event_Teleport::Create(pugi::xml_node const &node)

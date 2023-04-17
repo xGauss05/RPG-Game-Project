@@ -214,6 +214,11 @@ EventTrigger Map::TriggerEvent(iPoint position) const
 	return eventManager.TriggerEvent(position);
 }
 
+EventTrigger Map::TriggerFloorEvent(iPoint position) const
+{
+	return eventManager.TriggerFloorEvent(position);
+}
+
 bool Map::IsWalkable(iPoint pos) const
 {
 	pos = WorldToMap(pos) / 3;

@@ -61,7 +61,20 @@ EventTrigger EventManager::TriggerEvent(iPoint destination) const
 {
 	for (auto const& event : events)
 	{
-		if (event->position == destination)
+		if (event->common.trigger == EventProperties::EventTriggerOn::PLAYER_TOUCH && event->position == destination)
+		{
+			return event->OnTrigger();
+		}
+	}
+
+	return EventTrigger();
+}
+
+EventTrigger EventManager::TriggerFloorEvent(iPoint destination) const
+{
+	for (auto const& event : events)
+	{
+		if (event->common.trigger == EventProperties::EventTriggerOn::EVENT_TOUCH && event->position == destination)
 		{
 			return event->OnTrigger();
 		}
