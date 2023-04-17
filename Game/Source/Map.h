@@ -66,6 +66,7 @@ public:
 
 	// Returns path to XML
 	EventTrigger TriggerEvent(iPoint Position) const;
+	EventTrigger TriggerFloorEvent(iPoint Position) const;
 
 	bool IsWalkable(iPoint pos) const;
 

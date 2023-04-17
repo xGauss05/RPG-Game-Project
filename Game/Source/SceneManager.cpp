@@ -75,13 +75,6 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Pause(int phase)
 {
-	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	/*if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN)
-		app->SaveGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN)
-		app->LoadGameRequest();*/
-
 	iPoint camera = { app->render->GetCamera().x * -1, app->render->GetCamera().y * -1 };
 	app->render->DrawTexture(DrawParameters(pauseMenuBackground, camera));
 
