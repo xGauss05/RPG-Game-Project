@@ -26,6 +26,7 @@ public:
     int CheckNextScene() override;
     bool SaveScene(pugi::xml_node const&) override;
     bool LoadScene(pugi::xml_node const&) override;
+    void DebugDraw() override;
 
 private:
     int backgroundTexture;

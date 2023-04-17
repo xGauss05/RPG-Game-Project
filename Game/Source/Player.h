@@ -49,13 +49,13 @@ public:
 	void Create();
 
 	void Draw() const;
-	void DebugDraw() const;
 
 	PlayerAction HandleInput() const;
 	void StartAction(PlayerAction playerAction);
 	
 	void Update();
 
+	void SetSpeed(int speed);
 	void SetPosition(iPoint newPosition);
 	iPoint GetPosition() const;
 
