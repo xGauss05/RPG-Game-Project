@@ -5,6 +5,7 @@
 #include "Scene_Map.h"
 #include "Scene_Title.h"
 #include "Scene_Battle.h"
+#include "Scene_Boot.h"
 
 #include "Render.h"
 #include "Defs.h"
@@ -45,7 +46,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 
 	party = std::make_unique<GameParty>();
 
-	currentScene = std::make_unique<Scene_Title>();
+	currentScene = std::make_unique<Scene_Boot>();
 
 	return true;
 }
@@ -53,7 +54,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool SceneManager::Start()
 {
-	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+	//currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
 
@@ -112,6 +113,8 @@ bool SceneManager::Update(float dt)
 	switch (currentScene->Update()) 
 		{
 		case BOOT_COMPLETE:
+			nextScene = std::make_unique<Scene_Title>();
+			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
 		case LOSE_BATTLE:
 			sceneOnHold.reset();
