@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Window.h"
 #include "SceneManager.h"
 #include "Input.h"
 
@@ -98,6 +99,18 @@ bool SceneManager::Update(float dt)
 	{
 		LOG("Load Game requested");
 		app->LoadGameRequest();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KeyState::KEY_DOWN)
+	{
+		LOG("Minimizing screen");
+		SDL_SetWindowFullscreen(app->win->GetWindow(), 0);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KeyState::KEY_DOWN)
+	{
+		LOG("Maximizing screen");
+		SDL_SetWindowFullscreen(app->win->GetWindow(), 1);
 	}
 
 	currentScene->Draw();
