@@ -38,21 +38,21 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 
 ## Developers
 
-+ Team Lead, Code, Management, Design: [Jonathan Cacay Llanes](https://github.com/xGauss05)
++ [Jonathan Cacay Llanes](https://github.com/xGauss05): Team Lead, Code, Management, Design
 
-+ Art Director, Art: [Víctor Martín Ballesta](https://github.com/VicMarBall)
++ [Víctor Martín Ballesta](https://github.com/VicMarBall): Art Director, Art
 
-+ Code, QA: [Ethan Martín Parra](https://github.com/Ethanm-0371)
++ [Ethan Martín Parra](https://github.com/Ethanm-0371): Code, QA
 
-+ Audio Engineer: [Pau Fusco Zamora](https://github.com/PauFusco)
++ [Pau Fusco Zamora](https://github.com/PauFusco): Audio Engineer
 
-+ Art, Main Characters Design, UI Design: [Héctor García Pérez](https://github.com/Neidragon)
++ [Héctor García Pérez](https://github.com/Neidragon): Art, Main Characters Design, UI Design
 
-+ Code: [Oriol Rodríguez Vidal](https://github.com/Eweer)
++ [Oriol Rodríguez Vidal](https://github.com/Eweer): Code
 
-+ Art, Enemy Design, NPC Design: [Daniel García Matarredona](https://github.com/DaniGarMata)
++ [Daniel García Matarredona](https://github.com/DaniGarMata): Art, Enemy Design, NPC Design
 
-+ Art, Design, Writer: [Kaede Sato Morales](https://github.com/KelptheWriter)
++ [Kaede Sato Morales](https://github.com/KelptheWriter): Art, Design, Writer
 
 ## License
 
