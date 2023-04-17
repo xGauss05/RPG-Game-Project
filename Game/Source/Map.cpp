@@ -150,12 +150,10 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 	renderView.h = cameraPosition.y + cameraSize.y + tileSize.y;
 	if (renderView.h > layer.GetSize().y) renderView.h = layer.GetSize().y;
 
-	renderView.w /= 3;
-	renderView.h /= 3;
 
-	for (int x = renderView.x; x < renderView.x + renderView.w; x++)
+	for (int x = renderView.x; x < renderView.w; x++)
 	{
-		for (int y = renderView.y; y < renderView.y + renderView.h; y++)
+		for (int y = renderView.y; y < renderView.h; y++)
 		{
 			int gid = layer.GetTileGid(x, y);
 

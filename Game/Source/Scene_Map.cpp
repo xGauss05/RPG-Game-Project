@@ -282,7 +282,7 @@ bool Scene_Map::SaveScene(pugi::xml_node const& info)
 
 bool Scene_Map::LoadScene(pugi::xml_node const& info)
 {
-	pugi::xml_node data = info.child("player");
+	pugi::xml_node data = info.next_sibling("player");
 
 	player.SetPosition(iPoint{ data.attribute("x").as_int(),
 							   data.attribute("y").as_int() });

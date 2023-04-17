@@ -63,6 +63,12 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
+	if (loadNextMap && nextScene)
+	{
+		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+		nextScene->Start();
+		loadNextMap = false;
+	}
 	return true;
 }
 
@@ -114,16 +120,17 @@ bool SceneManager::Update(float dt)
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
 		case NEW_GAME:
-			nextScene = std::make_unique<Scene_Map>("Village");
+			nextScene = std::make_unique<Scene_Map>();
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			nextScene->Start();
 			break;
 		case CONTINUE_GAME:
+		{
 			nextScene = std::make_unique<Scene_Map>();
-			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-			nextScene->Start();
+			loadNextMap = true;
 			app->LoadGameRequest();
 			break;
+		}
 		case LOAD_MAP_FROM_MAP:
 		{
 			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
@@ -155,7 +162,7 @@ bool SceneManager::PostUpdate()
 		StartBattle();
 	}
 
-	if (nextScene && nextScene->isReady())
+	if (nextScene && nextScene->isReady() && !loadNextMap)
 	{
 		currentScene = std::move(nextScene);
 		currentScene->Start();
@@ -188,8 +195,6 @@ bool SceneManager::LoadState(pugi::xml_node const& data)
 {
 	pugi::xml_node node = data.child("party_member");
 
-	currentScene->LoadScene(data);
-
 	for (auto& character : party->party)
 	{
 		character.SetLevel(data.attribute("level").as_int());
@@ -200,7 +205,12 @@ bool SceneManager::LoadState(pugi::xml_node const& data)
 		node.next_sibling("party_member");
 	}
 
-	
+	currentScene->LoadScene(data);
+	if (nextScene)
+	{
+		nextScene->LoadScene(data);
+	}
+
 	return true;
 }
 

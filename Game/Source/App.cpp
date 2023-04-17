@@ -266,6 +266,8 @@ bool App::SaveToFile()
 		}
 	}
 
+	GameSaved();
+
 	return saveDoc->save_file("save_game.xml");
 }
 

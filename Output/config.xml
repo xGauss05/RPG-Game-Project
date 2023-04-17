@@ -29,6 +29,11 @@
 				<window name="PauseMenu" />
 				<window name="ChatBox" />
 			</map>
+			<map id="4" name="Market">
+				<window name="PauseButtonMenu" />
+				<window name="PauseMenu" />
+				<window name="ChatBox" />
+			</map>
 		</map_info>
 		<title_info>
 			<scene name="Title">
