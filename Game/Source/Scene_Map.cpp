@@ -58,7 +58,16 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		}
 	}
 
-	app->audio->PlayMusic("Assets/Audio/Music/M_Town-Base.ogg");
+	std::string musicname;
+	if (currentMap == "Lab_Inside" || currentMap == "Lab_Exterior")
+	{
+		musicname = "Assets/Audio/Music/M_Town-Lab.ogg";
+	}
+	else {
+		musicname = "Assets/Audio/Music/M_Town-" + currentMap + ".ogg";
+	}
+	 
+	app->audio->PlayMusic(musicname.c_str());
 
 }
 
