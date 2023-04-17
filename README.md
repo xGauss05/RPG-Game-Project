@@ -22,8 +22,8 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 | <code>A</code> | Left movement | 
 | <code>D</code> | Right movement | 
 | <code>ESC</code> | Pause | 
-| <code>E</code> | Interact |
-| <code>MOUSE LMB</code> | Select button / Next dialogue|
+| <code>E</code> | Interact / Next dialogue |
+| <code>MOUSE LMB</code> | Select button |
 
 ### Controller (PS4 Layout)
 | Key | Description |
@@ -33,8 +33,8 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 | <code>D-PAD LEFT</code> | Left movement | 
 | <code>D-PAD RIGHT</code> | Right movement | 
 | <code>OPTIONS</code> | Pause | 
-| <code>SQUARE</code> | Interact |
-| <code>X</code> | Select button / Next dialogue |
+| <code>SQUARE</code> | Interact / Next dialogue |
+| <code>X</code> | Select button |
 
 ## Developers
 
