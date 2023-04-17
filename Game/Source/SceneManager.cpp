@@ -111,7 +111,7 @@ bool SceneManager::Update(float dt)
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
 		case NEW_GAME:
-			nextScene = std::make_unique<Scene_Map>();
+			nextScene = std::make_unique<Scene_Map>("Village");
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			nextScene->Start();
 			break;

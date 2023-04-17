@@ -2,6 +2,7 @@
 #include "Audio.h"
 #include "Log.h"
 
+Scene_Map::Scene_Map(std::string const& newMap) : currentMap(newMap) {}
 
 bool Scene_Map::isReady()
 {
@@ -10,8 +11,10 @@ bool Scene_Map::isReady()
 
 void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFac)
 {
-	// Load map
-	currentMap = "Village";
+	if (currentMap.empty())
+	{
+		currentMap = "Village";
+	}
 
 	if (std::string mapToLoad = currentMap + ".tmx";
 		!map.Load(path, mapToLoad))
@@ -155,40 +158,40 @@ TransitionScene Scene_Map::Update()
 			switch (action.eventFunction)
 			{
 				using enum EventTrigger::WhatToDo;
-			case NO_EVENT:
-			{
-				break;
-			}
-			case SHOW_MESSAGE:
-			{
-				windows.emplace_back(windowFactory->CreateWindow("Message"));
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				currentPanel->ModifyLastWidgetText(action.text);
-				state = MapState::ON_MESSAGE;
-				break;
-			}
-			case DIALOG_PATH:
-			{
-				if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
+				case NO_EVENT:
 				{
-					LOG("Could not load dialog xml file. Pugi error: %s", result.description());
 					break;
 				}
-				windows.emplace_back(windowFactory->CreateWindow("Message"));
-				currentDialogNode = currentDialogDocument.child("dialog").child("message1");
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-				state = MapState::ON_DIALOG;
-				break;
-			}
-			case TELEPORT:
-			{
-				//teleport player
-			}
-			case LOOT:
-			{
-				//give items to player
-			}
+				case SHOW_MESSAGE:
+				{
+					windows.emplace_back(windowFactory->CreateWindow("Message"));
+					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+					currentPanel->ModifyLastWidgetText(action.text);
+					state = MapState::ON_MESSAGE;
+					break;
+				}
+				case DIALOG_PATH:
+				{
+					if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
+					{
+						LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+						break;
+					}
+					windows.emplace_back(windowFactory->CreateWindow("Message"));
+					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
+					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+					state = MapState::ON_DIALOG;
+					break;
+				}
+				case TELEPORT:
+				{
+					//teleport player
+				}
+				case LOOT:
+				{
+					//give items to player
+				}
 			}
 		}
 	}

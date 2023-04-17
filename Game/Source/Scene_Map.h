@@ -8,6 +8,9 @@
 class Scene_Map : public Scene_Base
 {
 public:
+	Scene_Map() = default;
+	explicit Scene_Map(std::string const& newMap);
+
 	bool isReady() override;
 	void Load(
 		std::string const& path,
@@ -19,7 +22,6 @@ public:
 	TransitionScene Update() override;
 	int OnPause() override;
 	int CheckNextScene() override;
-
 
 private:
 
