@@ -1,4 +1,6 @@
 #include "Scene_Map.h"
+#include "Render.h"
+#include "TextManager.h"
 #include "Audio.h"
 #include "Log.h"
 
@@ -73,10 +75,28 @@ void Scene_Map::Draw()
 	{
 		elem->Draw();
 	}
+
+	if (godMode)
+	{
+		DebugDraw();
+	}
 }
 
 TransitionScene Scene_Map::Update()
 {
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
+	{
+		godMode = !godMode;
+		if (godMode)
+		{
+			player.SetSpeed(16);
+		}
+		else
+		{
+			player.SetSpeed(8);
+		}
+	}
+
 	auto playerAction = player.HandleInput();
 
 	using PA = Player::PlayerAction::Action;
@@ -118,7 +138,11 @@ TransitionScene Scene_Map::Update()
 
 	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
 	{
-		if (map.IsWalkable(playerAction.destinationTile))
+		if (map.IsWalkable(playerAction.destinationTile) && !godMode)
+		{
+			player.StartAction(playerAction);
+		}
+		else if (godMode)
 		{
 			player.StartAction(playerAction);
 		}
@@ -291,4 +315,65 @@ bool Scene_Map::LoadScene(pugi::xml_node const& info)
 	
 
 	return false;
+}
+
+void Scene_Map::DebugDraw()
+{
+	//Player Hitbox
+	SDL_Rect debugPosition = { player.position.x, player.position.y + player.size.y / 2, player.size.x, player.size.y / 2 };
+	app->render->DrawShape(debugPosition, true, SDL_Color(0, 255, 0, 100));
+
+	//Map Hitboxes
+
+	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
+	iPoint cameraSize = { app->render->GetCamera().w, app->render->GetCamera().h };
+
+	SDL_Rect renderView{};
+	renderView.x = -camera.x - 48;
+	renderView.y = -camera.y - 48;
+	renderView.w = -camera.x + cameraSize.x + map.GetTileWidth();
+	renderView.h = -camera.y + cameraSize.y + map.GetTileHeight();
+
+	for (int y = 0; y < map.GetHeight(); y++)
+	{
+		for (int x = 0; x < map.GetWidth(); x++)
+		{
+			if (x * 48 > renderView.y && x * 48 < renderView.h &&
+				y * 48 > renderView.x && y * 48 < renderView.w)
+			{
+				if (!map.IsWalkable(iPoint{ y * 48,x * 48 }))
+				{
+					SDL_Rect rect = { (y * 48), x * 48,48,48 };
+					app->render->DrawShape(rect, true, SDL_Color(255, 0, 0, 100));
+				}
+			}
+		}
+	}
+
+	//Text display
+	app->fonts->DrawText("GOD MODE ON", TextParameters(0, DrawParameters(0, iPoint{ 20,30 })));
+
+	app->fonts->DrawText("Player pos X: " + std::to_string(player.position.x), TextParameters(0, DrawParameters(0, iPoint{40,120})));
+	app->fonts->DrawText("Player pos Y: " + std::to_string(player.position.y), TextParameters(0, DrawParameters(0, iPoint{40,160})));
+
+	std::string mapState = "Unknown";
+	switch (state)
+	{
+	case Scene_Map::MapState::NORMAL:
+		mapState = "Normal";
+		break;
+	case Scene_Map::MapState::ON_MESSAGE:
+		mapState = "On Message";
+		break;
+	case Scene_Map::MapState::ON_DIALOG:
+		mapState = "On Dialog";
+		break;
+	case Scene_Map::MapState::ON_MENU_SELECTION:
+		mapState = "On Menu Selection";
+		break;
+	default:
+		mapState = "Unknown";
+		break;
+	}
+	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{40,230})));
 }

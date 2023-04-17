@@ -547,3 +547,8 @@ bool Scene_Battle::LoadScene(pugi::xml_node const& info)
 {
 	return false;
 }
+
+void Scene_Battle::DebugDraw()
+{
+	return;
+}

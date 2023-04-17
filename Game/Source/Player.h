@@ -49,7 +49,6 @@ public:
 	void Create();
 
 	void Draw() const;
-	void DebugDraw() const;
 
 	PlayerAction HandleInput() const;
 	void StartAction(PlayerAction playerAction);
@@ -57,6 +56,7 @@ public:
 	void Update();
 
 	void SetPosition(iPoint newPosition);
+	void SetSpeed(int speed);
 
 	iPoint lastDir{ 0 };
 

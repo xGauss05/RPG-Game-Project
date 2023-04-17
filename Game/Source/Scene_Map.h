@@ -25,6 +25,7 @@ public:
 	int CheckNextScene() override;
 	bool SaveScene(pugi::xml_node const&) override;
 	bool LoadScene(pugi::xml_node const&) override;
+	void DebugDraw() override;
 
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;
@@ -38,6 +39,8 @@ private:
 		ON_DIALOG,
 		ON_MENU_SELECTION
 	};
+
+	bool godMode = false;
 
 	std::string currentMap = "";
 

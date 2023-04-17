@@ -105,3 +105,8 @@ bool Scene_Title::LoadScene(pugi::xml_node const& info)
 {
 	return false;
 }
+
+void Scene_Title::DebugDraw()
+{
+	return;
+}

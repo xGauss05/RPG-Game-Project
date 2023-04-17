@@ -35,6 +35,7 @@ public:
     int OnPause() override;
     bool SaveScene(pugi::xml_node const&) override;
     bool LoadScene(pugi::xml_node const&) override;
+    void DebugDraw() override;
 
 private:
     void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;

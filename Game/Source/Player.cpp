@@ -10,23 +10,19 @@ Player::Player() = default;
 
 Player::~Player() = default;
 
-
-void Player::DebugDraw() const
-{
-	SDL_Rect debugPosition = { position.x, position.y, size.x, size.y };
-	app->render->DrawShape(debugPosition, false, SDL_Color(255, 0, 0, 255));
-}
-
 void Player::SetPosition(iPoint newPosition)
 {
 	position = newPosition;
 	app->render->AdjustCamera(position);
 }
 
+void Player::SetSpeed(int speed)
+{
+	this->speed = speed;
+}
+
 void Player::Draw() const
 {
-	DebugDraw();
-
 	DrawParameters drawPlayer(GetTextureID(), position);
 	drawPlayer.Scale(fPoint(3, 3));
 	app->render->DrawTexture(drawPlayer.Section(&currentSpriteSlice));
