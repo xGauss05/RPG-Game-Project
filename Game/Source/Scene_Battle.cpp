@@ -116,8 +116,8 @@ void Scene_Battle::Draw()
 	}
 	for (int i = 0; auto const& elem : party->party)
 	{
-		iPoint allyPosition(240 - camera.x, (120 * i) - camera.y - 30);
-		iPoint hpBarPosition(270 - camera.x, (120 * i) - camera.y - 210);
+		iPoint allyPosition(300 - camera.x, (120 * i) - camera.y + 55);
+		iPoint hpBarPosition(270 - camera.x, (120 * i) - camera.y + 80);
 		DrawHPBar(elem.battlerTextureID, elem.currentHP, elem.stats[0], hpBarPosition);
 
 		DrawParameters drawAlly(elem.battlerTextureID, allyPosition);
@@ -137,6 +137,8 @@ void Scene_Battle::Draw()
 
 			drawAlly.Center(pivot);
 		}
+
+		drawAlly.Scale(fPoint{ 3,3 });
 
 		app->render->DrawTexture(drawAlly);
 		i++;
