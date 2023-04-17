@@ -1,5 +1,7 @@
 #include "Event_Teleport.h"
 
+#include "Log.h"
+
 #include <format>
 #include <string>
 

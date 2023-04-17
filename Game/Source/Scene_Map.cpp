@@ -6,7 +6,7 @@ Scene_Map::Scene_Map(std::string const& newMap) : currentMap(newMap) {}
 Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords)
 	: currentMap(newMap)
 {
-	player.SetPosition(map.MapToWorld(playerCoords.x * 3, playerCoords.y * 3));
+	player.SetPosition(playerCoords * 48);
 }
 
 bool Scene_Map::isReady()
@@ -18,7 +18,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 {
 	if (currentMap.empty())
 	{
-		currentMap = "Airport";
+		currentMap = "Village";
 	}
 
 	if (std::string mapToLoad = currentMap + ".tmx";

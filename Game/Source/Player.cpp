@@ -38,7 +38,7 @@ void Player::Create()
 	Sprite::Initialize("Assets/Textures/NPCs/Forewoman_NPC.png", 0);
 	
 	if(position.IsZero())
-		position = { 288, 192 }; // 64 * 3, 786 * 3
+		position = { 192, 2304 }; // 64 * 3 (192), 768 * 3 (2358)
 
 	size = { 48, 96 }; //16 * 3, 32 * 3
 	currentSpriteSlice = {
