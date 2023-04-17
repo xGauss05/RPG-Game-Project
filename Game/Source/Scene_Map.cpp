@@ -3,6 +3,11 @@
 #include "Log.h"
 
 Scene_Map::Scene_Map(std::string const& newMap) : currentMap(newMap) {}
+Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords)
+	: currentMap(newMap)
+{
+	player.SetPosition(map.MapToWorld(playerCoords.x * 3, playerCoords.y * 3));
+}
 
 bool Scene_Map::isReady()
 {
@@ -186,7 +191,8 @@ TransitionScene Scene_Map::Update()
 				}
 				case TELEPORT:
 				{
-					//teleport player
+					tpInfo = action;
+					return TransitionScene::LOAD_MAP_FROM_MAP;
 				}
 				case LOOT:
 				{
@@ -225,6 +231,16 @@ TransitionScene Scene_Map::Update()
 	}
 
 	return TransitionScene::NONE;
+}
+
+std::string_view Scene_Map::GetNextMap() const
+{
+	return tpInfo.text;
+}
+
+iPoint Scene_Map::GetTPCoordinates() const
+{
+	return iPoint(tpInfo.values[0].second, tpInfo.values[1].second)
 }
 
 int Scene_Map::OnPause() 

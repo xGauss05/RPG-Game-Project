@@ -10,6 +10,7 @@ class Scene_Map : public Scene_Base
 public:
 	Scene_Map() = default;
 	explicit Scene_Map(std::string const& newMap);
+	explicit Scene_Map(std::string const& newMap, iPoint playerCoords);
 
 	bool isReady() override;
 	void Load(
@@ -23,6 +24,9 @@ public:
 	int OnPause() override;
 	int CheckNextScene() override;
 
+	std::string_view GetNextMap() const;
+	iPoint GetTPCoordinates() const;
+
 private:
 
 	enum class MapState
@@ -35,6 +39,8 @@ private:
 
 	std::string currentMap = "";
 
+	EventTrigger tpInfo;
+
 	Map map;
 	Player player;
 
@@ -45,7 +51,7 @@ private:
 
 	TransitionScene transitionTo = TransitionScene::NONE;
 
-	const Window_Factory* windowFactory;
+	const Window_Factory* windowFactory = nullptr;
 	LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;

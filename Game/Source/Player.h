@@ -56,6 +56,8 @@ public:
 	
 	void Update();
 
+	void SetPosition(iPoint newPosition);
+
 	iPoint lastDir{ 0 };
 
 private:

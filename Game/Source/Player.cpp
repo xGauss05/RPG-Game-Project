@@ -17,6 +17,12 @@ void Player::DebugDraw() const
 	app->render->DrawShape(debugPosition, false, SDL_Color(255, 0, 0, 255));
 }
 
+void Player::SetPosition(iPoint newPosition)
+{
+	position = newPosition;
+	app->render->AdjustCamera(position);
+}
+
 void Player::Draw() const
 {
 	DebugDraw();
@@ -30,7 +36,10 @@ void Player::Create()
 {
 	app->tex->Load("Assets/Textures/NPCs/Forewoman_NPC.png");	//This should not be done like this, all of this should load from the map XML.
 	Sprite::Initialize("Assets/Textures/NPCs/Forewoman_NPC.png", 0);
-	position = { 192, 2304 }; // 64 * 3, 786 * 3
+	
+	if(position.IsZero())
+		position = { 192, 2304 }; // 64 * 3, 786 * 3
+
 	size = { 48, 96 }; //16 * 3, 32 * 3
 	currentSpriteSlice = {
 		(GetTextureIndex().x + 1) * (size.x / 3),
