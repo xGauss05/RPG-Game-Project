@@ -46,7 +46,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 
 	party = std::make_unique<GameParty>();
 
-	currentScene = std::make_unique<Scene_Title>();
+	currentScene = std::make_unique<Scene_Boot>();
 
 	return true;
 }
