@@ -56,6 +56,9 @@ public:
 	void Update();
 
 	void SetPosition(iPoint newPosition);
+	iPoint GetPosition() const;
+
+	bool FinishedMoving() const;
 	void SetSpeed(int speed);
 
 	iPoint lastDir{ 0 };

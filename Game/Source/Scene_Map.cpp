@@ -229,6 +229,15 @@ TransitionScene Scene_Map::Update()
 	if (state == MapState::NORMAL)
 	{
 		player.Update();
+		if (player.FinishedMoving())
+		{
+			EventTrigger action = map.TriggerFloorEvent(player.GetPosition());
+			if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
+			{
+				tpInfo = action;
+				return TransitionScene::LOAD_MAP_FROM_MAP;
+			}
+		}
 
 		if (app->input->controllerCount > 0)
 		{

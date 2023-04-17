@@ -21,6 +21,16 @@ void Player::SetSpeed(int speed)
 	this->speed = speed;
 }
 
+iPoint Player::GetPosition() const
+{
+	return position;
+}
+
+bool Player::FinishedMoving() const
+{
+	return moveVector.IsZero();
+}
+
 void Player::Draw() const
 {
 	DrawParameters drawPlayer(GetTextureID(), position);
