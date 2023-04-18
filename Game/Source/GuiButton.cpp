@@ -120,13 +120,15 @@ bool GuiButton::Draw() const
 
 	centerPoint += iPoint(GetSize().x / 2, GetSize().y / 2);
 
-	TextParameters params(0, DrawParameters(0, centerPoint));
-	params.align = AlignTo::ALIGN_CENTER;
+	//THIS IS WHAT WAS NOT WORKING
+	//TextParameters params(0, DrawParameters(0, centerPoint));
+	//params.align = AlignTo::ALIGN_CENTER;
 
-	app->fonts->DrawText(
+	/*app->fonts->DrawText(
 		text,
 		params
-	);
+	);*/
+	app->fonts->DrawText(text, TextParameters(0, DrawParameters(0, centerPoint)).Align(AlignTo::ALIGN_CENTER));
 
 	return true;
 }
