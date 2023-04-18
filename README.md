@@ -36,6 +36,15 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 | <code>SQUARE</code> | Interact / Next dialogue |
 | <code>X</code> | Select button |
 
+### Debug options
+| Key | Description |
+| :----: | :-----------: | 
+| <code>F5</code> | Save | 
+| <code>F6</code> | Load | 
+| <code>F7</code> | Toggle windowed | 
+| <code>F8</code> | Toggle full-screen | 
+| <code>F10</code> | Show bounds, position, No-clip | 
+
 ## Developers
 
 + [Jonathan Cacay Llanes](https://github.com/xGauss05): Team Lead, Code, Management, Design
