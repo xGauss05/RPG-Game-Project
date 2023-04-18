@@ -134,9 +134,9 @@ private:
 	uint frames = 0;
 	float dt;
 
-	bool saveGameRequested;
-	bool loadGameRequested;
-	bool resetLevelRequested;
+	bool saveGameRequested = false;
+	bool loadGameRequested = false;
+	bool resetLevelRequested = false;
 
 	uint levelNumber = 1;
 };
