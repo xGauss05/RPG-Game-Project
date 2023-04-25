@@ -23,6 +23,8 @@ public:
 
 	virtual int Update();
 
+	std::vector<std::unique_ptr<GuiElement>> widgets;
+
 protected:
 
 	void CreateButtons(pugi::xml_node const &node);
@@ -47,7 +49,7 @@ private:
 	bool bVisible = false;
 
 	std::shared_ptr<SDL_Texture> background = nullptr;
-	std::vector<std::unique_ptr<GuiElement>> widgets;
+	
 
 	std::unordered_map<std::string, std::function<int()>, StringHash, std::equal_to<>> strToFuncPtr;
 };

@@ -98,6 +98,7 @@ int main(int argc, char* args[])
 		//Time per cycles
 		std::chrono::high_resolution_clock::time_point endCycle = std::chrono::high_resolution_clock::now();
 		std::chrono::microseconds ms = std::chrono::duration_cast<std::chrono::microseconds>(endCycle - timeStart);
+		app->dt = std::chrono::duration_cast<std::chrono::milliseconds>(ms).count();
 
 		//Time per frame in microseconds acording to taget FPS
 		int microSecCheck = (int)((1.0f / 60) * 1E6); //target is 60

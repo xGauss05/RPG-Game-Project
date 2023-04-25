@@ -68,6 +68,35 @@ TransitionScene Scene_Title::Update()
 	using enum TransitionScene;
 	for (auto const& elem : windows)
 	{
+		
+		if (app->input->GetKey(SDL_SCANCODE_V) == KeyState::KEY_DOWN)
+		{
+			start = std::chrono::high_resolution_clock::now();
+			started = true;
+		}
+		if (started)
+		{
+			for (auto const& widg : elem->widgets)
+			{
+				uPoint aaa = widg->GetPosition();
+				aaa.x -= 1;
+				widg->SetPosition(aaa);
+			}
+
+			
+
+			//current = std::chrono::high_resolution_clock::now();
+
+			//for (auto const& widg : elem->widgets)
+			//{
+			//	double t = easing.TrackTime(app->dt);
+			//	//double t = std::chrono::duration_cast<std::chrono::milliseconds>(current - start).count();
+			//	uPoint aaa = widg->GetPosition();
+			//	aaa.x = easing.EasingAnimation(1200, 1000, t, EasingType::EASE_IN_ELASTIC);
+			//	widg->SetPosition(aaa);
+			//}
+		}
+
 		switch (elem->Update())
 		{
 		case 1:

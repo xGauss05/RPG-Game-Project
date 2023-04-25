@@ -4,6 +4,7 @@
 #include "Scene_Base.h"
 #include "TextureManager.h"
 #include "Log.h"
+#include "Easing.h"
 
 class Scene_Title : public Scene_Base
 {
@@ -29,6 +30,10 @@ private:
     int backgroundTexture;
     int logoFx = 0;
     bool playedLogo = false;
+    Easing easing;
+    std::chrono::high_resolution_clock::time_point start;
+    std::chrono::high_resolution_clock::time_point current;
+    bool started = false;
 };
 
 #endif __SCENE_TITLE_H__

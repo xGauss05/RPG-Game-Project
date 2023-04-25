@@ -70,6 +70,16 @@ public:
 		bIsHovered = !bIsHovered;
 	}
 
+	void SetPosition(uPoint pos)
+	{
+		position = pos;
+	}
+
+	uPoint GetPosition() const
+	{
+		return position;
+	}
+
 protected:
 
 	void Initialize(uPoint pos, uPoint widthHeight)
@@ -96,11 +106,6 @@ protected:
 	int ExecuteFunction() const
 	{
 		return func();
-	}
-
-	uPoint GetPosition() const
-	{
-		return position;
 	}
 
 	uPoint GetSize() const
