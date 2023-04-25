@@ -473,12 +473,14 @@ TransitionScene Scene_Battle::Update()
 				{
 					LOG("Battle won.");
 					state = BATTLE_WON;
+					//app->audio->PlayMusic("i win bitch);
 					break;
 				}
 				if (CheckBattleLoss())
 				{
 					LOG("Battle loss.");
 					state = BATTLE_LOSS;
+					//app->audio->PlayMusic("i los fok);
 					break;
 				}
 				if (actionSelected == 3)
