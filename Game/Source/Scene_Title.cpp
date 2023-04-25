@@ -42,6 +42,15 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 
 	easing.SetTotalTime(0.5);
 	start = std::chrono::high_resolution_clock::now();
+
+	for (auto const& elem : windows)
+	{
+		for (auto const& widg : elem->widgets)
+		{
+			widg->easingthing.SetTotalTime(0.5);
+			widg->easingthing.SetFinished(false);
+		}
+	}
 }
 
 void Scene_Title::Start()
@@ -69,7 +78,7 @@ TransitionScene Scene_Title::Update()
 		playedLogo = true;
 	}
 
-	current = std::chrono::high_resolution_clock::now();
+	/*current = std::chrono::high_resolution_clock::now();
 
 	if (std::chrono::duration_cast<std::chrono::milliseconds>(current - start) >= std::chrono::milliseconds(500) && started)
 	{
@@ -98,6 +107,24 @@ TransitionScene Scene_Title::Update()
 				uPoint aaa = widg->GetPosition();
 				aaa.x = easedX;
 				widg->SetPosition(aaa);
+			}
+		}
+	}*/
+
+	for (auto const& elem : windows)
+	{
+		int i = 0;
+		for (auto const& widg : elem->widgets)
+		{
+			if (!widg->easingthing.GetFinished())
+			{
+				i += 30;
+				double t = widg->easingthing.TrackTime(app->dt);
+				double easedX = widg->easingthing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
+				uPoint aaa = widg->GetPosition();
+				aaa.x = easedX;
+				widg->SetPosition(aaa);
+				app->fonts->DrawText(std::to_string(t), TextParameters(0, DrawParameters(0, iPoint(20, 20 + i))));
 			}
 		}
 	}

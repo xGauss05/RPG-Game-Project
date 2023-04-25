@@ -7,6 +7,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include "Easing.h"
+
 #include <functional>	//std::function
 
 class GuiElement
@@ -80,6 +82,7 @@ public:
 		return position;
 	}
 
+	Easing easingthing;
 
 protected:
 
