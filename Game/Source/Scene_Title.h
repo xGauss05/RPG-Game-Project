@@ -33,7 +33,7 @@ private:
     Easing easing;
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point current;
-    bool started = false;
+    bool started = true;
 };
 
 #endif __SCENE_TITLE_H__

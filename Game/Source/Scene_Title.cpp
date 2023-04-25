@@ -2,6 +2,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Log.h"
+#include "TextManager.h"
 
 Scene_Title::~Scene_Title()
 {
@@ -38,6 +39,9 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	playedLogo = false;
 	
 	app->render->ResetCamera();
+
+	easing.SetTotalTime(0.5);
+	start = std::chrono::high_resolution_clock::now();
 }
 
 void Scene_Title::Start()
@@ -65,38 +69,42 @@ TransitionScene Scene_Title::Update()
 		playedLogo = true;
 	}
 
+	current = std::chrono::high_resolution_clock::now();
+
+	if (std::chrono::duration_cast<std::chrono::milliseconds>(current - start) >= std::chrono::milliseconds(500) && started)
+	{
+		easing.SetFinished(false);
+		started = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_V) == KeyState::KEY_DOWN)
+	{
+		start = std::chrono::high_resolution_clock::now();
+		easing.SetFinished(false);
+	}
+	if (!easing.GetFinished())
+	{
+		current = std::chrono::high_resolution_clock::now();
+		double t = easing.TrackTime(app->dt);
+		app->fonts->DrawText(std::to_string(t), TextParameters(0, DrawParameters(0, iPoint(20, 20))));
+		app->fonts->DrawText(std::to_string(app->dt), TextParameters(0, DrawParameters(0, iPoint(20, 50))));
+
+		for (auto const& elem : windows)
+		{
+			int i = 0;
+			for (auto const& widg : elem->widgets)
+			{
+				double easedX = easing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
+				uPoint aaa = widg->GetPosition();
+				aaa.x = easedX;
+				widg->SetPosition(aaa);
+			}
+		}
+	}
+
 	using enum TransitionScene;
 	for (auto const& elem : windows)
 	{
-		
-		if (app->input->GetKey(SDL_SCANCODE_V) == KeyState::KEY_DOWN)
-		{
-			start = std::chrono::high_resolution_clock::now();
-			started = true;
-		}
-		if (started)
-		{
-			for (auto const& widg : elem->widgets)
-			{
-				uPoint aaa = widg->GetPosition();
-				aaa.x -= 1;
-				widg->SetPosition(aaa);
-			}
-
-			
-
-			//current = std::chrono::high_resolution_clock::now();
-
-			//for (auto const& widg : elem->widgets)
-			//{
-			//	double t = easing.TrackTime(app->dt);
-			//	//double t = std::chrono::duration_cast<std::chrono::milliseconds>(current - start).count();
-			//	uPoint aaa = widg->GetPosition();
-			//	aaa.x = easing.EasingAnimation(1200, 1000, t, EasingType::EASE_IN_ELASTIC);
-			//	widg->SetPosition(aaa);
-			//}
-		}
-
 		switch (elem->Update())
 		{
 		case 1:

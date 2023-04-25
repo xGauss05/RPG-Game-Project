@@ -80,6 +80,7 @@ public:
 		return position;
 	}
 
+
 protected:
 
 	void Initialize(uPoint pos, uPoint widthHeight)
