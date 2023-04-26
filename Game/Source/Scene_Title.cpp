@@ -47,8 +47,7 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	{
 		for (auto const& widg : elem->widgets)
 		{
-			widg->easingthing.SetTotalTime(0.5);
-			widg->easingthing.SetFinished(false);
+			widg->easingthing.SetTotalTime(0.2);
 		}
 	}
 }
@@ -78,53 +77,45 @@ TransitionScene Scene_Title::Update()
 		playedLogo = true;
 	}
 
-	/*current = std::chrono::high_resolution_clock::now();
+	current = std::chrono::high_resolution_clock::now();
 
-	if (std::chrono::duration_cast<std::chrono::milliseconds>(current - start) >= std::chrono::milliseconds(500) && started)
-	{
-		easing.SetFinished(false);
-		started = false;
-	}
+	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
 
-	if (app->input->GetKey(SDL_SCANCODE_V) == KeyState::KEY_DOWN)
+	if (elapsed.count() > 1000)
 	{
-		start = std::chrono::high_resolution_clock::now();
-		easing.SetFinished(false);
-	}
-	if (!easing.GetFinished())
-	{
-		current = std::chrono::high_resolution_clock::now();
-		double t = easing.TrackTime(app->dt);
-		app->fonts->DrawText(std::to_string(t), TextParameters(0, DrawParameters(0, iPoint(20, 20))));
-		app->fonts->DrawText(std::to_string(app->dt), TextParameters(0, DrawParameters(0, iPoint(20, 50))));
-
 		for (auto const& elem : windows)
 		{
-			int i = 0;
+			if (elapsed.count() > 1000 && elapsed.count() < 1500)
+			{
+				elem->widgets.at(0)->easingthing.SetFinished(false);
+			}
+			if (elapsed.count() > 1500 && elapsed.count() < 2000)
+			{
+				elem->widgets.at(1)->easingthing.SetFinished(false);
+			}
+			if (elapsed.count() > 2000 && elapsed.count() < 2500)
+			{
+				elem->widgets.at(2)->easingthing.SetFinished(false);
+			}
+			if (elapsed.count() > 2500 && elapsed.count() < 3000)
+			{
+				elem->widgets.at(3)->easingthing.SetFinished(false);
+			}
+
+			int i = 1;
+
 			for (auto const& widg : elem->widgets)
 			{
-				double easedX = easing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
-				uPoint aaa = widg->GetPosition();
-				aaa.x = easedX;
-				widg->SetPosition(aaa);
-			}
-		}
-	}*/
-
-	for (auto const& elem : windows)
-	{
-		int i = 0;
-		for (auto const& widg : elem->widgets)
-		{
-			if (!widg->easingthing.GetFinished())
-			{
-				i += 30;
-				double t = widg->easingthing.TrackTime(app->dt);
-				double easedX = widg->easingthing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
-				uPoint aaa = widg->GetPosition();
-				aaa.x = easedX;
-				widg->SetPosition(aaa);
-				app->fonts->DrawText(std::to_string(t), TextParameters(0, DrawParameters(0, iPoint(20, 20 + i))));
+				if (!widg->easingthing.GetFinished())
+				{
+					double t = widg->easingthing.TrackTime(app->dt);
+					double easedX = widg->easingthing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
+					uPoint aaa = widg->GetPosition();
+					aaa.x = easedX;
+					widg->SetPosition(aaa);
+					app->fonts->DrawText(std::to_string(t), TextParameters(0, DrawParameters(0, iPoint(20, 30 * i))));
+					i++;
+				}
 			}
 		}
 	}
