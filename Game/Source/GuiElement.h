@@ -82,7 +82,7 @@ public:
 		return position;
 	}
 
-	Easing easingthing;
+	Easing GuiEasing;
 
 protected:
 

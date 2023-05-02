@@ -4,7 +4,6 @@
 #include "Scene_Base.h"
 #include "TextureManager.h"
 #include "Log.h"
-#include "Easing.h"
 
 class Scene_Title : public Scene_Base
 {
@@ -26,14 +25,15 @@ public:
     bool LoadScene(pugi::xml_node const&) override;
     void DebugDraw() override;
 
+    void DoButtonsEasing();
+
 private:
     int backgroundTexture;
     int logoFx = 0;
     bool playedLogo = false;
-    Easing easing;
+
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point current;
-    bool started = true;
 };
 
 #endif __SCENE_TITLE_H__

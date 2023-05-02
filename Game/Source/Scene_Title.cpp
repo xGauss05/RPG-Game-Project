@@ -40,14 +40,13 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	
 	app->render->ResetCamera();
 
-	easing.SetTotalTime(0.5);
 	start = std::chrono::high_resolution_clock::now();
 
 	for (auto const& elem : windows)
 	{
 		for (auto const& widg : elem->widgets)
 		{
-			widg->easingthing.SetTotalTime(2.0);
+			widg->GuiEasing.SetTotalTime(2.0);
 		}
 	}
 }
@@ -77,48 +76,7 @@ TransitionScene Scene_Title::Update()
 		playedLogo = true;
 	}
 
-	current = std::chrono::high_resolution_clock::now();
-
-	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
-
-	if (elapsed.count() > 1000)
-	{
-		for (auto const& elem : windows)
-		{
-			if (elapsed.count() > 1000 && elapsed.count() < 1100)
-			{
-				elem->widgets.at(0)->easingthing.SetFinished(false);
-			}
-			if (elapsed.count() > 1100 && elapsed.count() < 1200)
-			{
-				elem->widgets.at(1)->easingthing.SetFinished(false);
-			}
-			if (elapsed.count() > 1200 && elapsed.count() < 1300)
-			{
-				elem->widgets.at(2)->easingthing.SetFinished(false);
-			}
-			if (elapsed.count() > 1300 && elapsed.count() < 1400)
-			{
-				elem->widgets.at(3)->easingthing.SetFinished(false);
-			}
-
-			int i = 1;
-
-			for (auto const& widg : elem->widgets)
-			{
-				if (!widg->easingthing.GetFinished())
-				{
-					double t = widg->easingthing.TrackTime(app->dt);
-					double easedX = widg->easingthing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
-					uPoint aaa = widg->GetPosition();
-					aaa.x = easedX;
-					widg->SetPosition(aaa);
-					app->fonts->DrawText(std::to_string(t), TextParameters(0, DrawParameters(0, iPoint(20, 30 * i))));
-					i++;
-				}
-			}
-		}
-	}
+	DoButtonsEasing();
 
 	using enum TransitionScene;
 	for (auto const& elem : windows)
@@ -164,4 +122,43 @@ bool Scene_Title::LoadScene(pugi::xml_node const& info)
 void Scene_Title::DebugDraw()
 {
 	return;
+}
+
+void Scene_Title::DoButtonsEasing()
+{
+	current = std::chrono::high_resolution_clock::now();
+
+	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
+
+	for (auto const& elem : windows)
+	{
+		if (elapsed.count() > 1000 && elapsed.count() < 1100)
+		{
+			elem->widgets.at(0)->GuiEasing.SetFinished(false);
+		}
+		if (elapsed.count() > 1100 && elapsed.count() < 1200)
+		{
+			elem->widgets.at(1)->GuiEasing.SetFinished(false);
+		}
+		if (elapsed.count() > 1200 && elapsed.count() < 1300)
+		{
+			elem->widgets.at(2)->GuiEasing.SetFinished(false);
+		}
+		if (elapsed.count() > 1300 && elapsed.count() < 1400)
+		{
+			elem->widgets.at(3)->GuiEasing.SetFinished(false);
+		}
+
+		for (auto const& widg : elem->widgets)
+		{
+			if (!widg->GuiEasing.GetFinished())
+			{
+				double t = widg->GuiEasing.TrackTime(app->dt);
+				double easedX = widg->GuiEasing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
+				uPoint widgetPosition = widg->GetPosition();
+				widgetPosition.x = easedX;
+				widg->SetPosition(widgetPosition);
+			}
+		}
+	}
 }
