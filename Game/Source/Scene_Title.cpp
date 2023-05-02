@@ -47,7 +47,7 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	{
 		for (auto const& widg : elem->widgets)
 		{
-			widg->easingthing.SetTotalTime(0.2);
+			widg->easingthing.SetTotalTime(2.0);
 		}
 	}
 }
@@ -85,19 +85,19 @@ TransitionScene Scene_Title::Update()
 	{
 		for (auto const& elem : windows)
 		{
-			if (elapsed.count() > 1000 && elapsed.count() < 1500)
+			if (elapsed.count() > 1000 && elapsed.count() < 1100)
 			{
 				elem->widgets.at(0)->easingthing.SetFinished(false);
 			}
-			if (elapsed.count() > 1500 && elapsed.count() < 2000)
+			if (elapsed.count() > 1100 && elapsed.count() < 1200)
 			{
 				elem->widgets.at(1)->easingthing.SetFinished(false);
 			}
-			if (elapsed.count() > 2000 && elapsed.count() < 2500)
+			if (elapsed.count() > 1200 && elapsed.count() < 1300)
 			{
 				elem->widgets.at(2)->easingthing.SetFinished(false);
 			}
-			if (elapsed.count() > 2500 && elapsed.count() < 3000)
+			if (elapsed.count() > 1300 && elapsed.count() < 1400)
 			{
 				elem->widgets.at(3)->easingthing.SetFinished(false);
 			}
