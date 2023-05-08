@@ -7,6 +7,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include "Easing.h"
+
 #include <functional>	//std::function
 
 class GuiElement
@@ -70,6 +72,18 @@ public:
 		bIsHovered = !bIsHovered;
 	}
 
+	void SetPosition(uPoint pos)
+	{
+		position = pos;
+	}
+
+	uPoint GetPosition() const
+	{
+		return position;
+	}
+
+	Easing GuiEasing;
+
 protected:
 
 	void Initialize(uPoint pos, uPoint widthHeight)
@@ -96,11 +110,6 @@ protected:
 	int ExecuteFunction() const
 	{
 		return func();
-	}
-
-	uPoint GetPosition() const
-	{
-		return position;
 	}
 
 	uPoint GetSize() const
