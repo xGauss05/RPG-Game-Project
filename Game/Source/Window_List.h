@@ -25,7 +25,6 @@ private:
 	int ExitGameFromMap();
 	int ExitOptions();
 	
-
 	int BattleAttack();
 	int BattleSpecialAttack();
 	int BattleDefend();
@@ -33,6 +32,15 @@ private:
 
 	int DialogYes();
 	int DialogNo();
+
+	int DecreaseSFX();
+	int IncreaseSFX();
+
+	int DecreaseBGM();
+	int IncreaseBGM();
+
+	int ToggleFullscreen();
+	int ToggleVSync();
 
 	int currentHoveredButton = 0;
 };

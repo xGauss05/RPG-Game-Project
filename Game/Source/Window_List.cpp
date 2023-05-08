@@ -2,7 +2,9 @@
 #include "SceneManager.h"
 #include "Scene_Title.h"
 #include "Scene_Map.h"
+#include "Audio.h"
 #include "Log.h"
+#include "Window.h"
 
 Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 {
@@ -23,6 +25,15 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 
 	AddFunctionToMap("DialogYes", std::bind_front(&Window_List::DialogYes, this));
 	AddFunctionToMap("DialogNo", std::bind_front(&Window_List::DialogNo, this));
+
+	AddFunctionToMap("DecreaseSFX", std::bind_front(&Window_List::DecreaseSFX, this));
+	AddFunctionToMap("IncreaseSFX", std::bind_front(&Window_List::IncreaseSFX, this));
+
+	AddFunctionToMap("DecreaseBGM", std::bind_front(&Window_List::DecreaseBGM, this));
+	AddFunctionToMap("IncreaseBGM", std::bind_front(&Window_List::IncreaseBGM, this));
+
+	AddFunctionToMap("ToggleFullscreen", std::bind_front(&Window_List::ToggleFullscreen, this));
+	AddFunctionToMap("ToggleVSync", std::bind_front(&Window_List::ToggleVSync, this));
 	
 	CreatePanels(node);
 	CreateButtons(node);
@@ -185,4 +196,81 @@ int Window_List::DialogYes()
 int Window_List::DialogNo()
 {
 	return 201;
+}
+
+int Window_List::DecreaseSFX() 
+{
+	LOG("DecreaseSFX function called");
+
+	int sfxVolume = app->audio->GetSFXVolume();
+	if (sfxVolume > 0)
+	{
+		sfxVolume -= 5;
+		app->audio->SetSFXVolume(sfxVolume);
+	}
+
+	return 15;
+}
+
+int Window_List::IncreaseSFX() 
+{
+	LOG("IncreaseSFX function called");
+
+	int sfxVolume = app->audio->GetSFXVolume();
+	if (sfxVolume < 100) 
+	{
+		sfxVolume += 5;
+		app->audio->SetSFXVolume(sfxVolume);
+	}
+
+	return 15;
+}
+
+int Window_List::DecreaseBGM() 
+{
+	LOG("DecreaseBGM function called");
+
+	int bgmVolume = app->audio->GetBGMVolume();
+	if (bgmVolume > 0)
+	{
+		bgmVolume-=5;
+		app->audio->SetBGMVolume(bgmVolume);
+	}
+
+	return 15;
+}
+
+int Window_List::IncreaseBGM() 
+{
+	LOG("IncreaseBGM function called");
+
+	int bgmVolume = app->audio->GetBGMVolume();
+	if (bgmVolume < 100)
+	{
+		bgmVolume += 5;
+		app->audio->SetBGMVolume(bgmVolume);
+	}
+
+	return 15;
+}
+
+
+int Window_List::ToggleFullscreen()
+{
+	LOG("ToggleFullscreen function called");
+
+	auto flag = SDL_GetWindowFlags(app->win->GetWindow());
+	auto is_fullscreen = flag & SDL_WINDOW_FULLSCREEN;
+
+	if (is_fullscreen == SDL_WINDOW_FULLSCREEN) SDL_SetWindowFullscreen(app->win->GetWindow(), 0);
+	else SDL_SetWindowFullscreen(app->win->GetWindow(), 1);
+	
+	return 15;
+}
+
+int Window_List::ToggleVSync()
+{
+	LOG("ToggleVSync function called");
+
+	return 15;
 }
