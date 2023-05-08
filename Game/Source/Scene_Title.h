@@ -25,10 +25,15 @@ public:
     bool LoadScene(pugi::xml_node const&) override;
     void DebugDraw() override;
 
+    void DoButtonsEasing();
+
 private:
     int backgroundTexture;
     int logoFx = 0;
     bool playedLogo = false;
+
+    std::chrono::high_resolution_clock::time_point start;
+    std::chrono::high_resolution_clock::time_point current;
 
     std::vector<std::unique_ptr<Window_Base>> optionsWindow;
 };

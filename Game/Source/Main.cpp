@@ -97,23 +97,24 @@ int main(int argc, char* args[])
 
 		//Time per cycles
 		std::chrono::high_resolution_clock::time_point endCycle = std::chrono::high_resolution_clock::now();
-		std::chrono::microseconds ms = std::chrono::duration_cast<std::chrono::microseconds>(endCycle - timeStart);
+		std::chrono::microseconds elapsedCycle = std::chrono::duration_cast<std::chrono::microseconds>(endCycle - timeStart);
 
 		//Time per frame in microseconds acording to taget FPS
 		int microSecCheck = (int)((1.0f / 60) * 1E6); //target is 60
 
 		// This is to cap FPS, the diplaying of FPS on screen is calculated underneath
-		if (ms < std::chrono::microseconds(microSecCheck))
+		if (elapsedCycle < std::chrono::microseconds(microSecCheck))
 		{
-			std::this_thread::sleep_for(std::chrono::microseconds(std::chrono::microseconds(microSecCheck) - ms));
+			std::this_thread::sleep_for(std::chrono::microseconds(std::chrono::microseconds(microSecCheck) - elapsedCycle));
 		}
 
 		//Time per cycle + delay
 		std::chrono::high_resolution_clock::time_point endFrame = std::chrono::high_resolution_clock::now();
-		ms = duration_cast<std::chrono::microseconds>(endFrame - timeStart);
+		std::chrono::microseconds elapsedFrame = duration_cast<std::chrono::microseconds>(endFrame - timeStart);
 
-		//Calculate FPSs
-		float FPS = 1 / ((float)ms.count() * 10E-7);
+		//Calculate FPSs and dt
+		app->dt = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedFrame).count();
+		float FPS = 1 / ((float)elapsedFrame.count() * 10E-7);
 
 		std::string s = std::format("{}", FPS);
 		app->win->SetTitle("Return -A JRPG Parody- | FPS: " + s);

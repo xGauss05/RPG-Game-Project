@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Log.h"
+#include "TextManager.h"
 
 Scene_Title::~Scene_Title()
 {
@@ -47,6 +48,16 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	playedLogo = false;
 	
 	app->render->ResetCamera();
+
+	start = std::chrono::high_resolution_clock::now();
+
+	for (auto const& elem : windows)
+	{
+		for (auto const& widg : elem->widgets)
+		{
+			widg->GuiEasing.SetTotalTime(2.0);
+		}
+	}
 }
 
 void Scene_Title::Start()
@@ -82,6 +93,8 @@ TransitionScene Scene_Title::Update()
 		app->audio->PlayFx(logoFx);
 		playedLogo = true;
 	}
+
+	DoButtonsEasing();
 
 	using enum TransitionScene;
 	if (app->scene->options)
@@ -135,4 +148,43 @@ bool Scene_Title::LoadScene(pugi::xml_node const& info)
 void Scene_Title::DebugDraw()
 {
 	return;
+}
+
+void Scene_Title::DoButtonsEasing()
+{
+	current = std::chrono::high_resolution_clock::now();
+
+	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
+
+	for (auto const& elem : windows)
+	{
+		if (elapsed.count() > 1000 && elapsed.count() < 1100)
+		{
+			elem->widgets.at(0)->GuiEasing.SetFinished(false);
+		}
+		if (elapsed.count() > 1100 && elapsed.count() < 1200)
+		{
+			elem->widgets.at(1)->GuiEasing.SetFinished(false);
+		}
+		if (elapsed.count() > 1200 && elapsed.count() < 1300)
+		{
+			elem->widgets.at(2)->GuiEasing.SetFinished(false);
+		}
+		if (elapsed.count() > 1300 && elapsed.count() < 1400)
+		{
+			elem->widgets.at(3)->GuiEasing.SetFinished(false);
+		}
+
+		for (auto const& widg : elem->widgets)
+		{
+			if (!widg->GuiEasing.GetFinished())
+			{
+				double t = widg->GuiEasing.TrackTime(app->dt);
+				double easedX = widg->GuiEasing.EasingAnimation(1300, 940, t, EasingType::EASE_OUT_ELASTIC);
+				uPoint widgetPosition = widg->GetPosition();
+				widgetPosition.x = easedX;
+				widg->SetPosition(widgetPosition);
+			}
+		}
+	}
 }
