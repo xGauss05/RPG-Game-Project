@@ -34,6 +34,8 @@ private:
 
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point current;
+
+    std::vector<std::unique_ptr<Window_Base>> optionsWindow;
 };
 
 #endif __SCENE_TITLE_H__

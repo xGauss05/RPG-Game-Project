@@ -17,12 +17,13 @@ public:
 private:
 	int NewGame();
 	int ContinueGame();
-	int OptionsWindow();
+	int OptionsMenu();
 	int ExitGameFromTitle();
 	int PauseGame();
 	int ResumeGame();
 	int ExitMainMenu();
 	int ExitGameFromMap();
+	int ExitOptions();
 	
 
 	int BattleAttack();

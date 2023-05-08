@@ -8,12 +8,13 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 {
 	AddFunctionToMap("NewGame", std::bind_front(&Window_List::NewGame, this));
 	AddFunctionToMap("ContinueGame", std::bind_front(&Window_List::ContinueGame, this));
-	AddFunctionToMap("OptionsWindow", std::bind_front(&Window_List::OptionsWindow, this));
+	AddFunctionToMap("OptionsMenu", std::bind_front(&Window_List::OptionsMenu, this));
 	AddFunctionToMap("ExitGameFromTitle", std::bind_front(&Window_List::ExitGameFromTitle, this));
 	AddFunctionToMap("PauseGame", std::bind_front(&Window_List::PauseGame, this));
 	AddFunctionToMap("ResumeGame", std::bind_front(&Window_List::ResumeGame, this));
 	AddFunctionToMap("ExitMainMenu", std::bind_front(&Window_List::ExitMainMenu, this));
 	AddFunctionToMap("ExitGameFromMap", std::bind_front(&Window_List::ExitGameFromMap, this));
+	AddFunctionToMap("ExitOptions", std::bind_front(&Window_List::ExitOptions, this));
 
 	AddFunctionToMap("BattleAttack", std::bind_front(&Window_List::BattleAttack, this));
 	AddFunctionToMap("BattleSpecialAttack", std::bind_front(&Window_List::BattleSpecialAttack, this));
@@ -23,6 +24,7 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 	AddFunctionToMap("DialogYes", std::bind_front(&Window_List::DialogYes, this));
 	AddFunctionToMap("DialogNo", std::bind_front(&Window_List::DialogNo, this));
 	
+	CreatePanels(node);
 	CreateButtons(node);
 
 	if (app->input->controllerCount > 0)
@@ -99,9 +101,11 @@ int Window_List::ContinueGame()
 	return 2;
 }
 
-int Window_List::OptionsWindow()
+int Window_List::OptionsMenu()
 {
 	LOG("OptionsWindow function called");
+	app->scene->options = true;
+
 	return 3;
 }
 
@@ -143,6 +147,14 @@ int Window_List::ExitGameFromMap()
 	app->pause = false;
 
 	return 4;
+}
+
+int Window_List::ExitOptions() 
+{
+	LOG("ExitOption function called");
+	app->scene->options = false;
+
+	return 10;
 }
 
 int Window_List::BattleAttack()

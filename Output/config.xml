@@ -38,6 +38,7 @@
 		<title_info>
 			<scene name="Title">
 				<window name="MainMenu" />
+        <window name="OptionsMenu" />
 			</scene>
 		</title_info>
 		<window_info>
@@ -159,6 +160,60 @@
 					<state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 				</button>
 			</window>
+      <window name="OptionsMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
+        <panel x="395" y="158" width="468" height="390" path="Assets/UI/GUI_4x_sliced.png">
+          <texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
+        </panel>
+        <button x="1155" y="25" width="65" height="65" text="X" function="ExitOptions" segmentwidth="32" segmentheight="32">
+          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+        </button>
+        <button x="425" y="180" width="400" height="65" text="FullScreen" function="ResumeGame" segmentwidth="32" segmentheight="32">
+          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+        </button>
+        <button x="425" y="270" width="400" height="65" text="VSync" function="ExitMainMenu" segmentwidth="32" segmentheight="32">
+          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+        </button>
+        <button x="425" y="360" width="65" height="65" text="-" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
+          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+        </button>
+        <button x="745" y="360" width="65" height="65" text="+" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
+          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+        </button>
+        <button x="425" y="450" width="65" height="65" text="-" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
+          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+        </button>
+        <button x="745" y="450" width="65" height="65" text="+" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
+          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+        </button>
+      </window>
 		</window_info>
 	</scene>
 	<fonts>
