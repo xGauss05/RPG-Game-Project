@@ -29,6 +29,8 @@ private:
     int backgroundTexture;
     int logoFx = 0;
     bool playedLogo = false;
+
+    std::vector<std::unique_ptr<Window_Base>> optionsWindow;
 };
 
 #endif __SCENE_TITLE_H__
