@@ -15,7 +15,8 @@ public:
 	~GuiBox() override;
 
 	explicit GuiBox(
-		uPoint pos,
+		uPoint startingPos, 
+		uPoint targetPos,
 		uPoint widthHeight,
 		SDL_Rect const &rect,
 		int advance,

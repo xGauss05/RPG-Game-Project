@@ -43,7 +43,8 @@ void Window_Base::CreateButtons(pugi::xml_node const& node)
 {
 	for (auto const& child : node.children("button"))
 	{
-		uPoint pos = { child.attribute("x").as_uint(), child.attribute("y").as_uint() };
+		uPoint startingPos = { child.attribute("startingX").as_uint(), child.attribute("startingY").as_uint() };
+		uPoint targetPos = { child.attribute("targetX").as_uint(), child.attribute("targetY").as_uint() };
 		uPoint s = { child.attribute("width").as_uint(), child.attribute("height").as_uint() };
 		const std::string name = child.attribute("text").as_string();
 		const std::string fun = child.attribute("function").as_string();
@@ -68,7 +69,7 @@ void Window_Base::CreateButtons(pugi::xml_node const& node)
 			);
 		}
 
-		widgets.emplace_back(std::make_unique<GuiButton>(pos, s, name, result->second, buttonStateTexture));
+		widgets.emplace_back(std::make_unique<GuiButton>(startingPos, targetPos, s, name, result->second, buttonStateTexture));
 	}
 }
 
@@ -76,7 +77,8 @@ void Window_Base::CreatePanels(pugi::xml_node const& node)
 {
 	for (auto const& panel : node.children("panel"))
 	{
-		uPoint pos = { panel.attribute("x").as_uint(), panel.attribute("y").as_uint() };
+		uPoint startingPos = { panel.attribute("startingX").as_uint(), panel.attribute("startingY").as_uint() };
+		uPoint targetPos = { panel.attribute("targetX").as_uint(), panel.attribute("targetY").as_uint() };
 		uPoint area = { panel.attribute("width").as_uint(), panel.attribute("height").as_uint() };
 		
 		auto texProperties = panel.child("texture_properties");
@@ -99,7 +101,7 @@ void Window_Base::CreatePanels(pugi::xml_node const& node)
 		//This path could be changed to a dialogue-exclusive XML file
 		auto text = panel.child("text").attribute("chatBoxText").as_string();
 
-		widgets.emplace_back(std::make_unique<GuiBox>(pos, area, rect, advance, 0, segments, text));
+		widgets.emplace_back(std::make_unique<GuiBox>(startingPos, targetPos, area, rect, advance, 0, segments, text));
 	}
 }
 
