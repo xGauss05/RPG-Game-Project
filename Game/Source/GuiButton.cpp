@@ -13,11 +13,11 @@ GuiButton::~GuiButton()
 	app->tex->Unload(textureID);
 }
 
-GuiButton::GuiButton(uPoint pos, uPoint size, std::string const& str, std::function<int()> const& funcPtr, std::vector<SDL_Rect> const& buttonStates) :
+GuiButton::GuiButton(uPoint startingPos, uPoint targetPos, uPoint size, std::string const& str, std::function<int()> const& funcPtr, std::vector<SDL_Rect> const& buttonStates) :
 	text(str),
 	currentState(ButtonState::NORMAL)
 {
-	Initialize(funcPtr, pos, size);
+	Initialize(funcPtr, startingPos,targetPos, size);
 
 	textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Pressed.wav");
@@ -110,7 +110,7 @@ int GuiButton::Update()
 
 bool GuiButton::Draw() const
 {
-	auto centerPoint = iPoint(GetPosition().x, GetPosition().y);
+	auto centerPoint = iPoint(GetCurrentPosition().x, GetCurrentPosition().y);
 
 	if (auto result = panels.find(static_cast<int>(currentState));
 		result != panels.end())
@@ -147,7 +147,7 @@ void GuiButton::MouseLeaveHandler()
 
 void GuiButton::DebugDraw() const
 {
-	SDL_Rect debugRect(GetPosition().x, GetPosition().y, GetSize().x, GetSize().y);
+	SDL_Rect debugRect(GetCurrentPosition().x, GetCurrentPosition().y, GetSize().x, GetSize().y);
 
 	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
 }

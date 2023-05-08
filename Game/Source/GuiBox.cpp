@@ -13,10 +13,10 @@ GuiBox::~GuiBox()
 	panel->Unload();
 }
 
-GuiBox::GuiBox(uPoint pos, uPoint widthHeight,SDL_Rect const& rect,int advance,int id, iPoint tSegments, std::string const &t)
+GuiBox::GuiBox(uPoint startingPos, uPoint targetPos, uPoint widthHeight,SDL_Rect const& rect,int advance,int id, iPoint tSegments, std::string const &t)
 	: text(t)
 {
-	Initialize(pos, widthHeight);
+	Initialize(startingPos, targetPos, widthHeight);
 
 	int textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 	panel = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments);
@@ -24,7 +24,7 @@ GuiBox::GuiBox(uPoint pos, uPoint widthHeight,SDL_Rect const& rect,int advance,i
 
 bool GuiBox::Draw() const
 {
-	auto centerPoint = iPoint(GetPosition().x, GetPosition().y);
+	auto centerPoint = iPoint(GetCurrentPosition().x, GetCurrentPosition().y);
 
 	panel->Draw(centerPoint, iPoint(GetSize().x, GetSize().y));
 
@@ -54,7 +54,7 @@ void GuiBox::ModifyText(std::string_view newText)
 
 void GuiBox::DebugDraw() const
 {
-	SDL_Rect debugRect(GetPosition().x, GetPosition().y, GetSize().x, GetSize().y);
+	SDL_Rect debugRect(GetCurrentPosition().x, GetCurrentPosition().y, GetSize().x, GetSize().y);
 
 	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
 }

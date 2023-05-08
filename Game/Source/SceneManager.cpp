@@ -49,6 +49,8 @@ bool SceneManager::Awake(pugi::xml_node& config)
 
 	currentScene = std::make_unique<Scene_Boot>();
 
+	options = false;
+
 	return true;
 }
 

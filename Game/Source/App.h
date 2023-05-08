@@ -98,6 +98,8 @@ public:
 
 	bool pause = false;
 
+	float dt;
+
 private:
 
 	// Load config file
@@ -132,7 +134,7 @@ private:
 	pugi::xml_node configNode;
 
 	uint frames = 0;
-	float dt;
+	
 
 	bool saveGameRequested = false;
 	bool loadGameRequested = false;

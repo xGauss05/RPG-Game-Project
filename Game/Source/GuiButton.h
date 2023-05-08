@@ -25,7 +25,8 @@ public:
 
 
 	explicit GuiButton(
-		uPoint pos,
+		uPoint startingPos,
+		uPoint targetPos,
 		uPoint size,
 		std::string const &str,
 		std::function<int()> const& funcPtr,

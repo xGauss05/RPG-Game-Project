@@ -7,6 +7,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include "Easing.h"
+
 #include <functional>	//std::function
 
 class GuiElement
@@ -56,8 +58,8 @@ public:
 	{
 		uPoint mousePos = app->input->GetUnsignedMousePosition();
 
-		if (mousePos.x >= position.x && mousePos.x <= position.x + size.x &&
-			mousePos.y >= position.y && mousePos.y <= position.y + size.y)
+		if (mousePos.x >= currentPosition.x && mousePos.x <= currentPosition.x + size.x &&
+			mousePos.y >= currentPosition.y && mousePos.y <= currentPosition.y + size.y)
 		{
 			return true;
 		}
@@ -70,11 +72,28 @@ public:
 		bIsHovered = !bIsHovered;
 	}
 
+	void SetPosition(uPoint pos)
+	{
+		currentPosition = pos;
+	}
+
+	uPoint GetCurrentPosition() const
+	{
+		return currentPosition;
+	}
+	uPoint GetTargetPosition() const
+	{
+		return targetPosition;
+	}
+
+	Easing GuiEasing;
+
 protected:
 
-	void Initialize(uPoint pos, uPoint widthHeight)
+	void Initialize(uPoint initialPos, uPoint targetPos, uPoint widthHeight)
 	{
-		position = pos;
+		currentPosition = initialPos;
+		targetPosition = targetPos;
 		if (!(widthHeight % 32).IsZero())
 		{
 			widthHeight += uPoint(32, 32) - (widthHeight % 32);
@@ -82,10 +101,11 @@ protected:
 		size = widthHeight;
 	}
 
-	void Initialize(std::function<int()> const& funcPtr, uPoint pos, uPoint widthHeight)
+	void Initialize(std::function<int()> const& funcPtr, uPoint initialPos, uPoint targetPos, uPoint widthHeight)
 	{
 		func = funcPtr;
-		position = pos;
+		currentPosition = initialPos;
+		targetPosition = targetPos;
 		if (!(widthHeight % 32).IsZero())
 		{
 			widthHeight += uPoint(32, 32) - (widthHeight % 32);
@@ -96,11 +116,6 @@ protected:
 	int ExecuteFunction() const
 	{
 		return func();
-	}
-
-	uPoint GetPosition() const
-	{
-		return position;
 	}
 
 	uPoint GetSize() const
@@ -118,7 +133,8 @@ private:
 	bool bIsHovered = false;		//If mouse is hovering
 
 	std::function<int()> func;
-	uPoint position = { 0, 0 };
+	uPoint currentPosition = { 0, 0 };
+	uPoint targetPosition = { 0,0 };
 	uPoint size = { 0, 0 };
 
 };
