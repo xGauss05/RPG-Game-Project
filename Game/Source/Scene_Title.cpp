@@ -208,11 +208,11 @@ void Scene_Title::DoTitlesEasing()
 	if (elapsed.count() > 500)
 	{
 		app->render->AddEasing(2.0f);
-		app->render->DrawEasing(titleTexture, iPoint(0, -150), iPoint(0, 20), 0, EasingType::EASE_OUT_ELASTIC);
+		app->render->DrawEasing(titleTexture, iPoint(20, -150), iPoint(20, 20), 0, EasingType::EASE_OUT_ELASTIC);
 	}
 	if (elapsed.count() > 750)
 	{
 		app->render->AddEasing(3.0f);
-		app->render->DrawEasing(studioTexture, iPoint(0, 700), iPoint(50, 300), 1, EasingType::EASE_OUT_ELASTIC);
+		app->render->DrawEasing(studioTexture, iPoint(0, 700), iPoint(80, 450), 1, EasingType::EASE_OUT_ELASTIC);
 	}
 }
