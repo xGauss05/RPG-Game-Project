@@ -12,10 +12,10 @@
 enum class CheckboxState
 {
 	DISABLED,
-	NORMAL,
-	PRESSED,
-	FOCUSED,
-	SELECTED
+	UNSELECTED,
+	SELECTED,
+	UNSELECTED_FOCUSED,
+	SELECTED_FOCUSED
 };
 
 class GuiCheckbox : public GuiElement
@@ -25,7 +25,8 @@ public:
 	~GuiCheckbox() override;
 
 	explicit GuiCheckbox(
-		uPoint pos,
+		uPoint startingPos,
+		uPoint targetPos,
 		uPoint size,
 		std::string const& str,
 		std::function<int()> const& funcPtr,

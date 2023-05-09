@@ -3,6 +3,7 @@
 #include "Scene_Title.h"
 #include "Scene_Map.h"
 #include "Audio.h"
+#include "Render.h"
 #include "Log.h"
 #include "Window.h"
 
@@ -34,9 +35,10 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 
 	AddFunctionToMap("ToggleFullscreen", std::bind_front(&Window_List::ToggleFullscreen, this));
 	AddFunctionToMap("ToggleVSync", std::bind_front(&Window_List::ToggleVSync, this));
-	
+
 	CreatePanels(node);
 	CreateButtons(node);
+	CreateCheckboxes(node);
 
 	if (app->input->controllerCount > 0)
 	{
@@ -120,22 +122,22 @@ int Window_List::OptionsMenu()
 	return 3;
 }
 
-int Window_List::ExitGameFromTitle() 
+int Window_List::ExitGameFromTitle()
 {
 	LOG("ExitGameFromTitle function called");
-	
+
 	return 4;
 }
 
 int Window_List::PauseGame() {
 	LOG("PauseGame function called");
 	app->pause = true;
-	if(!app->PauseGame()) return 4;
-		
+	if (!app->PauseGame()) return 4;
+
 	return 0;
 }
 
-int Window_List::ResumeGame() 
+int Window_List::ResumeGame()
 {
 	LOG("ResumeGame function called");
 	app->pause = false;
@@ -143,10 +145,10 @@ int Window_List::ResumeGame()
 	return 6;
 }
 
-int Window_List::ExitMainMenu() 
+int Window_List::ExitMainMenu()
 {
 	LOG("ExitMainMenu function called");
-	
+
 	app->pause = false;
 
 	return 7;
@@ -160,7 +162,7 @@ int Window_List::ExitGameFromMap()
 	return 4;
 }
 
-int Window_List::ExitOptions() 
+int Window_List::ExitOptions()
 {
 	LOG("ExitOption function called");
 	app->scene->options = false;
@@ -198,62 +200,73 @@ int Window_List::DialogNo()
 	return 201;
 }
 
-int Window_List::DecreaseSFX() 
+int Window_List::DecreaseSFX()
 {
 	LOG("DecreaseSFX function called");
 
 	int sfxVolume = app->audio->GetSFXVolume();
 	if (sfxVolume > 0)
 	{
-		sfxVolume -= 5;
+		sfxVolume -= 2;
+
+		if (sfxVolume < 0) sfxVolume = 0;
+
 		app->audio->SetSFXVolume(sfxVolume);
 	}
 
 	return 15;
 }
 
-int Window_List::IncreaseSFX() 
+int Window_List::IncreaseSFX()
 {
 	LOG("IncreaseSFX function called");
 
 	int sfxVolume = app->audio->GetSFXVolume();
-	if (sfxVolume < 100) 
+	if (sfxVolume < 128)
 	{
-		sfxVolume += 5;
+		sfxVolume += 2;
+
+		if (sfxVolume > 128) sfxVolume = 128;
+
 		app->audio->SetSFXVolume(sfxVolume);
 	}
 
 	return 15;
 }
 
-int Window_List::DecreaseBGM() 
+int Window_List::DecreaseBGM()
 {
 	LOG("DecreaseBGM function called");
 
 	int bgmVolume = app->audio->GetBGMVolume();
 	if (bgmVolume > 0)
 	{
-		bgmVolume-=5;
+		bgmVolume -= 2;
+
+		if (bgmVolume < 0) bgmVolume = 0;
+
 		app->audio->SetBGMVolume(bgmVolume);
 	}
 
 	return 15;
 }
 
-int Window_List::IncreaseBGM() 
+int Window_List::IncreaseBGM()
 {
 	LOG("IncreaseBGM function called");
 
 	int bgmVolume = app->audio->GetBGMVolume();
-	if (bgmVolume < 100)
+	if (bgmVolume < 128)
 	{
-		bgmVolume += 5;
+		bgmVolume += 2;
+
+		if (bgmVolume > 128) bgmVolume = 128;
+
 		app->audio->SetBGMVolume(bgmVolume);
 	}
 
 	return 15;
 }
-
 
 int Window_List::ToggleFullscreen()
 {
@@ -264,13 +277,15 @@ int Window_List::ToggleFullscreen()
 
 	if (is_fullscreen == SDL_WINDOW_FULLSCREEN) SDL_SetWindowFullscreen(app->win->GetWindow(), 0);
 	else SDL_SetWindowFullscreen(app->win->GetWindow(), 1);
-	
+
 	return 15;
 }
 
 int Window_List::ToggleVSync()
 {
 	LOG("ToggleVSync function called");
+
+	app->render->ToggleVSync();
 
 	return 15;
 }

@@ -1,6 +1,7 @@
 #include "Window_Base.h"
 #include "GuiButton.h"
 #include "GuiBox.h"
+#include "GuiCheckbox.h"
 
 #include "Log.h"
 
@@ -53,7 +54,7 @@ void Window_Base::CreateButtons(pugi::xml_node const& node)
 
 		if (result == strToFuncPtr.end())
 		{
-			LOG("Widget [Play] function not found.", name.c_str());
+			LOG("Widget function not found.", name.c_str());
 			result = strToFuncPtr.find("Fallback");
 		}
 
@@ -102,6 +103,40 @@ void Window_Base::CreatePanels(pugi::xml_node const& node)
 		auto text = panel.child("text").attribute("chatBoxText").as_string();
 
 		widgets.emplace_back(std::make_unique<GuiBox>(startingPos, targetPos, area, rect, advance, 0, segments, text));
+	}
+}
+
+void Window_Base::CreateCheckboxes(pugi::xml_node const& node)
+{
+	for (auto const& child : node.children("checkbox"))
+	{
+		uPoint startingPos = { child.attribute("startingX").as_uint(), child.attribute("startingY").as_uint() };
+		uPoint targetPos = { child.attribute("targetX").as_uint(), child.attribute("targetY").as_uint() };
+		uPoint s = { child.attribute("width").as_uint(), child.attribute("height").as_uint() };
+		const std::string name = child.attribute("text").as_string();
+		const std::string fun = child.attribute("function").as_string();
+
+		auto result = strToFuncPtr.find(fun);
+
+		if (result == strToFuncPtr.end())
+		{
+			LOG("Widget function not found.", name.c_str());
+			result = strToFuncPtr.find("Fallback");
+		}
+
+		std::vector<SDL_Rect> buttonStateTexture;
+
+		for (auto const& state : child.children("state_texture"))
+		{
+			buttonStateTexture.emplace_back(
+				state.attribute("x").as_int(),
+				state.attribute("y").as_int(),
+				child.attribute("segmentwidth").as_int(),
+				child.attribute("segmentheight").as_int()
+			);
+		}
+
+		widgets.emplace_back(std::make_unique<GuiCheckbox>(startingPos, targetPos, s, name, result->second, buttonStateTexture));
 	}
 }
 

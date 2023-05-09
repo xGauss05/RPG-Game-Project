@@ -72,10 +72,18 @@ void Scene_Title::Draw()
 {
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
 	if (app->scene->options) {
+
 		for (auto const& elem : optionsWindow)
 		{
 			elem->Draw();
 		}
+		app->fonts->DrawText("Options", TextParameters(0, DrawParameters(0, iPoint{ 555,190 })));
+		app->fonts->DrawText("Fullscreen", TextParameters(0, DrawParameters(0, iPoint{ 425,255 })));
+		app->fonts->DrawText("VSync", TextParameters(0, DrawParameters(0, iPoint{ 425,305 })));
+		app->fonts->DrawText("SFX " + std::to_string(app->audio->GetSFXVolume()), TextParameters(0, DrawParameters(0, iPoint{570,385})));
+		app->fonts->DrawText("BGM " + std::to_string(app->audio->GetBGMVolume()), TextParameters(0, DrawParameters(0, iPoint{565,475})));
+		
+
 	}
 	else {
 		for (auto const& elem : windows)
