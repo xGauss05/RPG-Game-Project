@@ -135,7 +135,6 @@ private:
 
 	uint frames = 0;
 	
-
 	bool saveGameRequested = false;
 	bool loadGameRequested = false;
 	bool resetLevelRequested = false;

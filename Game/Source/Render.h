@@ -123,6 +123,11 @@ public:
 
 	void SetMapAndTileSize(iPoint mSize, iPoint tSize);
 
+	void ToggleVSync() 
+	{
+		vSyncActive = !vSyncActive;
+	}
+
 	SDL_Rect GetCamera() const;
 	void AdjustCamera(iPoint position);
 	void ResetCamera();
@@ -144,7 +149,7 @@ private:
 	iPoint tileSize = { 0, 0 };
 
 	// -------- Vsync
-	bool vSyncActive = true;
+	bool vSyncActive = false;
 	bool vSyncOnRestart = true;
 
 	// -------- No Vsync

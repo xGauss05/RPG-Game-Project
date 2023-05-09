@@ -182,9 +182,9 @@
         <checkbox startingX="780" targetX="780" startingY="310" targetY="310" width="32" height="32" text="X" function="ToggleVSync" segmentwidth="8" segmentheight="8">
           <state_texture state="0" x="0" y="0" horizontalsegments="1" verticalsegments="1" advance="0" path="Assets/UI/GUI_4x_sliced.png" />
           <state_texture state="1" x="36" y="108" horizontalsegments="1" verticalsegments="1" advance="0" path="Assets/UI/GUI_4x_sliced.png" />
-          <state_texture state="2" x="0" y="108" horizontalsegments="1" verticalsegments="1" advance="0" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="2" x="428" y="108" horizontalsegments="1" verticalsegments="1" advance="0" path="Assets/UI/GUI_4x_sliced.png" />
           <state_texture state="3" x="180" y="108" horizontalsegments="1" verticalsegments="1" advance="0" path="Assets/UI/GUI_4x_sliced.png" />
-          <state_texture state="4" x="72" y="108" horizontalsegments="1" verticalsegments="1" advance="0" path="Assets/UI/GUI_4x_sliced.png" />
+          <state_texture state="4" x="500" y="108" horizontalsegments="1" verticalsegments="1" advance="0" path="Assets/UI/GUI_4x_sliced.png" />
         </checkbox>
 				<button startingX="425" targetX="425" startingY="360" targetY="360" width="65" height="65" text="-" function="DecreaseSFX" segmentwidth="32" segmentheight="32">
 				  <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />

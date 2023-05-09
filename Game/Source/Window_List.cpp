@@ -3,6 +3,7 @@
 #include "Scene_Title.h"
 #include "Scene_Map.h"
 #include "Audio.h"
+#include "Render.h"
 #include "Log.h"
 #include "Window.h"
 
@@ -283,6 +284,8 @@ int Window_List::ToggleFullscreen()
 int Window_List::ToggleVSync()
 {
 	LOG("ToggleVSync function called");
+
+	app->render->ToggleVSync();
 
 	return 15;
 }
