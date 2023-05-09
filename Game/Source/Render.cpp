@@ -415,6 +415,11 @@ int Render::AddEasing(float totalTime)
 
 bool Render::DrawEasing(int textureID, iPoint startingPos, iPoint targetPos, int easingIndex, EasingType type)
 {
+	if (easingIndex >= easings.size())
+	{
+		return true;
+	}
+
 	if (!easings.at(easingIndex).GetFinished())
 	{
 		double t = easings.at(easingIndex).TrackTime(app->dt);
@@ -425,6 +430,7 @@ bool Render::DrawEasing(int textureID, iPoint startingPos, iPoint targetPos, int
 	}
 	else
 	{
+		//easings.erase(easings.begin() + easingIndex);
 		DrawTexture(DrawParameters(textureID, targetPos));
 	}
 	
