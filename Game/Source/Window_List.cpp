@@ -37,6 +37,7 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 	
 	CreatePanels(node);
 	CreateButtons(node);
+	CreateCheckboxes(node);
 
 	if (app->input->controllerCount > 0)
 	{

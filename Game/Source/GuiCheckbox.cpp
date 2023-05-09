@@ -13,11 +13,11 @@ GuiCheckbox::~GuiCheckbox()
 	app->tex->Unload(textureID);
 }
 
-GuiCheckbox::GuiCheckbox(uPoint pos, uPoint size, std::string const& str, std::function<int()> const& funcPtr, std::vector<SDL_Rect> const& buttonStates) :
+GuiCheckbox::GuiCheckbox(uPoint startingPos, uPoint targetPos, uPoint size, std::string const& str, std::function<int()> const& funcPtr, std::vector<SDL_Rect> const& buttonStates) :
 	text(str),
-	currentState(CheckboxState::NORMAL)
+	currentState(CheckboxState::UNSELECTED)
 {
-	Initialize(funcPtr, pos, size);
+	Initialize(funcPtr, startingPos, targetPos, size);
 
 	textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Pressed.wav");
@@ -38,36 +38,43 @@ int GuiCheckbox::Update()
 
 	if (IsMouseHovering() && app->input->controllerCount <= 0)
 	{
-		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+ 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 		{
-
-			if (currentState == CheckboxState::SELECTED) currentState = CheckboxState::NORMAL;
-			else if (currentState == CheckboxState::NORMAL) currentState = CheckboxState::SELECTED;
-
+			if (currentState == CheckboxState::SELECTED) currentState = CheckboxState::UNSELECTED;
+			else if (currentState == CheckboxState::UNSELECTED) currentState = CheckboxState::SELECTED;
+			playedSound = false;
+			return ExecuteFunction();
+		}
+		else 
+		{
+			if (currentState == CheckboxState::SELECTED) currentState == CheckboxState::SELECTED_FOCUSED;
+			if (currentState == CheckboxState::UNSELECTED) currentState == CheckboxState::UNSELECTED_FOCUSED;
+			playedSound = false;
 		}
 	}
 	else if (IsControllerHovered())
 	{
-		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_REPEAT)
+		/*if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_REPEAT)
 		{
-			currentState = PRESSED;
+			currentState = SELECTED;
 			playedSound = false;
 
 		}
 		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
 		{
 			return ExecuteFunction();
-			currentState = NORMAL;
+			currentState = UNSELECTED;
 		}
 		else if (currentState != FOCUSED)
 		{
 			currentState = FOCUSED;
 			playedSound = false;
-		}
+		}*/
 	}
 	else
 	{
-		currentState = NORMAL;
+		if (currentState == CheckboxState::SELECTED_FOCUSED) currentState == CheckboxState::SELECTED;
+		if (currentState == CheckboxState::UNSELECTED_FOCUSED) currentState == CheckboxState::UNSELECTED;
 		playedSound = true;
 	}
 
@@ -75,13 +82,19 @@ int GuiCheckbox::Update()
 	{
 		switch (currentState)
 		{
-		case NORMAL:
-			break;
-		case PRESSED:
+		case SELECTED:
 			playedSound = true;
 			app->audio->PlayFx(pressedFx);
 			break;
-		case FOCUSED:
+		case UNSELECTED:
+			playedSound = true;
+			app->audio->PlayFx(pressedFx);
+			break;
+		case SELECTED_FOCUSED:
+			playedSound = true;
+			app->audio->PlayFx(focusedFx);
+			break;
+		case UNSELECTED_FOCUSED:
 			playedSound = true;
 			app->audio->PlayFx(focusedFx);
 			break;
@@ -97,7 +110,7 @@ int GuiCheckbox::Update()
 
 bool GuiCheckbox::Draw() const
 {
-	auto centerPoint = iPoint(GetPosition().x, GetPosition().y);
+	auto centerPoint = iPoint(GetCurrentPosition().x, GetCurrentPosition().y);
 
 	if (auto result = panels.find(static_cast<int>(currentState));
 		result != panels.end())
@@ -113,18 +126,18 @@ bool GuiCheckbox::Draw() const
 void GuiCheckbox::MouseEnterHandler()
 {
 	if (currentState != CheckboxState::DISABLED)
-		currentState = CheckboxState::FOCUSED;
+		currentState = CheckboxState::SELECTED_FOCUSED;
 }
 
 void GuiCheckbox::MouseLeaveHandler()
 {
 	if (currentState != CheckboxState::DISABLED)
-		currentState = CheckboxState::NORMAL;
+		currentState = CheckboxState::UNSELECTED;
 }
 
 void GuiCheckbox::DebugDraw() const
 {
-	SDL_Rect debugRect(GetPosition().x, GetPosition().y, GetSize().x, GetSize().y);
+	SDL_Rect debugRect(GetCurrentPosition().x, GetCurrentPosition().y, GetSize().x, GetSize().y);
 
 	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
 }
