@@ -206,7 +206,10 @@ int Window_List::DecreaseSFX()
 	int sfxVolume = app->audio->GetSFXVolume();
 	if (sfxVolume > 0)
 	{
-		sfxVolume -= 5;
+		sfxVolume -= 2;
+
+		if (sfxVolume < 0) sfxVolume = 0;
+
 		app->audio->SetSFXVolume(sfxVolume);
 	}
 
@@ -218,9 +221,12 @@ int Window_List::IncreaseSFX()
 	LOG("IncreaseSFX function called");
 
 	int sfxVolume = app->audio->GetSFXVolume();
-	if (sfxVolume < 100)
+	if (sfxVolume < 128)
 	{
-		sfxVolume += 5;
+		sfxVolume += 2;
+
+		if (sfxVolume > 128) sfxVolume = 128;
+
 		app->audio->SetSFXVolume(sfxVolume);
 	}
 
@@ -234,7 +240,10 @@ int Window_List::DecreaseBGM()
 	int bgmVolume = app->audio->GetBGMVolume();
 	if (bgmVolume > 0)
 	{
-		bgmVolume -= 5;
+		bgmVolume -= 2;
+
+		if (bgmVolume < 0) bgmVolume = 0;
+
 		app->audio->SetBGMVolume(bgmVolume);
 	}
 
@@ -246,9 +255,12 @@ int Window_List::IncreaseBGM()
 	LOG("IncreaseBGM function called");
 
 	int bgmVolume = app->audio->GetBGMVolume();
-	if (bgmVolume < 100)
+	if (bgmVolume < 128)
 	{
-		bgmVolume += 5;
+		bgmVolume += 2;
+
+		if (bgmVolume > 128) bgmVolume = 128;
+
 		app->audio->SetBGMVolume(bgmVolume);
 	}
 
