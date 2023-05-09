@@ -81,6 +81,10 @@ public:
 	{
 		return currentPosition;
 	}
+	uPoint GetStartingPosition() const
+	{
+		return startingPosition;
+	}
 	uPoint GetTargetPosition() const
 	{
 		return targetPosition;
@@ -93,6 +97,7 @@ protected:
 	void Initialize(uPoint initialPos, uPoint targetPos, uPoint widthHeight)
 	{
 		currentPosition = initialPos;
+		startingPosition = initialPos;
 		targetPosition = targetPos;
 		if (!(widthHeight % 32).IsZero())
 		{
@@ -105,6 +110,7 @@ protected:
 	{
 		func = funcPtr;
 		currentPosition = initialPos;
+		startingPosition = initialPos;
 		targetPosition = targetPos;
 		if (!(widthHeight % 32).IsZero())
 		{
@@ -134,6 +140,7 @@ private:
 
 	std::function<int()> func;
 	uPoint currentPosition = { 0, 0 };
+	uPoint startingPosition = { 0, 0 };
 	uPoint targetPosition = { 0,0 };
 	uPoint size = { 0, 0 };
 

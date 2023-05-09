@@ -180,7 +180,7 @@ void Scene_Title::DoButtonsEasing()
 			if (!widg->GuiEasing.GetFinished())
 			{
 				double t = widg->GuiEasing.TrackTime(app->dt);
-				double easedX = widg->GuiEasing.EasingAnimation(widg->GetCurrentPosition().x, widg->GetTargetPosition().x, t, EasingType::EASE_OUT_ELASTIC);
+				double easedX = widg->GuiEasing.EasingAnimation(widg->GetStartingPosition().x, widg->GetTargetPosition().x, t, EasingType::EASE_OUT_ELASTIC);
 				uPoint widgetPosition = widg->GetCurrentPosition();
 				widgetPosition.x = easedX;
 				widg->SetPosition(widgetPosition);
