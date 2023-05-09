@@ -53,6 +53,9 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 
 	start = std::chrono::high_resolution_clock::now();
 
+	app->render->AddEasing(2.0f);
+	app->render->AddEasing(3.0f);
+
 	for (auto const& elem : windows)
 	{
 		for (auto const& widg : elem->widgets)
@@ -75,11 +78,9 @@ void Scene_Title::Start()
 void Scene_Title::Draw()
 {
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
-	//app->render->DrawTexture(DrawParameters(titleTexture, iPoint(20, 20)));
 
-	//DrawParameters params(DrawParameters(studioTexture, iPoint(100, 400)));
-	//params.Scale(fPoint(0.01, 0.01));
-	//app->render->DrawTexture(params);
+	DoImagesEasing();
+	DoButtonsEasing();
 
 	if (app->scene->options) {
 		for (auto const& elem : optionsWindow)
@@ -103,9 +104,6 @@ TransitionScene Scene_Title::Update()
 		app->audio->PlayFx(logoFx);
 		playedLogo = true;
 	}
-
-	DoButtonsEasing();
-	DoTitlesEasing();
 
 	using enum TransitionScene;
 	if (app->scene->options)
@@ -199,7 +197,7 @@ void Scene_Title::DoButtonsEasing()
 		}
 	}
 }
-void Scene_Title::DoTitlesEasing()
+void Scene_Title::DoImagesEasing()
 {
 	current = std::chrono::high_resolution_clock::now();
 
@@ -207,12 +205,10 @@ void Scene_Title::DoTitlesEasing()
 
 	if (elapsed.count() > 500)
 	{
-		app->render->AddEasing(2.0f);
-		app->render->DrawEasing(titleTexture, iPoint(20, -150), iPoint(20, 20), 0, EasingType::EASE_OUT_ELASTIC);
+		app->render->DrawEasing(titleTexture, iPoint(20, -150), iPoint(20, 20), 1, EasingType::EASE_OUT_ELASTIC);
 	}
 	if (elapsed.count() > 750)
 	{
-		app->render->AddEasing(3.0f);
-		app->render->DrawEasing(studioTexture, iPoint(0, 700), iPoint(80, 450), 1, EasingType::EASE_OUT_ELASTIC);
+		app->render->DrawEasing(studioTexture, iPoint(0, 700), iPoint(80, 450), 2, EasingType::EASE_OUT_ELASTIC);
 	}
 }

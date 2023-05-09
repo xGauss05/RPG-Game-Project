@@ -21,11 +21,14 @@ bool Scene_Boot::isReady()
 void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
 {
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/boot_bg.png");
+	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
 
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
 	playedLogo = false;
 	start = std::chrono::high_resolution_clock::now();
+
+	app->render->AddEasing(1.0f);
 }
 
 void Scene_Boot::Start()
@@ -35,6 +38,8 @@ void Scene_Boot::Start()
 void Scene_Boot::Draw()
 {
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
+
+	DoImagesEasing();
 }
 
 TransitionScene Scene_Boot::Update()
@@ -78,4 +83,9 @@ bool Scene_Boot::LoadScene(pugi::xml_node const&)
 void Scene_Boot::DebugDraw()
 {
 	return;
+}
+
+void Scene_Boot::DoImagesEasing()
+{
+	app->render->DrawEasing(studioTexture, iPoint(400, -215), iPoint(400, 160), 0, EasingType::EASE_OUT_QUAD);
 }

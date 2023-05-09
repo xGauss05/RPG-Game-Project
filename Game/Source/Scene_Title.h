@@ -25,8 +25,8 @@ public:
     bool LoadScene(pugi::xml_node const&) override;
     void DebugDraw() override;
 
+    void DoImagesEasing();
     void DoButtonsEasing();
-    void DoTitlesEasing();
 
 private:
     int backgroundTexture;

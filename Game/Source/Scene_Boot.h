@@ -28,8 +28,11 @@ public:
     bool LoadScene(pugi::xml_node const&) override;
     void DebugDraw() override;
 
+    void DoImagesEasing();
+
 private:
     int backgroundTexture;
+    int studioTexture;
     int logoFx = 0;
     bool playedLogo = false;
     bool transition = false;
