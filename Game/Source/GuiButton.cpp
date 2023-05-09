@@ -49,8 +49,8 @@ int GuiButton::Update()
 		}
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 		{
-			return ExecuteFunction();
 			currentState = NORMAL;
+			return ExecuteFunction();
 		}
 		else if (currentState != FOCUSED)
 		{

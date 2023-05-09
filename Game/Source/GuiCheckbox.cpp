@@ -38,18 +38,31 @@ int GuiCheckbox::Update()
 
 	if (IsMouseHovering() && app->input->controllerCount <= 0)
 	{
- 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 		{
-			if (currentState == CheckboxState::SELECTED) currentState = CheckboxState::UNSELECTED;
-			else if (currentState == CheckboxState::UNSELECTED) currentState = CheckboxState::SELECTED;
+			if (currentState == CheckboxState::SELECTED || currentState == CheckboxState::SELECTED_FOCUSED)
+				currentState = CheckboxState::UNSELECTED;
+			else if (currentState == CheckboxState::UNSELECTED || currentState == CheckboxState::UNSELECTED_FOCUSED)
+				currentState = CheckboxState::SELECTED;
 			playedSound = false;
 			return ExecuteFunction();
 		}
-		else 
+		else if (currentState != CheckboxState::SELECTED_FOCUSED && currentState != CheckboxState::UNSELECTED_FOCUSED)
 		{
-			if (currentState == CheckboxState::SELECTED) currentState == CheckboxState::SELECTED_FOCUSED;
-			if (currentState == CheckboxState::UNSELECTED) currentState == CheckboxState::UNSELECTED_FOCUSED;
-			playedSound = false;
+			if (currentState == CheckboxState::SELECTED)
+			{
+				playedSound = false;
+
+				currentState = CheckboxState::SELECTED_FOCUSED;
+			}
+
+			if (currentState == CheckboxState::UNSELECTED)
+			{
+				playedSound = false;
+
+				currentState = CheckboxState::UNSELECTED_FOCUSED;
+			}
+
 		}
 	}
 	else if (IsControllerHovered())
@@ -73,9 +86,12 @@ int GuiCheckbox::Update()
 	}
 	else
 	{
-		if (currentState == CheckboxState::SELECTED_FOCUSED) currentState == CheckboxState::SELECTED;
-		if (currentState == CheckboxState::UNSELECTED_FOCUSED) currentState == CheckboxState::UNSELECTED;
+		if (currentState == CheckboxState::SELECTED_FOCUSED) currentState = CheckboxState::SELECTED;
+
+		if (currentState == CheckboxState::UNSELECTED_FOCUSED) currentState = CheckboxState::UNSELECTED;
+
 		playedSound = true;
+
 	}
 
 	if (!playedSound)
