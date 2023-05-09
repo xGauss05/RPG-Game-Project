@@ -26,9 +26,12 @@ public:
     void DebugDraw() override;
 
     void DoButtonsEasing();
+    void DoTitlesEasing();
 
 private:
     int backgroundTexture;
+    int titleTexture;
+    int studioTexture;
     int logoFx = 0;
     bool playedLogo = false;
 

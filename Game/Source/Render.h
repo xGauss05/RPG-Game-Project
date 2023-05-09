@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Defs.h"
 #include "Point.h"
+#include "Easing.h"
 
 #include <memory>
 #include <functional>
@@ -128,6 +129,11 @@ public:
 	void ResetCamera();
 
 	SDL_Renderer* GetRender() const;
+
+	int AddEasing(float totalTime);
+	bool DrawEasing(int textureID, iPoint startingPos, iPoint targetPos, int easingIndex, EasingType type);
+
+	std::vector<std::unique_ptr<Easing>> easings;
 
 private:
 

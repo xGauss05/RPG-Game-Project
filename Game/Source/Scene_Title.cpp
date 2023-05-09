@@ -43,6 +43,8 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	}
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
+	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
+	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
 	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 	playedLogo = false;
@@ -63,6 +65,8 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 void Scene_Title::Start()
 {
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
+	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
+	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
 	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
@@ -71,6 +75,12 @@ void Scene_Title::Start()
 void Scene_Title::Draw()
 {
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
+	app->render->DrawTexture(DrawParameters(titleTexture, iPoint(20, 20)));
+
+	DrawParameters params(DrawParameters(studioTexture, iPoint(100, 400)));
+	params.Scale(fPoint(0.01, 0.01));
+	app->render->DrawTexture(params);
+
 	if (app->scene->options) {
 		for (auto const& elem : optionsWindow)
 		{
@@ -95,6 +105,7 @@ TransitionScene Scene_Title::Update()
 	}
 
 	DoButtonsEasing();
+	DoTitlesEasing();
 
 	using enum TransitionScene;
 	if (app->scene->options)
@@ -186,5 +197,20 @@ void Scene_Title::DoButtonsEasing()
 				widg->SetPosition(widgetPosition);
 			}
 		}
+	}
+}
+void Scene_Title::DoTitlesEasing()
+{
+	current = std::chrono::high_resolution_clock::now();
+
+	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
+
+	if (elapsed.count() > 1000 && elapsed.count() < 1100)
+	{
+		
+	}
+	if (elapsed.count() > 1100 && elapsed.count() < 1200)
+	{
+		
 	}
 }

@@ -401,3 +401,24 @@ SDL_Renderer* Render::GetRender() const
 {
 	return renderer.get();
 }
+
+int Render::AddEasing(float totalTime)
+{
+	Easing easing;
+	easing.SetTotalTime(totalTime);
+
+	easings.push_back(std::move(easing));
+
+	return 0;
+}
+
+bool Render::DrawEasing(int textureID, iPoint startingPos, iPoint targetPos, int easingIndex, EasingType type)
+{
+	double t = easings.at(easingIndex)->TrackTime(app->dt);
+	double easedX = easings.at(easingIndex)->EasingAnimation(startingPos.x, targetPos.x, t, type);
+	double easedY = easings.at(easingIndex)->EasingAnimation(startingPos.y, targetPos.y, t, type);
+	iPoint newPosition(easedX, easedY);
+	DrawTexture(DrawParameters(textureID, newPosition));
+
+	return true;
+}
