@@ -75,11 +75,11 @@ void Scene_Title::Start()
 void Scene_Title::Draw()
 {
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
-	app->render->DrawTexture(DrawParameters(titleTexture, iPoint(20, 20)));
+	//app->render->DrawTexture(DrawParameters(titleTexture, iPoint(20, 20)));
 
-	DrawParameters params(DrawParameters(studioTexture, iPoint(100, 400)));
-	params.Scale(fPoint(0.01, 0.01));
-	app->render->DrawTexture(params);
+	//DrawParameters params(DrawParameters(studioTexture, iPoint(100, 400)));
+	//params.Scale(fPoint(0.01, 0.01));
+	//app->render->DrawTexture(params);
 
 	if (app->scene->options) {
 		for (auto const& elem : optionsWindow)
@@ -205,12 +205,14 @@ void Scene_Title::DoTitlesEasing()
 
 	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
 
-	if (elapsed.count() > 1000 && elapsed.count() < 1100)
+	if (elapsed.count() > 500)
 	{
-		
+		app->render->AddEasing(2.0f);
+		app->render->DrawEasing(titleTexture, iPoint(0, -150), iPoint(0, 20), 0, EasingType::EASE_OUT_ELASTIC);
 	}
-	if (elapsed.count() > 1100 && elapsed.count() < 1200)
+	if (elapsed.count() > 750)
 	{
-		
+		app->render->AddEasing(3.0f);
+		app->render->DrawEasing(studioTexture, iPoint(0, 700), iPoint(50, 300), 1, EasingType::EASE_OUT_ELASTIC);
 	}
 }

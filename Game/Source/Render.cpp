@@ -406,19 +406,28 @@ int Render::AddEasing(float totalTime)
 {
 	Easing easing;
 	easing.SetTotalTime(totalTime);
+	easing.SetFinished(false);
 
-	easings.push_back(std::move(easing));
+	easings.push_back(easing);
 
 	return 0;
 }
 
 bool Render::DrawEasing(int textureID, iPoint startingPos, iPoint targetPos, int easingIndex, EasingType type)
 {
-	double t = easings.at(easingIndex)->TrackTime(app->dt);
-	double easedX = easings.at(easingIndex)->EasingAnimation(startingPos.x, targetPos.x, t, type);
-	double easedY = easings.at(easingIndex)->EasingAnimation(startingPos.y, targetPos.y, t, type);
-	iPoint newPosition(easedX, easedY);
-	DrawTexture(DrawParameters(textureID, newPosition));
+	if (!easings.at(easingIndex).GetFinished())
+	{
+		double t = easings.at(easingIndex).TrackTime(app->dt);
+		double easedX = easings.at(easingIndex).EasingAnimation(startingPos.x, targetPos.x, t, type);
+		double easedY = easings.at(easingIndex).EasingAnimation(startingPos.y, targetPos.y, t, type);
+		iPoint newPosition(easedX, easedY);
+		DrawTexture(DrawParameters(textureID, newPosition));
+	}
+	else
+	{
+		DrawTexture(DrawParameters(textureID, targetPos));
+	}
+	
 
 	return true;
 }

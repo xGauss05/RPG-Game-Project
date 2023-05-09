@@ -133,7 +133,7 @@ public:
 	int AddEasing(float totalTime);
 	bool DrawEasing(int textureID, iPoint startingPos, iPoint targetPos, int easingIndex, EasingType type);
 
-	std::vector<std::unique_ptr<Easing>> easings;
+	std::vector<Easing> easings;
 
 private:
 
