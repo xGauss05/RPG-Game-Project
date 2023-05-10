@@ -56,6 +56,7 @@ private:
 	std::unique_ptr<Window_Factory> windowFactory;
 	LookUpXMLNodeFromString sceneInfo;
 	LookUpXMLNodeFromString mapInfo;
+	LookUpXMLNodeFromString gameOverInfo;
 	std::unique_ptr<GameParty> party;
 
 	bool CurrentlyMainMenu = true;

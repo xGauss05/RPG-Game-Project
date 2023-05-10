@@ -7,6 +7,7 @@
 #include "Scene_Title.h"
 #include "Scene_Battle.h"
 #include "Scene_Boot.h"
+#include "Scene_GameOver.h"
 
 #include "Render.h"
 #include "Defs.h"
@@ -43,6 +44,10 @@ bool SceneManager::Awake(pugi::xml_node& config)
 	for (auto const& node : config.child("map_info").children("map"))
 	{
 		mapInfo[node.attribute("name").as_string()] = node;
+	}
+	for (auto const& node : config.child("gameover_info").children("scene"))
+	{
+		gameOverInfo[node.attribute("name").as_string()] = node;
 	}
 
 	party = std::make_unique<GameParty>();
@@ -126,10 +131,13 @@ bool SceneManager::Update(float dt)
 			break;
 		case LOSE_BATTLE:
 			sceneOnHold.reset();
-			for (auto& character : party->party)
+			/*for (auto& character : party->party)
 			{
 				character.SetCurrentHP(1);
-			}
+			}*/
+			nextScene = std::make_unique<Scene_GameOver>();
+			nextScene.get()->Load(assetPath + "UI/", gameOverInfo, *windowFactory);
+			break;
 		case MAIN_MENU:
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
