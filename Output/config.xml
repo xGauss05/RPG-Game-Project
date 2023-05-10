@@ -35,11 +35,21 @@
 				<window name="ChatBox" />
 			</map>
 		</map_info>
+    <boot_info>
+      <scene name="Boot"/>
+      <easings>
+        <image name="BootLogo" initialPosX="400" initialPosY="-215" targetPosX="400" targetPosY="160" duration="1.0" typeID="4"/>
+      </easings>
+    </boot_info>
 		<title_info>
 			<scene name="Title">
 				<window name="MainMenu" />
         <window name="OptionsMenu" />
 			</scene>
+      <easings>
+        <image name="Title" initialPosX="20" initialPosY="-150" targetPosX="20" targetPosY="20" duration="2.0" typeID="25"/>
+        <image name="Logo" initialPosX="0" initialPosY="700" targetPosX="80" targetPosY="450" duration="2.0" typeID="25"/>
+      </easings>
 		</title_info>
     <gameover_info>
       <scene name="GameOver">

@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Log.h"
 #include "TextManager.h"
+#include "Easing.h"
 
 Scene_Title::~Scene_Title()
 {
@@ -43,6 +44,8 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	}
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
+	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
+	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
 	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 	playedLogo = false;
@@ -51,6 +54,9 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 
 	start = std::chrono::high_resolution_clock::now();
 
+	app->render->AddEasing(2.0f);
+	app->render->AddEasing(3.0f);
+
 	for (auto const& elem : windows)
 	{
 		for (auto const& widg : elem->widgets)
@@ -58,11 +64,15 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 			widg->GuiEasing.SetTotalTime(2.0);
 		}
 	}
+
+	InitEasings(sceneHash->second.parent().child("easings"));
 }
 
 void Scene_Title::Start()
 {
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
+	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
+	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
 	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
@@ -71,6 +81,10 @@ void Scene_Title::Start()
 void Scene_Title::Draw()
 {
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
+
+	DoImagesEasing();
+	DoButtonsEasing();
+
 	if (app->scene->options) {
 
 		for (auto const& elem : optionsWindow)
@@ -101,8 +115,6 @@ TransitionScene Scene_Title::Update()
 		app->audio->PlayFx(logoFx);
 		playedLogo = true;
 	}
-
-	DoButtonsEasing();
 
 	using enum TransitionScene;
 	if (app->scene->options)
@@ -195,4 +207,22 @@ void Scene_Title::DoButtonsEasing()
 			}
 		}
 	}
+}
+void Scene_Title::DoImagesEasing()
+{
+	current = std::chrono::high_resolution_clock::now();
+
+	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
+
+	if (elapsed.count() > 500 && elapsed.count() < 600)
+	{
+		app->render->SetEasingActive("Title", true);
+	}
+	if (elapsed.count() > 750 && elapsed.count() < 850)
+	{
+		app->render->SetEasingActive("Logo", true);
+	}
+
+	app->render->DrawEasing(titleTexture, "Title");
+	app->render->DrawEasing(studioTexture, "Logo");
 }

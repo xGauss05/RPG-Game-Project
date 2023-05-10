@@ -37,6 +37,10 @@ bool SceneManager::Awake(pugi::xml_node& config)
 
 	windowFactory = std::make_unique<Window_Factory>(config);
 
+	for (auto const& node : config.child("boot_info").children("scene"))
+	{
+		bootInfo[node.attribute("name").as_string()] = node;
+	}
 	for (auto const& node : config.child("title_info").children("scene"))
 	{
 		sceneInfo[node.attribute("name").as_string()] = node;
@@ -62,7 +66,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool SceneManager::Start()
 {
-	currentScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
+	currentScene.get()->Load(assetPath + "UI/", bootInfo, *windowFactory);
 	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
 

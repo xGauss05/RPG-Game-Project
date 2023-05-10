@@ -401,3 +401,76 @@ SDL_Renderer* Render::GetRender() const
 {
 	return renderer.get();
 }
+
+void Render::SetEasingActive(std::string name, bool active)
+{
+	for (auto& elem : easings)
+	{
+		if (StrEquals(elem.name, name))
+		{
+			elem.SetStarted(active);
+			elem.SetFinished(!active);
+		}
+	}
+}
+
+int Render::AddEasing(float totalTime)
+{
+	Easing easing;
+	easing.SetTotalTime(totalTime);
+	easing.SetFinished(false);
+
+	easings.push_back(easing);
+
+	return 0;
+}
+
+bool Render::DrawEasing(int textureID, iPoint startingPos, iPoint targetPos, int easingIndex, EasingType type)
+{
+	if (easingIndex >= easings.size())
+	{
+		return true;
+	}
+
+	if (!easings.at(easingIndex).GetFinished())
+	{
+		double t = easings.at(easingIndex).TrackTime(app->dt);
+		double easedX = easings.at(easingIndex).EasingAnimation(startingPos.x, targetPos.x, t, type);
+		double easedY = easings.at(easingIndex).EasingAnimation(startingPos.y, targetPos.y, t, type);
+		iPoint newPosition(easedX, easedY);
+		DrawTexture(DrawParameters(textureID, newPosition));
+	}
+	else if (easings.at(easingIndex).GetFinished() && easings.at(easingIndex).GetStarted())
+	{
+		DrawTexture(DrawParameters(textureID, targetPos));
+	}
+	
+	return true;
+}
+
+bool Render::DrawEasing(int textureID, std::string name)
+{
+	for (auto& elem : easings)
+	{
+		if (!StrEquals(elem.name, name))
+		{
+			continue;
+		}
+
+		if (!elem.GetFinished())
+		{
+			double t = elem.TrackTime(app->dt);
+			double easedX = elem.EasingAnimation(elem.startingPos.x, elem.targetPos.x, t, elem.type);
+			double easedY = elem.EasingAnimation(elem.startingPos.y, elem.targetPos.y, t, elem.type);
+			iPoint newPosition(easedX, easedY);
+			DrawTexture(DrawParameters(textureID, newPosition));
+		}
+		else if (elem.GetFinished() && elem.GetStarted())
+		{
+			DrawTexture(DrawParameters(textureID, elem.targetPos));
+		}
+	}
+
+
+	return true;
+}

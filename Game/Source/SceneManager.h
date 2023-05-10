@@ -54,6 +54,7 @@ private:
 	std::unique_ptr<Scene_Base> nextScene;
 
 	std::unique_ptr<Window_Factory> windowFactory;
+	LookUpXMLNodeFromString bootInfo;
 	LookUpXMLNodeFromString sceneInfo;
 	LookUpXMLNodeFromString mapInfo;
 	LookUpXMLNodeFromString gameOverInfo;

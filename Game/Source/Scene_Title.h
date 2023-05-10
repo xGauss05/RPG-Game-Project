@@ -25,10 +25,13 @@ public:
     bool LoadScene(pugi::xml_node const&) override;
     void DebugDraw() override;
 
+    void DoImagesEasing();
     void DoButtonsEasing();
 
 private:
     int backgroundTexture;
+    int titleTexture;
+    int studioTexture;
     int logoFx = 0;
     bool playedLogo = false;
 
