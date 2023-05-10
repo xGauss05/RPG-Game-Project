@@ -1,4 +1,4 @@
-#include "GuiButton.h"
+﻿#include "GuiButton.h"
 #include "App.h"
 #include "Render.h"
 #include "Input.h"
@@ -69,8 +69,8 @@ int GuiButton::Update()
 		}
 		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
 		{
-			return ExecuteFunction();
 			currentState = NORMAL;
+			return ExecuteFunction();
 		}
 		else if (currentState != FOCUSED)
 		{

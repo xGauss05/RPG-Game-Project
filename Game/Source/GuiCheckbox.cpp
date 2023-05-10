@@ -44,7 +44,9 @@ int GuiCheckbox::Update()
 				currentState = CheckboxState::UNSELECTED;
 			else if (currentState == CheckboxState::UNSELECTED || currentState == CheckboxState::UNSELECTED_FOCUSED)
 				currentState = CheckboxState::SELECTED;
+
 			playedSound = false;
+
 			return ExecuteFunction();
 		}
 		else if (currentState != CheckboxState::SELECTED_FOCUSED && currentState != CheckboxState::UNSELECTED_FOCUSED)
@@ -62,27 +64,37 @@ int GuiCheckbox::Update()
 
 				currentState = CheckboxState::UNSELECTED_FOCUSED;
 			}
-
 		}
 	}
 	else if (IsControllerHovered())
 	{
-		/*if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_REPEAT)
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
 		{
-			currentState = SELECTED;
+			if (currentState == CheckboxState::SELECTED || currentState == CheckboxState::SELECTED_FOCUSED)
+				currentState = CheckboxState::UNSELECTED;
+			else if (currentState == CheckboxState::UNSELECTED || currentState == CheckboxState::UNSELECTED_FOCUSED)
+				currentState = CheckboxState::SELECTED;
+
 			playedSound = false;
 
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
-		{
 			return ExecuteFunction();
-			currentState = UNSELECTED;
 		}
-		else if (currentState != FOCUSED)
+		else if (currentState != CheckboxState::SELECTED_FOCUSED && currentState != CheckboxState::UNSELECTED_FOCUSED)
 		{
-			currentState = FOCUSED;
-			playedSound = false;
-		}*/
+			if (currentState == CheckboxState::SELECTED)
+			{
+				playedSound = false;
+
+				currentState = CheckboxState::SELECTED_FOCUSED;
+			}
+
+			if (currentState == CheckboxState::UNSELECTED)
+			{
+				playedSound = false;
+
+				currentState = CheckboxState::UNSELECTED_FOCUSED;
+			}
+		}
 	}
 	else
 	{
@@ -99,17 +111,11 @@ int GuiCheckbox::Update()
 		switch (currentState)
 		{
 		case SELECTED:
-			playedSound = true;
-			app->audio->PlayFx(pressedFx);
-			break;
 		case UNSELECTED:
 			playedSound = true;
 			app->audio->PlayFx(pressedFx);
 			break;
 		case SELECTED_FOCUSED:
-			playedSound = true;
-			app->audio->PlayFx(focusedFx);
-			break;
 		case UNSELECTED_FOCUSED:
 			playedSound = true;
 			app->audio->PlayFx(focusedFx);
