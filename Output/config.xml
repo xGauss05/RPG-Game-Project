@@ -38,7 +38,8 @@
     <boot_info>
       <scene name="Boot"/>
       <easings>
-        <image name="BootLogo" initialPosX="400" initialPosY="-215" targetPosX="400" targetPosY="160" duration="1.0" typeID="4"/>
+        <image name="StudioLogo" initialPosX="400" initialPosY="-215" targetPosX="400" targetPosY="160" duration="1.0" typeID="4"/>
+        <image name="PresentsText" initialPosX="-340" initialPosY="425" targetPosX="475" targetPosY="425" duration="2.0" typeID="25"/>
       </easings>
     </boot_info>
 		<title_info>

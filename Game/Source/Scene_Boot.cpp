@@ -22,6 +22,7 @@ void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& in
 {
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/boot_bg.png");
 	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
+	presentsTexture = app->tex->Load("Assets/Textures/Backgrounds/boot_presents.png");
 
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
 	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
@@ -31,7 +32,6 @@ void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& in
 	app->render->AddEasing(1.0f);
 
 	InitEasings(info.find("Boot")->second.parent().child("easings"));
-	app->render->SetEasingActive("BootLogo", true);
 }
 
 void Scene_Boot::Start()
@@ -49,17 +49,25 @@ void Scene_Boot::Draw()
 
 TransitionScene Scene_Boot::Update()
 {
-	if (!playedLogo)
-	{
-		app->audio->PlayFx(logoFx);
-		playedLogo = true;
-	}
-	
 	currentTime = std::chrono::high_resolution_clock::now();
 
 	elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - start);
 
-	if (elapsed >= std::chrono::milliseconds(3000)) return TransitionScene::MAIN_MENU;
+	if (elapsed >= std::chrono::milliseconds(500) && elapsed <= std::chrono::milliseconds(600))
+	{
+		app->render->SetEasingActive("StudioLogo", true);
+	}
+	if (elapsed >= std::chrono::milliseconds(1300) && elapsed <= std::chrono::milliseconds(1400))
+	{
+		app->render->SetEasingActive("PresentsText", true);
+	}
+	if (!playedLogo && app->render->EasingHasFinished("PresentsText"))
+	{
+		app->audio->PlayFx(logoFx);
+		playedLogo = true;
+	}
+
+	if (elapsed >= std::chrono::milliseconds(6000)) return TransitionScene::MAIN_MENU;
 	
 	return TransitionScene::NONE;
 
@@ -92,5 +100,6 @@ void Scene_Boot::DebugDraw()
 
 void Scene_Boot::DoImagesEasing()
 {
-	app->render->DrawEasing(studioTexture, "BootLogo");
+	app->render->DrawEasing(studioTexture, "StudioLogo");
+	app->render->DrawEasing(presentsTexture, "PresentsText");
 }

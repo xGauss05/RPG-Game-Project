@@ -451,3 +451,15 @@ bool Render::DrawEasing(int textureID, std::string name)
 
 	return true;
 }
+
+bool Render::EasingHasFinished(std::string name)
+{
+	for (auto& elem : easings)
+	{
+		if (StrEquals(elem.name, name))
+		{
+			return elem.GetStarted() & elem.GetFinished();
+		}
+	}
+	return false;
+}

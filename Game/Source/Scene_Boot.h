@@ -33,6 +33,7 @@ public:
 private:
     int backgroundTexture;
     int studioTexture;
+    int presentsTexture;
     int logoFx = 0;
     bool playedLogo = false;
     bool transition = false;

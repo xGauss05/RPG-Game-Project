@@ -138,6 +138,7 @@ public:
 	void SetEasingActive(std::string name, bool active);
 	int AddEasing(float totalTime);
 	bool DrawEasing(int textureID, std::string name);
+	bool EasingHasFinished(std::string name);
 
 	std::vector<Easing> easings;
 
