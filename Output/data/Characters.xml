@@ -13,7 +13,7 @@
 </character>
 <character>
 	<general name="Sayori" level="1"/>
-	<texture path="Assets/Textures/Battlers/Sayori_Right.PNG"/>
+	<texture path="Assets/Textures/Battlers/Sayori_Right.png"/>
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
@@ -39,7 +39,7 @@
 </character>
 <character>
 	<general name="Rocio" level="1"/>
-	<texture path="Assets/Textures/Battlers/Sayori_Right.PNG"/>
+	<texture path="Assets/Textures/Battlers/Rocio_Right.png"/>
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
