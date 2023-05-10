@@ -460,8 +460,8 @@ bool Render::DrawEasing(int textureID, std::string name)
 		if (!elem.GetFinished())
 		{
 			double t = elem.TrackTime(app->dt);
-			double easedX = elem.EasingAnimation(elem.startingPos.x, elem.targetPos.x, t, EasingType::EASE_OUT_ELASTIC);
-			double easedY = elem.EasingAnimation(elem.startingPos.y, elem.targetPos.y, t, EasingType::EASE_OUT_ELASTIC);
+			double easedX = elem.EasingAnimation(elem.startingPos.x, elem.targetPos.x, t, elem.type);
+			double easedY = elem.EasingAnimation(elem.startingPos.y, elem.targetPos.y, t, elem.type);
 			iPoint newPosition(easedX, easedY);
 			DrawTexture(DrawParameters(textureID, newPosition));
 		}

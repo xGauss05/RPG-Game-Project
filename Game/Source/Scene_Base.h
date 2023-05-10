@@ -58,7 +58,7 @@ public:
 			temp.targetPos.x = easing.attribute("targetPosX").as_int();
 			temp.targetPos.y = easing.attribute("targetPosY").as_int();
 			temp.SetTotalTime(easing.attribute("duration").as_float());
-			//temp.type = easing.attribute("type").as_string();
+			temp.type = (EasingType)easing.attribute("typeID").as_int();
 
 			app->render->easings.push_back(temp);
 		}
