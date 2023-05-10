@@ -29,6 +29,9 @@ void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& in
 	start = std::chrono::high_resolution_clock::now();
 
 	app->render->AddEasing(1.0f);
+
+	InitEasings(info.find("Boot")->second.parent().child("easings"));
+	app->render->SetEasingActive("BootLogo", true);
 }
 
 void Scene_Boot::Start()
@@ -89,5 +92,5 @@ void Scene_Boot::DebugDraw()
 
 void Scene_Boot::DoImagesEasing()
 {
-	app->render->DrawEasing(studioTexture, iPoint(400, -215), iPoint(400, 160), 0, EasingType::EASE_OUT_QUAD);
+	app->render->DrawEasing(studioTexture, "BootLogo");
 }

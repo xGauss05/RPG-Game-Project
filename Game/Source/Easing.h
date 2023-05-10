@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Point.h"
+#include "Defs.h"
 #include <cmath>
 
 #define PI acos(-1)
@@ -108,12 +110,21 @@ public:
     double GetTotalTime() const { return totalTime; }
     void SetTotalTime(double totalTime) { this->totalTime = totalTime; }
 
+    bool GetStarted() const { return bStarted; }
     bool GetFinished() const { return bFinished; }
+    void SetStarted(bool bStarted) { this->bStarted = bStarted; }
     void SetFinished(bool bFinished) { this->bFinished = bFinished; }
+
+    std::string name = "";
+    iPoint startingPos = { 0,0 };
+    iPoint targetPos = { 0,0 };
+    EasingType type = EasingType::EASE_OUT_ELASTIC;
+    float duration = 0.0f;
 
 private:
 
     double elapsedTime = 0;
     double totalTime = 0;
+    bool bStarted = false;
     bool bFinished = true;
 };

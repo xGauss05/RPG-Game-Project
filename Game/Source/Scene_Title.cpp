@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Log.h"
 #include "TextManager.h"
+#include "Easing.h"
 
 Scene_Title::~Scene_Title()
 {
@@ -63,6 +64,8 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 			widg->GuiEasing.SetTotalTime(2.0);
 		}
 	}
+
+	InitEasings(sceneHash->second.parent().child("easings"));
 }
 
 void Scene_Title::Start()
@@ -203,12 +206,15 @@ void Scene_Title::DoImagesEasing()
 
 	std::chrono::milliseconds elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(current - start);
 
-	if (elapsed.count() > 500)
+	if (elapsed.count() > 500 && elapsed.count() < 600)
 	{
-		app->render->DrawEasing(titleTexture, iPoint(20, -150), iPoint(20, 20), 1, EasingType::EASE_OUT_ELASTIC);
+		app->render->SetEasingActive("Title", true);
 	}
-	if (elapsed.count() > 750)
+	if (elapsed.count() > 750 && elapsed.count() < 850)
 	{
-		app->render->DrawEasing(studioTexture, iPoint(0, 700), iPoint(80, 450), 2, EasingType::EASE_OUT_ELASTIC);
+		app->render->SetEasingActive("Logo", true);
 	}
+
+	app->render->DrawEasing(titleTexture, "Title");
+	app->render->DrawEasing(studioTexture, "Logo");
 }
