@@ -37,7 +37,9 @@ void Scene_Boot::Start()
 
 void Scene_Boot::Draw()
 {
-	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
+	//app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(0, 0)));
+	SDL_Rect rect = { 0,0,1280,720 };
+	app->render->DrawShape(rect, true, SDL_Color(255, 255, 255, 255));
 
 	DoImagesEasing();
 }
