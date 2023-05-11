@@ -24,6 +24,7 @@ class TextureManager;
 class Audio;
 class SceneManager;
 class TextManager;
+class QuestManager;
 
 template <typename... Args>
 std::string AddSaveData(std::string_view format, Args&&... args)
@@ -95,6 +96,7 @@ public:
 	std::unique_ptr<Audio> audio;
 	std::unique_ptr<SceneManager> scene;
 	std::unique_ptr<TextManager> fonts;
+	std::unique_ptr<QuestManager> quests;
 
 	bool pause = false;
 

@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 #include "Map.h"
 #include "TextManager.h"
+#include "QuestManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -26,6 +27,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = std::make_unique<Audio>();
 	fonts = std::make_unique<TextManager>();
 	scene = std::make_unique<SceneManager>();
+	quests = std::make_unique<QuestManager>();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -35,6 +37,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio.get());
 	AddModule(fonts.get());
 	AddModule(scene.get());
+	AddModule(quests.get());
 
 	// Render last to swap buffer
 	AddModule(render.get());
