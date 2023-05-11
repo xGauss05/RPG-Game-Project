@@ -36,7 +36,7 @@ bool QuestManager::Awake(pugi::xml_node & config)
 		Quest questToAdd;
 		questToAdd.name = quest.attribute("name").as_string();
 		questToAdd.description = quest.attribute("description").as_string();
-		//.type = quest.attribute("name").as_string();
+		questToAdd.type = (QuestType)quest.attribute("type").as_int();
 
 		quests.push_back(questToAdd);
 	}
@@ -62,6 +62,14 @@ bool QuestManager::Pause(int phase)
 
 bool QuestManager::Update(float dt)
 {
+	for (auto& quest : activeQuests)
+	{
+		if (!quest.Update())
+		{
+			DeactivateQuest(quest.name);
+		}
+	}
+
 	return true;
 }
 

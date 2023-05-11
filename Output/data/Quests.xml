@@ -1,4 +1,4 @@
 <quests_list>
-  <quest name="Find kiko's chest" description="Look around kiko's house and try to find his chest"/>
-  <quest name="Steal kiko's chest" description="You know what to do"/>
+  <quest name="Find kiko's chest" description="Look around kiko's house and try to find his chest" type="0"/>
+  <quest name="Steal kiko's chest" description="You know what to do" type="1"/>
 </quests_list>

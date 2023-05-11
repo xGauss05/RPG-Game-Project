@@ -51,9 +51,6 @@ private:
 	std::vector<Quest> quests;
 	std::vector<Quest> activeQuests;
 	std::vector<Quest> completedQuests;
-
-	//LookUpXMLNodeFromString questsInfo;
-	bool test = false;
 };
 
 #endif // __QUESTMANAGER_H__
