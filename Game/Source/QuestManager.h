@@ -43,13 +43,16 @@ public:
 	bool LoadState(pugi::xml_node const &data) final;
 	pugi::xml_node SaveState(pugi::xml_node const &) const final;
 
+	void SetActiveQuest(std::string name, bool setActive);
+
 private:
 
-	std::unique_ptr<Quest> quests;
-	std::unique_ptr<Quest> activeQuests;
-	std::unique_ptr<Quest> completedQuests;
+	std::vector<Quest> quests;
+	std::vector<Quest> activeQuests;
+	std::vector<Quest> completedQuests;
 
 	//LookUpXMLNodeFromString questsInfo;
+	bool test = false;
 };
 
 #endif // __QUESTMANAGER_H__

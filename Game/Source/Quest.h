@@ -16,16 +16,15 @@ class Quest
 {
 public:
 	Quest() {};
-	Quest(QuestType type) : type(type) {}
+	~Quest() {};
 
 	virtual bool Update() { return true; }
 
 public:
 
+	std::string name = "";
+	std::string description = "";
 	QuestType type;
-	int id;
-	int nextQuestId;
-	int reward;
 };
 
 #endif // __QUEST_H__

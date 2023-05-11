@@ -1,5 +1,7 @@
 #include "App.h"
 #include "QuestManager.h"
+#include "Quest.h"
+#include "TextManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -17,16 +19,26 @@ QuestManager::QuestManager() : Module()
 QuestManager::~QuestManager() = default;
 
 // Called before render is available
-bool QuestManager::Awake(pugi::xml_node& config)
+bool QuestManager::Awake(pugi::xml_node & config)
 {
 	LOG("Loading SceneManager");
 
 	pugi::xml_document questsFile;
 
-	if (auto result = questsFile.load_file("Quests.xml"); !result)
+	if (auto result = questsFile.load_file("data/Quests.xml"); !result)
 	{
 		LOG("Could not load map xml file Quests.xml. pugi error: %s", result.description());
 		return false;
+	}
+
+	for (auto const& quest : questsFile.child("quests_list").children("quest"))
+	{
+		Quest questToAdd;
+		questToAdd.name = quest.attribute("name").as_string();
+		questToAdd.description = quest.attribute("description").as_string();
+		//.type = quest.attribute("name").as_string();
+
+		quests.push_back(questToAdd);
 	}
 
 	return true;
@@ -139,6 +151,14 @@ bool QuestManager::Update(float dt)
 	//		break;
 	//}
 
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_DOWN) test = true;
+
+	if (test)
+	{
+		app->fonts->DrawText(quests.at(0).name, TextParameters(0, DrawParameters(0, iPoint(20, 20))));
+		app->fonts->DrawText(quests.at(0).description, TextParameters(0, DrawParameters(0, iPoint(20, 50))));
+	}
+
 	return true;
 }
 
@@ -216,4 +236,22 @@ pugi::xml_node QuestManager::SaveState(pugi::xml_node const& data) const
 	}*/
 
 	return node;
+}
+
+void QuestManager::SetActiveQuest(std::string name, bool setActive)
+{
+	for (auto& elem : quests)
+	{
+		if (StrEquals(elem.name, name))
+		{
+			if (setActive)
+			{
+				activeQuests.push_back(elem);
+			}
+			else
+			{
+				//get it out of activeQuests
+			}
+		}
+	}
 }
