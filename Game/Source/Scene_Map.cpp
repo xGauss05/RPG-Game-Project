@@ -4,11 +4,20 @@
 #include "Audio.h"
 #include "Log.h"
 
-Scene_Map::Scene_Map(std::string const& newMap) : currentMap(newMap) {}
-Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords)
+Scene_Map::Scene_Map(GameParty* party)
+{
+	SetPlayerParty(party);
+}
+
+Scene_Map::Scene_Map(std::string const& newMap, GameParty* party) : currentMap(newMap)
+{
+	SetPlayerParty(party);
+}
+Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* party)
 	: currentMap(newMap)
 {
 	player.SetPosition(playerCoords * 48);
+	SetPlayerParty(party);
 }
 
 bool Scene_Map::isReady()
@@ -89,6 +98,11 @@ void Scene_Map::Start()
 	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 }
 
+void Scene_Map::SetPlayerParty(GameParty* party)
+{
+	playerParty = party;
+}
+
 void Scene_Map::Draw()
 {
 	map.Draw();
@@ -104,8 +118,23 @@ void Scene_Map::Draw()
 	}
 }
 
+void Scene_Map::DebugItems()
+{
+	LOG("player HP = %i", playerParty->party[0].currentHP);
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_DOWN)
+	{
+		playerParty->party[0].SetCurrentHP(10);
+	}
+	if (app->input->GetKey(SDL_SCANCODE_K) == KeyState::KEY_DOWN)
+	{
+		playerParty->UseItemOnMap(0, 1);
+	}
+}
+
 TransitionScene Scene_Map::Update()
 {
+	DebugItems();
+
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;
@@ -215,6 +244,20 @@ TransitionScene Scene_Map::Update()
 				{
 					break;
 				}
+				case LOOT:
+				{
+					if (action.values.empty() || !playerParty)
+					{
+						break;
+					}
+
+					for (auto const &[itemToAdd, amountToAdd] : action.values)
+					{
+						playerParty->AddItemToInventory(itemToAdd, amountToAdd);
+						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+					}
+					[[fallthrough]];
+				}
 				case SHOW_MESSAGE:
 				{
 					windows.emplace_back(windowFactory->CreateWindow("Message"));
@@ -241,10 +284,6 @@ TransitionScene Scene_Map::Update()
 				{
 					tpInfo = action;
 					return TransitionScene::LOAD_MAP_FROM_MAP;
-				}
-				case LOOT:
-				{
-					//give items to player
 				}
 			}
 		}

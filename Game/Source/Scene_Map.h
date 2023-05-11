@@ -2,6 +2,7 @@
 #define __SCENE_MAP_H__
 
 #include "Scene_Base.h"
+#include "GameParty.h"
 #include "Player.h"
 #include "Map.h"
 
@@ -11,8 +12,9 @@ class Scene_Map : public Scene_Base
 {
 public:
 	Scene_Map() = default;
-	explicit Scene_Map(std::string const& newMap);
-	explicit Scene_Map(std::string const& newMap, iPoint playerCoords);
+	explicit Scene_Map(GameParty* party);
+	explicit Scene_Map(std::string const& newMap, GameParty* party);
+	explicit Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* party);
 
 	bool isReady() override;
 	void Load(
@@ -33,7 +35,11 @@ public:
 	iPoint GetTPCoordinates() const;
 	TransitionScene TryRandomBattle();
 
+	void SetPlayerParty(GameParty* party);
+
 private:
+
+	void DebugItems();
 
 	enum class MapState
 	{
@@ -54,6 +60,7 @@ private:
 
 	Map map;
 	Player player;
+	GameParty* playerParty = nullptr;
 
 	MapState state = MapState::NORMAL;
 

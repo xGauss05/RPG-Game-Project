@@ -97,6 +97,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\DB_Items.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\EnemyTroops.cpp" />
     <ClCompile Include="Source\EventManager.cpp" />
@@ -130,6 +131,7 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Window_Factory.cpp" />
     <ClCompile Include="Source\Window_List.cpp" />
+    <ClInclude Include="Source\DB_Items.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\EnemyTroops.h" />
     <ClCompile Include="Source\Window_Panel.cpp" />

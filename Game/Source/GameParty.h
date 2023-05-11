@@ -3,6 +3,10 @@
 
 #include <vector>
 
+#include "DB_Items.h"
+
+#include "Log.h"
+
 enum class BaseStats
 {
 	MAX_HP = 0,
@@ -16,7 +20,6 @@ enum class BaseStats
 
 enum class EquipmentSlots
 {
-	HEAD,
 	ARMOR,
 	ACCESSORY,
 	WEAPON
@@ -37,19 +40,14 @@ struct PartyCharacter
 	std::vector<int> equipment;
 	std::vector<int> skills;
 
-public: 
-	void SetCurrentHP(int hp) {
-		currentHP = hp;
-	}
-	void SetCurrentMana(int mp) {
-		currentMana = mp;
-	}
-	void SetCurrentXP(int xp) {
-		currentXP = xp;
-	}
-	void SetLevel(int lvl) {
-		level = lvl;
-	}
+	void SetCurrentHP(int hp);
+	void SetCurrentMana(int mp);
+	void SetCurrentXP(int xp);
+	void SetLevel(int lvl);
+
+	bool UseItem(Item const &item);
+
+	bool RestoreHP(float amount1, float amount2);
 };
 
 class GameParty
@@ -57,8 +55,20 @@ class GameParty
 public:
 	GameParty();
 	void CreateParty();
+
+	void AddItemToInventory(std::string_view itemToAdd, int amountToAdd = 1);
+	void AddItemToInventory(int  itemToAdd, int amountToAdd = 1);
+
+	void RemoveItemFromInventory(std::string_view itemToRemove, int amountToRemove = 1);
+	void RemoveItemFromInventory(int itemToRemove, int amountToRemove = 1);
+	void RemoveItemFromInventory(std::vector<std::pair<int, int>>::iterator it, int amountToRemove = 1);
+
+	void UseItemOnMap(int character, int itemId, int amountToUse = 1);
+
 	std::vector<PartyCharacter> party;
-	std::vector<int> inventory;
+	std::vector<std::pair<int, int>> inventory;
+
+	std::unique_ptr<DB_Items> dbItems;
 };
 
 #endif //__GAME_PARTY_H__

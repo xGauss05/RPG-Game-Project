@@ -105,6 +105,10 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 	auto gid = sprite->GetGid();
 
 	auto pos = dynamic_cast<Transform*>(drawIterator->get())->GetPosition();
+	auto twoTiles = dynamic_cast<Transform*>(drawIterator->get())->bIsTwoTiles;
+
+	if(!twoTiles) 
+		pos.y += 48;
 
 	do {
 		++drawIterator;

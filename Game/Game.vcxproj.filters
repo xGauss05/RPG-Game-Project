@@ -37,6 +37,7 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GuiCheckbox.cpp" />
+    <ClCompile Include="Source\DB_Items.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -84,6 +85,7 @@
     <ClInclude Include="Source\Window_Panel.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\GuiCheckbox.h" />
+    <ClInclude Include="Source\DB_Items.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

@@ -147,13 +147,13 @@ bool SceneManager::Update(float dt)
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
 		case NEW_GAME:
-			nextScene = std::make_unique<Scene_Map>();
+			nextScene = std::make_unique<Scene_Map>(party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			nextScene->Start();
 			break;
 		case CONTINUE_GAME:
 		{
-			nextScene = std::make_unique<Scene_Map>();
+			nextScene = std::make_unique<Scene_Map>(party.get());
 			loadNextMap = true;
 			app->LoadGameRequest();
 			break;
@@ -161,7 +161,7 @@ bool SceneManager::Update(float dt)
 		case LOAD_MAP_FROM_MAP:
 		{
 			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
-			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates());
+			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates(), party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			nextScene->Start();
 			break;
