@@ -1,7 +1,8 @@
 #include "TransitionManager.h"
+#include "SceneManager.h"
 #include "FadeToColour.h"
 
-TransitionManager::TransitionManager() : active_transition(nullptr), is_transitioning(false)
+TransitionManager::TransitionManager() : activeTransition(nullptr), isTransitioning(false)
 {
 
 }
@@ -15,9 +16,9 @@ bool TransitionManager::PostUpdate()
 {
 	bool ret = true;
 
-	if (active_transition != nullptr)
+	if (activeTransition != nullptr)
 	{
-		active_transition->StepTransition();
+		activeTransition->StepTransition();
 	}
 
 	return ret;
@@ -27,10 +28,10 @@ bool TransitionManager::CleanUp()
 {
 	bool ret = true;
 	
-	if (active_transition != nullptr)
+	if (activeTransition != nullptr)
 	{
-		delete active_transition;
-		active_transition = nullptr;
+		delete activeTransition;
+		activeTransition = nullptr;
 	}
 
 	return ret;
@@ -38,21 +39,21 @@ bool TransitionManager::CleanUp()
 
 void TransitionManager::DeleteActiveTransition()
 {
-	is_transitioning = false;
+	isTransitioning = false;
 
-	delete active_transition;
+	delete activeTransition;
 
-	active_transition = nullptr;
+	activeTransition = nullptr;
 }
 
-Transition* TransitionManager::CreateFadeToColour(Scene_Base* next_scene, float step_duration, Color fade_colour)
+Transition* TransitionManager::SceneToBattle(float step_duration, Color fade_colour)
 {	
-	if (!is_transitioning)
+	if (!isTransitioning)
 	{
-		active_transition = new FadeToColour(next_scene, step_duration, fade_colour);
+		activeTransition = new FadeToColour(step_duration, fade_colour);
 
-		is_transitioning = true;
+		isTransitioning = true;
 	}
 
-	return active_transition;
+	return activeTransition;
 }

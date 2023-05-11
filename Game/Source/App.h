@@ -22,6 +22,7 @@ class Input;
 class Render;
 class TextureManager;
 class Audio;
+class TransitionManager;
 class SceneManager;
 class TextManager;
 
@@ -93,6 +94,7 @@ public:
 	std::unique_ptr<Render> render;
 	std::unique_ptr<TextureManager> tex;
 	std::unique_ptr<Audio> audio;
+	std::unique_ptr<TransitionManager> transition;
 	std::unique_ptr<SceneManager> scene;
 	std::unique_ptr<TextManager> fonts;
 

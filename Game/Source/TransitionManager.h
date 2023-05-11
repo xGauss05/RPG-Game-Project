@@ -5,7 +5,7 @@
 #include "Scene_Base.h"
 #include "Color.h"
 #include "Point.h"
-//#include "Transition.h"
+#include "Transition.h"
 
 class		Transition;
 
@@ -23,15 +23,15 @@ public:
 
 	void DeleteActiveTransition();
 	
-	Transition* CreateFadeToColour(Scene_Base* next_scene, float step_duration = 1.0f, Color fade_colour = Black);
+	Transition* SceneToBattle(float step_duration = 1.0f, Color fade_colour = Black);
 
 public:
 
-	bool is_transitioning;
+	bool isTransitioning = false;
 
 private:
 
-	Transition* active_transition;
+	Transition* activeTransition;
 
 };
 

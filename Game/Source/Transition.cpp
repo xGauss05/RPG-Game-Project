@@ -1,7 +1,6 @@
 #include "Transition.h"
 
-Transition::Transition(Scene_Base* next_scene, float step_duration, bool non_lerp) :
-	next_scene(next_scene),
+Transition::Transition(float step_duration, bool non_lerp) :
 	step_duration(step_duration),
 	non_lerp(non_lerp),
 	cutoff_rate(0.0f),

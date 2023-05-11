@@ -1,7 +1,7 @@
 #include "FadeToColour.h"
 #include "TransitionManager.h"
 
-FadeToColour::FadeToColour(Scene_Base* next_scene, float step_duration, Color fade_colour) : Transition(next_scene, step_duration)
+FadeToColour::FadeToColour(float step_duration, Color fade_colour) : Transition(step_duration)
 , fade_colour(fade_colour)
 {
 	InitFadeToColour();
@@ -67,7 +67,7 @@ void FadeToColour::Exiting()
 
 		step = TRANSITION_STEP::NONE;
 
-		//app->transitionManager->DeleteActiveTransition();
+		app->transition->DeleteActiveTransition();
 	}
 }
 

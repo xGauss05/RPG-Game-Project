@@ -7,7 +7,7 @@
 class FadeToColour : public Transition
 {
 public:
-	FadeToColour(Scene_Base* next_scene, float step_duration, Color colour);
+	FadeToColour(float step_duration, Color colour);
 	~FadeToColour();
 
 	void StepTransition();

@@ -22,7 +22,7 @@ enum class TRANSITION_STEP
 class Transition
 {
 public:
-	Transition(Scene_Base* next_scene, float step_duration, bool non_lerp = false);
+	Transition(float step_duration, bool non_lerp = false);
 	virtual ~Transition();
 
 	virtual void Start();
@@ -30,6 +30,7 @@ public:
 	virtual void CleanUp();
 
 public:
+
 	virtual void Entering();
 	virtual void Changing();
 	virtual void Exiting();
@@ -39,7 +40,7 @@ public:
 	float GetCutoffRate(float step_duration, float dt = app->dt);
 
 public:
-	TRANSITION_STEP step;
+	TRANSITION_STEP step = TRANSITION_STEP::NONE;
 	std::unique_ptr<Scene_Base> next_scene;
 
 	float step_duration;

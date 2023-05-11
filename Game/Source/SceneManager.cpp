@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Window.h"
 #include "SceneManager.h"
+#include "TransitionManager.h"
 #include "Input.h"
 
 #include "Scene_Map.h"
@@ -202,6 +203,7 @@ bool SceneManager::PostUpdate()
 
 void SceneManager::StartBattle(std::string_view troopName)
 {
+	app->transition->SceneToBattle(100.0f);
 	nextScene = std::make_unique<Scene_Battle>(party.get(), troopName);
 	nextScene->Load("", sceneInfo, *windowFactory);
 	sceneOnHold = std::move(currentScene);
