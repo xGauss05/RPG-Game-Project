@@ -7,7 +7,7 @@
 class FadeToColour : public Transition
 {
 public:
-	FadeToColour(float step_duration, Color colour);
+	FadeToColour(float step_duration, Color color);
 	~FadeToColour();
 
 	void StepTransition();
@@ -24,6 +24,7 @@ public:
 private:
 	SDL_Rect	screen;
 	Color		fade_colour;
+
 };
 
 #endif // !__FADE_TO_COLOUR_H__

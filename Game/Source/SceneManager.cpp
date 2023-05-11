@@ -10,6 +10,7 @@
 #include "Scene_Boot.h"
 #include "Scene_GameOver.h"
 
+#include "Color.h"
 #include "Render.h"
 #include "Defs.h"
 #include "Log.h"

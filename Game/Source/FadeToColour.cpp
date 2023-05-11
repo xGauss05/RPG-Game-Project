@@ -1,8 +1,8 @@
 #include "FadeToColour.h"
 #include "TransitionManager.h"
 
-FadeToColour::FadeToColour(float step_duration, Color fade_colour) : Transition(step_duration)
-, fade_colour(fade_colour)
+FadeToColour::FadeToColour(float step_duration, Color color) : Transition(step_duration)
+, fade_colour(color)
 {
 	InitFadeToColour();
 }
@@ -40,6 +40,7 @@ void FadeToColour::StepTransition()
 
 void FadeToColour::Entering()
 {
+	// Blackens
 	current_cutoff += GetCutoffRate(step_duration);
 
 	if (current_cutoff >= MAX_CUTOFF)
@@ -54,7 +55,23 @@ void FadeToColour::Changing()
 {
 	//app->sceneManager->SwitchScene(next_scene);
 
-	step = TRANSITION_STEP::EXITING;
+	current_cutoff -= GetCutoffRate(step_duration);
+
+	if (current_cutoff <= MIN_CUTOFF)
+	{
+		current_cutoff = MIN_CUTOFF;
+
+		step = TRANSITION_STEP::CHANGING;
+	}
+
+	if (current_cutoff >= MAX_CUTOFF)
+	{
+		current_cutoff = MAX_CUTOFF;
+
+		step = TRANSITION_STEP::EXITING;
+	}
+	
+
 }
 
 void FadeToColour::Exiting()
