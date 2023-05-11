@@ -45,6 +45,7 @@ public:
 	bool LoadState(pugi::xml_node const &data) final;
 	pugi::xml_node SaveState(pugi::xml_node const &) const final;
 	bool options = false;
+
 private:
 	void StartBattle(std::string_view troopName = "");
 
