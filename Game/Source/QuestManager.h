@@ -43,7 +43,8 @@ public:
 	bool LoadState(pugi::xml_node const &data) final;
 	pugi::xml_node SaveState(pugi::xml_node const &) const final;
 
-	void SetActiveQuest(std::string name, bool setActive);
+	void ActivateQuest(std::string name);
+	void DeactivateQuest(std::string name);
 
 private:
 

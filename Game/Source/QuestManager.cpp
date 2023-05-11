@@ -44,13 +44,11 @@ bool QuestManager::Awake(pugi::xml_node & config)
 	return true;
 }
 
-// Called before the first frame
 bool QuestManager::Start()
 {
 	return true;
 }
 
-// Called each loop iteration
 bool QuestManager::PreUpdate()
 {
 	return true;
@@ -59,127 +57,37 @@ bool QuestManager::PreUpdate()
 
 bool QuestManager::Pause(int phase)
 {
-	/*iPoint camera = { app->render->GetCamera().x * -1, app->render->GetCamera().y * -1 };
-	app->render->DrawTexture(DrawParameters(pauseMenuBackground, camera));
-
-	if (currentScene->OnPause() == 4) return false;*/
-
 	return true;
 }
 
-// Called each loop iteration
 bool QuestManager::Update(float dt)
 {
-	// Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	//if (app->input->GetKey(SDL_SCANCODE_F5) == KeyState::KEY_DOWN) 
-	//{
-	//	LOG("Save Game requested");
-	//	app->SaveGameRequest();
-	//}
-
-	//if (app->input->GetKey(SDL_SCANCODE_F6) == KeyState::KEY_DOWN) 
-	//{
-	//	LOG("Load Game requested");
-	//	app->LoadGameRequest();
-	//}
-
-	//if (app->input->GetKey(SDL_SCANCODE_F7) == KeyState::KEY_DOWN)
-	//{
-	//	LOG("Minimizing screen");
-	//	SDL_SetWindowFullscreen(app->win->GetWindow(), 0);
-	//}
-
-	//if (app->input->GetKey(SDL_SCANCODE_F8) == KeyState::KEY_DOWN)
-	//{
-	//	LOG("Maximizing screen");
-	//	SDL_SetWindowFullscreen(app->win->GetWindow(), 1);
-	//}
-
-	//currentScene->Draw();
-
-	//using enum TransitionScene;
-	//switch (currentScene->Update()) 
-	//	{
-	//	case BOOT_COMPLETE:
-	//		nextScene = std::make_unique<Scene_Title>();
-	//		nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
-	//		break;
-	//	case LOSE_BATTLE:
-	//		sceneOnHold.reset();
-	//		/*for (auto& character : party->party)
-	//		{
-	//			character.SetCurrentHP(1);
-	//		}*/
-	//		nextScene = std::make_unique<Scene_GameOver>();
-	//		nextScene.get()->Load(assetPath + "UI/", gameOverInfo, *windowFactory);
-	//		break;
-	//	case MAIN_MENU:
-	//		nextScene = std::make_unique<Scene_Title>();
-	//		nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
-	//		break;
-	//	case NEW_GAME:
-	//		nextScene = std::make_unique<Scene_Map>();
-	//		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-	//		nextScene->Start();
-	//		break;
-	//	case CONTINUE_GAME:
-	//	{
-	//		nextScene = std::make_unique<Scene_Map>();
-	//		loadNextMap = true;
-	//		app->LoadGameRequest();
-	//		break;
-	//	}
-	//	case LOAD_MAP_FROM_MAP:
-	//	{
-	//		auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
-	//		nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates());
-	//		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-	//		nextScene->Start();
-	//		break;
-	//	}
-	//	case START_BATTLE:
-	//		StartBattle();
-	//		break;
-	//	case WIN_BATTLE:
-	//	case RUN_BATTLE:
-	//		nextScene = std::move(sceneOnHold);
-	//		nextScene->isReady(); //Re plays music
-	//		break;
-	//	case EXIT_GAME:
-	//		return false;
-	//	case NONE:
-	//		break;
-	//}
-
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_DOWN) test = true;
-
-	if (test)
-	{
-		app->fonts->DrawText(quests.at(0).name, TextParameters(0, DrawParameters(0, iPoint(20, 20))));
-		app->fonts->DrawText(quests.at(0).description, TextParameters(0, DrawParameters(0, iPoint(20, 50))));
-	}
-
 	return true;
 }
 
-// Called each loop iteration
 bool QuestManager::PostUpdate()
 {
-	/*if (app->input->GetKey(SDL_SCANCODE_B) == KeyState::KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN) { ActivateQuest("Find kiko's chest"); }
+	if (app->input->GetKey(SDL_SCANCODE_O) == KeyState::KEY_DOWN) { ActivateQuest("Steal kiko's chest"); }
+	if (app->input->GetKey(SDL_SCANCODE_L) == KeyState::KEY_DOWN) { DeactivateQuest("Find kiko's chest"); }
+
+	if (activeQuests.size() <= 0)
 	{
-		StartBattle();
+		app->fonts->DrawText("No quests active", TextParameters(0, DrawParameters(0, iPoint(20, 20))));
+		return true;
 	}
 
-	if (nextScene && nextScene->isReady() && !loadNextMap)
+	int i = 0;
+	for (auto& quest : activeQuests)
 	{
-		currentScene = std::move(nextScene);
-		currentScene->Start();
-	}*/
+		app->fonts->DrawText(quest.name, TextParameters(0, DrawParameters(0, iPoint(20, 20 + i * 70))));
+		app->fonts->DrawText(quest.description, TextParameters(0, DrawParameters(0, iPoint(20, 50 + i * 70))));
+		i++;
+	}
 
 	return true;
 }
 
-// Called before quitting
 bool QuestManager::CleanUp()
 {
 	LOG("Freeing scene");
@@ -194,64 +102,41 @@ bool QuestManager::HasSaveData() const
 
 bool QuestManager::LoadState(pugi::xml_node const& data)
 {
-	/*pugi::xml_node node = data.child("party_member");
-
-	for (auto& character : party->party)
-	{
-		character.SetLevel(data.attribute("level").as_int());
-		character.SetCurrentHP(data.attribute("currentHP").as_int());
-		character.SetCurrentMana(data.attribute("currentMP").as_int());
-		character.SetCurrentXP(data.attribute("currentXP").as_int());
-
-		node.next_sibling("party_member");
-	}
-
-	currentScene->LoadScene(data);
-	if (nextScene)
-	{
-		nextScene->LoadScene(data);
-	}*/
-
 	return true;
 }
 
 pugi::xml_node QuestManager::SaveState(pugi::xml_node const& data) const
 {
 	pugi::xml_node node = data;
-	/*
-	node = node.append_child("scene");
-
-	currentScene->SaveScene(data);
-
-	for (auto const& character : party->party)
-	{
-
-		auto currentNode = node.append_child("party_member");
-		currentNode.append_attribute("name").set_value(character.name.c_str());
-		currentNode.append_attribute("level").set_value(character.level);
-		currentNode.append_attribute("currentHP").set_value(character.currentHP);
-		currentNode.append_attribute("currentMP").set_value(character.currentMana);
-		currentNode.append_attribute("currentXP").set_value(character.currentXP);
-
-	}*/
 
 	return node;
 }
 
-void QuestManager::SetActiveQuest(std::string name, bool setActive)
+void QuestManager::ActivateQuest(std::string name)
 {
-	for (auto& elem : quests)
+	for (auto& quest : quests)
 	{
-		if (StrEquals(elem.name, name))
+		if (StrEquals(quest.name, name))
 		{
-			if (setActive)
+			for (auto& isActiveCheck : activeQuests)
 			{
-				activeQuests.push_back(elem);
+				if (!StrEquals(isActiveCheck.name, name)) { continue; }
+
+				LOG("Quest already active");
+				return;
 			}
-			else
-			{
-				//get it out of activeQuests
-			}
+			activeQuests.push_back(quest);
 		}
 	}
+}
+
+void QuestManager::DeactivateQuest(std::string name)
+{
+	//This sets the variable to compare to then take the element out of the vector. Right now, the name
+	auto check = [name](const Quest& q)
+	{
+		return q.name == name;
+	};
+
+	activeQuests.erase(std::remove_if(activeQuests.begin(), activeQuests.end(), check), activeQuests.end());
 }
