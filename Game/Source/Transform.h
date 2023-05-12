@@ -14,6 +14,7 @@ public:
 	iPoint position = { 0 };
 	iPoint originalPosition = { 0 };
 	iPoint size = { 0 };
+	bool bIsTwoTiles = false;
 protected:
 	void Initialize(pugi::xml_node const& node)
 	{
