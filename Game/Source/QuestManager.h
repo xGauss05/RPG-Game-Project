@@ -48,9 +48,9 @@ public:
 
 private:
 
-	std::vector<Quest> quests;
-	std::vector<Quest> activeQuests;
-	std::vector<Quest> completedQuests;
+	std::vector<std::unique_ptr<Quest>> quests;
+	std::vector<std::unique_ptr<Quest>> activeQuests;
+	std::vector<std::unique_ptr<Quest>> completedQuests;
 };
 
 #endif // __QUESTMANAGER_H__

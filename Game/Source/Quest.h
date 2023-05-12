@@ -16,8 +16,8 @@ enum class QuestType
 class Quest
 {
 public:
-	Quest() {};
-	~Quest() {};
+	Quest() = default;
+	~Quest() = default;
 
 	bool Update() 
 	{ 

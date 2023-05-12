@@ -33,12 +33,14 @@ bool QuestManager::Awake(pugi::xml_node & config)
 
 	for (auto const& quest : questsFile.child("quests_list").children("quest"))
 	{
-		Quest questToAdd;
-		questToAdd.name = quest.attribute("name").as_string();
-		questToAdd.description = quest.attribute("description").as_string();
-		questToAdd.type = (QuestType)quest.attribute("type").as_int();
+		std::unique_ptr<Quest> questToAdd = nullptr;
+		questToAdd = std::make_unique<Quest>();
 
-		quests.push_back(questToAdd);
+		questToAdd->name = quest.attribute("name").as_string();
+		questToAdd->description = quest.attribute("description").as_string();
+		questToAdd->type = (QuestType)quest.attribute("type").as_int();
+
+		quests.push_back(std::move(questToAdd));
 	}
 
 	return true;
@@ -64,9 +66,9 @@ bool QuestManager::Update(float dt)
 {
 	for (auto& quest : activeQuests)
 	{
-		if (!quest.Update())
+		if (!quest->Update())
 		{
-			DeactivateQuest(quest.name);
+			DeactivateQuest(quest->name);
 		}
 	}
 
@@ -88,8 +90,8 @@ bool QuestManager::PostUpdate()
 	int i = 0;
 	for (auto& quest : activeQuests)
 	{
-		app->fonts->DrawText(quest.name, TextParameters(0, DrawParameters(0, iPoint(20, 20 + i * 70))));
-		app->fonts->DrawText(quest.description, TextParameters(0, DrawParameters(0, iPoint(20, 50 + i * 70))));
+		app->fonts->DrawText(quest->name, TextParameters(0, DrawParameters(0, iPoint(20, 20 + i * 70))));
+		app->fonts->DrawText(quest->description, TextParameters(0, DrawParameters(0, iPoint(20, 50 + i * 70))));
 		i++;
 	}
 
@@ -124,16 +126,19 @@ void QuestManager::ActivateQuest(std::string name)
 {
 	for (auto& quest : quests)
 	{
-		if (StrEquals(quest.name, name))
+		if (StrEquals(quest->name, name))
 		{
 			for (auto& isActiveCheck : activeQuests)
 			{
-				if (!StrEquals(isActiveCheck.name, name)) { continue; }
+				if (!StrEquals(isActiveCheck->name, name)) { continue; }
 
 				LOG("Quest already active");
 				return;
 			}
-			activeQuests.push_back(quest);
+
+			//activeQuests.push_back(std::move(quest));
+
+			activeQuests.emplace_back(std::make_unique<Quest>(*quest.get()));
 		}
 	}
 }
@@ -141,9 +146,9 @@ void QuestManager::ActivateQuest(std::string name)
 void QuestManager::DeactivateQuest(std::string name)
 {
 	//This sets the variable to compare to then take the element out of the vector. Right now, the name
-	auto check = [name](const Quest& q)
+	auto check = [name](const std::unique_ptr<Quest>& q)
 	{
-		return q.name == name;
+		return q->name == name;
 	};
 
 	activeQuests.erase(std::remove_if(activeQuests.begin(), activeQuests.end(), check), activeQuests.end());
