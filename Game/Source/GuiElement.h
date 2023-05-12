@@ -72,6 +72,12 @@ public:
 		bIsHovered = !bIsHovered;
 	}
 
+	void SetPosition(uint x, uint y)
+	{
+		currentPosition.x = x;
+		currentPosition.y = y;
+	}
+
 	void SetPosition(uPoint pos)
 	{
 		currentPosition = pos;
@@ -88,6 +94,16 @@ public:
 	uPoint GetTargetPosition() const
 	{
 		return targetPosition;
+	}
+
+	bool HasEasing() const
+	{
+		return hasEasing;
+	}
+
+	void SetHasEasing(bool doesItHaveIt)
+	{
+		hasEasing = doesItHaveIt;
 	}
 
 	Easing GuiEasing;
@@ -143,5 +159,6 @@ private:
 	uPoint startingPosition = { 0, 0 };
 	uPoint targetPosition = { 0,0 };
 	uPoint size = { 0, 0 };
+	bool hasEasing = false;
 
 };

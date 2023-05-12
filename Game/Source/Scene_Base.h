@@ -45,24 +45,6 @@ public:
 	virtual bool LoadScene(pugi::xml_node const&) = 0;
 	virtual void DebugDraw() = 0;
 
-	void InitEasings(pugi::xml_node const& node)
-	{
-		app->render->easings.clear();
-
-		for (auto const& easing : node.children("image"))
-		{
-			Easing temp;
-			temp.name = easing.attribute("name").as_string();
-			temp.startingPos.x = easing.attribute("initialPosX").as_int();
-			temp.startingPos.y = easing.attribute("initialPosY").as_int();
-			temp.targetPos.x = easing.attribute("targetPosX").as_int();
-			temp.targetPos.y = easing.attribute("targetPosY").as_int();
-			temp.SetTotalTime(easing.attribute("duration").as_float());
-			temp.type = (EasingType)easing.attribute("typeID").as_int();
-
-			app->render->easings.push_back(temp);
-		}
-	}
 
 	bool bActive = false;
 	// TODO Fade-in/Fade-out variables (colour, duration)
