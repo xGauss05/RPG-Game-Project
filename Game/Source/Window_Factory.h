@@ -13,6 +13,8 @@ public:
 	explicit Window_Factory(pugi::xml_node const& windowInfo);
 
 	std::unique_ptr<Window_Base> CreateWindow(std::string_view const& windowName) const;
+	std::unique_ptr<Window_List> CreateWindowList(std::string_view const& windowName = "ListFallback") const;
+	std::unique_ptr<Window_Panel> CreateWindowPanel(std::string_view const& windowName = "PanelFallback") const;
 
 private:
 	LookUpXMLNodeFromString info;

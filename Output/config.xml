@@ -58,6 +58,8 @@
 			</scene>
 		</gameover_info>
 		<window_info>
+      <window name="ListFallback" class="List" type="Base" x="0" y="0" width="0" height="0"/>
+      <window name="PanelFallback" class="Panel" type="Base"/>
 			<window name="MainMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
 				<button startingX="1300" targetX="940" startingY="300" targetY="300" width="250" height="65" text="New Game" function="NewGame" segmentwidth="32" segmentheight="32">
 					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
@@ -152,7 +154,7 @@
 					<state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
-					<state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+					<state_texture state="4" x="428" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 				</button>
 				<button startingX="1080" targetX="1080" startingY="420" targetY="420" width="160" height="65" text="Special" function="BattleSpecialAttack" segmentwidth="32" segmentheight="32">
 					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />

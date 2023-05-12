@@ -12,8 +12,8 @@ enum class ButtonState
 {
 	DISABLED,
 	NORMAL,
-	PRESSED,
 	FOCUSED,
+	PRESSED,
 	SELECTED
 };
 
@@ -39,6 +39,8 @@ public:
 	void MouseEnterHandler() override;
 	void MouseLeaveHandler() override;
 
+	void ToggleSelected();
+
 	void DebugDraw() const;
 
 private:
@@ -56,6 +58,7 @@ private:
 	iPoint offset;
 
 	ButtonState currentState = ButtonState::DISABLED;
+	ButtonState lastState = ButtonState::DISABLED;
 };
 
 #endif __GUIBUTTON_H__

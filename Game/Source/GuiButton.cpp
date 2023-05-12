@@ -33,7 +33,8 @@ GuiButton::GuiButton(uPoint startingPos, uPoint targetPos, uPoint size, std::str
 int GuiButton::Update()
 {
 	using enum ButtonState;
-	if (currentState == DISABLED)
+
+	if (currentState == DISABLED || !IsEnabled())
 		return 0;
 
 	if (IsMouseHovering() && app->input->controllerCount <= 0)
@@ -135,6 +136,14 @@ void GuiButton::MouseLeaveHandler()
 {
 	if (currentState != ButtonState::DISABLED)
 		currentState = ButtonState::NORMAL;
+}
+
+void GuiButton::ToggleSelected()
+{
+	using enum ButtonState;
+	currentState = (currentState == SELECTED)
+		? NORMAL
+		: SELECTED;
 }
 
 void GuiButton::DebugDraw() const

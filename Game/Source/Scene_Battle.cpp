@@ -3,6 +3,8 @@
 #include "Render.h"
 #include "Audio.h"
 
+#include "GuiButton.h"
+
 #include "PugiXml/src/pugixml.hpp"
 
 #include <random>
@@ -49,9 +51,9 @@ bool Scene_Battle::isReady()
 void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
 {
 	windows.clear();
-	windows.emplace_back(windowFactory.CreateWindow("BattleActions"));
-	windows.emplace_back(windowFactory.CreateWindow("BattleMessage"));
 	
+	actions = windowFactory.CreateWindowList("BattleActions");
+	messages = windowFactory.CreateWindowPanel("BattleMessage");
 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
@@ -89,7 +91,7 @@ void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint pos
 	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
 }
 
-void Scene_Battle::ChooseTarget()
+bool Scene_Battle::ChooseTarget()
 {
 	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 	{
@@ -98,10 +100,12 @@ void Scene_Battle::ChooseTarget()
 			if (elem.IsMouseHovering() && elem.currentHP > 0)
 			{
 				targetSelected = elem.index;
-				break;
+				return true;
 			}
 		}
 	}
+
+	return false;
 }
 
 void Scene_Battle::Draw()
@@ -114,6 +118,10 @@ void Scene_Battle::Draw()
 	{
 		elem->Draw();
 	}
+
+	messages->Draw();
+	actions->Draw();
+
 	for (int i = 0; auto const& elem : party->party)
 	{
 		iPoint allyPosition(300 - camera.x, (120 * i) - camera.y + 55);
@@ -143,6 +151,9 @@ void Scene_Battle::Draw()
 		app->render->DrawTexture(drawAlly);
 		i++;
 	}
+
+	bool enemyHovered = false;
+
 	for (auto &elem : enemies.troop)
 	{
 		DrawHPBar(elem.textureID, elem.currentHP, elem.stats[0], elem.position);
@@ -169,7 +180,9 @@ void Scene_Battle::Draw()
 				}
 			}
 			std::string text = std::format("{} | HP: {} | Def: {} | Sp. Def: {}", elem.name, elem.currentHP, elem.stats[3], elem.stats[5]);
-			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText(text);
+			messages->ModifyLastWidgetText(text);
+
+			enemyHovered = true;
 		}
 		else
 		{
@@ -191,11 +204,16 @@ void Scene_Battle::Draw()
 			};
 
 			drawEnemy.Center(pivot);
-
 		}
 
 		app->render->DrawTexture(drawEnemy);
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.textureID), 255);
+	}
+
+	if (actionSelected != -1 && actionSelected != 3 && !enemyHovered)
+	{
+		std::string text = "Choose a target.";
+		messages->ModifyLastWidgetText(text);
 	}
 }
 
@@ -207,29 +225,44 @@ TransitionScene Scene_Battle::Update()
 		case PLAYER_INPUT:
 		{
 			auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
+
+			if (currentPlayer != 0)
+				actions->widgets.back()->Disable();
+			else
+				actions->widgets.back()->Enable();
+
 			if(actionSelected == 0 || actionSelected == 1)
 			{
-				ChooseTarget();
-				if(targetSelected != -1)
+				bool targetChosen = ChooseTarget();
+				if(targetChosen)
 				{
 					actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
 					actionSelected = -1;
 					targetSelected = -1;
 					currentPlayer++;
 				}
+				else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+				{
+					actionSelected = -1;
+					targetSelected = -1;
+				}
 			}
 			else if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 			{
-				switch (windows.front()->Update())
+				std::string text = std::format("What will {} do?", party->party[currentPlayer].name);
+				messages->ModifyLastWidgetText(text);
+				switch (actions->Update())
 				{
 					case 100:
 					{
 						actionSelected = 0;
+						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
 						break;
 					}
 					case 101:
 					{
 						actionSelected = 1;
+						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
 						break;
 					}
 					case 102:
@@ -240,9 +273,9 @@ TransitionScene Scene_Battle::Update()
 					}
 					case 103:
 					{
-						actionQueue.emplace(3, currentPlayer, 0, true, INT_MAX);
-						if (currentPlayer == 0)
+						if(currentPlayer == 0)
 						{
+							actionQueue.emplace(3, currentPlayer, 0, true, INT_MAX);
 							currentPlayer = party->party.size();
 						}
 						break;
@@ -264,6 +297,8 @@ TransitionScene Scene_Battle::Update()
 		}
 		case ENEMY_INPUT:
 		{
+			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+
 			std::mt19937 gen(rd());
 			random.param(std::uniform_int_distribution<>::param_type(0, party->party.size()-1));
 
@@ -460,7 +495,7 @@ TransitionScene Scene_Battle::Update()
 
 				if(!text.empty())
 				{
-					dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText(text);
+					messages->ModifyLastWidgetText(text);
 					showNextText = false;
 				}
 				actionQueue.pop();
@@ -491,7 +526,7 @@ TransitionScene Scene_Battle::Update()
 
 			if (showNextText && actionQueue.empty())
 			{
-				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				messages->ModifyLastWidgetText("");
 				currentPlayer = 0;
 				state = PLAYER_INPUT;
 			}
@@ -499,20 +534,20 @@ TransitionScene Scene_Battle::Update()
 		}
 		case BATTLE_WON:
 		{
-			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You won the battle!");
+			messages->ModifyLastWidgetText("You won the battle!");
 			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
-				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				messages->ModifyLastWidgetText("");
 				return TransitionScene::WIN_BATTLE;
 			}
 			break;
 		}
 		case BATTLE_LOSS:
 		{
-			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You lost the battle...");
+			messages->ModifyLastWidgetText("You lost the battle...");
 			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
-				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				messages->ModifyLastWidgetText("");
 				return TransitionScene::LOSE_BATTLE;
 			}
 			break;

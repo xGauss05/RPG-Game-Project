@@ -106,6 +106,21 @@ public:
 		hasEasing = doesItHaveIt;
 	}
 
+	void ToggleEnable()
+	{
+		enabled = !enabled;
+	}
+
+	void Disable()
+	{
+		enabled = false;
+	}
+
+	void Enable()
+	{
+		enabled = true;
+	}
+
 	Easing GuiEasing;
 
 protected:
@@ -150,9 +165,16 @@ protected:
 		return bIsHovered;
 	}
 
+	bool IsEnabled() const
+	{
+		return enabled;
+	}
+
 private:
 
 	bool bIsHovered = false;		//If mouse is hovering
+
+	bool enabled = true;
 
 	std::function<int()> func;
 	uPoint currentPosition = { 0, 0 };

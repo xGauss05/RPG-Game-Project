@@ -151,15 +151,17 @@ int Window_Base::FallbackFunction() const
 	return 0;
 }
 
-int Window_Base::UpdateWidgets() const
+int Window_Base::UpdateWidgets()
 {
-	for (auto const& elem : widgets)
+	for (int i = 0; auto const& elem : widgets)
 	{
 		if (auto result = elem->Update();
 			result != 0)
 		{
+			lastWidgetInteractedIndex = i;
 			return result;
 		}
+		i++;
 	}
 	return 0;
 }

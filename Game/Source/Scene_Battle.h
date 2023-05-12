@@ -39,7 +39,7 @@ public:
 
 private:
     void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
-    void ChooseTarget();
+    bool ChooseTarget();
     std::string_view GetRandomEncounter();
 
     int backgroundTexture = 0;
@@ -74,6 +74,9 @@ private:
             return a1.speed < a2.speed;
         }
     };
+
+    std::unique_ptr<Window_List> actions;
+    std::unique_ptr<Window_Panel> messages;
 
     std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
 };
