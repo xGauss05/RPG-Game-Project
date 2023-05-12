@@ -37,6 +37,11 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GuiCheckbox.cpp" />
+    <ClCompile Include="Source\Transition.cpp" />
+    <ClCompile Include="Source\TransitionManager.cpp" />
+    <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\FadeToColour.cpp" />
+    <ClCompile Include="Source\Blink.cpp" />
     <ClCompile Include="Source\DB_Items.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +90,11 @@
     <ClInclude Include="Source\Window_Panel.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\GuiCheckbox.h" />
+    <ClInclude Include="Source\Transition.h" />
+    <ClInclude Include="Source\TransitionManager.h" />
+    <ClInclude Include="Source\Color.h" />
+    <ClInclude Include="Source\FadeToColour.h" />
+    <ClInclude Include="Source\Blink.h" />
     <ClInclude Include="Source\DB_Items.h" />
   </ItemGroup>
   <ItemGroup>
