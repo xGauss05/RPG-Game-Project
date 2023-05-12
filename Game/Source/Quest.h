@@ -25,7 +25,10 @@ public:
 		{
 		case QuestType::TALK:
 
-			if (app->input->GetKey(SDL_SCANCODE_U) == KeyState::KEY_DOWN) { return false; }
+			if (app->input->GetKey(SDL_SCANCODE_U) == KeyState::KEY_DOWN) 
+			{ 
+				return false; 
+			}
 
 			break;
 		case QuestType::COLLECT:

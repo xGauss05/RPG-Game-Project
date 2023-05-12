@@ -64,7 +64,11 @@ bool QuestManager::Pause(int phase)
 
 bool QuestManager::Update(float dt)
 {
-	for (auto& quest : activeQuests)
+	if (app->input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN) { ActivateQuest("Find kiko's chest"); }
+	if (app->input->GetKey(SDL_SCANCODE_O) == KeyState::KEY_DOWN) { ActivateQuest("Steal kiko's chest"); }
+	if (app->input->GetKey(SDL_SCANCODE_L) == KeyState::KEY_DOWN) { DeactivateQuest("Find kiko's chest"); }
+
+	for (auto const& quest : activeQuests)
 	{
 		if (!quest->Update())
 		{
@@ -77,10 +81,6 @@ bool QuestManager::Update(float dt)
 
 bool QuestManager::PostUpdate()
 {
-	if (app->input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN) { ActivateQuest("Find kiko's chest"); }
-	if (app->input->GetKey(SDL_SCANCODE_O) == KeyState::KEY_DOWN) { ActivateQuest("Steal kiko's chest"); }
-	if (app->input->GetKey(SDL_SCANCODE_L) == KeyState::KEY_DOWN) { DeactivateQuest("Find kiko's chest"); }
-
 	if (activeQuests.size() <= 0)
 	{
 		app->fonts->DrawText("No quests active", TextParameters(0, DrawParameters(0, iPoint(20, 20))));
@@ -88,7 +88,7 @@ bool QuestManager::PostUpdate()
 	}
 
 	int i = 0;
-	for (auto& quest : activeQuests)
+	for (auto const& quest : activeQuests)
 	{
 		app->fonts->DrawText(quest->name, TextParameters(0, DrawParameters(0, iPoint(20, 20 + i * 70))));
 		app->fonts->DrawText(quest->description, TextParameters(0, DrawParameters(0, iPoint(20, 50 + i * 70))));
