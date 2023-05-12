@@ -135,7 +135,7 @@ bool Render::PostUpdate()
 	SDL_RenderPresent(renderer.get());
 	
 	// I -> increases fps target || O ->decreases fps target
-	if(app->input->GetKey(SDL_SCANCODE_I) == KeyState::KEY_DOWN && fpsTarget < 1000)
+	/*if(app->input->GetKey(SDL_SCANCODE_I) == KeyState::KEY_DOWN && fpsTarget < 1000)
 	{
 		fpsTarget += 10;
 		ticksForNextFrame = 1000/fpsTarget;
@@ -144,7 +144,7 @@ bool Render::PostUpdate()
 	{
 		fpsTarget -= 10;
 		ticksForNextFrame = 1000/fpsTarget;
-	}
+	}*/
 	if(app->input->GetKey(SDL_SCANCODE_F11) == KeyState::KEY_DOWN)
 	{
 		if(fpsTarget != 30)
