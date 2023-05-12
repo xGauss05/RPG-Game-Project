@@ -41,6 +41,7 @@
     <ClCompile Include="Source\TransitionManager.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\FadeToColour.cpp" />
+    <ClCompile Include="Source\Blink.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="Source\TransitionManager.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\FadeToColour.h" />
+    <ClInclude Include="Source\Blink.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

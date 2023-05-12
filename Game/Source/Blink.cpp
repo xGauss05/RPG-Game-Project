@@ -1,18 +1,18 @@
-#include "FadeToColour.h"
+#include "Blink.h"
 #include "TransitionManager.h"
 
-FadeToColour::FadeToColour(float step_duration, Color color) : Transition(step_duration)
+Blink::Blink(float step_duration, Color color) : Transition(step_duration)
 , fade_colour(color)
 {
 	InitFadeToColour();
 }
 
-FadeToColour::~FadeToColour()
+Blink::~Blink()
 {
 
 }
 
-void FadeToColour::StepTransition()
+void Blink::StepTransition()
 {
 	switch (step)
 	{
@@ -38,7 +38,7 @@ void FadeToColour::StepTransition()
 	ApplyFade();
 }
 
-void FadeToColour::Entering()
+void Blink::Entering()
 {
 	// Blackens
 	current_cutoff += GetCutoffRate(step_duration);
@@ -51,21 +51,37 @@ void FadeToColour::Entering()
 	}
 }
 
-void FadeToColour::Changing()
+void Blink::Changing()
 {
-	current_cutoff -= GetCutoffRate(step_duration);
+	//app->sceneManager->SwitchScene(next_scene);
 
-	if (current_cutoff <= MIN_CUTOFF)
+	if (back2back)
 	{
-		current_cutoff = MIN_CUTOFF;
+		current_cutoff -= GetCutoffRate(step_duration);
 
+		if (current_cutoff <= MIN_CUTOFF)
+		{
+			current_cutoff = MIN_CUTOFF;
+			back2back = false;
+			step = TRANSITION_STEP::CHANGING;
+		}
+	}
+	else
+	{
+		current_cutoff += GetCutoffRate(step_duration);
+		if (current_cutoff >= MAX_CUTOFF)
+		{
+			current_cutoff = MAX_CUTOFF;
+
+			step = TRANSITION_STEP::EXITING;
+		}
 	}
 
-	step = TRANSITION_STEP::EXITING;
+
 
 }
 
-void FadeToColour::Exiting()
+void Blink::Exiting()
 {
 	current_cutoff -= GetCutoffRate(step_duration);
 
@@ -79,14 +95,14 @@ void FadeToColour::Exiting()
 	}
 }
 
-void FadeToColour::ApplyFade()
+void Blink::ApplyFade()
 {
 	SDL_SetRenderDrawColor(app->render->GetRender(), fade_colour.r, fade_colour.g, fade_colour.b, current_cutoff * 255.0f);
 
 	SDL_RenderFillRect(app->render->GetRender(), &screen);
 }
 
-void FadeToColour::InitFadeToColour()
+void Blink::InitFadeToColour()
 {
 	iPoint windowSize = app->win->GetWindowSize();
 	screen = { 0,0,windowSize.x, windowSize.y };
