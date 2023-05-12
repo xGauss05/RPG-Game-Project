@@ -10,7 +10,7 @@
 #include "Scene_Boot.h"
 #include "Scene_GameOver.h"
 
-#include "Color.h"
+#include "Colour.h"
 #include "Render.h"
 #include "Defs.h"
 #include "Log.h"
@@ -128,31 +128,38 @@ bool SceneManager::Update(float dt)
 
 	currentScene->Draw();
 
+	if (app->transition->IsTransitioning())
+		return true;
+
 	using enum TransitionScene;
 	switch (currentScene->Update()) 
-		{
+	{
 		case BOOT_COMPLETE:
+		{
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
+		}
 		case LOSE_BATTLE:
+		{
 			sceneOnHold.reset();
-			/*for (auto& character : party->party)
-			{
-				character.SetCurrentHP(1);
-			}*/
 			nextScene = std::make_unique<Scene_GameOver>();
 			nextScene.get()->Load(assetPath + "UI/", gameOverInfo, *windowFactory);
 			break;
+		}
 		case MAIN_MENU:
+		{
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
+		}
 		case NEW_GAME:
+		{
 			nextScene = std::make_unique<Scene_Map>(party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			nextScene->Start();
 			break;
+		}
 		case CONTINUE_GAME:
 		{
 			nextScene = std::make_unique<Scene_Map>(party.get());
@@ -169,17 +176,25 @@ bool SceneManager::Update(float dt)
 			break;
 		}
 		case START_BATTLE:
+		{
 			StartBattle();
 			break;
+		}
 		case WIN_BATTLE:
 		case RUN_BATTLE:
+		{
 			nextScene = std::move(sceneOnHold);
 			nextScene->isReady(); //Re plays music
 			break;
+		}
 		case EXIT_GAME:
+		{
 			return false;
+		}
 		case NONE:
+		{
 			break;
+		}
 	}
 
 	return true;
@@ -193,8 +208,11 @@ bool SceneManager::PostUpdate()
 		StartBattle();
 	}
 
-	if (nextScene && nextScene->isReady() && !loadNextMap)
+	if (nextScene && nextScene->isReady() && !loadNextMap && app->transition->IsPastMidpoint())
 	{
+		if(bBattleStarted)
+			sceneOnHold = std::move(currentScene);
+
 		currentScene = std::move(nextScene);
 		currentScene->Start();
 	}
@@ -204,10 +222,10 @@ bool SceneManager::PostUpdate()
 
 void SceneManager::StartBattle(std::string_view troopName)
 {
-	app->transition->SceneToBattle(100.0f);
+	bBattleStarted = true;
+	app->transition->SceneToBattle(1000.0f);
 	nextScene = std::make_unique<Scene_Battle>(party.get(), troopName);
 	nextScene->Load("", sceneInfo, *windowFactory);
-	sceneOnHold = std::move(currentScene);
 }
 
 // Called before quitting

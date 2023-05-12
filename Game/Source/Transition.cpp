@@ -2,15 +2,11 @@
 
 Transition::Transition(float step_duration, bool non_lerp) :
 	step_duration(step_duration),
-	non_lerp(non_lerp),
-	cutoff_rate(0.0f),
-	current_cutoff(0.0f)
+	non_lerp(non_lerp)
 {
 }
 
-Transition::~Transition()
-{
-}
+Transition::~Transition() = default;
 
 void Transition::Start()
 {
@@ -36,14 +32,14 @@ void Transition::Exiting()
 {
 }
 
-float Transition::Lerp(float start, float end, float rate)
+float Transition::Lerp(float start, float end, float rate) const
 {
 	float increment = (end - start) * rate;
 
 	return start + increment;
 }
 
-float Transition::N_Lerp(float start, float end, float rate, bool smash_in)
+float Transition::N_Lerp(float start, float end, float rate, bool smash_in) const
 {
 	float increment = 0;
 
@@ -60,9 +56,14 @@ float Transition::N_Lerp(float start, float end, float rate, bool smash_in)
 	return start + increment;
 }
 
-float Transition::GetCutoffRate(float step_duration, float dt)
+float Transition::SetCutoffRate(float stepDuration, float dt)
 {
-	cutoff_rate = dt / step_duration;
+	cutoff_rate = dt / stepDuration;
 
 	return cutoff_rate;
+}
+
+bool Transition::IsPastMidpoint() const
+{
+	return step == TRANSITION_STEP::CHANGING || step == TRANSITION_STEP::EXITING;
 }

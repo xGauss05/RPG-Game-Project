@@ -2,20 +2,19 @@
 #define __FADE_TO_COLOUR_H__
 
 #include "Transition.h"
-#include "Color.h"
+#include "Colour.h"
 
 class FadeToColour : public Transition
 {
 public:
-	FadeToColour(float step_duration, Color color);
-	~FadeToColour();
+	FadeToColour(float step_duration, Colour const& colour);
+	~FadeToColour() override;
 
-	void StepTransition();
+	void StepTransition() override;
 
-public:
-	void Entering();												
-	void Changing();												
-	void Exiting();													
+	void Entering() override;
+	void Changing() override;
+	void Exiting() override;
 	
 	void ApplyFade();												
 
@@ -23,7 +22,7 @@ public:
 
 private:
 	SDL_Rect	screen;
-	Color		fade_colour;
+	Colour		fade_colour;
 
 };
 

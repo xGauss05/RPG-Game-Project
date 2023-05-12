@@ -133,7 +133,6 @@ void Scene_Map::DebugItems()
 
 TransitionScene Scene_Map::Update()
 {
-	DebugItems();
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
@@ -408,7 +407,7 @@ void Scene_Map::DebugDraw()
 {
 	//Player Hitbox
 	SDL_Rect debugPosition = { player.position.x, player.position.y + player.size.y / 2, player.size.x, player.size.y / 2 };
-	app->render->DrawShape(debugPosition, true, SDL_Color(0, 255, 0, 100));
+	app->render->DrawShape(debugPosition, true, SDL_Colour(0, 255, 0, 100));
 
 	//Map Hitboxes
 
@@ -431,7 +430,7 @@ void Scene_Map::DebugDraw()
 				if (!map.IsWalkable(iPoint{ y * 48,x * 48 }))
 				{
 					SDL_Rect rect = { (y * 48), x * 48,48,48 };
-					app->render->DrawShape(rect, true, SDL_Color(255, 0, 0, 100));
+					app->render->DrawShape(rect, true, SDL_Colour(255, 0, 0, 100));
 				}
 			}
 		}

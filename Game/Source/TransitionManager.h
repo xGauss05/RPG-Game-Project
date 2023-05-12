@@ -3,35 +3,34 @@
 
 #include "Module.h"
 #include "Scene_Base.h"
-#include "Color.h"
+#include "Colour.h"
 #include "Point.h"
 #include "Transition.h"
 
-class		Transition;
+class Transition;
 
 class TransitionManager :  public Module
 {
 public:
 	TransitionManager();
-	~TransitionManager();
+	~TransitionManager() override;
 
-	bool PostUpdate();
+	bool PostUpdate() override;
 
-	bool CleanUp();
-
-public:
+	bool CleanUp() override;
 
 	void DeleteActiveTransition();
 	
-	Transition* SceneToBattle(float step_duration = 1.0f, Color fade_colour = Black);
+	void SceneToBattle(float step_duration = 1.0f, Colour  const& fade_colour = g_Colour_Black);
 
-public:
+	bool IsPastMidpoint() const;
 
-	bool isTransitioning = false;
+	bool IsTransitioning() const;
 
 private:
 
-	Transition* activeTransition;
+	bool isTransitioning = false;
+	std::unique_ptr<Transition> activeTransition;
 
 };
 

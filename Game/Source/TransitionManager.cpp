@@ -1,59 +1,52 @@
 #include "TransitionManager.h"
 #include "SceneManager.h"
-#include "FadeToColour.h"
+#include "Transition_FadeToColour.h"
 
-TransitionManager::TransitionManager() : activeTransition(nullptr), isTransitioning(false)
-{
+TransitionManager::TransitionManager() = default;
 
-}
-
-TransitionManager::~TransitionManager()
-{
-
-}
+TransitionManager::~TransitionManager() = default;
 
 bool TransitionManager::PostUpdate()
 {
-	bool ret = true;
-
-	if (activeTransition != nullptr)
+	if (isTransitioning && activeTransition)
 	{
 		activeTransition->StepTransition();
 	}
 
-	return ret;
+	return true;
 }
 
 bool TransitionManager::CleanUp()
 {
-	bool ret = true;
-	
-	if (activeTransition != nullptr)
-	{
-		delete activeTransition;
-		activeTransition = nullptr;
-	}
-
-	return ret;
+	return true;
 }
 
 void TransitionManager::DeleteActiveTransition()
 {
 	isTransitioning = false;
 
-	delete activeTransition;
-
-	activeTransition = nullptr;
+	activeTransition.release();
 }
 
-Transition* TransitionManager::SceneToBattle(float step_duration, Color fade_colour)
+void TransitionManager::SceneToBattle(float step_duration, Colour const &fade_colour)
 {	
 	if (!isTransitioning)
 	{
-		activeTransition = new FadeToColour(step_duration, fade_colour);
+		activeTransition = std::make_unique<FadeToColour>(step_duration, fade_colour);
 
 		isTransitioning = true;
 	}
+}
 
-	return activeTransition;
+bool TransitionManager::IsPastMidpoint() const
+{
+	if (isTransitioning && activeTransition)
+		return activeTransition->IsPastMidpoint();
+
+	return true;
+}
+
+bool TransitionManager::IsTransitioning() const
+{
+	return isTransitioning;
 }

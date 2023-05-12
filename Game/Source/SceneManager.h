@@ -62,6 +62,7 @@ private:
 	std::unique_ptr<GameParty> party;
 
 	bool CurrentlyMainMenu = true;
+	bool bBattleStarted = false;
 	
 	int pauseMenuBackground = 0;
 
