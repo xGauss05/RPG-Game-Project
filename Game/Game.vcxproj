@@ -109,6 +109,8 @@
     <ClCompile Include="Source\NPC_Generic.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\QuestManager.cpp" />
+    <ClCompile Include="Source\Quest_Collect.cpp" />
+    <ClCompile Include="Source\Quest_Talk.cpp" />
     <ClCompile Include="Source\Scene_Battle.cpp" />
     <ClCompile Include="Source\Scene_Boot.cpp" />
     <ClCompile Include="Source\Scene_GameOver.cpp" />
@@ -146,6 +148,8 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\QuestManager.h" />
+    <ClInclude Include="Source\Quest_Collect.h" />
+    <ClInclude Include="Source\Quest_Talk.h" />
     <ClInclude Include="Source\Scene_Battle.h" />
     <ClInclude Include="Source\Scene_Boot.h" />
     <ClInclude Include="Source\Scene_GameOver.h" />

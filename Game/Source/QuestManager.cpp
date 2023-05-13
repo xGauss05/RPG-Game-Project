@@ -1,7 +1,13 @@
 #include "App.h"
 #include "QuestManager.h"
 #include "Quest.h"
+#include "Quest_Talk.h"
+#include "Quest_Collect.h"
 #include "TextManager.h"
+
+#include "Input.h"
+#include "Point.h"
+#include "Render.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -34,7 +40,18 @@ bool QuestManager::Awake(pugi::xml_node & config)
 	for (auto const& quest : questsFile.child("quests_list").children("quest"))
 	{
 		std::unique_ptr<Quest> questToAdd = nullptr;
-		questToAdd = std::make_unique<Quest>();
+
+		switch ((QuestType)quest.attribute("type").as_int())
+		{
+		case QuestType::TALK:
+			questToAdd = std::make_unique<Quest_Talk>();
+			break;
+		case QuestType::COLLECT:
+			questToAdd = std::make_unique<Quest_Collect>();
+			break;
+		default:
+			break;
+		}
 
 		questToAdd->name = quest.attribute("name").as_string();
 		questToAdd->description = quest.attribute("description").as_string();
@@ -66,13 +83,13 @@ bool QuestManager::Update(float dt)
 {
 	if (app->input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN) { ActivateQuest("Find kiko's chest"); }
 	if (app->input->GetKey(SDL_SCANCODE_O) == KeyState::KEY_DOWN) { ActivateQuest("Steal kiko's chest"); }
-	if (app->input->GetKey(SDL_SCANCODE_L) == KeyState::KEY_DOWN) { DeactivateQuest("Find kiko's chest"); }
 
 	for (auto const& quest : activeQuests)
 	{
 		if (!quest->Update())
 		{
 			DeactivateQuest(quest->name);
+			break;
 		}
 	}
 
@@ -136,9 +153,20 @@ void QuestManager::ActivateQuest(std::string name)
 				return;
 			}
 
-			//activeQuests.push_back(std::move(quest));
+			if (auto derivedPtr = dynamic_cast<Quest_Talk*>(quest.get())) 
+			{
+				activeQuests.emplace_back(std::make_unique<Quest_Talk>(*derivedPtr));
+			}
+			else if (auto derivedPtr = dynamic_cast<Quest_Collect*>(quest.get()))
+			{
+				activeQuests.emplace_back(std::make_unique<Quest_Collect>(*derivedPtr));
+			}
 
-			activeQuests.emplace_back(std::make_unique<Quest>(*quest.get()));
+
+			//if (auto check = std::dynamic_pointer_cast<Quest_Talk>(quest))
+			//{
+			//	activeQuests.emplace_back(std::make_unique<Quest>(*quest.get())); //this is what is causing the trouble
+			//}
 		}
 	}
 }

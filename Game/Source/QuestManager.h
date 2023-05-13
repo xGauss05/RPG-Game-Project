@@ -7,6 +7,7 @@
 #include "Defs.h"		//StringHash
 
 #include <vector>
+#include <memory>
 
 class Quest;
 
