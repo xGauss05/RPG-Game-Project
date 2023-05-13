@@ -243,16 +243,20 @@ bool SceneManager::HasSaveData() const
 
 bool SceneManager::LoadState(pugi::xml_node const& data)
 {
-	pugi::xml_node node = data.child("party_member");
-
-	for (auto& character : party->party)
+	for (auto const& node : data.children("party_member"))
 	{
-		character.SetLevel(data.attribute("level").as_int());
-		character.SetCurrentHP(data.attribute("currentHP").as_int());
-		character.SetCurrentMana(data.attribute("currentMP").as_int());
-		character.SetCurrentXP(data.attribute("currentXP").as_int());
+		for (auto& character : party->party)
+		{
+			if (!StrEquals(character.name, node.attribute("name").as_string()))
+				continue;
 
-		node.next_sibling("party_member");
+			character.SetLevel(node.attribute("level").as_int());
+			character.SetCurrentHP(node.attribute("currentHP").as_int());
+			character.SetCurrentMana(node.attribute("currentMP").as_int());
+			character.SetCurrentXP(node.attribute("currentXP").as_int());
+
+			break;
+		}
 	}
 
 	currentScene->LoadScene(data);
