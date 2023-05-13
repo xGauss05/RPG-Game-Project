@@ -99,11 +99,6 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 
 		size.CeilToNearest(32);
 	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		CreateMenuItem(MenuItem(MenuItem::ItemText("Hi", "By", std::format("x{}", i)), 9));
-	}
 }
 
 GuiMenuList::~GuiMenuList()
@@ -199,14 +194,6 @@ void GuiMenuList::DebugDraw() const
 	SDL_Rect debugRect(position.x, size.y, size.x, size.y);
 
 	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
-}
-
-void GuiMenuList::HandleLeftButtonClick(int result)
-{
-}
-
-void GuiMenuList::HandleRightButtonClick()
-{
 }
 
 void GuiMenuList::HandleInput()

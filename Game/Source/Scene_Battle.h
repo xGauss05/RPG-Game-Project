@@ -78,7 +78,6 @@ private:
 
     std::unique_ptr<Window_List> actions;
     std::unique_ptr<Window_Panel> messages;
-    std::unique_ptr<GuiMenuList> menuList;
 
     std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
 };

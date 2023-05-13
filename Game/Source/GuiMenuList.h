@@ -59,8 +59,8 @@ public:
 	void DebugDraw() const;
 
 protected:
-	virtual void HandleLeftButtonClick(int result);
-	virtual void HandleRightButtonClick();
+	virtual void HandleLeftButtonClick(int result) = 0;
+	virtual void HandleRightButtonClick() = 0;
 
 private:
 	void HandleInput();
