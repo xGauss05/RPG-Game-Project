@@ -67,7 +67,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
 	attackSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Attack.wav");
 	blockSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Block.wav");
-
+	erYonaTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_ErYona-Turn.wav");
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
@@ -242,9 +242,11 @@ TransitionScene Scene_Battle::Update()
 			if(actionSelected == 0 || actionSelected == 1)
 			{
 				bool targetChosen = ChooseTarget();
+				
 				if(targetChosen)
 				{
 					actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
+					
 					actionSelected = -1;
 					targetSelected = -1;
 					currentPlayer++;
@@ -258,6 +260,7 @@ TransitionScene Scene_Battle::Update()
 			else if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 			{
 				std::string text = std::format("What will {} do?", party->party[currentPlayer].name);
+				
 				messages->ModifyLastWidgetText(text);
 				switch (actions->Update())
 				{
