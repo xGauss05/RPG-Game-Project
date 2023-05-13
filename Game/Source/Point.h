@@ -134,6 +134,14 @@ public:
 		return FloorToNearest(Point(v, v));
 	}
 
+	Point<bool> SameSign(Point v)
+	{
+		return Point<bool> (
+				SameSign(x, v.x),
+				SameSign(y, v.y)
+			);
+	}
+
 
 	bool IsZero() const
 	{

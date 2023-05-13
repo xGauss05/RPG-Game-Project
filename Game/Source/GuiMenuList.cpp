@@ -28,6 +28,17 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 		);
 
 		background = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments);
+
+		if (auto scrollArrowNode = backgroundNode.child("scrollarrow");
+			scrollArrowNode)
+		{
+			arrowRect = {
+				scrollArrowNode.attribute("rectX").as_int(),
+				scrollArrowNode.attribute("rectY").as_int(),
+				scrollArrowNode.attribute("rectW").as_int(),
+				scrollArrowNode.attribute("rectH").as_int()
+			};
+		}
 	}
 
 	if (auto itemNode = node.child("itemlist");
@@ -49,6 +60,8 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 			maxElements = size.y / menuItemHeight;
 		}
 
+		outterMargin.y += (arrowRect.h / 2);
+
 		int correctedYSize = outterMargin.y * 2 + (menuItemHeight * maxElements);
 
 		size.y = correctedYSize;
@@ -56,7 +69,7 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 		size.CeilToNearest(32);
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		items.emplace_back(MenuItem::ItemText("Hi", "By", std::format("x{}", i)), 9);
 	}
@@ -69,32 +82,40 @@ GuiMenuList::~GuiMenuList()
 
 void GuiMenuList::Update()
 {
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
-	{
-		iPoint mousePos = app->input->GetMousePosition();
-
-		auto IsMouseHovering = [mousePos](iPoint p, iPoint s)
-		{
-			return (mousePos.x >= p.x && mousePos.x <= p.x + s.x &&
-					mousePos.y >= p.y && mousePos.y <= p.y + s.y);
-		};
-
-		if (IsMouseHovering(position, size))
-		{
-			iPoint relativeCoords = mousePos - position + itemMargin;
-			int elementClicked = relativeCoords.y / menuItemHeight;
-			
-			if(elementClicked < maxElements)
-				HandleUserClick(elementClicked);
-		}
-	}
+	HandleInput();
 }
 
 bool GuiMenuList::Draw() const
 {
 	background->Draw(position, size);
 
-	for (int i = currentScroll; i < maxElements && i < items.size(); ++i)
+	if (!SDL_RectEmpty(&arrowRect))
+	{
+		iPoint arrowPos =
+		{
+			position.x + (size.x - arrowRect.w)/ 2,
+			position.y
+		};
+		if (currentScroll > 0)
+		{
+			app->render->DrawTexture(
+				DrawParameters(background->GetTextureID(), arrowPos)
+				.Section(&arrowRect)
+				.Flip(SDL_RendererFlip::SDL_FLIP_VERTICAL)
+			);
+		}
+		if (currentScroll + maxElements < items.size())
+		{
+			arrowPos.y += size.y - arrowRect.h;
+
+			app->render->DrawTexture(
+				DrawParameters(background->GetTextureID(), arrowPos)
+				.Section(&arrowRect)
+			);
+		}
+	}
+
+	for (int i = currentScroll; i < currentScroll + maxElements && i < items.size(); ++i)
 	{
 		iPoint drawPosition(
 			position.x + outterMargin.x,
@@ -102,6 +123,8 @@ bool GuiMenuList::Draw() const
 		);
 
 		items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, iconSize);
+
+		//items[i].DebugDraw(drawPosition, iPoint(size.x, menuItemHeight), outterMargin.y, menuItemHeight, i, currentScroll);
 	}
 
 	return true;
@@ -112,6 +135,159 @@ void GuiMenuList::DebugDraw() const
 	SDL_Rect debugRect(position.x, size.y, size.x, size.y);
 
 	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
+}
+
+void GuiMenuList::HandleLeftButtonClick(int result)
+{
+}
+
+void GuiMenuList::HandleRightButtonClick()
+{
+}
+
+void GuiMenuList::HandleInput()
+{
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN
+		|| app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	{
+		HandleLeftClick();
+	}
+	else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+	{
+		HandleRightButtonClick();
+	}
+
+	if (lastTimeSinceScrolled >= 5)
+		HandleWheelScroll();
+	else
+		lastTimeSinceScrolled++;
+}
+
+void GuiMenuList::HandleLeftClick()
+{
+	iPoint mousePos = app->input->GetMousePosition();
+
+	auto IsMouseHovering = [mousePos](iPoint currentPos, iPoint totalSize)
+	{
+		return (mousePos.x >= currentPos.x && mousePos.x <= currentPos.x + totalSize.x &&
+				mousePos.y >= currentPos.y && mousePos.y <= currentPos.y + totalSize.y);
+	};
+
+	if (IsMouseHovering(position, size))
+	{
+		iPoint relativeCoords = mousePos - position - outterMargin;
+
+		if (relativeCoords.y <= 0 && lastTimeSinceScrolled >= 5)
+		{
+			SelectAndScrollUpIfNeeded();
+			return;
+		}
+
+		int elementClicked = currentScroll + relativeCoords.y / menuItemHeight;
+
+		int elementInRange = MIN(
+			elementClicked,
+			currentScroll + maxElements - 1,		// Max index of item that are shown in screen
+			{ static_cast<int>(items.size()) }	// Max number of available items
+		);
+
+		if (elementClicked == elementInRange)
+		{
+			if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN
+				&& currentItemSelected == elementClicked)
+			{
+				HandleLeftButtonClick(elementClicked);
+			}
+			else
+			{
+				LOG("Selected %i", elementClicked);
+				currentItemSelected = elementClicked;
+			}
+		}
+		else if (lastTimeSinceScrolled >= 5)
+		{
+			LOG("Element Clicked: %i", elementClicked);
+			SelectAndScrollDownIfNeeded();
+		}
+	}
+}
+
+void GuiMenuList::HandleWheelScroll()
+{
+	int verticalWheelMotion = app->input->GetYWheelMotion();
+
+	verticalWheelMotion *= -1;
+
+	if (verticalWheelMotion < 0)
+	{
+		ScrollListUp();
+	}
+	else if (verticalWheelMotion > 0)
+	{
+		ScrollListDown();
+	}
+}
+
+void GuiMenuList::SelectAndScrollUpIfNeeded(int amount)
+{
+	if (currentItemSelected > amount)
+	{
+		currentItemSelected -= amount;
+	}
+	else
+	{
+		currentItemSelected = 0;
+	}
+
+	if (currentItemSelected < currentScroll)
+	{
+		ScrollListUp();
+	}
+}
+
+void GuiMenuList::SelectAndScrollDownIfNeeded(int amount)
+{
+	if (currentItemSelected < items.size() - amount)
+	{
+		currentItemSelected += amount;
+	}
+	else
+	{
+		currentItemSelected = items.size() - 1;
+	}
+
+	if (currentItemSelected >= currentScroll + maxElements)
+	{
+		ScrollListDown(amount);
+	}
+}
+
+void GuiMenuList::ScrollListUp(int amount)
+{
+	// If it can still scroll up
+	if(currentScroll > 0)
+	{
+		lastTimeSinceScrolled = 0;
+
+		if (currentScroll - amount < 0)
+			currentScroll = 0;
+		else
+			currentScroll -= amount;
+	}
+}
+
+void GuiMenuList::ScrollListDown(int amount)
+{
+	// If it can still scroll down
+	if (currentScroll + maxElements < items.size())
+	{
+		lastTimeSinceScrolled = 0;
+		
+		if (currentScroll + amount >= maxElements)
+			currentScroll = items.size() - maxElements;
+		else
+			currentScroll += amount;
+	}
 }
 
 GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int textureID)
@@ -125,7 +301,11 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 	if (sizeIcon > 0)
 	{
 		if(iconTexture != -1)
+		{
+			drawPosition.y += 5;
 			app->render->DrawTexture(DrawParameters(iconTexture, drawPosition));
+			drawPosition.y -= 5;
+		}
 
 		drawPosition.x += sizeIcon + innerMargin.x;
 	}
@@ -158,7 +338,6 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 
 	if (!text.rightText.empty())
 	{
-		LOG("%i, %i", app->input->GetMousePosition().x, app->input->GetMousePosition().y);
 		drawPosition.x = originalPos.x + rectSize.x - innerMargin.x;
 		drawPosition.x -= 32 - (drawPosition.x % 32);
 
@@ -172,5 +351,17 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 			).Align(AlignTo::ALIGN_TOP_RIGHT)
 		);
 	}
+}
+
+void GuiMenuList::MenuItem::DebugDraw(iPoint pos, iPoint s, int outterMarginY, int menuItemHeight, int index, int scroll) const
+{
+	iPoint debugDrawPos(
+			pos.x,
+			pos.y + outterMarginY + (menuItemHeight * (index - scroll))
+	);
+
+	SDL_Rect debugRect(pos.x, pos.y, s.x, s.y);
+
+	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
 }
 

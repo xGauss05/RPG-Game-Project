@@ -53,6 +53,23 @@ inline bool StrEquals(const std::string_view &lhs, const std::string_view &rhs)
 	return std::ranges::equal(lhs | to_lower, rhs | to_lower);
 }
 
+template <typename T>
+// WARNING: Assumes 0 is a POSITIVE number.
+bool SameSign(typename T x, typename T y)
+{
+	if (x == 0 || y == 0)
+	{
+		if (y < 0 || x < 0)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	return (x >= 0) ^ (y < 0);
+}
+
 // Joins a path and file
 inline const char *PATH(const char *folder, const char *file)
 {

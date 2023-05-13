@@ -84,10 +84,12 @@ std::unique_ptr<GuiMenuList> Window_Factory::CreateMenuList(std::string_view con
 	if (windowHash == info.end())
 	{
 		LOG("Window information for %s not found in XML.", windowName);
-		//returnPtr = std::make_unique<GuiMenuList>(info.find("MenuListFallback")->second);
+		returnPtr = std::make_unique<GuiMenuList>(info.find("MenuListFallback")->second);
 	}
 	else
-		//returnPtr = std::make_unique<GuiMenuList>(windowHash->second);
+	{
+		returnPtr = std::make_unique<GuiMenuList>(windowHash->second);
+	}
 
 	return returnPtr;
 }

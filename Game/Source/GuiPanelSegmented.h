@@ -16,6 +16,8 @@ public:
 	void Draw(iPoint originalPosition, iPoint size) const;
 	void Unload() const;
 
+	int GetTextureID() const;
+
 private:
 	void DrawHorizontalSegment(iPoint topLeftPosition, SDL_Rect currentSegment, iPoint size) const;
 

@@ -32,7 +32,12 @@ enum class KeyState : uint
 };
 
 struct GameController {
-	float j1_x, j1_y, j2_x, j2_y, LT, RT;
+	float j1_x = 0.0f;
+	float j1_y = 0.0f;
+	float j2_x = 0.0f;
+	float j2_y = 0.0f;
+	float LT = 0.0f;
+	float RT = 0.0f;
 	KeyState buttons[SDL_CONTROLLER_BUTTON_MAX];
 };
 
@@ -85,6 +90,8 @@ public:
 	void GetMousePosition(int &x, int &y) const;
 	void GetMouseMotion(int& x, int& y) const;
 
+	int GetYWheelMotion() const;
+
 	SDL_GameController* SDLcontrollers[MAX_CONTROLLERS];
 	GameController* controllers[MAX_CONTROLLERS];
 	int controllerCount = 0;
@@ -93,6 +100,10 @@ private:
 	std::array<bool, NUM_EVENT_WINDOW> windowEvents{};
 	std::array<KeyState, MAX_KEYS> keyboard{};
 	std::array<KeyState, NUM_MOUSE_BUTTONS> mouseButtons{};
+
+	Point<Sint32> wheelMotion = { 0, 0 };
+	bool wheelScrolledLastFrame = false;
+
 	iPoint mouseMotion;
 	iPoint mousePosition;
 };

@@ -54,6 +54,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	
 	actions = windowFactory.CreateWindowList("BattleActions");
 	messages = windowFactory.CreateWindowPanel("BattleMessage");
+	menuList = windowFactory.CreateMenuList("MenuListFallback");
 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
@@ -121,7 +122,6 @@ void Scene_Battle::Draw()
 
 	messages->Draw();
 	actions->Draw();
-
 
 	for (int i = 0; auto const& elem : party->party)
 	{
@@ -216,6 +216,9 @@ void Scene_Battle::Draw()
 		std::string text = "Choose a target.";
 		messages->ModifyLastWidgetText(text);
 	}
+
+	menuList->Update();
+	menuList->Draw();
 }
 
 TransitionScene Scene_Battle::Update()
