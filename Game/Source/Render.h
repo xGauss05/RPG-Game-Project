@@ -124,29 +124,26 @@ public:
 
 	void SetMapAndTileSize(iPoint mSize, iPoint tSize);
 
-	void ToggleVSync() 
-	{
-		vSyncActive = !vSyncActive;
-	}
-
+	void ToggleVSync();
 	SDL_Rect GetCamera() const;
 	void AdjustCamera(iPoint position);
 	void ResetCamera();
 
 	SDL_Renderer* GetRender() const;
 
-	void SetEasingActive(std::string name, bool active);
+	void StartEasing(std::string_view name);
 	int AddEasing(float totalTime);
-	bool DrawEasing(int textureID, std::string name);
-	bool EasingHasFinished(std::string name);
+	bool DrawEasing(int textureID, std::string_view name);
+	bool EasingHasFinished(std::string_view name);
 
-	std::vector<Easing> easings;
+	void InitEasings(pugi::xml_node const& node);
 
 private:
 
 	void SetViewPort(const SDL_Rect &rect) const;
 	void ResetViewPort() const;
 
+	std::vector<Easing> easings;
 
 	std::unique_ptr<SDL_Renderer, std::function<void(SDL_Renderer *)>> renderer;
 	SDL_Rect viewport;

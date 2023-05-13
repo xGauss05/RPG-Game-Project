@@ -33,7 +33,8 @@ GuiButton::GuiButton(uPoint startingPos, uPoint targetPos, uPoint size, std::str
 int GuiButton::Update()
 {
 	using enum ButtonState;
-	if (currentState == DISABLED)
+
+	if (currentState == DISABLED || !IsEnabled())
 		return 0;
 
 	if (IsMouseHovering() && app->input->controllerCount <= 0)
@@ -120,14 +121,6 @@ bool GuiButton::Draw() const
 
 	centerPoint += iPoint(GetSize().x / 2, GetSize().y / 2);
 
-	//THIS IS WHAT WAS NOT WORKING
-	//TextParameters params(0, DrawParameters(0, centerPoint));
-	//params.align = AlignTo::ALIGN_CENTER;
-
-	/*app->fonts->DrawText(
-		text,
-		params
-	);*/
 	app->fonts->DrawText(text, TextParameters(0, DrawParameters(0, centerPoint)).Align(AlignTo::ALIGN_CENTER));
 
 	return true;
@@ -143,6 +136,14 @@ void GuiButton::MouseLeaveHandler()
 {
 	if (currentState != ButtonState::DISABLED)
 		currentState = ButtonState::NORMAL;
+}
+
+void GuiButton::ToggleSelected()
+{
+	using enum ButtonState;
+	currentState = (currentState == SELECTED)
+		? NORMAL
+		: SELECTED;
 }
 
 void GuiButton::DebugDraw() const

@@ -24,6 +24,7 @@ public:
 	virtual int Update();
 
 	std::vector<std::unique_ptr<GuiElement>> widgets;
+	int lastWidgetInteractedIndex = -1;
 
 protected:
 
@@ -35,7 +36,7 @@ protected:
 	// If string is not found in pointer map, it fallbacks to this
 	int FallbackFunction() const;
 
-	int UpdateWidgets() const;
+	int UpdateWidgets();
 	size_t GetNumberWidgets() const;
 
 	void ControllerHoveringWidget(int index);

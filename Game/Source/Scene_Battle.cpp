@@ -3,6 +3,8 @@
 #include "Render.h"
 #include "Audio.h"
 
+#include "GuiButton.h"
+
 #include "PugiXml/src/pugixml.hpp"
 
 #include <random>
@@ -14,6 +16,11 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 		enemies.CreateFight(GetRandomEncounter());
 	else
 		enemies.CreateFight(fightName);
+
+	if (CheckBattleLoss())
+	{
+		party->party.front().SetCurrentHP(1);
+	}
 }
 
 std::string_view Scene_Battle::GetRandomEncounter()
@@ -49,15 +56,18 @@ bool Scene_Battle::isReady()
 void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
 {
 	windows.clear();
-	windows.emplace_back(windowFactory.CreateWindow("BattleActions"));
-	windows.emplace_back(windowFactory.CreateWindow("BattleMessage"));
 	
+	actions = windowFactory.CreateWindowList("BattleActions");
+	messages = windowFactory.CreateWindowPanel("BattleMessage");
 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 
 	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
+	attackSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Attack.wav");
+	blockSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Block.wav");
+	erYonaTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_ErYona-Turn.wav");
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
@@ -89,7 +99,7 @@ void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint pos
 	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
 }
 
-void Scene_Battle::ChooseTarget()
+bool Scene_Battle::ChooseTarget()
 {
 	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 	{
@@ -98,10 +108,12 @@ void Scene_Battle::ChooseTarget()
 			if (elem.IsMouseHovering() && elem.currentHP > 0)
 			{
 				targetSelected = elem.index;
-				break;
+				return true;
 			}
 		}
 	}
+
+	return false;
 }
 
 void Scene_Battle::Draw()
@@ -114,6 +126,10 @@ void Scene_Battle::Draw()
 	{
 		elem->Draw();
 	}
+
+	messages->Draw();
+	actions->Draw();
+
 	for (int i = 0; auto const& elem : party->party)
 	{
 		iPoint allyPosition(300 - camera.x, (120 * i) - camera.y + 55);
@@ -143,6 +159,9 @@ void Scene_Battle::Draw()
 		app->render->DrawTexture(drawAlly);
 		i++;
 	}
+
+	bool enemyHovered = false;
+
 	for (auto &elem : enemies.troop)
 	{
 		DrawHPBar(elem.textureID, elem.currentHP, elem.stats[0], elem.position);
@@ -169,7 +188,9 @@ void Scene_Battle::Draw()
 				}
 			}
 			std::string text = std::format("{} | HP: {} | Def: {} | Sp. Def: {}", elem.name, elem.currentHP, elem.stats[3], elem.stats[5]);
-			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText(text);
+			messages->ModifyLastWidgetText(text);
+
+			enemyHovered = true;
 		}
 		else
 		{
@@ -184,18 +205,23 @@ void Scene_Battle::Draw()
 		if (elem.currentHP <= 0)
 		{
 			drawEnemy.RotationAngle(270);
-
+			
 			SDL_Point pivot = {
 				elem.size.x/2,
 				elem.size.y
 			};
 
 			drawEnemy.Center(pivot);
-
 		}
 
 		app->render->DrawTexture(drawEnemy);
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.textureID), 255);
+	}
+
+	if (actionSelected != -1 && actionSelected != 3 && !enemyHovered)
+	{
+		std::string text = "Choose a target.";
+		messages->ModifyLastWidgetText(text);
 	}
 }
 
@@ -207,42 +233,82 @@ TransitionScene Scene_Battle::Update()
 		case PLAYER_INPUT:
 		{
 			auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
+
+			if (currentPlayer != 0)
+				actions->widgets.back()->Disable();
+			else
+				actions->widgets.back()->Enable();
+
 			if(actionSelected == 0 || actionSelected == 1)
 			{
-				ChooseTarget();
-				if(targetSelected != -1)
+				bool targetChosen = ChooseTarget();
+				
+				if(targetChosen)
 				{
 					actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
+					
 					actionSelected = -1;
 					targetSelected = -1;
-					currentPlayer++;
+					currentPlayer++; 
+					
+				}
+				else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+				{
+					actionSelected = -1;
+					targetSelected = -1;
+					
 				}
 			}
 			else if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 			{
-				switch (windows.front()->Update())
+				std::string text = std::format("What will {} do?", party->party[currentPlayer].name);
+
+				if (!playedTurnSfx) 
+				{
+					playedTurnSfx = true;
+					if (StrEquals(party->party[currentPlayer].name, "Antonio")) {
+						//app->audio->PlayFx(erYonaTurnSfx);
+					}
+					if (StrEquals(party->party[currentPlayer].name, "Sayuri")) {
+						//app->audio->PlayFx(erYonaTurnSfx);
+					}
+					if (StrEquals(party->party[currentPlayer].name, "Er Yona")) {
+						app->audio->PlayFx(erYonaTurnSfx);
+					}
+					if (StrEquals(party->party[currentPlayer].name, "Rocio")) {
+						//app->audio->PlayFx(erYonaTurnSfx);
+					}
+				}
+
+				messages->ModifyLastWidgetText(text);
+				switch (actions->Update())
 				{
 					case 100:
 					{
 						actionSelected = 0;
+						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+						playedTurnSfx = false;
 						break;
 					}
 					case 101:
 					{
 						actionSelected = 1;
+						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+						playedTurnSfx = false;
 						break;
 					}
 					case 102:
 					{
 						actionQueue.emplace(2, currentPlayer, 0, true, INT_MAX);
 						currentPlayer++;
+						playedTurnSfx = false;
 						break;
 					}
 					case 103:
 					{
-						actionQueue.emplace(3, currentPlayer, 0, true, INT_MAX);
-						if (currentPlayer == 0)
+						if(currentPlayer == 0)
 						{
+							actionQueue.emplace(3, currentPlayer, 0, true, INT_MAX);
 							currentPlayer = party->party.size();
 						}
 						break;
@@ -264,6 +330,8 @@ TransitionScene Scene_Battle::Update()
 		}
 		case ENEMY_INPUT:
 		{
+			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+
 			std::mt19937 gen(rd());
 			random.param(std::uniform_int_distribution<>::param_type(0, party->party.size()-1));
 
@@ -318,8 +386,8 @@ TransitionScene Scene_Battle::Update()
 						if (currentAction.action == 2 || enemies.troop[currentAction.target].currentHP <= 0)
 						{
 							party->party[currentAction.source].isDefending = true;
-
 							text = std::format("{} is defending.", party->party[currentAction.source].name);
+							app->audio->PlayFx(blockSfx);
 						}
 						else if (currentAction.action == 0)
 						{
@@ -330,6 +398,7 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
+
 							int randomVariance = random40(gen);
 							int damage = attack - defense;
 							if (randomVariance > 20)
@@ -341,14 +410,28 @@ TransitionScene Scene_Battle::Update()
 							{
 								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
 							}
+
 							std::string damageMessage = "{} attacks {}! Deals {} damage.";
+
 							if (random100(gen) <= 10)
 							{
 								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+								app->audio->PlayFx(attackSfx); // replace for critical hit
 							}
+							else 
+							{
+								app->audio->PlayFx(attackSfx);
+							}
+
 							if (damage <= 0) damage = 1;
+
 							enemies.troop[currentAction.target].currentHP -= damage;
+
+							if (enemies.troop[currentAction.target].currentHP <= 0) 
+							{
+								app->audio->PlayFx(enemies.troop[currentAction.target].deadSfx);
+							}
 
 							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
 						}
@@ -377,6 +460,11 @@ TransitionScene Scene_Battle::Update()
 							{
 								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+								app->audio->PlayFx(attackSfx); // replace for critical hit
+							}
+							else 
+							{
+								app->audio->PlayFx(attackSfx); 
 							}
 							if (damage <= 0) damage = 1;
 							enemies.troop[currentAction.target].currentHP -= damage;
@@ -391,7 +479,7 @@ TransitionScene Scene_Battle::Update()
 					if (currentAction.action == 2 || party->party[currentAction.target].currentHP <= 0)
 					{
 						enemies.troop[currentAction.source].isDefending = true;
-
+						app->audio->PlayFx(blockSfx);
 						text = std::format("{} is defending.", enemies.troop[currentAction.source].name);
 					}
 					else if (currentAction.action == 0)
@@ -419,6 +507,11 @@ TransitionScene Scene_Battle::Update()
 						{
 							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							app->audio->PlayFx(attackSfx); // replace for critical hit
+						}
+						else 
+						{
+							app->audio->PlayFx(attackSfx);
 						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
@@ -448,8 +541,14 @@ TransitionScene Scene_Battle::Update()
 						std::string damageMessage = "{} attacks {}! Deals {} damage.";
 						if (random100(gen) <= 10)
 						{
+							
 							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							app->audio->PlayFx(attackSfx); // replace for critical hit
+						}
+						else 
+						{
+							app->audio->PlayFx(attackSfx); 
 						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
@@ -460,7 +559,7 @@ TransitionScene Scene_Battle::Update()
 
 				if(!text.empty())
 				{
-					dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText(text);
+					messages->ModifyLastWidgetText(text);
 					showNextText = false;
 				}
 				actionQueue.pop();
@@ -491,7 +590,7 @@ TransitionScene Scene_Battle::Update()
 
 			if (showNextText && actionQueue.empty())
 			{
-				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				messages->ModifyLastWidgetText("");
 				currentPlayer = 0;
 				state = PLAYER_INPUT;
 			}
@@ -499,20 +598,20 @@ TransitionScene Scene_Battle::Update()
 		}
 		case BATTLE_WON:
 		{
-			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You won the battle!");
+			messages->ModifyLastWidgetText("You won the battle!");
 			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
-				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				messages->ModifyLastWidgetText("");
 				return TransitionScene::WIN_BATTLE;
 			}
 			break;
 		}
 		case BATTLE_LOSS:
 		{
-			dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("You lost the battle...");
+			messages->ModifyLastWidgetText("You lost the battle...");
 			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
-				dynamic_cast<Window_Panel*>(windows[1].get())->ModifyLastWidgetText("");
+				messages->ModifyLastWidgetText("");
 				return TransitionScene::LOSE_BATTLE;
 			}
 			break;

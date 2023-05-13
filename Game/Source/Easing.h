@@ -6,6 +6,7 @@
 
 #define PI acos(-1)
 
+#include "PugiXml/src/pugixml.hpp"
 
 enum class EasingType
 {
@@ -46,7 +47,8 @@ class Easing
 {
 public:
     Easing();
-    Easing(double totalTime);
+    explicit Easing(pugi::xml_node const& node);
+    explicit Easing(double pTotalTime);
     ~Easing();
 
     // Sin
@@ -114,6 +116,12 @@ public:
     bool GetFinished() const { return bFinished; }
     void SetStarted(bool bStarted) { this->bStarted = bStarted; }
     void SetFinished(bool bFinished) { this->bFinished = bFinished; }
+
+    void Start()
+    {
+        bStarted = true;
+        bFinished = false;
+    }
 
     std::string name = "";
     iPoint startingPos = { 0,0 };

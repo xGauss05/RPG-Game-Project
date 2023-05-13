@@ -94,11 +94,6 @@ bool Render::PreUpdate()
 bool Render::Update(float dt)
 {
 	using enum KeyState;
-	if(app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-	{
-		vSyncOnRestart = !vSyncOnRestart;
-		app->SaveAttributeToConfig(name, "vsync", "value", vSyncOnRestart ? "true" : "false");
-	}
 
 	int cameraSpeed = 1;
 	if(app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
@@ -135,7 +130,7 @@ bool Render::PostUpdate()
 	SDL_RenderPresent(renderer.get());
 	
 	// I -> increases fps target || O ->decreases fps target
-	if(app->input->GetKey(SDL_SCANCODE_I) == KeyState::KEY_DOWN && fpsTarget < 1000)
+	/*if(app->input->GetKey(SDL_SCANCODE_I) == KeyState::KEY_DOWN && fpsTarget < 1000)
 	{
 		fpsTarget += 10;
 		ticksForNextFrame = 1000/fpsTarget;
@@ -144,7 +139,7 @@ bool Render::PostUpdate()
 	{
 		fpsTarget -= 10;
 		ticksForNextFrame = 1000/fpsTarget;
-	}
+	}*/
 	if(app->input->GetKey(SDL_SCANCODE_F11) == KeyState::KEY_DOWN)
 	{
 		if(fpsTarget != 30)
@@ -209,6 +204,12 @@ void Render::ResetViewPort() const
 
 bool Render::DrawTexture(DrawParameters const &params) const
 {
+	if (params.textureID < 0 || params.textureID > app->tex->textures.size())
+	{
+		LOG("Texture ID is invalid. Cannot blit to screen.");
+		return false;
+	}
+
 	auto texture = app->GetTexture(params.textureID);
 
 	fPoint scale = (params.scale.IsZero())
@@ -361,7 +362,7 @@ bool Render::LoadState(pugi::xml_node const &data)
 pugi::xml_node Render::SaveState(pugi::xml_node const &data) const
 {
 	pugi::xml_node cam = data;
-	cam = cam.append_child("renderer");
+	cam = cam.append_child("render");
 	
 	cam.append_child("graphics").append_attribute("vsync").set_value(vSyncOnRestart ? "true" : "false");
 	cam.child("graphics").append_attribute("targetfps").set_value(std::to_string(fpsTarget).c_str());
@@ -378,6 +379,12 @@ void Render::SetMapAndTileSize(iPoint mSize, iPoint tSize)
 {
 	mapSize = mSize;
 	tileSize = tSize;
+}
+
+void Render::ToggleVSync()
+{
+	vSyncOnRestart = !vSyncOnRestart;
+	app->SaveAttributeToConfig(name, "vsync", "value", vSyncOnRestart ? "true" : "false");
 }
 
 SDL_Rect Render::GetCamera() const
@@ -402,15 +409,25 @@ SDL_Renderer* Render::GetRender() const
 	return renderer.get();
 }
 
-void Render::SetEasingActive(std::string name, bool active)
+void Render::StartEasing(std::string_view name)
 {
 	for (auto& elem : easings)
 	{
 		if (StrEquals(elem.name, name))
 		{
-			elem.SetStarted(active);
-			elem.SetFinished(!active);
+			elem.Start();
+			return;
 		}
+	}
+}
+
+void Render::InitEasings(pugi::xml_node const& node)
+{
+	easings.clear();
+
+	for (auto const& easing : node.children("image"))
+	{
+		easings.emplace_back(easing);
 	}
 }
 
@@ -418,23 +435,31 @@ int Render::AddEasing(float totalTime)
 {
 	Easing easing;
 	easing.SetTotalTime(totalTime);
-	easing.SetFinished(false);
 
 	easings.push_back(easing);
 
 	return 0;
 }
 
-bool Render::DrawEasing(int textureID, std::string name)
+bool Render::DrawEasing(int textureID, std::string_view name)
 {
 	for (auto& elem : easings)
 	{
+		// If it's not the easing we are looking for we go to next element
 		if (!StrEquals(elem.name, name))
-		{
 			continue;
-		}
 
-		if (!elem.GetFinished())
+		// If it hasn't started we don't draw anything and can exit function
+		if (!elem.GetStarted())
+			break;
+
+		// If the element has finished the easing, we draw it in its final place
+		if (elem.GetFinished()) [[likely]]
+		{
+			DrawTexture(DrawParameters(textureID, elem.targetPos));
+		}
+		// If it hasn't, we calculate the position and draw it
+		else [[unlikely]]
 		{
 			double t = elem.TrackTime(app->dt);
 			double easedX = elem.EasingAnimation(elem.startingPos.x, elem.targetPos.x, t, elem.type);
@@ -442,23 +467,18 @@ bool Render::DrawEasing(int textureID, std::string name)
 			iPoint newPosition(easedX, easedY);
 			DrawTexture(DrawParameters(textureID, newPosition));
 		}
-		else if (elem.GetFinished() && elem.GetStarted())
-		{
-			DrawTexture(DrawParameters(textureID, elem.targetPos));
-		}
 	}
-
 
 	return true;
 }
 
-bool Render::EasingHasFinished(std::string name)
+bool Render::EasingHasFinished(std::string_view name)
 {
-	for (auto& elem : easings)
+	for (auto const& elem : easings)
 	{
 		if (StrEquals(elem.name, name))
 		{
-			return elem.GetStarted() & elem.GetFinished();
+			return elem.GetStarted() && elem.GetFinished();
 		}
 	}
 	return false;

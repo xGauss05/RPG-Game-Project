@@ -72,6 +72,12 @@ public:
 		bIsHovered = !bIsHovered;
 	}
 
+	void SetPosition(uint x, uint y)
+	{
+		currentPosition.x = x;
+		currentPosition.y = y;
+	}
+
 	void SetPosition(uPoint pos)
 	{
 		currentPosition = pos;
@@ -88,6 +94,31 @@ public:
 	uPoint GetTargetPosition() const
 	{
 		return targetPosition;
+	}
+
+	bool HasEasing() const
+	{
+		return hasEasing;
+	}
+
+	void SetHasEasing(bool doesItHaveIt)
+	{
+		hasEasing = doesItHaveIt;
+	}
+
+	void ToggleEnable()
+	{
+		enabled = !enabled;
+	}
+
+	void Disable()
+	{
+		enabled = false;
+	}
+
+	void Enable()
+	{
+		enabled = true;
 	}
 
 	Easing GuiEasing;
@@ -134,14 +165,22 @@ protected:
 		return bIsHovered;
 	}
 
+	bool IsEnabled() const
+	{
+		return enabled;
+	}
+
 private:
 
 	bool bIsHovered = false;		//If mouse is hovering
+
+	bool enabled = true;
 
 	std::function<int()> func;
 	uPoint currentPosition = { 0, 0 };
 	uPoint startingPosition = { 0, 0 };
 	uPoint targetPosition = { 0,0 };
 	uPoint size = { 0, 0 };
+	bool hasEasing = false;
 
 };

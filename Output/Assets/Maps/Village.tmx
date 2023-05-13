@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="100">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="102">
  <tileset firstgid="1" source="Village.tsx"/>
  <tileset firstgid="257" source="NPCs.tsx"/>
  <layer id="1" name="Ground" width="144" height="64">
@@ -162,6 +162,7 @@
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Directions.xml"/>
+    <property name="isOneTile" type="bool" value="false"/>
    </properties>
   </object>
   <object id="41" name="Market Sign" type="Event NPC" gid="42" x="400" y="784" width="16" height="16">
@@ -175,6 +176,7 @@
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Market.xml"/>
+    <property name="isOneTile" type="bool" value="true"/>
    </properties>
   </object>
   <object id="42" name="Closed 1" type="Event NPC" gid="42" x="1184" y="448" width="16" height="16">
@@ -188,6 +190,7 @@
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Closed.xml"/>
+    <property name="isOneTile" type="bool" value="true"/>
    </properties>
   </object>
   <object id="43" name="Closed 2" type="Event NPC" gid="42" x="1424" y="448" width="16" height="16">
@@ -201,6 +204,7 @@
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Closed.xml"/>
+    <property name="isOneTile" type="bool" value="true"/>
    </properties>
   </object>
   <object id="44" name="Danger 1" type="Event NPC" gid="42" x="1872" y="640" width="16" height="16">
@@ -214,6 +218,7 @@
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Danger.xml"/>
+    <property name="isOneTile" type="bool" value="true"/>
    </properties>
   </object>
   <object id="62" name="To Lab Sign" type="Event NPC" gid="42" x="1344" y="192" width="16" height="16">
@@ -227,6 +232,7 @@
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_ToLab.xml"/>
+    <property name="isOneTile" type="bool" value="true"/>
    </properties>
   </object>
   <object id="65" name="To Market Left" type="Event Teleport" x="240" y="688" width="16" height="16">
@@ -626,6 +632,21 @@
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+   </properties>
+  </object>
+  <object id="100" name="Chest1" type="Event Chest" gid="42" x="112" y="768" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="1"/>
+     </properties>
+    </property>
    </properties>
   </object>
  </objectgroup>

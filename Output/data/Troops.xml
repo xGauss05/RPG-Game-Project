@@ -17,3 +17,24 @@
 <orangutan>
 	<Slime_G name="Slime" level="2"/>
 </orangutan>
+<monkey>
+  <Slime_R name="Slime" level="2"/>
+  <Slime_G name="Slime" level="2"/>
+  <Slime_B name="Slime" level="2"/>
+</monkey>
+<doughnut>
+  <Bat_R name="Bat" level="1"/>
+  <Bat_G name="Bat" level="1"/>
+  <Bat_B name="Bat" level="1"/>
+</doughnut>
+<steak>
+  <Skeleton_R name="Skeleton" level="3"/>
+  <Skeleton_G name="Skeleton" level="3"/>
+  <Skeleton_B name="Skeleton" level="3"/>
+</steak>
+<crap>
+  <Slime_R name="Slime" level="2"/>
+  <Bat_G name="Bat" level="1"/>
+  <Skeleton_R name="Skeleton" level="3"/>
+</crap>
+

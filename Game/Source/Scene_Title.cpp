@@ -54,18 +54,16 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 
 	start = std::chrono::high_resolution_clock::now();
 
-	app->render->AddEasing(2.0f);
-	app->render->AddEasing(3.0f);
-
 	for (auto const& elem : windows)
 	{
 		for (auto const& widg : elem->widgets)
 		{
 			widg->GuiEasing.SetTotalTime(2.0);
+			widg->SetHasEasing(true);
 		}
 	}
 
-	InitEasings(sceneHash->second.parent().child("easings"));
+	app->render->InitEasings(sceneHash->second.parent().child("easings"));
 }
 
 void Scene_Title::Start()
@@ -178,33 +176,40 @@ void Scene_Title::DoButtonsEasing()
 
 	for (auto const& elem : windows)
 	{
-		if (elapsed.count() > 1000 && elapsed.count() < 1100)
+		for (int timeForStart = 1000; auto &widget : elem->widgets)
 		{
-			elem->widgets.at(0)->GuiEasing.SetFinished(false);
-		}
-		if (elapsed.count() > 1100 && elapsed.count() < 1200)
-		{
-			elem->widgets.at(1)->GuiEasing.SetFinished(false);
-		}
-		if (elapsed.count() > 1200 && elapsed.count() < 1300)
-		{
-			elem->widgets.at(2)->GuiEasing.SetFinished(false);
-		}
-		if (elapsed.count() > 1300 && elapsed.count() < 1400)
-		{
-			elem->widgets.at(3)->GuiEasing.SetFinished(false);
-		}
-
-		for (auto const& widg : elem->widgets)
-		{
-			if (!widg->GuiEasing.GetFinished())
+			// If it doesn't have easing, we do nothing
+			if (!widget->HasEasing())
 			{
-				double t = widg->GuiEasing.TrackTime(app->dt);
-				double easedX = widg->GuiEasing.EasingAnimation(widg->GetStartingPosition().x, widg->GetTargetPosition().x, t, EasingType::EASE_OUT_ELASTIC);
-				uPoint widgetPosition = widg->GetCurrentPosition();
-				widgetPosition.x = easedX;
-				widg->SetPosition(widgetPosition);
+				continue;
 			}
+
+			// If enough time has passed
+			if (elapsed.count() > timeForStart)
+			{
+				// If it hasn't started, we start it
+				if (!widget->GuiEasing.GetStarted())
+				{
+					widget->GuiEasing.Start();
+				}
+				// If it's already started and it's not finished, we modify position
+				else if(!widget->GuiEasing.GetFinished())
+				{
+					double easedX = widget->GuiEasing.EasingAnimation(
+						widget->GetStartingPosition().x,
+						widget->GetTargetPosition().x,
+						widget->GuiEasing.TrackTime(app->dt),
+						EasingType::EASE_OUT_ELASTIC
+					);
+
+					widget->SetPosition(
+						static_cast<uint>(easedX),
+						widget->GetCurrentPosition().y
+					);
+				}
+			}
+			
+			timeForStart += 100;
 		}
 	}
 }
@@ -216,11 +221,11 @@ void Scene_Title::DoImagesEasing()
 
 	if (elapsed.count() > 500 && elapsed.count() < 600)
 	{
-		app->render->SetEasingActive("Title", true);
+		app->render->StartEasing("Title");
 	}
 	if (elapsed.count() > 750 && elapsed.count() < 850)
 	{
-		app->render->SetEasingActive("Logo", true);
+		app->render->StartEasing("Logo");
 	}
 
 	app->render->DrawEasing(titleTexture, "Title");

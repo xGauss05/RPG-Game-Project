@@ -169,6 +169,7 @@ void TextManager::DrawText(std::string_view text, TextParameters const &textPara
 		if (charIter == fontInUse.charMap.end())
 		{
 			LOG("Character %s could not be found in %s", elem, fontInUse.name.c_str());
+			continue;
 		}
 
 		// Get the information of the character
@@ -196,6 +197,24 @@ void TextManager::DrawText(std::string_view text, TextParameters const &textPara
 	}
 }
 
+void TextManager::DrawText(std::string_view text, DrawParameters const& originalParams) const
+{
+	DrawText(text, TextParameters(0, originalParams));
+}
+
+void TextManager::DrawText(std::string_view text, iPoint pos) const
+{
+	DrawText(text, DrawParameters(0, pos));
+}
+
+int TextManager::GetLineHeight(int fontID) const
+{
+	if (in_range(fontID, 0, fonts.size() - 1))
+		return fonts[fontID].lineHeight;
+
+	return 0;
+}
+
 inline iPoint TextManager::GetAnchorPosition(iPoint position, AnchorTo anchor) const
 {
 	using enum AnchorTo;
@@ -216,27 +235,51 @@ iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, Ali
 
 	iPoint totalSize{ 0 };
 
-	for (auto const& elem : text)
-	{
-		if (auto it = font.charMap.find(elem);
-			it != font.charMap.end())
-		{
-			totalSize.x += it->second.rect.w + it->second.xAdvance + font.spacing.x;
-		}
-	}
+
 
 	if (align == AlignTo::ALIGN_CENTER)
 	{
+		// Get length of text in pixels, including whitespaces and spacing between letters
+		for (auto const& elem : text)
+		{
+			if (auto it = font.charMap.find(elem);
+				it != font.charMap.end())
+			{
+				totalSize.x += it->second.rect.w + it->second.xAdvance + font.spacing.x;
+			}
+		}
+
 		return iPoint(position.x - (totalSize.x / 4), position.y - (font.lineHeight / 2));
 	}
+
+	if (align == AlignTo::ALIGN_TOP_RIGHT)
+	{
+		// Get length of text in pixels, including whitespaces and spacing between letters
+		for (auto const& elem : text)
+		{
+			if (auto it = font.charMap.find(elem);
+				it != font.charMap.end())
+			{
+				totalSize.x += GetDistanceToNextDrawingPositon(
+									it->second.xAdvance,
+									font.spacing.x,
+									it->second.offset.x
+				);
+			}
+		}
+
+		return iPoint(position.x - totalSize.x, position.y);
+	}
+
 	return position;
 }
 
 inline int TextManager::GetDistanceToNextDrawingPositon(int advance, int spacing, int offset, float scale) const
 {
-	auto distance = static_cast<float>(advance + spacing - offset);
+	int distance = advance + spacing - offset;
 
-	if (scale != 0.0f) distance *= scale;
+	if (scale != 0.0f)
+		distance = static_cast<int>(std::floor(static_cast<float>(distance) * scale));
 
 	return static_cast<int>(std::floor(distance)) ;
 }

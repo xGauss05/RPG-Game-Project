@@ -2,6 +2,7 @@
 #define __SCENE_MAP_H__
 
 #include "Scene_Base.h"
+#include "GameParty.h"
 #include "Player.h"
 #include "Map.h"
 
@@ -11,8 +12,9 @@ class Scene_Map : public Scene_Base
 {
 public:
 	Scene_Map() = default;
-	explicit Scene_Map(std::string const& newMap);
-	explicit Scene_Map(std::string const& newMap, iPoint playerCoords);
+	explicit Scene_Map(GameParty* party);
+	explicit Scene_Map(std::string const& newMap, GameParty* party);
+	explicit Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* party);
 
 	bool isReady() override;
 	void Load(
@@ -28,12 +30,21 @@ public:
 	bool SaveScene(pugi::xml_node const&) override;
 	bool LoadScene(pugi::xml_node const&) override;
 	void DebugDraw() override;
-
+	void UpdateStatsMenu();
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;
 	TransitionScene TryRandomBattle();
 
+	void SetPlayerParty(GameParty* party);
+
 private:
+	void DrawStatsMenu();
+	void DrawPlayerStats(PartyCharacter const &character, int i) const;
+	void DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const;
+
+	void DebugItems();
+
+	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
 	enum class MapState
 	{
@@ -44,6 +55,7 @@ private:
 	};
 
 	bool godMode = false;
+	bool statusOpen = false;
 	int battleSFX = 0;
 	std::random_device rd;
 	std::uniform_int_distribution<> random100;
@@ -54,6 +66,7 @@ private:
 
 	Map map;
 	Player player;
+	GameParty* playerParty = nullptr;
 
 	MapState state = MapState::NORMAL;
 
@@ -66,6 +79,7 @@ private:
 	LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
+	std::vector<std::unique_ptr<Window_Base>> statsWindow;
 };
 
 

@@ -95,6 +95,16 @@ public:
 		std::string_view text,
 		TextParameters const &originalParams
 	) const;
+	void DrawText(
+		std::string_view text,
+		DrawParameters const &originalParams
+	) const;
+	void DrawText(
+		std::string_view text,
+		iPoint position
+	) const;
+
+	int GetLineHeight(int fontID) const;
 
 private:
 	iPoint GetAnchorPosition(iPoint position, AnchorTo anchor) const;

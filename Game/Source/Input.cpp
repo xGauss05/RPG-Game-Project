@@ -97,6 +97,16 @@ bool Input::PreUpdate()
 	using enum EventWindow;
 	using enum KeyState;
 
+	if (!wheelScrolledLastFrame)
+	{
+		wheelMotion.x = 0;
+		wheelMotion.y = 0;
+	}
+	else
+	{
+		wheelScrolledLastFrame = false;
+	}
+
 	for(int i = 0; i < MAX_KEYS; ++i)
 	{
 		if(keys[i] == 1)
@@ -156,42 +166,46 @@ bool Input::PreUpdate()
 		switch(event.type)
 		{
 			case SDL_QUIT:
+			{
 				windowEvents[static_cast<uint>(EventWindow::WE_QUIT)] = true;
-			break;
-
+				break;
+			}
 			case SDL_WINDOWEVENT:
-				switch(event.window.event)
+			{
+				switch (event.window.event)
 				{
 					//case SDL_WINDOWEVENT_LEAVE:
-					case SDL_WINDOWEVENT_HIDDEN:
-					case SDL_WINDOWEVENT_MINIMIZED:
-					case SDL_WINDOWEVENT_FOCUS_LOST:
+				case SDL_WINDOWEVENT_HIDDEN:
+				case SDL_WINDOWEVENT_MINIMIZED:
+				case SDL_WINDOWEVENT_FOCUS_LOST:
 					windowEvents[static_cast<uint>(EventWindow::WE_HIDE)] = true;
 					break;
 
 					//case SDL_WINDOWEVENT_ENTER:
-					case SDL_WINDOWEVENT_SHOWN:
-					case SDL_WINDOWEVENT_FOCUS_GAINED:
-					case SDL_WINDOWEVENT_MAXIMIZED:
-					case SDL_WINDOWEVENT_RESTORED:
+				case SDL_WINDOWEVENT_SHOWN:
+				case SDL_WINDOWEVENT_FOCUS_GAINED:
+				case SDL_WINDOWEVENT_MAXIMIZED:
+				case SDL_WINDOWEVENT_RESTORED:
 					windowEvents[static_cast<uint>(EventWindow::WE_SHOW)] = true;
 					break;
 
-					default:
-						break;
+				default:
+					break;
 				}
-			break;
-
+				break;
+			}
 			case SDL_MOUSEBUTTONDOWN:
+			{
 				mouseButtons[event.button.button - 1] = KeyState::KEY_DOWN;
 				//LOG("Mouse button %d down", event.button.button-1);
-			break;
-			
+				break;
+			}
 			case SDL_MOUSEBUTTONUP:
+			{
 				mouseButtons[event.button.button - 1] = KeyState::KEY_UP;
 				//LOG("Mouse button %d up", event.button.button-1);
-			break;
-
+				break;
+			}
 			case SDL_MOUSEMOTION:
 			{
 				int scale = app->win->GetScale();
@@ -200,7 +214,28 @@ bool Input::PreUpdate()
 				mousePosition.x = event.motion.x / scale;
 				mousePosition.y = event.motion.y / scale;
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
-			break;
+				break;
+			}
+			case SDL_MOUSEWHEEL:
+			{
+				if (!SameSign(wheelMotion.x, event.wheel.x))
+				{
+					wheelMotion.x = event.wheel.x;
+				}
+				else
+				{
+					wheelMotion.x += event.wheel.x;
+				}
+				if (!SameSign(wheelMotion.y, event.wheel.y))
+				{
+					wheelMotion.y = event.wheel.y;
+				}
+				else 
+				{
+					wheelMotion.y += event.wheel.y;
+				}
+
+				wheelScrolledLastFrame = true;
 			}
 			default:
 				break;
@@ -250,4 +285,9 @@ void Input::GetMouseMotion(int& x, int& y) const
 {
 	x = mouseMotion.x;
 	y = mouseMotion.y;
+}
+
+int Input::GetYWheelMotion() const
+{
+	return wheelMotion.y;
 }

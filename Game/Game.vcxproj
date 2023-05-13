@@ -97,11 +97,17 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GuiMenuList.cpp" />
+    <ClCompile Include="Source\Map_Menu_MainCategories.cpp" />
+    <ClCompile Include="Source\Map_Window_Menu.cpp" />
+    <ClCompile Include="Source\Transition_Blink.cpp" />
+    <ClCompile Include="Source\DB_Items.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\EnemyTroops.cpp" />
     <ClCompile Include="Source\EventManager.cpp" />
     <ClCompile Include="Source\Event_Chest.cpp" />
     <ClCompile Include="Source\Event_Teleport.cpp" />
+    <ClCompile Include="Source\Transition_FadeToColour.cpp" />
     <ClCompile Include="Source\GameParty.cpp" />
     <ClCompile Include="Source\GuiBox.cpp" />
     <ClCompile Include="Source\GuiCheckbox.cpp" />
@@ -118,6 +124,8 @@
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\Scene_Map.cpp" />
     <ClCompile Include="Source\Scene_Title.cpp" />
+    <ClCompile Include="Source\Transition.cpp" />
+    <ClCompile Include="Source\TransitionManager.cpp" />
     <ClCompile Include="Source\Window_Base.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
@@ -133,6 +141,13 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Window_Factory.cpp" />
     <ClCompile Include="Source\Window_List.cpp" />
+    <ClInclude Include="Source\AdjacencyGraph.h" />
+    <ClInclude Include="Source\GuiMenuList.h" />
+    <ClInclude Include="Source\Map_Menu_MainCategories.h" />
+    <ClInclude Include="Source\Map_Window_Menu.h" />
+    <ClInclude Include="Source\Transition_Blink.h" />
+    <ClInclude Include="Source\Colour.h" />
+    <ClInclude Include="Source\DB_Items.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\EnemyTroops.h" />
     <ClCompile Include="Source\Window_Panel.cpp" />
@@ -140,6 +155,7 @@
     <ClInclude Include="Source\EventManager.h" />
     <ClInclude Include="Source\Event_Chest.h" />
     <ClInclude Include="Source\Event_Teleport.h" />
+    <ClInclude Include="Source\Transition_FadeToColour.h" />
     <ClInclude Include="Source\GameParty.h" />
     <ClInclude Include="Source\GuiBox.h" />
     <ClInclude Include="Source\GuiCheckbox.h" />
@@ -162,6 +178,8 @@
     <ClInclude Include="Source\Scene_Title.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\Transform_Movable.h" />
+    <ClInclude Include="Source\Transition.h" />
+    <ClInclude Include="Source\TransitionManager.h" />
     <ClInclude Include="Source\Window_Base.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\MapLayer.h" />

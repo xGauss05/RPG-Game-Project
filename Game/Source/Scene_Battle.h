@@ -2,6 +2,7 @@
 #include "Scene_Base.h"
 #include "GameParty.h"
 #include "EnemyTroops.h"
+#include "GuiMenuList.h"
 
 #include <random>
 
@@ -39,7 +40,7 @@ public:
 
 private:
     void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
-    void ChooseTarget();
+    bool ChooseTarget();
     std::string_view GetRandomEncounter();
 
     int backgroundTexture = 0;
@@ -75,6 +76,20 @@ private:
         }
     };
 
-    std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
-};
+    std::unique_ptr<Window_List> actions;
+    std::unique_ptr<Window_Panel> messages;
 
+    std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
+
+    // Sound indexes
+    int attackSfx;
+    int blockSfx;
+    int enemydeadSfx;
+    int erYonaTurnSfx;
+    int erYonadeadSfx;
+    int sayorideadSfx;
+    int rociodeadSfx;
+    int antoniodeadSfx;
+
+    bool playedTurnSfx = false;
+};

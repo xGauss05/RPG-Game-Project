@@ -29,9 +29,7 @@ void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& in
 	playedLogo = false;
 	start = std::chrono::high_resolution_clock::now();
 
-	app->render->AddEasing(1.0f);
-
-	InitEasings(info.find("Boot")->second.parent().child("easings"));
+	app->render->InitEasings(info.find("Boot")->second.parent().child("easings"));
 }
 
 void Scene_Boot::Start()
@@ -55,11 +53,11 @@ TransitionScene Scene_Boot::Update()
 
 	if (elapsed >= std::chrono::milliseconds(500) && elapsed <= std::chrono::milliseconds(600))
 	{
-		app->render->SetEasingActive("StudioLogo", true);
+		app->render->StartEasing("StudioLogo");
 	}
 	if (elapsed >= std::chrono::milliseconds(1300) && elapsed <= std::chrono::milliseconds(1400))
 	{
-		app->render->SetEasingActive("PresentsText", true);
+		app->render->StartEasing("PresentsText");
 	}
 	if (!playedLogo && app->render->EasingHasFinished("PresentsText"))
 	{

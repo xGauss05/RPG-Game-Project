@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Window.h"
+#include "Colour.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -27,6 +28,27 @@ enum class MainState
 };
 
 std::unique_ptr<App> app = nullptr;
+
+const Colour g_Colour_Black(0, 0, 0);
+const Colour g_Colour_White(255, 255, 255);
+const Colour g_Colour_Red(255, 0, 0);
+const Colour g_Colour_Green(0, 255, 0);
+const Colour g_Colour_Blue(0, 0, 255);
+const Colour g_Colour_LowRed(100, 0, 0);
+const Colour g_Colour_LowGreen(0, 100, 0);
+const Colour g_Colour_LowBlue(0, 0, 100);
+const Colour g_Colour_Yellow(255, 255, 0);
+const Colour g_Colour_Pink(255, 182, 193);
+const Colour g_Colour_DeepPink(230, 0, 255);
+const Colour g_Colour_Purple(128, 64, 128);
+const Colour g_Colour_Orange(255, 102, 0);
+const Colour g_Colour_Coral(255, 127, 80);
+const Colour g_Colour_Sienna(160, 82, 45);
+const Colour g_Colour_SandBrown(244, 164, 96);
+const Colour g_Colour_RosyBrown(188, 143, 143);
+const Colour g_Colour_Magenta(255, 0, 128);
+const Colour g_Colour_Cyan(0, 255, 255);
+const Colour g_Colour_Grey(128, 128, 128);
 
 int main(int argc, char* args[])
 {

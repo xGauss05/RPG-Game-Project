@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Window.h"
 #include "SceneManager.h"
+#include "TransitionManager.h"
 #include "Input.h"
 
 #include "Scene_Map.h"
@@ -9,6 +10,7 @@
 #include "Scene_Boot.h"
 #include "Scene_GameOver.h"
 
+#include "Colour.h"
 #include "Render.h"
 #include "Defs.h"
 #include "Log.h"
@@ -126,34 +128,41 @@ bool SceneManager::Update(float dt)
 
 	currentScene->Draw();
 
+	if (app->transition->IsTransitioning())
+		return true;
+
 	using enum TransitionScene;
 	switch (currentScene->Update()) 
-		{
+	{
 		case BOOT_COMPLETE:
+		{
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
+		}
 		case LOSE_BATTLE:
+		{
 			sceneOnHold.reset();
-			/*for (auto& character : party->party)
-			{
-				character.SetCurrentHP(1);
-			}*/
 			nextScene = std::make_unique<Scene_GameOver>();
 			nextScene.get()->Load(assetPath + "UI/", gameOverInfo, *windowFactory);
 			break;
+		}
 		case MAIN_MENU:
+		{
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
+		}
 		case NEW_GAME:
-			nextScene = std::make_unique<Scene_Map>();
+		{
+			nextScene = std::make_unique<Scene_Map>(party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			nextScene->Start();
 			break;
+		}
 		case CONTINUE_GAME:
 		{
-			nextScene = std::make_unique<Scene_Map>();
+			nextScene = std::make_unique<Scene_Map>(party.get());
 			loadNextMap = true;
 			app->LoadGameRequest();
 			break;
@@ -161,23 +170,31 @@ bool SceneManager::Update(float dt)
 		case LOAD_MAP_FROM_MAP:
 		{
 			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
-			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates());
+			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates(), party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			nextScene->Start();
 			break;
 		}
 		case START_BATTLE:
+		{
 			StartBattle();
 			break;
+		}
 		case WIN_BATTLE:
 		case RUN_BATTLE:
+		{
 			nextScene = std::move(sceneOnHold);
 			nextScene->isReady(); //Re plays music
 			break;
+		}
 		case EXIT_GAME:
+		{
 			return false;
+		}
 		case NONE:
+		{
 			break;
+		}
 	}
 
 	return true;
@@ -191,8 +208,11 @@ bool SceneManager::PostUpdate()
 		StartBattle();
 	}
 
-	if (nextScene && nextScene->isReady() && !loadNextMap)
+	if (nextScene && nextScene->isReady() && !loadNextMap && app->transition->IsPastMidpoint())
 	{
+		if(bBattleStarted)
+			sceneOnHold = std::move(currentScene);
+
 		currentScene = std::move(nextScene);
 		currentScene->Start();
 	}
@@ -202,9 +222,10 @@ bool SceneManager::PostUpdate()
 
 void SceneManager::StartBattle(std::string_view troopName)
 {
+	bBattleStarted = true;
+	app->transition->SceneToBattle(1000.0f);
 	nextScene = std::make_unique<Scene_Battle>(party.get(), troopName);
 	nextScene->Load("", sceneInfo, *windowFactory);
-	sceneOnHold = std::move(currentScene);
 }
 
 // Called before quitting
@@ -222,16 +243,20 @@ bool SceneManager::HasSaveData() const
 
 bool SceneManager::LoadState(pugi::xml_node const& data)
 {
-	pugi::xml_node node = data.child("party_member");
-
-	for (auto& character : party->party)
+	for (auto const& node : data.children("party_member"))
 	{
-		character.SetLevel(data.attribute("level").as_int());
-		character.SetCurrentHP(data.attribute("currentHP").as_int());
-		character.SetCurrentMana(data.attribute("currentMP").as_int());
-		character.SetCurrentXP(data.attribute("currentXP").as_int());
+		for (auto& character : party->party)
+		{
+			if (!StrEquals(character.name, node.attribute("name").as_string()))
+				continue;
 
-		node.next_sibling("party_member");
+			character.SetLevel(node.attribute("level").as_int());
+			character.SetCurrentHP(node.attribute("currentHP").as_int());
+			character.SetCurrentMana(node.attribute("currentMP").as_int());
+			character.SetCurrentXP(node.attribute("currentXP").as_int());
+
+			break;
+		}
 	}
 
 	currentScene->LoadScene(data);

@@ -11,6 +11,7 @@ struct Enemy
 {
 	std::string name;
 	int textureID;
+	int deadSfx;
 	int currentHP;
 	int currentMana;
 	int currentXP;
