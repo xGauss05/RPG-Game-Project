@@ -31,7 +31,9 @@ public:
 	int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0);
+	bool PlayFx(int fx, int repeat = 0);
+
+	bool RemoveFx(int id);
 
 	void SetBGMVolume(int value);
 

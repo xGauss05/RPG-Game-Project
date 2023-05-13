@@ -126,7 +126,8 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 // Load WAV
 int Audio::LoadFx(const char* path)
 {
-	if (!active) return 0;
+	if (!active)
+		return 0;
 
 	fx.push_back(Mix_LoadWAV(path));
 	if (!fx.back())
@@ -139,20 +140,36 @@ int Audio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool Audio::PlayFx(unsigned int id, int repeat)
+bool Audio::PlayFx(int id, int repeat)
 {
-	if (!active) return false;
+	if (!active)
+		return false;
 
-	if (id > 0 && id <= fx.size())
+	if (id >= 0 && id < fx.size())
 	{
 		for (int i = 0; auto const& item : fx)
 		{
-			if (i == id) Mix_PlayChannel(-1, item, repeat);
+			if (i == id)
+				Mix_PlayChannel(-1, item, repeat);
+
 			++i;
 		}
 	}
 
 	return true;
+}
+
+bool Audio::RemoveFx(int id)
+{
+	if (id >= 0 && id < fx.size())
+	{
+		auto eraseIt = fx.begin();
+		std::advance(eraseIt, id);
+		fx.erase(eraseIt);
+
+		return true;
+	}
+	return false;
 }
 
 void Audio::SetSFXVolume(int value)

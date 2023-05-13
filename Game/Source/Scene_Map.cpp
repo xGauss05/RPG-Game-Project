@@ -140,7 +140,6 @@ void Scene_Map::DebugItems()
 
 TransitionScene Scene_Map::Update()
 {
-
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;
@@ -254,51 +253,52 @@ TransitionScene Scene_Map::Update()
 				switch (action.eventFunction)
 				{
 					using enum EventTrigger::WhatToDo;
-				case NO_EVENT:
-				{
-					break;
-				}
-				case LOOT:
-				{
-					if (action.values.empty() || !playerParty)
+					case NO_EVENT:
 					{
 						break;
 					}
+					case LOOT:
+					{
+						if (action.values.empty() || !playerParty)
+						{
+							break;
+						}
 
-					for (auto const& [itemToAdd, amountToAdd] : action.values)
-					{
-						playerParty->AddItemToInventory(itemToAdd, amountToAdd);
-						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+						for (auto const& [itemToAdd, amountToAdd] : action.values)
+						{
+							playerParty->AddItemToInventory(itemToAdd, amountToAdd);
+							action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+						}
+						[[fallthrough]];
 					}
-					[[fallthrough]];
-				}
-				case SHOW_MESSAGE:
-				{
-					windows.emplace_back(windowFactory->CreateWindow("Message"));
-					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-					currentPanel->ModifyLastWidgetText(action.text);
-					state = MapState::ON_MESSAGE;
-					break;
-				}
-				case DIALOG_PATH:
-				{
-					if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
+					case SHOW_MESSAGE:
 					{
-						LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+						windows.emplace_back(windowFactory->CreateWindow("Message"));
+						auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+						currentPanel->ModifyLastWidgetText(action.text);
+						state = MapState::ON_MESSAGE;
 						break;
 					}
-					windows.emplace_back(windowFactory->CreateWindow("Message"));
-					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
-					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-					state = MapState::ON_DIALOG;
-					break;
-				}
-				case TELEPORT:
-				{
-					tpInfo = action;
-					return TransitionScene::LOAD_MAP_FROM_MAP;
-				}
+					case DIALOG_PATH:
+					{
+						if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
+						{
+							LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+							break;
+						}
+						windows.emplace_back(windowFactory->CreateWindow("Message"));
+
+						currentDialogNode = currentDialogDocument.child("dialog").child("message1");
+						auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+						currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+						state = MapState::ON_DIALOG;
+						break;
+					}
+					case TELEPORT:
+					{
+						tpInfo = action;
+						return TransitionScene::LOAD_MAP_FROM_MAP;
+					}
 				}
 			}
 		}
