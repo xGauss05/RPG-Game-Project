@@ -4,7 +4,7 @@
 #include <vector>
 #include <format>
 
-template <typename T>
+template <typename T, typename P = iPoint>
 class AdjacencyGraph
 {
 private:
@@ -15,11 +15,17 @@ private:
 		explicit Vertex() = default;
 		explicit Vertex(T name) : value(name) {};
 
+		struct EdgesInfo
+		{
+			P info;
+			int destination;
+		};
+
 		// Returns index of newly added destination
 		int AddEdge(int destination)
 		{
 			// Check if destination is already on the array
-			auto IsSameValue = [destination](int n) { return destination == n; };
+			auto IsSameValue = [destination](EdgesInfo const& e) { return e.destination == destination; };
 			if (auto returnIt = std::ranges::find_if(edges, IsSameValue);
 				returnIt != edges.end())
 			{
@@ -27,12 +33,12 @@ private:
 			}
 
 			// If it's not, add it
-			edges.push_back(destination);
+			edges.emplace_back(EdgesInfo({ destination, destination }, destination));
 			return static_cast<int>(edges.size()) - 1;
 		}
 
 		T value;
-		std::vector<int> edges;
+		std::vector<EdgesInfo> edges;
 	};
 
 public:
@@ -50,9 +56,9 @@ public:
 
 	// Returns reference to vertex in index n of graph.
 	// Throws std::out_of_range when out of bounds.
-	Vertex<T> &At(int n)
+	Vertex<T>& At(int n)
 	{
-		if(n >= 0 && n < graph.size())
+		if (n >= 0 && n < graph.size())
 			return graph[n];
 
 		std::string errorMessage = std::format("Vertex with index {} does not exist in graph", n);
@@ -61,7 +67,7 @@ public:
 
 	// Returns reference to value of vertex at index n of graph.
 	// Throws std::out_of_range when out of bounds.
-	T &ValueAt(int n)
+	T& ValueAt(int n)
 	{
 		if (n >= 0 && n < graph.size())
 			return graph[n].value;
@@ -107,8 +113,8 @@ protected:
 };
 
 // Directed Graph
-template <typename T>
-class DirectedGraph : public AdjacencyGraph<T>
+template <typename T, typename P = iPoint>
+class DirectedGraph : public AdjacencyGraph<T, P>
 {
 public:
 	DirectedGraph() = default;
@@ -135,15 +141,15 @@ public:
 	{
 		auto originIndex = AddVertex(origin);
 		auto destinationIndex = AddVertex(destination);
-		
+
 		// Add the edge to the Vertex array
 		this->graph[originIndex].AddEdge(destinationIndex);
 	}
 };
 
 // Undirected Graph
-template <typename T>
-class UndirectedGraph : public AdjacencyGraph<T>
+template <typename T, typename P = iPoint>
+class UndirectedGraph : public AdjacencyGraph<T, P>
 {
 public:
 	UndirectedGraph() = default;

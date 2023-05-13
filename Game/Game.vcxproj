@@ -138,6 +138,7 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Window_Factory.cpp" />
     <ClCompile Include="Source\Window_List.cpp" />
+    <ClInclude Include="Source\AdjacencyGraph.h" />
     <ClInclude Include="Source\GuiMenuList.h" />
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />
