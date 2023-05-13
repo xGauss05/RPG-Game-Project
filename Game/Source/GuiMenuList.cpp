@@ -102,7 +102,7 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 
 	for (int i = 0; i < 20; i++)
 	{
-		items.emplace_back(MenuItem::ItemText("Hi", "By", std::format("x{}", i)), 9);
+		CreateMenuItem(MenuItem(MenuItem::ItemText("Hi", "By", std::format("x{}", i)), 9));
 	}
 }
 
@@ -114,6 +114,39 @@ GuiMenuList::~GuiMenuList()
 void GuiMenuList::Update()
 {
 	HandleInput();
+	UpdateAlpha();
+}
+
+void GuiMenuList::UpdateAlpha()
+{
+	if (alphaIncreasing)
+	{
+		currentAlpha += 5;
+		if (currentAlpha > 200)
+		{
+			alphaIncreasing = false;
+			currentAlpha = 205;
+		}
+	}
+	else
+	{
+		currentAlpha -= 5;
+		if (currentAlpha < 5)
+		{
+			alphaIncreasing = true;
+			currentAlpha = 0;
+		}
+	}
+}
+
+void GuiMenuList::CreateMenuItem(MenuItem const& item)
+{
+	items.push_back(item);
+}
+
+void GuiMenuList::DeleteMenuItem(int index)
+{
+	items.erase(items.begin() + index);
 }
 
 bool GuiMenuList::Draw() const
@@ -153,7 +186,7 @@ bool GuiMenuList::Draw() const
 			position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
 		);
 
-		items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, iconSize);
+		items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
 
 		//items[i].DebugDraw(drawPosition, iPoint(size.x, menuItemHeight), outterMargin.y, menuItemHeight, i, currentScroll);
 	}
@@ -178,12 +211,13 @@ void GuiMenuList::HandleRightButtonClick()
 
 void GuiMenuList::HandleInput()
 {
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN
-		|| app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	using enum KeyState;
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN
+		|| app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		HandleLeftClick();
 	}
-	else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+	else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		HandleRightButtonClick();
 	}
@@ -208,9 +242,11 @@ void GuiMenuList::HandleLeftClick()
 	{
 		iPoint relativeCoords = mousePos - position - outterMargin;
 
-		if (relativeCoords.y <= 0 && lastTimeSinceScrolled >= 15)
+		if (relativeCoords.y <= 0)
 		{
-			SelectAndScrollUpIfNeeded();
+			if(lastTimeSinceScrolled >= 15)
+				SelectAndScrollUpIfNeeded();
+
 			return;
 		}
 
@@ -261,6 +297,7 @@ void GuiMenuList::SelectAndScrollUpIfNeeded(int amount)
 {
 	if (currentItemSelected > amount)
 	{
+		lastTimeSinceScrolled = 0;
 		currentItemSelected -= amount;
 	}
 	else
@@ -278,6 +315,7 @@ void GuiMenuList::SelectAndScrollDownIfNeeded(int amount)
 {
 	if (currentItemSelected < items.size() - amount)
 	{
+		lastTimeSinceScrolled = 0;
 		currentItemSelected += amount;
 	}
 	else
@@ -323,9 +361,20 @@ GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int textureID)
 	: text(itemText), iconTexture(textureID)
 {}
 
-void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, int sizeIcon) const
+void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int sizeIcon, bool currentlySelected) const
 {
 	iPoint drawPosition = originalPos + innerMargin;
+
+	if (currentlySelected)
+	{
+		SDL_Rect selectedRect = {
+			originalPos.x,
+			originalPos.y,
+			rectSize.x - (outMargin.x * 2), 
+			rectSize.y - innerMargin.y
+		};
+		app->render->DrawShape(selectedRect, true, SDL_Color(255, 255, 255, animationAlpha));
+	}
 
 	if (sizeIcon > 0)
 	{
@@ -382,11 +431,11 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 	}
 }
 
-void GuiMenuList::MenuItem::DebugDraw(iPoint pos, iPoint s, int outterMarginY, int menuItemHeight, int index, int scroll) const
+void GuiMenuList::MenuItem::DebugDraw(iPoint pos, iPoint s, int outterMarginY, int itemHeight, int index, int scroll) const
 {
 	iPoint debugDrawPos(
 			pos.x,
-			pos.y + outterMarginY + (menuItemHeight * (index - scroll))
+			pos.y + outterMarginY + (itemHeight * (index - scroll))
 	);
 
 	SDL_Rect debugRect(pos.x, pos.y, s.x, s.y);
@@ -394,3 +443,25 @@ void GuiMenuList::MenuItem::DebugDraw(iPoint pos, iPoint s, int outterMarginY, i
 	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
 }
 
+void GuiMenuList::MenuItem::SetText(ItemText const& newText)
+{
+	text = newText;
+}
+
+void GuiMenuList::MenuItem::SetText(int align, std::string_view newText)
+{
+	switch (align)
+	{
+	case 1:
+		text.leftText = newText;
+		return;
+	case 2:
+		text.centerText = newText;
+		return;
+	case 3:
+		text.rightText = newText;
+		return;
+	default:
+		break;
+	}
+}

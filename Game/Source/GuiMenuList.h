@@ -25,8 +25,20 @@ public:
 		MenuItem() = default;
 		explicit MenuItem(ItemText const& itemText, int textureID = -1);
 
-		void Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin = iPoint(0, 0), int iconSize = 0) const;
-		void DebugDraw(iPoint pos, iPoint s, int outterMarginY, int menuItemHeight, int index, int scroll) const;
+		void Draw(
+			iPoint originalPos,
+			iPoint rectSize,
+			iPoint innerMargin = iPoint(0, 0),
+			iPoint outMargin = iPoint(0, 0),
+			Uint8 animationAlpha = 0,
+			int iconSize = 0,
+			bool currentlySelected = false
+		) const;
+
+		void DebugDraw(iPoint pos, iPoint s, int outterMarginY, int itemHeight, int index, int scroll) const;
+
+		void SetText(ItemText const &newText);
+		void SetText(int align, std::string_view newText);
 
 	private:
 
@@ -39,6 +51,9 @@ public:
 	virtual ~GuiMenuList();
 
 	void Update();
+
+	void CreateMenuItem(MenuItem const& item);
+	void DeleteMenuItem(int index);
 
 	bool Draw() const;
 	void DebugDraw() const;
@@ -55,6 +70,8 @@ private:
 	void SelectAndScrollDownIfNeeded(int amount = 1);
 	void ScrollListUp(int amount = 1);
 	void ScrollListDown(int amount = 1);
+
+	void UpdateAlpha();
 
 	std::unique_ptr<GuiPanelSegmented> background;
 	SDL_Rect arrowRect{ 0 };
@@ -75,6 +92,9 @@ private:
 	int iconSize = 0;
 
 	int fontID = 0;
+
+	Uint8 currentAlpha = 0;
+	bool alphaIncreasing = true;
 
 	std::vector<MenuItem> items;
 };
