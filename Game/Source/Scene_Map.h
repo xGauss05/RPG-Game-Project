@@ -30,7 +30,6 @@ public:
 	bool SaveScene(pugi::xml_node const&) override;
 	bool LoadScene(pugi::xml_node const&) override;
 	void DebugDraw() override;
-	void DrawStatsMenu();
 	void UpdateStatsMenu();
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;
@@ -39,6 +38,9 @@ public:
 	void SetPlayerParty(GameParty* party);
 
 private:
+	void DrawStatsMenu();
+	void DrawPlayerStats(PartyCharacter const &character, int i) const;
+	void DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const;
 
 	void DebugItems();
 

@@ -46,9 +46,11 @@ public:
 		int iconTexture = -1;
 	};
 
-	GuiMenuList() = default;
+	GuiMenuList();
 	explicit GuiMenuList(pugi::xml_node const& node);
 	virtual ~GuiMenuList();
+
+	void Initialize();
 
 	void Update();
 
@@ -58,9 +60,18 @@ public:
 	bool Draw() const;
 	void DebugDraw() const;
 
+	bool GetDeleteMenu() const;
+	bool GetClickHandled() const;
+	bool GetGoToPreviousMenu() const;
+
 protected:
 	virtual void HandleLeftButtonClick(int result) = 0;
 	virtual void HandleRightButtonClick() = 0;
+	virtual void InitializeElements() = 0;
+
+	void SetDeleteMenu(bool b);
+	void SetClickHandled(bool b);
+	void SetGoToPreviousMenu(bool b);
 
 private:
 	void HandleInput();
@@ -72,6 +83,8 @@ private:
 	void ScrollListDown(int amount = 1);
 
 	void UpdateAlpha();
+
+	void SetDefaultBooleanValues();
 
 	std::unique_ptr<GuiPanelSegmented> background;
 	SDL_Rect arrowRect{ 0 };
@@ -95,6 +108,11 @@ private:
 
 	Uint8 currentAlpha = 0;
 	bool alphaIncreasing = true;
+
+	bool deleteMenu = false;
+	bool goToPreviousMenu = false;
+
+	bool clickHandled = false;
 
 	std::vector<MenuItem> items;
 };

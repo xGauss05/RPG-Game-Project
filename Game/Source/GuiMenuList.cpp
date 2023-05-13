@@ -4,6 +4,8 @@
 #include "TextManager.h"
 #include "Log.h"
 
+GuiMenuList::GuiMenuList() = default;
+
 GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 	position(iPoint(node.attribute("x").as_int(), node.attribute("y").as_int())),
 	size(iPoint(node.attribute("width").as_int(), node.attribute("height").as_int()))
@@ -106,6 +108,20 @@ GuiMenuList::~GuiMenuList()
 	background->Unload();
 }
 
+void GuiMenuList::Initialize()
+{
+	InitializeElements();
+	SetDefaultBooleanValues();
+}
+
+void GuiMenuList::SetDefaultBooleanValues()
+{
+	deleteMenu = false;
+	goToPreviousMenu = false;
+	clickHandled = false;
+	alphaIncreasing = false;
+}
+
 void GuiMenuList::Update()
 {
 	HandleInput();
@@ -194,6 +210,36 @@ void GuiMenuList::DebugDraw() const
 	SDL_Rect debugRect(position.x, size.y, size.x, size.y);
 
 	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
+}
+
+void GuiMenuList::SetClickHandled(bool b)
+{
+	clickHandled = b;
+}
+
+void GuiMenuList::SetDeleteMenu(bool b)
+{
+	deleteMenu = b;
+}
+
+bool GuiMenuList::GetDeleteMenu() const
+{
+	return deleteMenu;
+}
+
+bool GuiMenuList::GetClickHandled() const
+{
+	return clickHandled;
+}
+
+void GuiMenuList::SetGoToPreviousMenu(bool b)
+{
+	goToPreviousMenu = b;
+}
+
+bool GuiMenuList::GetGoToPreviousMenu() const
+{
+	return goToPreviousMenu;
 }
 
 void GuiMenuList::HandleInput()

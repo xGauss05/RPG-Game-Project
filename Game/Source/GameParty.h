@@ -15,7 +15,9 @@ enum class BaseStats
 	DEFENSE,
 	SPECIAL_ATTACK,
 	SPECIAL_DEFENSE,
-	SPEED
+	SPEED,
+	LEVEL,
+	XP
 };
 
 enum class EquipmentSlots
@@ -27,13 +29,13 @@ enum class EquipmentSlots
 
 struct PartyCharacter
 {
-	std::string name;
-	int battlerTextureID;
-	int currentHP;
-	int currentMana;
-	int currentXP;
+	std::string name = "";
+	int battlerTextureID = 0;
+	int currentHP = 0;
+	int currentMana = 0;
+	int currentXP = 0;
 
-	int level;
+	int level = 0;
 
 	std::vector<int> stats;
 	bool isDefending = false;
@@ -46,6 +48,8 @@ struct PartyCharacter
 	void SetLevel(int lvl);
 
 	bool UseItem(Item const &item);
+
+	std::string GetStatDisplay(BaseStats stat) const;
 
 	bool RestoreHP(float amount1, float amount2);
 };

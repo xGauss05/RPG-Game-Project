@@ -197,6 +197,16 @@ void TextManager::DrawText(std::string_view text, TextParameters const &textPara
 	}
 }
 
+void TextManager::DrawText(std::string_view text, DrawParameters const& originalParams) const
+{
+	DrawText(text, TextParameters(0, originalParams));
+}
+
+void TextManager::DrawText(std::string_view text, iPoint pos) const
+{
+	DrawText(text, DrawParameters(0, pos));
+}
+
 int TextManager::GetLineHeight(int fontID) const
 {
 	if (in_range(fontID, 0, fonts.size() - 1))
