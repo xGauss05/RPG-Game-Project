@@ -83,6 +83,7 @@ private:
 
     // Sound indexes
     int attackSfx;
+    int criticalSfx;
     int blockSfx;
     int enemydeadSfx;
     int erYonaTurnSfx;

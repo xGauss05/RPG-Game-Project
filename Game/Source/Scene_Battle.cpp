@@ -66,6 +66,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 
 	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
 	attackSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Attack.wav");
+	criticalSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-AttackCrit.wav");
 	blockSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Block.wav");
 	erYonaTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_ErYona-Turn.wav");
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
@@ -417,7 +418,7 @@ TransitionScene Scene_Battle::Update()
 							{
 								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
-								app->audio->PlayFx(attackSfx); // replace for critical hit
+								app->audio->PlayFx(criticalSfx);
 							}
 							else 
 							{
@@ -460,7 +461,7 @@ TransitionScene Scene_Battle::Update()
 							{
 								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
-								app->audio->PlayFx(attackSfx); // replace for critical hit
+								app->audio->PlayFx(criticalSfx); // replace for critical hit
 							}
 							else 
 							{
@@ -507,7 +508,7 @@ TransitionScene Scene_Battle::Update()
 						{
 							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
-							app->audio->PlayFx(attackSfx); // replace for critical hit
+							app->audio->PlayFx(criticalSfx);
 						}
 						else 
 						{
@@ -544,7 +545,7 @@ TransitionScene Scene_Battle::Update()
 							
 							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
-							app->audio->PlayFx(attackSfx); // replace for critical hit
+							app->audio->PlayFx(criticalSfx); 
 						}
 						else 
 						{
