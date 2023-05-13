@@ -85,8 +85,11 @@ private:
     int attackSfx;
     int blockSfx;
     int enemydeadSfx;
+    int erYonaTurnSfx;
     int erYonadeadSfx;
     int sayorideadSfx;
     int rociodeadSfx;
     int antoniodeadSfx;
+
+    bool playedTurnSfx = false;
 };

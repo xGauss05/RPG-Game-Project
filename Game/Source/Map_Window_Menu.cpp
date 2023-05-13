@@ -1,4 +1,5 @@
 #include "Map_Window_Menu.h"
+
 #include "Log.h"
 
 Map_Window_Menu::Map_Window_Menu(Window_Factory const &windowFac)
