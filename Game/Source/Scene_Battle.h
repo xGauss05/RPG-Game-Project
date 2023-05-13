@@ -80,5 +80,13 @@ private:
     std::unique_ptr<Window_Panel> messages;
 
     std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
-};
 
+    // Sound indexes
+    int attackSfx;
+    int blockSfx;
+    int enemydeadSfx;
+    int erYonadeadSfx;
+    int sayorideadSfx;
+    int rociodeadSfx;
+    int antoniodeadSfx;
+};

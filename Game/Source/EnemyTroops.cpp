@@ -2,6 +2,7 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 #include "TextureManager.h"
+#include "Audio.h"
 #include "Input.h"
 #include "Render.h"
 #include "Log.h"
@@ -29,6 +30,7 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 
 		auto currentEnemy = enemiesFile.child(enemyToAdd.name.c_str());
 		enemyToAdd.textureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
+		enemyToAdd.deadSfx = app->audio->LoadFx(currentEnemy.child("deadaudio").attribute("path").as_string());
 		for (auto const& stat : currentEnemy.child("stats").children())
 		{
 			enemyToAdd.stats.emplace_back(stat.attribute("value").as_int());

@@ -65,6 +65,9 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 
 	app->audio->PlayMusic("Assets/Audio/Music/bgm_placeholder.ogg");
+	attackSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Attack.wav");
+	blockSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Block.wav");
+
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
@@ -202,7 +205,7 @@ void Scene_Battle::Draw()
 		if (elem.currentHP <= 0)
 		{
 			drawEnemy.RotationAngle(270);
-
+			
 			SDL_Point pivot = {
 				elem.size.x/2,
 				elem.size.y
@@ -358,8 +361,8 @@ TransitionScene Scene_Battle::Update()
 						if (currentAction.action == 2 || enemies.troop[currentAction.target].currentHP <= 0)
 						{
 							party->party[currentAction.source].isDefending = true;
-
 							text = std::format("{} is defending.", party->party[currentAction.source].name);
+							app->audio->PlayFx(blockSfx);
 						}
 						else if (currentAction.action == 0)
 						{
@@ -370,6 +373,7 @@ TransitionScene Scene_Battle::Update()
 								defense *= 2;
 								enemies.troop[currentAction.target].isDefending = false;
 							}
+
 							int randomVariance = random40(gen);
 							int damage = attack - defense;
 							if (randomVariance > 20)
@@ -381,14 +385,28 @@ TransitionScene Scene_Battle::Update()
 							{
 								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
 							}
+
 							std::string damageMessage = "{} attacks {}! Deals {} damage.";
+
 							if (random100(gen) <= 10)
 							{
 								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+								app->audio->PlayFx(attackSfx); // replace for critical hit
 							}
+							else 
+							{
+								app->audio->PlayFx(attackSfx);
+							}
+
 							if (damage <= 0) damage = 1;
+
 							enemies.troop[currentAction.target].currentHP -= damage;
+
+							if (enemies.troop[currentAction.target].currentHP <= 0) 
+							{
+								app->audio->PlayFx(enemies.troop[currentAction.target].deadSfx);
+							}
 
 							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
 						}
@@ -417,6 +435,11 @@ TransitionScene Scene_Battle::Update()
 							{
 								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+								app->audio->PlayFx(attackSfx); // replace for critical hit
+							}
+							else 
+							{
+								app->audio->PlayFx(attackSfx); 
 							}
 							if (damage <= 0) damage = 1;
 							enemies.troop[currentAction.target].currentHP -= damage;
@@ -431,7 +454,7 @@ TransitionScene Scene_Battle::Update()
 					if (currentAction.action == 2 || party->party[currentAction.target].currentHP <= 0)
 					{
 						enemies.troop[currentAction.source].isDefending = true;
-
+						app->audio->PlayFx(blockSfx);
 						text = std::format("{} is defending.", enemies.troop[currentAction.source].name);
 					}
 					else if (currentAction.action == 0)
@@ -459,6 +482,11 @@ TransitionScene Scene_Battle::Update()
 						{
 							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							app->audio->PlayFx(attackSfx); // replace for critical hit
+						}
+						else 
+						{
+							app->audio->PlayFx(attackSfx);
 						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;
@@ -488,8 +516,14 @@ TransitionScene Scene_Battle::Update()
 						std::string damageMessage = "{} attacks {}! Deals {} damage.";
 						if (random100(gen) <= 10)
 						{
+							
 							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
 							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							app->audio->PlayFx(attackSfx); // replace for critical hit
+						}
+						else 
+						{
+							app->audio->PlayFx(attackSfx); 
 						}
 						if (damage <= 0) damage = 1;
 						party->party[currentAction.target].currentHP -= damage;

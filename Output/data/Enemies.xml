@@ -1,17 +1,58 @@
-<Bat_B>
-	<texture path="Assets/Textures/Battlers/Bat_B.png"/>
-	<stats>
-		<maxhp value="100"/>
-		<maxmana value="100"/>
-		<attack value="20"/>
-		<defense value="5"/>
-		<specialattack value="20"/>
-		<specialdefense value="5"/>
-		<speed value="2"/>
-	</stats>
-</Bat_B>
+<Slime_R>
+  <texture path="Assets/Textures/Battlers/Slime_R.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Slime-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="5"/>
+    <specialattack value="20"/>
+    <specialdefense value="5"/>
+    <speed value="1"/>
+  </stats>
+</Slime_R>
 <Slime_G>
-	<texture path="Assets/Textures/Battlers/Slime_G.png"/>
+  <texture path="Assets/Textures/Battlers/Slime_G.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Slime-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="5"/>
+    <specialattack value="20"/>
+    <specialdefense value="5"/>
+    <speed value="1"/>
+  </stats>
+</Slime_G>
+<Slime_B>
+  <texture path="Assets/Textures/Battlers/Slime_B.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Slime-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="5"/>
+    <specialattack value="20"/>
+    <specialdefense value="5"/>
+    <speed value="1"/>
+  </stats>
+</Slime_B>
+<Bat_R>
+  <texture path="Assets/Textures/Battlers/Bat_R.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Flyer-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="5"/>
+    <specialattack value="20"/>
+    <specialdefense value="5"/>
+    <speed value="4"/>
+  </stats>
+</Bat_R>
+<Bat_G>
+	<texture path="Assets/Textures/Battlers/Bat_G.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Flyer-Death.wav"/>
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
@@ -21,16 +62,56 @@
 		<specialdefense value="5"/>
 		<speed value="4"/>
 	</stats>
-</Slime_G>
-<Bat_R>
-	<texture path="Assets/Textures/Battlers/Bat_R.png"/>
-	<stats>
-		<maxhp value="100"/>
-		<maxmana value="100"/>
-		<attack value="20"/>
-		<defense value="5"/>
-		<specialattack value="20"/>
-		<specialdefense value="5"/>
-		<speed value="2"/>
-	</stats>
-</Bat_R>
+</Bat_G>
+<Bat_B>
+  <texture path="Assets/Textures/Battlers/Bat_B.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Flyer-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="5"/>
+    <specialattack value="20"/>
+    <specialdefense value="5"/>
+    <speed value="2"/>
+  </stats>
+</Bat_B>
+<Skeleton_R>
+  <texture path="Assets/Textures/Battlers/Skeleton_R.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="8"/>
+    <specialattack value="5"/>
+    <specialdefense value="2"/>
+    <speed value="2"/>
+  </stats>
+</Skeleton_R>
+<Skeleton_B>
+  <texture path="Assets/Textures/Battlers/Skeleton_B.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="8"/>
+    <specialattack value="5"/>
+    <specialdefense value="2"/>
+    <speed value="2"/>
+  </stats>
+</Skeleton_B>
+<Skeleton_G>
+  <texture path="Assets/Textures/Battlers/Skeleton_G.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
+  <stats>
+    <maxhp value="100"/>
+    <maxmana value="100"/>
+    <attack value="20"/>
+    <defense value="8"/>
+    <specialattack value="5"/>
+    <specialdefense value="2"/>
+    <speed value="2"/>
+  </stats>
+</Skeleton_G>

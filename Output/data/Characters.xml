@@ -4,11 +4,11 @@
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="20"/>
-		<defense value="5"/>
-		<specialattack value="20"/>
-		<specialdefense value="5"/>
-		<speed value="5"/>
+		<attack value="15"/>
+		<defense value="15"/>
+		<specialattack value="12"/>
+		<specialdefense value="8"/>
+		<speed value="1"/>
 	</stats>
 </character>
 <character>
@@ -17,11 +17,11 @@
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="20"/>
-		<defense value="5"/>
-		<specialattack value="20"/>
-		<specialdefense value="5"/>
-		<speed value="4"/>
+		<attack value="8"/>
+		<defense value="6"/>
+		<specialattack value="25"/>
+		<specialdefense value="9"/>
+		<speed value="3"/>
 	</stats>
 </character>
 <character>
@@ -30,11 +30,11 @@
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="20"/>
+		<attack value="25"/>
 		<defense value="5"/>
-		<specialattack value="20"/>
+		<specialattack value="9"/>
 		<specialdefense value="5"/>
-		<speed value="1"/>
+		<speed value="5"/>
 	</stats>
 </character>
 <character>
@@ -43,11 +43,11 @@
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="20"/>
-		<defense value="5"/>
+		<attack value="8"/>
+		<defense value="12"/>
 		<specialattack value="20"/>
-		<specialdefense value="5"/>
-		<speed value="7"/>
+		<specialdefense value="12"/>
+		<speed value="2"/>
 	</stats>
 </character>
 		
