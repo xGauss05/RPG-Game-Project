@@ -74,6 +74,10 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 			{
 				pauseWindow.push_back(std::move(result));
 			}
+			else if (StrEquals("StatsMenu", window.attribute("name").as_string()))
+			{
+				statsWindow.push_back(std::move(result));
+			}
 		}
 	}
 
@@ -85,7 +89,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	else {
 		musicname = "Assets/Audio/Music/M_Town-" + currentMap + ".ogg";
 	}
-	 
+
 	app->audio->PlayMusic(musicname.c_str());
 
 	battleSFX = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
@@ -107,6 +111,7 @@ void Scene_Map::Draw()
 {
 	map.Draw();
 	player.Draw();
+
 	for (auto const& elem : windows)
 	{
 		elem->Draw();
@@ -116,6 +121,8 @@ void Scene_Map::Draw()
 	{
 		DebugDraw();
 	}
+
+	if (statusOpen) DrawStatsMenu();
 }
 
 void Scene_Map::DebugItems()
@@ -147,14 +154,22 @@ TransitionScene Scene_Map::Update()
 		}
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN) statusOpen = !statusOpen;
+
 	auto playerAction = player.HandleInput();
 
-	using PA = Player::PlayerAction::Action;
-
-	if (state == MapState::ON_MENU_SELECTION)
+	if (statusOpen)
 	{
-		switch (windows.back()->Update())
+		UpdateStatsMenu();
+	}
+	else
+	{
+		using PA = Player::PlayerAction::Action;
+
+		if (state == MapState::ON_MENU_SELECTION)
 		{
+			switch (windows.back()->Update())
+			{
 			case 200: //Yes
 			{
 				LOG("Said yes");
@@ -179,66 +194,66 @@ TransitionScene Scene_Map::Update()
 			}
 			default:
 				break;
+			}
 		}
-	}
-	else if (app->input->controllerCount <= 0)
-	{
-		windows.back()->Update();
-	}
+		else if (app->input->controllerCount <= 0)
+		{
+			windows.back()->Update();
+		}
 
-	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
-	{
-		if (map.IsWalkable(playerAction.destinationTile) && !godMode)
+		if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
 		{
-			player.StartAction(playerAction);
+			if (map.IsWalkable(playerAction.destinationTile) && !godMode)
+			{
+				player.StartAction(playerAction);
 
-			return TryRandomBattle();
+				return TryRandomBattle();
+			}
+			else if (godMode)
+			{
+				player.StartAction(playerAction);
+			}
 		}
-		else if (godMode)
+		else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 		{
-			player.StartAction(playerAction);
-		}
-	}
-	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
-	{
-		if (state == MapState::ON_MESSAGE)
-		{
-			windows.pop_back();
-			state = MapState::NORMAL;
-		}
-		else if (state == MapState::ON_DIALOG)
-		{
-			auto nextDialogNode = currentDialogNode.attribute("next").as_string();
-
-			if (StrEquals(nextDialogNode, "end"))
+			if (state == MapState::ON_MESSAGE)
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
-				app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-				
 			}
-			else if (StrEquals(nextDialogNode, "Confirmation"))
+			else if (state == MapState::ON_DIALOG)
 			{
-				// Create Yes/No window
-				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
-				state = MapState::ON_MENU_SELECTION;
-			}
-			else
-			{
-				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-			}
-		}
-		else if (state == MapState::NORMAL)
-		{
-			iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
+				auto nextDialogNode = currentDialogNode.attribute("next").as_string();
 
-			EventTrigger action = map.TriggerEvent(checktile);
+				if (StrEquals(nextDialogNode, "end"))
+				{
+					windows.pop_back();
+					state = MapState::NORMAL;
+					app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 
-			switch (action.eventFunction)
+				}
+				else if (StrEquals(nextDialogNode, "Confirmation"))
+				{
+					// Create Yes/No window
+					windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
+					state = MapState::ON_MENU_SELECTION;
+				}
+				else
+				{
+					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+				}
+			}
+			else if (state == MapState::NORMAL)
 			{
-				using enum EventTrigger::WhatToDo;
+				iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
+
+				EventTrigger action = map.TriggerEvent(checktile);
+
+				switch (action.eventFunction)
+				{
+					using enum EventTrigger::WhatToDo;
 				case NO_EVENT:
 				{
 					break;
@@ -250,7 +265,7 @@ TransitionScene Scene_Map::Update()
 						break;
 					}
 
-					for (auto const &[itemToAdd, amountToAdd] : action.values)
+					for (auto const& [itemToAdd, amountToAdd] : action.values)
 					{
 						playerParty->AddItemToInventory(itemToAdd, amountToAdd);
 						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
@@ -283,6 +298,7 @@ TransitionScene Scene_Map::Update()
 				{
 					tpInfo = action;
 					return TransitionScene::LOAD_MAP_FROM_MAP;
+				}
 				}
 			}
 		}
@@ -353,7 +369,7 @@ TransitionScene Scene_Map::TryRandomBattle()
 	return TransitionScene::NONE;
 }
 
-int Scene_Map::OnPause() 
+int Scene_Map::OnPause()
 {
 	for (auto const& elem : pauseWindow)
 	{
@@ -386,7 +402,7 @@ bool Scene_Map::SaveScene(pugi::xml_node const& info)
 	currentNode.append_attribute("x").set_value(player.GetPosition().x);
 	currentNode.append_attribute("y").set_value(player.GetPosition().y);
 	currentNode.append_attribute("currentMap").set_value(currentMap.c_str());
-	
+
 	return false;
 }
 
@@ -398,7 +414,7 @@ bool Scene_Map::LoadScene(pugi::xml_node const& info)
 							   data.attribute("y").as_int() });
 
 	currentMap = data.attribute("currentMap").as_string();
-	
+
 
 	return false;
 }
@@ -439,8 +455,8 @@ void Scene_Map::DebugDraw()
 	//Text display
 	app->fonts->DrawText("GOD MODE ON", TextParameters(0, DrawParameters(0, iPoint{ 20,30 })));
 
-	app->fonts->DrawText("Player pos X: " + std::to_string(player.position.x), TextParameters(0, DrawParameters(0, iPoint{40,120})));
-	app->fonts->DrawText("Player pos Y: " + std::to_string(player.position.y), TextParameters(0, DrawParameters(0, iPoint{40,160})));
+	app->fonts->DrawText("Player pos X: " + std::to_string(player.position.x), TextParameters(0, DrawParameters(0, iPoint{ 40,120 })));
+	app->fonts->DrawText("Player pos Y: " + std::to_string(player.position.y), TextParameters(0, DrawParameters(0, iPoint{ 40,160 })));
 
 	std::string mapState = "Unknown";
 	switch (state)
@@ -461,5 +477,87 @@ void Scene_Map::DebugDraw()
 		mapState = "Unknown";
 		break;
 	}
-	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{40,230})));
+	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{ 40,230 })));
+}
+
+void Scene_Map::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const
+{
+	int w = 0;
+	int h = 0;
+	app->tex->GetSize(app->GetTexture(textureID), w, h);
+
+	SDL_Rect hpBar{};
+	hpBar.x = position.x + 2;
+	hpBar.y = position.y + h * 2 + 10;
+	hpBar.h = 10;
+
+	hpBar.w = 100;
+	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
+
+	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
+	hpBar.w = hp > 0 ? static_cast<int>(hp * 100.0f) : 0;
+
+	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
+	auto green = static_cast<Uint8>(250.0f * hp);
+
+	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
+}
+
+void Scene_Map::DrawStatsMenu()
+{
+	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
+
+	for (auto const& elem : statsWindow)
+	{
+		elem->Draw();
+	}
+
+	for (int i = 0; auto const& character : playerParty->party)
+	{
+		iPoint allyPosition(170 - camera.x, (145 * i) - camera.y + 55);
+		iPoint hpBarPosition(140 - camera.x, (145 * i) - camera.y + 80);
+		DrawHPBar(character.battlerTextureID, character.currentHP, character.stats[0], hpBarPosition);
+
+		DrawParameters drawAlly(character.battlerTextureID, allyPosition);
+
+		if (character.currentHP <= 0)
+		{
+			drawAlly.RotationAngle(90);
+
+			int w = 0;
+			int h = 0;
+			app->tex->GetSize(app->GetTexture(character.battlerTextureID), w, h);
+
+			SDL_Point pivot = {
+				w / 2,
+				h
+			};
+
+			drawAlly.Center(pivot);
+		}
+
+		drawAlly.Scale(fPoint{ 3,3 });
+
+		app->render->DrawTexture(drawAlly);
+
+		app->fonts->DrawText(character.name, TextParameters(0, DrawParameters(0, iPoint{ 280,(140 * (i + 1)) })));
+		app->fonts->DrawText("Lv. " + std::to_string(character.level), TextParameters(0, DrawParameters(0, iPoint{ 435,(140 * (i + 1)) })));
+		app->fonts->DrawText("HP: " + std::to_string(character.currentHP) + " / " + std::to_string(character.stats.at(0)), TextParameters(0, DrawParameters(0, iPoint{ 280,50 + (140 * i) })));
+		app->fonts->DrawText("MP: " + std::to_string(character.currentMana) + " / " + std::to_string(character.stats.at(1)), TextParameters(0, DrawParameters(0, iPoint{ 280,90 + (140 * i) })));
+		app->fonts->DrawText("EXP: " + std::to_string(character.currentXP), TextParameters(0, DrawParameters(0, iPoint{ 560,(140 * (i + 1)) })));
+		app->fonts->DrawText("Atk: " + std::to_string(character.stats.at(2)) , TextParameters(0, DrawParameters(0, iPoint{ 600,50 + (140 * i) })));
+		app->fonts->DrawText("Def: " + std::to_string(character.stats.at(3)), TextParameters(0, DrawParameters(0, iPoint{ 600,90 + (140 * i) })));
+		app->fonts->DrawText("SpAtk: " + std::to_string(character.stats.at(4)), TextParameters(0, DrawParameters(0, iPoint{ 900,50 + (140 * i) })));
+		app->fonts->DrawText("SpDef: " + std::to_string(character.stats.at(5)), TextParameters(0, DrawParameters(0, iPoint{ 900,90 + (140 * i) })));
+		i++;
+	}
+
+}
+
+void Scene_Map::UpdateStatsMenu()
+{
+	for (auto const& elem : statsWindow)
+	{
+		elem->Update();
+	}
 }
