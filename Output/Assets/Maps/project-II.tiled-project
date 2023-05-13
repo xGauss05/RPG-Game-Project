@@ -286,7 +286,11 @@
                 "Airport",
                 "Lab_Exterior",
                 "Lab_Inside",
-                "Market"
+                "Market",
+                "Dungeon_Outside",
+                "Dungeon01",
+                "Dungeon02",
+                "Dungeon03"
             ],
             "valuesAsFlags": false
         },
