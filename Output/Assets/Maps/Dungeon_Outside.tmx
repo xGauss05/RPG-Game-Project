@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="23" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
+ <tileset firstgid="1" source="Dungeon_Outside.tsx"/>
+ <layer id="1" name="Capa de patrones 1" width="23" height="32">
+  <data encoding="csv">
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,12,4,12,4,12,4,12,4,12,20,6,21,12,4,12,4,12,4,12,4,12,4,
+4,4,4,4,4,4,4,4,4,4,28,14,29,4,4,4,4,4,4,4,4,4,4,
+34,34,34,34,35,1,1,1,1,1,1,1,1,1,1,1,1,1,33,34,34,34,34,
+42,42,42,42,44,35,1,1,1,1,1,1,1,1,1,1,1,33,45,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42,
+42,42,42,42,42,43,1,1,1,1,1,1,1,1,1,1,1,41,42,42,42,42,42
+</data>
+ </layer>
+ <objectgroup id="2" name="Events" class="Layer of Events">
+  <object id="1" name="To Village" type="Event Teleport" x="112" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="2" name="To Village" type="Event Teleport" x="96" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="3" name="To Village" type="Event Teleport" x="128" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="4" name="To Village" type="Event Teleport" x="144" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="5" name="To Village" type="Event Teleport" x="176" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="6" name="To Village" type="Event Teleport" x="160" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="7" name="To Village" type="Event Teleport" x="208" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="8" name="To Village" type="Event Teleport" x="192" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="9" name="To Village" type="Event Teleport" x="224" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="10" name="To Village" type="Event Teleport" x="240" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="11" name="To Village" type="Event Teleport" x="256" y="496" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="117"/>
+      <property name="Destination Y" type="int" value="39"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="12" name="To Dungeon" type="Event Teleport" x="176" y="80" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
+      <property name="Destination X" type="int" value="13"/>
+      <property name="Destination Y" type="int" value="17"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="13" name="To Dungeon" type="Event Teleport" x="160" y="80" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
+      <property name="Destination X" type="int" value="13"/>
+      <property name="Destination Y" type="int" value="17"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="14" name="To Dungeon" type="Event Teleport" x="192" y="80" width="16" height="16">
+   <properties>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
+      <property name="Destination X" type="int" value="13"/>
+      <property name="Destination Y" type="int" value="17"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
