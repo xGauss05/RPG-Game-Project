@@ -6,7 +6,8 @@
 		<party_member name="Er Yona" level="1" currentHP="100" currentMP="100" currentXP="0" />
 		<party_member name="Rocio" level="1" currentHP="100" currentMP="100" currentXP="0" />
 	</scene>
-	<renderer>
-		<graphics vsync="false" targetfps="0" />
-	</renderer>
+	<player x="192" y="2304" currentMap="Village" />
+	<render>
+		<graphics vsync="false" targetfps="60" />
+	</render>
 </save_state>
