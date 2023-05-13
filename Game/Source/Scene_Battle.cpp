@@ -249,18 +249,37 @@ TransitionScene Scene_Battle::Update()
 					
 					actionSelected = -1;
 					targetSelected = -1;
-					currentPlayer++;
+					currentPlayer++; 
+					
 				}
 				else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
 				{
 					actionSelected = -1;
 					targetSelected = -1;
+					
 				}
 			}
 			else if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 			{
 				std::string text = std::format("What will {} do?", party->party[currentPlayer].name);
-				
+
+				if (!playedTurnSfx) 
+				{
+					playedTurnSfx = true;
+					if (StrEquals(party->party[currentPlayer].name, "Antonio")) {
+						//app->audio->PlayFx(erYonaTurnSfx);
+					}
+					if (StrEquals(party->party[currentPlayer].name, "Sayuri")) {
+						//app->audio->PlayFx(erYonaTurnSfx);
+					}
+					if (StrEquals(party->party[currentPlayer].name, "Er Yona")) {
+						app->audio->PlayFx(erYonaTurnSfx);
+					}
+					if (StrEquals(party->party[currentPlayer].name, "Rocio")) {
+						//app->audio->PlayFx(erYonaTurnSfx);
+					}
+				}
+
 				messages->ModifyLastWidgetText(text);
 				switch (actions->Update())
 				{
@@ -268,18 +287,21 @@ TransitionScene Scene_Battle::Update()
 					{
 						actionSelected = 0;
 						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+						playedTurnSfx = false;
 						break;
 					}
 					case 101:
 					{
 						actionSelected = 1;
 						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+						playedTurnSfx = false;
 						break;
 					}
 					case 102:
 					{
 						actionQueue.emplace(2, currentPlayer, 0, true, INT_MAX);
 						currentPlayer++;
+						playedTurnSfx = false;
 						break;
 					}
 					case 103:

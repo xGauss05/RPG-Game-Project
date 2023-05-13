@@ -90,4 +90,6 @@ private:
     int sayorideadSfx;
     int rociodeadSfx;
     int antoniodeadSfx;
+
+    bool playedTurnSfx = false;
 };
