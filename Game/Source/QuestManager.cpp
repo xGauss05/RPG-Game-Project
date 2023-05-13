@@ -161,12 +161,6 @@ void QuestManager::ActivateQuest(std::string name)
 			{
 				activeQuests.emplace_back(std::make_unique<Quest_Collect>(*derivedPtr));
 			}
-
-
-			//if (auto check = std::dynamic_pointer_cast<Quest_Talk>(quest))
-			//{
-			//	activeQuests.emplace_back(std::make_unique<Quest>(*quest.get())); //this is what is causing the trouble
-			//}
 		}
 	}
 }

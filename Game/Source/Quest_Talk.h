@@ -9,8 +9,6 @@ public:
 	Quest_Talk() = default;
 
 	bool Update() override;
-
-private:
 };
 
 #endif __QUEST_TALK_H__

@@ -20,8 +20,6 @@ public:
 
 	virtual bool Update() = 0;
 
-public:
-
 	std::string name = "";
 	std::string description = "";
 	QuestType type = QuestType::UNKNOWN;

@@ -9,8 +9,6 @@ public:
 	Quest_Collect() = default;
 
 	bool Update() override;
-
-private:
 };
 
 #endif __QUEST_COLLECT_H__
