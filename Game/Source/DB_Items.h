@@ -10,7 +10,7 @@ struct Item
 		explicit GeneralProperties(pugi::xml_node const& node);
 
 		std::string name = "";
-		int iconIndex = 0;
+		std::string iconIndex = "";
 		std::string description = "";
 		int iTypeID = 1;
 		int price = 0;

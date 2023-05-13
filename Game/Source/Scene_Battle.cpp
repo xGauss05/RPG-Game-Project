@@ -122,6 +122,7 @@ void Scene_Battle::Draw()
 	messages->Draw();
 	actions->Draw();
 
+
 	for (int i = 0; auto const& elem : party->party)
 	{
 		iPoint allyPosition(300 - camera.x, (120 * i) - camera.y + 55);
