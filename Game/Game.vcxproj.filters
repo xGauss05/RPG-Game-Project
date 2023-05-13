@@ -101,6 +101,7 @@
     <ClInclude Include="Source\Transition_FadeToColour.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
+    <ClInclude Include="Source\AdjacencyGraph.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />
