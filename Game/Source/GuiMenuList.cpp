@@ -22,12 +22,43 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 
 		int textureID = app->tex->Load(backgroundNode.attribute("path").as_string());
 
-		iPoint tSegments(
-			backgroundNode.attribute("segments").as_int(),
-			backgroundNode.attribute("segments").as_int()
-		);
+		iPoint tSegments(0, 0);
 
-		background = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments);
+		if (auto boxSegments = backgroundNode.attribute("segments").as_int();
+			boxSegments != 0)
+		{
+			tSegments = { boxSegments, boxSegments };
+		}
+		else
+		{
+			tSegments = {
+				backgroundNode.attribute("numOfSegmentsX").as_int(),
+				backgroundNode.attribute("numOfSegmentsY").as_int()
+			};
+		}
+
+		GuiPanel_Border missingPanel = GuiPanel_Border::NONE;
+
+		// Something something about accessing nullpointers?
+		// How in the hell does this work and why
+		for (auto const& elem : backgroundNode.children("border"))
+		{
+			missingPanel = static_cast<GuiPanel_Border>(
+				static_cast<uint>(missingPanel) +
+				static_cast<uint>(
+					background->MapStringToGuiPanelBorder(
+						elem.attribute("missing").as_string()
+					)
+				)
+			);
+		}
+
+		auto hasPanels =
+			static_cast<GuiPanel_Border>(
+				static_cast<uint>(GuiPanel_Border::ALL) - static_cast<uint>(missingPanel)
+			);
+
+		background = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments, hasPanels);
 
 		if (auto scrollArrowNode = backgroundNode.child("scrollarrow");
 			scrollArrowNode)
@@ -157,10 +188,10 @@ void GuiMenuList::HandleInput()
 		HandleRightButtonClick();
 	}
 
-	if (lastTimeSinceScrolled >= 5)
+	lastTimeSinceScrolled++;
+
+	if (lastTimeSinceScrolled >= 10)
 		HandleWheelScroll();
-	else
-		lastTimeSinceScrolled++;
 }
 
 void GuiMenuList::HandleLeftClick()
@@ -177,7 +208,7 @@ void GuiMenuList::HandleLeftClick()
 	{
 		iPoint relativeCoords = mousePos - position - outterMargin;
 
-		if (relativeCoords.y <= 0 && lastTimeSinceScrolled >= 5)
+		if (relativeCoords.y <= 0 && lastTimeSinceScrolled >= 15)
 		{
 			SelectAndScrollUpIfNeeded();
 			return;
@@ -200,13 +231,11 @@ void GuiMenuList::HandleLeftClick()
 			}
 			else
 			{
-				LOG("Selected %i", elementClicked);
 				currentItemSelected = elementClicked;
 			}
 		}
-		else if (lastTimeSinceScrolled >= 5)
+		else if (lastTimeSinceScrolled >= 15)
 		{
-			LOG("Element Clicked: %i", elementClicked);
 			SelectAndScrollDownIfNeeded();
 		}
 	}

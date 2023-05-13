@@ -3,11 +3,11 @@
 
 #include "Render.h"
 
-GuiPanelSegmented::GuiPanelSegmented(SDL_Rect const& r, iPoint a, int id, iPoint tSegments)
-	: rect(r), advance(a), textureID(id), textureSegments(tSegments) {}
+GuiPanelSegmented::GuiPanelSegmented(SDL_Rect const& r, iPoint a, int id, iPoint tSegments, GuiPanel_Border border)
+	: rect(r), advance(a), textureID(id), textureSegments(tSegments), drawBorder(border) {}
 
-GuiPanelSegmented::GuiPanelSegmented(SDL_Rect const& r, int a, int id, iPoint tSegments)
-	: rect(r), advance(iPoint(a, a)), textureID(id), textureSegments(tSegments) {}
+GuiPanelSegmented::GuiPanelSegmented(SDL_Rect const& r, int a, int id, iPoint tSegments, GuiPanel_Border border)
+	: rect(r), advance(iPoint(a, a)), textureID(id), textureSegments(tSegments), drawBorder(border) {}
 
 void GuiPanelSegmented::Draw(iPoint originalPosition, iPoint size) const
 {
@@ -48,9 +48,17 @@ void GuiPanelSegmented::Draw(iPoint originalPosition, iPoint size) const
 
 void GuiPanelSegmented::DrawHorizontalSegment(iPoint topLeftPosition, SDL_Rect currentSegment, iPoint size) const
 {
+	using enum GuiPanel_Border;
+
 	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 	topLeftPosition -= camera;
-	// Draw left corner texture
+
+	if (!AContainsB(drawBorder, LEFT))
+	{
+		currentSegment.x += currentSegment.w + advance.x;
+	}
+
+	// Draw left border texture
 	app->render->DrawTexture(DrawParameters(textureID, topLeftPosition).Section(&currentSegment));
 
 	// Go to next draw position
@@ -59,7 +67,9 @@ void GuiPanelSegmented::DrawHorizontalSegment(iPoint topLeftPosition, SDL_Rect c
 	// Get number of side fragments (minus corners) needed to fill the side
 	auto xRepeats = (size.x / currentSegment.w) - 2;
 
-	currentSegment.x += currentSegment.w + advance.x;
+	
+	if(AContainsB(drawBorder, LEFT))
+		currentSegment.x += currentSegment.w + advance.x;
 
 	auto firstSideX = currentSegment.x;
 
@@ -70,13 +80,19 @@ void GuiPanelSegmented::DrawHorizontalSegment(iPoint topLeftPosition, SDL_Rect c
 
 		topLeftPosition.x += currentSegment.w;
 
-		// Go to next side fragment, if there are no more, go to previous
-		currentSegment.x = (i % (textureSegments.x - 2))
-			? currentSegment.x + currentSegment.w + advance.x
-			: firstSideX;
+		if (textureSegments.x > 2)
+		{
+				// Go to next side fragment, if there are no more, go to previous
+				currentSegment.x = (i % (textureSegments.x - 2))
+				? currentSegment.x + currentSegment.w + advance.x
+				: firstSideX;
+		}
 	}
 
-	currentSegment.x = firstSideX + (textureSegments.x - 2) * (currentSegment.w + advance.x);
+	if(textureSegments.x - 2 > 0)
+		currentSegment.x = firstSideX + (textureSegments.x - 2) * (currentSegment.w + advance.x);
+	else if (AContainsB(drawBorder, RIGHT))
+		currentSegment.x += currentSegment.w + advance.x;		
 
 	// Draw right corner
 	app->render->DrawTexture(DrawParameters(textureID, topLeftPosition).Section(&currentSegment));
@@ -91,4 +107,17 @@ void GuiPanelSegmented::Unload() const
 int GuiPanelSegmented::GetTextureID() const
 {
 	return textureID;
+}
+
+GuiPanel_Border GuiPanelSegmented::MapStringToGuiPanelBorder(std::string_view str) const
+{
+	using enum GuiPanel_Border;
+
+	if (StrEquals(str, "NONE"))		return NONE;
+	if (StrEquals(str, "LEFT"))		return LEFT;
+	if (StrEquals(str, "RIGHT"))	return RIGHT;
+	if (StrEquals(str, "UP"))		return UP;
+	if (StrEquals(str, "DOWN"))		return DOWN;
+	
+	return ALL;
 }
