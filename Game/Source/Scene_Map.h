@@ -42,6 +42,8 @@ private:
 
 	void DebugItems();
 
+	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
+
 	enum class MapState
 	{
 		NORMAL,

@@ -111,6 +111,7 @@ void Scene_Map::Draw()
 {
 	map.Draw();
 	player.Draw();
+
 	for (auto const& elem : windows)
 	{
 		elem->Draw();
@@ -157,11 +158,11 @@ TransitionScene Scene_Map::Update()
 
 	auto playerAction = player.HandleInput();
 
-	if (statusOpen) 
-	{ 
+	if (statusOpen)
+	{
 		UpdateStatsMenu();
 	}
-	else 
+	else
 	{
 		using PA = Player::PlayerAction::Action;
 
@@ -479,12 +480,78 @@ void Scene_Map::DebugDraw()
 	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{ 40,230 })));
 }
 
+void Scene_Map::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const
+{
+	int w = 0;
+	int h = 0;
+	app->tex->GetSize(app->GetTexture(textureID), w, h);
+
+	SDL_Rect hpBar{};
+	hpBar.x = position.x + 2;
+	hpBar.y = position.y + h * 2 + 10;
+	hpBar.h = 10;
+
+	hpBar.w = 100;
+	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
+
+	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
+	hpBar.w = hp > 0 ? static_cast<int>(hp * 100.0f) : 0;
+
+	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
+	auto green = static_cast<Uint8>(250.0f * hp);
+
+	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
+}
+
 void Scene_Map::DrawStatsMenu()
 {
+	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
+
 	for (auto const& elem : statsWindow)
 	{
 		elem->Draw();
 	}
+
+	for (int i = 0; auto const& character : playerParty->party)
+	{
+		iPoint allyPosition(170 - camera.x, (145 * i) - camera.y + 55);
+		iPoint hpBarPosition(140 - camera.x, (145 * i) - camera.y + 80);
+		DrawHPBar(character.battlerTextureID, character.currentHP, character.stats[0], hpBarPosition);
+
+		DrawParameters drawAlly(character.battlerTextureID, allyPosition);
+
+		if (character.currentHP <= 0)
+		{
+			drawAlly.RotationAngle(90);
+
+			int w = 0;
+			int h = 0;
+			app->tex->GetSize(app->GetTexture(character.battlerTextureID), w, h);
+
+			SDL_Point pivot = {
+				w / 2,
+				h
+			};
+
+			drawAlly.Center(pivot);
+		}
+
+		drawAlly.Scale(fPoint{ 3,3 });
+
+		app->render->DrawTexture(drawAlly);
+
+		app->fonts->DrawText(character.name, TextParameters(0, DrawParameters(0, iPoint{ 280,(140 * (i + 1)) })));
+		app->fonts->DrawText("Lv. " + std::to_string(character.level), TextParameters(0, DrawParameters(0, iPoint{ 435,(140 * (i + 1)) })));
+		app->fonts->DrawText("HP: " + std::to_string(character.currentHP) + " / " + std::to_string(character.stats.at(0)), TextParameters(0, DrawParameters(0, iPoint{ 280,50 + (140 * i) })));
+		app->fonts->DrawText("MP: " + std::to_string(character.currentMana) + " / " + std::to_string(character.stats.at(1)), TextParameters(0, DrawParameters(0, iPoint{ 280,90 + (140 * i) })));
+		app->fonts->DrawText("EXP: " + std::to_string(character.currentXP), TextParameters(0, DrawParameters(0, iPoint{ 560,(140 * (i + 1)) })));
+		app->fonts->DrawText("Atk: " + std::to_string(character.stats.at(2)) , TextParameters(0, DrawParameters(0, iPoint{ 600,50 + (140 * i) })));
+		app->fonts->DrawText("Def: " + std::to_string(character.stats.at(3)), TextParameters(0, DrawParameters(0, iPoint{ 600,90 + (140 * i) })));
+		app->fonts->DrawText("SpAtk: " + std::to_string(character.stats.at(4)), TextParameters(0, DrawParameters(0, iPoint{ 900,50 + (140 * i) })));
+		app->fonts->DrawText("SpDef: " + std::to_string(character.stats.at(5)), TextParameters(0, DrawParameters(0, iPoint{ 900,90 + (140 * i) })));
+		i++;
+	}
+
 }
 
 void Scene_Map::UpdateStatsMenu()
