@@ -5,6 +5,8 @@
 
 #include "Map_Menu_MainCategories.h"
 
+#include "AdjacencyGraph.h"
+
 class Map_Window_Menu
 {
 public:
