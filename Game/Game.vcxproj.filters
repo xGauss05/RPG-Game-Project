@@ -37,6 +37,9 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GuiCheckbox.cpp" />
+    <ClCompile Include="Source\QuestManager.cpp" />
+    <ClCompile Include="Source\Quest_Talk.cpp" />
+    <ClCompile Include="Source\Quest_Collect.cpp" />
     <ClCompile Include="Source\Transition.cpp" />
     <ClCompile Include="Source\TransitionManager.cpp" />
     <ClCompile Include="Source\DB_Items.cpp" />
@@ -92,6 +95,10 @@
     <ClInclude Include="Source\Window_Panel.h" />
     <ClInclude Include="Source\Easing.h" />
     <ClInclude Include="Source\GuiCheckbox.h" />
+    <ClInclude Include="Source\QuestManager.h" />
+    <ClInclude Include="Source\Quest.h" />
+    <ClInclude Include="Source\Quest_Talk.h" />
+    <ClInclude Include="Source\Quest_Collect.h" />
     <ClInclude Include="Source\Transition.h" />
     <ClInclude Include="Source\TransitionManager.h" />
     <ClInclude Include="Source\DB_Items.h" />
@@ -101,6 +108,7 @@
     <ClInclude Include="Source\Transition_FadeToColour.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
+    <ClInclude Include="Source\AdjacencyGraph.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

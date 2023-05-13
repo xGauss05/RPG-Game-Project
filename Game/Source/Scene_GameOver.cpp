@@ -35,12 +35,10 @@ void Scene_GameOver::Load(std::string const& path, LookUpXMLNodeFromString const
 			{
 				windows.push_back(std::move(result));
 			}
-
 		}
 	}
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/gameover_bg.png");
-	//app->audio->PlayMusic("Assets/Audio/Music/M_GameOver-Music.ogg");
 
 	app->render->ResetCamera();
 
@@ -58,7 +56,7 @@ void Scene_GameOver::Load(std::string const& path, LookUpXMLNodeFromString const
 void Scene_GameOver::Start()
 {
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/gameover_bg.png");
-	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/M_Battle-Loose.ogg");
 	
 	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 }
@@ -82,12 +80,13 @@ TransitionScene Scene_GameOver::Update()
 	{
 		switch (elem->Update())
 		{
-		case 1:
-			return NEW_GAME;
+		
 		case 2:
 			return CONTINUE_GAME;
 		case 4:
 			return EXIT_GAME;
+		case 7:
+			return MAIN_MENU;
 		default:
 			continue;
 		}
