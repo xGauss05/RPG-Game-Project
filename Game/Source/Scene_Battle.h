@@ -2,6 +2,7 @@
 #include "Scene_Base.h"
 #include "GameParty.h"
 #include "EnemyTroops.h"
+#include "GuiMenuList.h"
 
 #include <random>
 

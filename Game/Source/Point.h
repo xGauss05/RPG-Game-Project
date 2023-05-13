@@ -96,6 +96,53 @@ public:
 	auto operator <=>(const Point &v) const = default;
 
 	// Utils ------------------------------------------------
+	Point& CeilToNearest(Point v)
+	{
+		if ((x % v.x) != 0)
+		{
+			x += v.x - (x % v.x);
+		}
+		if ((y % v.y) != 0)
+		{
+			y += v.y - (y % v.y);
+		}
+
+		return *this;
+	}
+
+	Point& CeilToNearest(int v)
+	{
+		return CeilToNearest(Point(v, v));
+	}
+	
+	Point& FloorToNearest(Point v)
+	{
+		if ((x % v.x) != 0)
+		{
+			x -= v.x - (x % v.x);
+		}
+		if ((y % v.y) != 0)
+		{
+			y -= v.y - (y % v.y);
+		}
+
+		return *this;
+	}
+
+	Point& FloorToNearest(int v)
+	{
+		return FloorToNearest(Point(v, v));
+	}
+
+	Point<bool> SameSign(Point v)
+	{
+		return Point<bool> (
+				SameSign(x, v.x),
+				SameSign(y, v.y)
+			);
+	}
+
+
 	bool IsZero() const
 	{
 		return (x == 0 && y == 0);

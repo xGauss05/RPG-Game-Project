@@ -96,6 +96,8 @@ public:
 		TextParameters const &originalParams
 	) const;
 
+	int GetLineHeight(int fontID) const;
+
 private:
 	iPoint GetAnchorPosition(iPoint position, AnchorTo anchor) const;
 	iPoint GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const& font) const;

@@ -75,3 +75,21 @@ std::unique_ptr<Window_Panel> Window_Factory::CreateWindowPanel(std::string_view
 
 	return returnPtr;
 }
+
+std::unique_ptr<GuiMenuList> Window_Factory::CreateMenuList(std::string_view const& windowName) const
+{
+	std::unique_ptr<GuiMenuList> returnPtr = nullptr;
+
+	auto windowHash = info.find(windowName);
+	if (windowHash == info.end())
+	{
+		LOG("Window information for %s not found in XML.", windowName);
+		//returnPtr = std::make_unique<GuiMenuList>(info.find("MenuListFallback")->second);
+	}
+	else
+	{
+		//returnPtr = std::make_unique<GuiMenuList>(windowHash->second);
+	}
+
+	return returnPtr;
+}

@@ -16,6 +16,11 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 		enemies.CreateFight(GetRandomEncounter());
 	else
 		enemies.CreateFight(fightName);
+
+	if (CheckBattleLoss())
+	{
+		party->party.front().SetCurrentHP(1);
+	}
 }
 
 std::string_view Scene_Battle::GetRandomEncounter()

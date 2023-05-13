@@ -204,6 +204,12 @@ void Render::ResetViewPort() const
 
 bool Render::DrawTexture(DrawParameters const &params) const
 {
+	if (params.textureID < 0 || params.textureID > app->tex->textures.size())
+	{
+		LOG("Texture ID is invalid. Cannot blit to screen.");
+		return false;
+	}
+
 	auto texture = app->GetTexture(params.textureID);
 
 	fPoint scale = (params.scale.IsZero())

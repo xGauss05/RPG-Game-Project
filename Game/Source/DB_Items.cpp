@@ -7,7 +7,7 @@
 Item::GeneralProperties::GeneralProperties(pugi::xml_node const& node)
 	:
 	name(node.child("name").text().as_string()),
-	iconIndex(node.child("iconIndex").text().as_int()),
+	iconIndex(node.child("iconIndex").text().as_string()),
 	description(node.child("description").text().as_string()),
 	iTypeID(node.child("itypeId").text().as_int()),
 	price(node.child("price").text().as_int()),
@@ -49,7 +49,12 @@ Item::Item(pugi::xml_node const& itemNode)
 	invocation(BattleProperties(itemNode.child("invocation"))),
 	damage(DamageProperties(itemNode.child("damage"))),
 	effect(EffectProperties(itemNode.child("effects")))
-{}
+{
+	if (!general.iconIndex.empty())
+	{
+		app->tex->Load(std::format("Assets/Textures/Items/{}.png", general.iconIndex));
+	}
+}
 
 DB_Items::DB_Items()
 {

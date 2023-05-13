@@ -5,7 +5,7 @@
 		<organization>UPC</organization>
 	</app>
 	<render>
-		<vsync value="true" />
+		<vsync value="false" />
 	</render>
 	<window>
 		<resolution width="1280" height="720" scale="1" />
@@ -61,8 +61,8 @@
 			</scene>
 		</gameover_info>
 		<window_info>
-      <window name="ListFallback" class="List" type="Base" x="0" y="0" width="0" height="0"/>
-      <window name="PanelFallback" class="Panel" type="Base"/>
+			<window name="ListFallback" class="List" type="Base" x="0" y="0" width="0" height="0" />
+			<window name="PanelFallback" class="Panel" type="Base" />
 			<window name="MainMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
 				<button startingX="1300" targetX="940" startingY="300" targetY="300" width="250" height="65" text="New Game" function="NewGame" segmentwidth="32" segmentheight="32">
 					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
@@ -263,6 +263,14 @@
           <texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
         </panel>
       </window>
+			<window name="MenuListFallback" class="MenuList" x="450" y="50" width="250" height="460">
+				<background segmentX="0" segmentY="0" segmentWidth="32" segmentHeight="32" numOfSegmentsX="2" numOfSegmentsY="3" advance="4" path="Assets/UI/GUI_4x_sliced.png">
+          <!--<border missing="Left"/>-->
+          <!--<border missing="Right"/>-->
+          <scrollarrow  rectX="145" rectY="116" rectW="34" rectH="32"/>
+        </background>
+				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+			</window>
 		</window_info>
 	</scene>
 	<fonts>
