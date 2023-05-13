@@ -30,7 +30,8 @@ public:
 	bool SaveScene(pugi::xml_node const&) override;
 	bool LoadScene(pugi::xml_node const&) override;
 	void DebugDraw() override;
-
+	void DrawStatsMenu();
+	void UpdateStatsMenu();
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;
 	TransitionScene TryRandomBattle();
@@ -50,6 +51,7 @@ private:
 	};
 
 	bool godMode = false;
+	bool statusOpen = false;
 	int battleSFX = 0;
 	std::random_device rd;
 	std::uniform_int_distribution<> random100;
@@ -73,6 +75,7 @@ private:
 	LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
+	std::vector<std::unique_ptr<Window_Base>> statsWindow;
 };
 
 

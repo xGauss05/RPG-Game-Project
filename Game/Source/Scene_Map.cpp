@@ -74,6 +74,10 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 			{
 				pauseWindow.push_back(std::move(result));
 			}
+			else if (StrEquals("StatsMenu", window.attribute("name").as_string()))
+			{
+				statsWindow.push_back(std::move(result));
+			}
 		}
 	}
 
@@ -85,7 +89,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	else {
 		musicname = "Assets/Audio/Music/M_Town-" + currentMap + ".ogg";
 	}
-	 
+
 	app->audio->PlayMusic(musicname.c_str());
 
 	battleSFX = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
@@ -116,6 +120,8 @@ void Scene_Map::Draw()
 	{
 		DebugDraw();
 	}
+
+	if (statusOpen) DrawStatsMenu();
 }
 
 void Scene_Map::DebugItems()
@@ -147,14 +153,22 @@ TransitionScene Scene_Map::Update()
 		}
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN) statusOpen = !statusOpen;
+
 	auto playerAction = player.HandleInput();
 
-	using PA = Player::PlayerAction::Action;
-
-	if (state == MapState::ON_MENU_SELECTION)
+	if (statusOpen) 
+	{ 
+		UpdateStatsMenu();
+	}
+	else 
 	{
-		switch (windows.back()->Update())
+		using PA = Player::PlayerAction::Action;
+
+		if (state == MapState::ON_MENU_SELECTION)
 		{
+			switch (windows.back()->Update())
+			{
 			case 200: //Yes
 			{
 				LOG("Said yes");
@@ -179,66 +193,66 @@ TransitionScene Scene_Map::Update()
 			}
 			default:
 				break;
+			}
 		}
-	}
-	else if (app->input->controllerCount <= 0)
-	{
-		windows.back()->Update();
-	}
+		else if (app->input->controllerCount <= 0)
+		{
+			windows.back()->Update();
+		}
 
-	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
-	{
-		if (map.IsWalkable(playerAction.destinationTile) && !godMode)
+		if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
 		{
-			player.StartAction(playerAction);
+			if (map.IsWalkable(playerAction.destinationTile) && !godMode)
+			{
+				player.StartAction(playerAction);
 
-			return TryRandomBattle();
+				return TryRandomBattle();
+			}
+			else if (godMode)
+			{
+				player.StartAction(playerAction);
+			}
 		}
-		else if (godMode)
+		else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 		{
-			player.StartAction(playerAction);
-		}
-	}
-	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
-	{
-		if (state == MapState::ON_MESSAGE)
-		{
-			windows.pop_back();
-			state = MapState::NORMAL;
-		}
-		else if (state == MapState::ON_DIALOG)
-		{
-			auto nextDialogNode = currentDialogNode.attribute("next").as_string();
-
-			if (StrEquals(nextDialogNode, "end"))
+			if (state == MapState::ON_MESSAGE)
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
-				app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-				
 			}
-			else if (StrEquals(nextDialogNode, "Confirmation"))
+			else if (state == MapState::ON_DIALOG)
 			{
-				// Create Yes/No window
-				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
-				state = MapState::ON_MENU_SELECTION;
-			}
-			else
-			{
-				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-			}
-		}
-		else if (state == MapState::NORMAL)
-		{
-			iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
+				auto nextDialogNode = currentDialogNode.attribute("next").as_string();
 
-			EventTrigger action = map.TriggerEvent(checktile);
+				if (StrEquals(nextDialogNode, "end"))
+				{
+					windows.pop_back();
+					state = MapState::NORMAL;
+					app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 
-			switch (action.eventFunction)
+				}
+				else if (StrEquals(nextDialogNode, "Confirmation"))
+				{
+					// Create Yes/No window
+					windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
+					state = MapState::ON_MENU_SELECTION;
+				}
+				else
+				{
+					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+				}
+			}
+			else if (state == MapState::NORMAL)
 			{
-				using enum EventTrigger::WhatToDo;
+				iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
+
+				EventTrigger action = map.TriggerEvent(checktile);
+
+				switch (action.eventFunction)
+				{
+					using enum EventTrigger::WhatToDo;
 				case NO_EVENT:
 				{
 					break;
@@ -250,7 +264,7 @@ TransitionScene Scene_Map::Update()
 						break;
 					}
 
-					for (auto const &[itemToAdd, amountToAdd] : action.values)
+					for (auto const& [itemToAdd, amountToAdd] : action.values)
 					{
 						playerParty->AddItemToInventory(itemToAdd, amountToAdd);
 						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
@@ -283,6 +297,7 @@ TransitionScene Scene_Map::Update()
 				{
 					tpInfo = action;
 					return TransitionScene::LOAD_MAP_FROM_MAP;
+				}
 				}
 			}
 		}
@@ -353,7 +368,7 @@ TransitionScene Scene_Map::TryRandomBattle()
 	return TransitionScene::NONE;
 }
 
-int Scene_Map::OnPause() 
+int Scene_Map::OnPause()
 {
 	for (auto const& elem : pauseWindow)
 	{
@@ -386,7 +401,7 @@ bool Scene_Map::SaveScene(pugi::xml_node const& info)
 	currentNode.append_attribute("x").set_value(player.GetPosition().x);
 	currentNode.append_attribute("y").set_value(player.GetPosition().y);
 	currentNode.append_attribute("currentMap").set_value(currentMap.c_str());
-	
+
 	return false;
 }
 
@@ -398,7 +413,7 @@ bool Scene_Map::LoadScene(pugi::xml_node const& info)
 							   data.attribute("y").as_int() });
 
 	currentMap = data.attribute("currentMap").as_string();
-	
+
 
 	return false;
 }
@@ -439,8 +454,8 @@ void Scene_Map::DebugDraw()
 	//Text display
 	app->fonts->DrawText("GOD MODE ON", TextParameters(0, DrawParameters(0, iPoint{ 20,30 })));
 
-	app->fonts->DrawText("Player pos X: " + std::to_string(player.position.x), TextParameters(0, DrawParameters(0, iPoint{40,120})));
-	app->fonts->DrawText("Player pos Y: " + std::to_string(player.position.y), TextParameters(0, DrawParameters(0, iPoint{40,160})));
+	app->fonts->DrawText("Player pos X: " + std::to_string(player.position.x), TextParameters(0, DrawParameters(0, iPoint{ 40,120 })));
+	app->fonts->DrawText("Player pos Y: " + std::to_string(player.position.y), TextParameters(0, DrawParameters(0, iPoint{ 40,160 })));
 
 	std::string mapState = "Unknown";
 	switch (state)
@@ -461,5 +476,21 @@ void Scene_Map::DebugDraw()
 		mapState = "Unknown";
 		break;
 	}
-	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{40,230})));
+	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{ 40,230 })));
+}
+
+void Scene_Map::DrawStatsMenu()
+{
+	for (auto const& elem : statsWindow)
+	{
+		elem->Draw();
+	}
+}
+
+void Scene_Map::UpdateStatsMenu()
+{
+	for (auto const& elem : statsWindow)
+	{
+		elem->Update();
+	}
 }
