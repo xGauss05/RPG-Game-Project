@@ -379,7 +379,8 @@ TransitionScene Scene_Map::Update()
 					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
 					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 
-					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+					// I dont know what this was doing here 
+					//currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
 
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
