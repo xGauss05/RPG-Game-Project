@@ -7,18 +7,21 @@
 Scene_Map::Scene_Map(GameParty* party)
 {
 	SetPlayerParty(party);
+	app->audio->RemoveAllFx();
 }
 
 Scene_Map::Scene_Map(std::string const& newMap, GameParty* party)
 	: currentMap(newMap)
 {
 	SetPlayerParty(party);
+	app->audio->RemoveAllFx();
 }
 Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* party)
 	: currentMap(newMap)
 {
 	player.SetPosition(playerCoords * 48);
 	SetPlayerParty(party);
+	app->audio->RemoveAllFx();
 }
 
 bool Scene_Map::isReady()

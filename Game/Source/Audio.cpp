@@ -172,6 +172,14 @@ bool Audio::RemoveFx(int id)
 	return false;
 }
 
+void Audio::RemoveAllFx()
+{
+	for (auto const& item : fx)
+		Mix_FreeChunk(item);
+
+	fx.clear();
+}
+
 void Audio::SetSFXVolume(int value)
 {
 	SFXVolume = value;
