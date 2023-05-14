@@ -1,43 +1,56 @@
 <quests_list>
-  <quest id="0" type="PLACEHOLDER">
-    <general name="">
-      <description></description>
-    </general>
-  </quest>
-  <quest id="1">
-    <general name="Go talk with Kiko">
-      <description>He's rich.</description>
-    </general>
-    <questtype type="TalkTo">
-      <objective objectiveName="Kiko" amountNeeded="1"/>
-    </questtype>
-  </quest>
-  <quest id="2">
-    <general name="Find Kiko's treasures">
-      <description>Look around kiko's house and try to find his treasures.</description>
-    </general>
-    <questtype type="Visit">
-      <objective objectiveName="Kiko_House" amountNeeded="1"/>
-    </questtype>
-    <questtype type="TalkTo">
-      <objective objectiveName="Kiko" amountNeeded="1"/>
-    </questtype>
-  </quest>
-  <quest id="3">
-    <general name="Steal Kiko's treasures">
-      <description>You know what to do.</description>
-    </general>
-    <questtype type="Collect">
-      <objective objectiveName="Kiko's treasures" amountNeeded="5"/>
-      <objective objectiveName="Kiko's chrest" amountNeeded="1"/>
-    </questtype>
-  </quest>
-  <quest id="4">
-    <questtype type="Visit">
-      <objective objectiveName="Kiko" amountNeeded="1"/>
-    </questtype>
-    <general name="Run away from Kiko">
-      <description>Just ruuUuUUUUUUUUN FOR YOUR LIFE.</description>
-    </general>
-  </quest>
+	<quest id="0" type="PLACEHOLDER">
+    	<general name="">
+			<description></description>
+		</general>
+	</quest>
+	<quest id="1">
+    	<general name="Go talk with Kiko">
+			<description>He's rich.</description>
+    	</general>
+    	<questtype type="TalkTo">
+      		<objective objectiveName="Kiko" amountNeeded="1"/>
+    	</questtype>
+    	<rewardlist>
+			<item id="1" amount="9"/>
+      		<item id="3" amount="5"/>
+      		<item id="2" amount="6"/>
+    	</rewardlist>
+  	</quest>
+	<quest id="2">
+    	<general name="Find Kiko's treasures">
+     		 <description>Look around kiko's house and try to find his treasures.</description>
+		</general>
+    	<questtype type="Visit">
+      		<objective objectiveName="Kiko_House" amountNeeded="1"/>
+    	</questtype>
+    	<questtype type="TalkTo">
+      		<objective objectiveName="Kiko" amountNeeded="1"/>
+    	</questtype>
+  	</quest>
+  	<quest id="3">
+    	<general name="Steal Kiko's treasures">
+  			<description>You know what to do.</description>
+    	</general>
+    	<questtype type="Collect">
+     		 <objective objectiveName="Kiko's treasures" amountNeeded="5"/>
+     		 <objective objectiveName="Kiko's chest" amountNeeded="1"/>
+		</questtype>
+ 	</quest>
+  	<quest id="4">
+    	<questtype type="Visit">
+  			<objective objectiveName="Market" amountNeeded="1"/>
+    	</questtype>
+    	<general name="Run away from Kiko">
+      		<description>Just ruuUuUUUUUUUUN FOR YOUR LIFE.</description>
+    	</general>
+  	</quest>
+  	<quest id="5">
+    	<questtype type="Hunt">
+  			<objective objectiveName="Kiko" amountNeeded="1"/>
+    	</questtype>
+    	<general name="Did we do it?">
+      		<description>He's tired! Now is our chance.</description>
+    	</general>
+  	</quest>
 </quests_list>

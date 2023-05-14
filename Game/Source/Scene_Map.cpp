@@ -99,7 +99,10 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 
 void Scene_Map::Start()
 {
-	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
+	std::vector<std::pair<std::string_view, int>> locationVisited;
+	locationVisited.emplace_back(currentMap, 1);
+
+	playerParty->PossibleQuestProgress(QuestType::VISIT, locationVisited, std::vector<std::pair<int, int>>());
 }
 
 void Scene_Map::SetPlayerParty(GameParty* party)
@@ -138,8 +141,32 @@ void Scene_Map::DebugItems()
 	}
 }
 
+void Scene_Map::DebugQuests()
+{
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_DOWN)
+	{
+		playerParty->AcceptQuest(2);
+		if (auto it = playerParty->currentQuests.find(2);
+			it != playerParty->currentQuests.end())
+		{
+			it->second->DebugQuests();
+		}
+	}
+	if (app->input->GetKey(SDL_SCANCODE_K) == KeyState::KEY_DOWN)
+	{
+		if (auto it = playerParty->currentQuests.find(2);
+			it != playerParty->currentQuests.end())
+		{
+			it->second->DebugQuests();
+		}
+		playerParty->CompleteQuest(2);
+	}
+}
+
 TransitionScene Scene_Map::Update()
 {
+	DebugQuests();
+
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;
@@ -153,152 +180,162 @@ TransitionScene Scene_Map::Update()
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN) statusOpen = !statusOpen;
+	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
+		statusOpen = !statusOpen;
 
 	auto playerAction = player.HandleInput();
 
 	if (statusOpen)
 	{
 		UpdateStatsMenu();
+		return TransitionScene::NONE;
 	}
-	else
+
+	using PA = Player::PlayerAction::Action;
+
+	if (state == MapState::ON_MENU_SELECTION)
 	{
-		using PA = Player::PlayerAction::Action;
-
-		if (state == MapState::ON_MENU_SELECTION)
+		switch (windows.back()->Update())
 		{
-			switch (windows.back()->Update())
-			{
-			case 200: //Yes
-			{
-				LOG("Said yes");
-				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("yes").as_string());
-				state = MapState::ON_DIALOG;
-				windows.pop_back();
-				app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-				break;
-			}
-			case 201: //No
-			{
-				LOG("Said no");
-				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("no").as_string());
-				state = MapState::ON_DIALOG;
-				windows.pop_back();
-				app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-				break;
-			}
-			default:
-				break;
-			}
+		case 200: //Yes
+		{
+			LOG("Said yes");
+			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("yes").as_string());
+			state = MapState::ON_DIALOG;
+			windows.pop_back();
+			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
+			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+			break;
 		}
-		else if (app->input->controllerCount <= 0)
+		case 201: //No
 		{
-			windows.back()->Update();
+			LOG("Said no");
+			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("no").as_string());
+			state = MapState::ON_DIALOG;
+			windows.pop_back();
+			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
+			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+			break;
 		}
-
-		if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
-		{
-			if (map.IsWalkable(playerAction.destinationTile) && !godMode)
-			{
-				player.StartAction(playerAction);
-
-				return TryRandomBattle();
-			}
-			else if (godMode)
-			{
-				player.StartAction(playerAction);
-			}
+		default:
+			break;
 		}
-		else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+	}
+	else if (app->input->controllerCount <= 0)
+	{
+		windows.back()->Update();
+	}
+
+	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
+	{
+		if (map.IsWalkable(playerAction.destinationTile) && !godMode)
 		{
-			if (state == MapState::ON_MESSAGE)
+			player.StartAction(playerAction);
+
+			return TryRandomBattle();
+		}
+		else if (godMode)
+		{
+			player.StartAction(playerAction);
+		}
+	}
+	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+	{
+		if (state == MapState::ON_MESSAGE)
+		{
+			windows.pop_back();
+			state = MapState::NORMAL;
+		}
+		else if (state == MapState::ON_DIALOG)
+		{
+			auto nextDialogName = currentDialogNode.attribute("next").as_string();
+			std::string currentDialogName = currentDialogNode.name();
+
+			if (StrEquals(nextDialogName, "quest")
+				&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
+			{
+				nextDialogName = "end";
+			}
+
+			if (StrEquals(currentDialogName, "acceptquest"))
+			{
+				playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
+			}
+			
+			if (StrEquals(nextDialogName, "end"))
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
 			}
-			else if (state == MapState::ON_DIALOG)
+			else if (StrEquals(nextDialogName, "Confirmation"))
 			{
-				auto nextDialogNode = currentDialogNode.attribute("next").as_string();
+				// Create Yes/No window
+				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
+				state = MapState::ON_MENU_SELECTION;
+			}
+			else
+			{
+				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+			}
+		}
+		else if (state == MapState::NORMAL)
+		{
+			iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
 
-				if (StrEquals(nextDialogNode, "end"))
-				{
-					windows.pop_back();
-					state = MapState::NORMAL;
-					app->tex->Load("Assets/UI/GUI_4x_sliced.png");
+			EventTrigger action = map.TriggerEvent(checktile);
 
-				}
-				else if (StrEquals(nextDialogNode, "Confirmation"))
+			switch (action.eventFunction)
+			{
+				using enum EventTrigger::WhatToDo;
+				case NO_EVENT:
 				{
-					// Create Yes/No window
-					windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
-					state = MapState::ON_MENU_SELECTION;
+					break;
 				}
-				else
+				case LOOT:
 				{
-					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+					if (action.values.empty() || !playerParty)
+					{
+						break;
+					}
+
+					for (auto const& [itemToAdd, amountToAdd] : action.values)
+					{
+						playerParty->AddItemToInventory(itemToAdd, amountToAdd);
+						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+					}
+					[[fallthrough]];
+				}
+				case SHOW_MESSAGE:
+				{
+					windows.emplace_back(windowFactory->CreateWindow("Message"));
+					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+					currentPanel->ModifyLastWidgetText(action.text);
+					state = MapState::ON_MESSAGE;
+					break;
+				}
+				case DIALOG_PATH:
+				{
+					if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
+					{
+						LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+						break;
+					}
+					windows.emplace_back(windowFactory->CreateWindow("Message"));
+
+					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+					state = MapState::ON_DIALOG;
+					break;
 				}
-			}
-			else if (state == MapState::NORMAL)
-			{
-				iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
-
-				EventTrigger action = map.TriggerEvent(checktile);
-
-				switch (action.eventFunction)
+				case TELEPORT:
 				{
-					using enum EventTrigger::WhatToDo;
-					case NO_EVENT:
-					{
-						break;
-					}
-					case LOOT:
-					{
-						if (action.values.empty() || !playerParty)
-						{
-							break;
-						}
-
-						for (auto const& [itemToAdd, amountToAdd] : action.values)
-						{
-							playerParty->AddItemToInventory(itemToAdd, amountToAdd);
-							action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
-						}
-						[[fallthrough]];
-					}
-					case SHOW_MESSAGE:
-					{
-						windows.emplace_back(windowFactory->CreateWindow("Message"));
-						auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-						currentPanel->ModifyLastWidgetText(action.text);
-						state = MapState::ON_MESSAGE;
-						break;
-					}
-					case DIALOG_PATH:
-					{
-						if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
-						{
-							LOG("Could not load dialog xml file. Pugi error: %s", result.description());
-							break;
-						}
-						windows.emplace_back(windowFactory->CreateWindow("Message"));
-
-						currentDialogNode = currentDialogDocument.child("dialog").child("message1");
-						auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-						currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-						state = MapState::ON_DIALOG;
-						break;
-					}
-					case TELEPORT:
-					{
-						tpInfo = action;
-						return TransitionScene::LOAD_MAP_FROM_MAP;
-					}
+					tpInfo = action;
+					return TransitionScene::LOAD_MAP_FROM_MAP;
 				}
 			}
 		}
