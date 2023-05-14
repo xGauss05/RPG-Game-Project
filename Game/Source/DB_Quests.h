@@ -4,9 +4,8 @@
 #include "Quest.h"
 
 #include <vector>
-
+#include <map>
 #include <unordered_map>
-#include <unordered_set>
 
 #include <bitset>
 
@@ -14,6 +13,11 @@ class DB_Quests
 {
 public:
 	DB_Quests();
+
+	// Extracts quest with ID = id and returns the node handle
+	inline decltype(auto) QuestAccepted(int id) {
+		return availableQuests.extract(id);
+	}
 
 private:
 	QuestType ParseQuestTypeXML(pugi::xml_attribute& node) const;

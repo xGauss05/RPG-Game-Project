@@ -24,7 +24,7 @@ DB_Quests::DB_Quests()
 		auto [currentBuildingQuest, success] =
 			availableQuests.try_emplace(
 				currentQuestID,
-				std::make_unique<Quest>(questNode.child("general"))
+				std::make_unique<Quest>(questNode)
 			);
 
 		if (!success)
@@ -50,6 +50,7 @@ DB_Quests::DB_Quests()
 				availableQuests[currentQuestID]->AddLeafToLastBranch(questObjectivesNode);
 			}
 		}
+
 	}
 }
 
@@ -75,6 +76,7 @@ QuestType DB_Quests::MapStrToEnum(std::string_view str) const
 	if (StrEquals("TalkTo", str))	returnType |= TALK_TO;
 	if (StrEquals("Collect", str))	returnType |= COLLECT;
 	if (StrEquals("Visit", str))	returnType |= VISIT;
+	if (StrEquals("Hunt", str))		returnType |= HUNT;
 
 	return returnType;
 }

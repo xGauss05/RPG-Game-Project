@@ -157,7 +157,6 @@ bool SceneManager::Update(float dt)
 		{
 			nextScene = std::make_unique<Scene_Map>(party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-			nextScene->Start();
 			break;
 		}
 		case CONTINUE_GAME:
@@ -214,7 +213,6 @@ bool SceneManager::PostUpdate()
 			sceneOnHold = std::move(currentScene);
 
 		currentScene = std::move(nextScene);
-		currentScene->Start();
 	}
 
 	return true;

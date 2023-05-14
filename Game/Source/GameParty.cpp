@@ -102,6 +102,59 @@ void GameParty::UseItemOnMap(int character, int itemId, int amountToUse)
 	}
 }
 
+void GameParty::AcceptQuest(int id)
+{
+	if (auto [it, success, nodeHandle] = currentQuests.insert(dbQuests->QuestAccepted(id));
+		success)
+	{
+		auto objectivesSet = it->second->GetQuestTypeSet();
+		for(auto const &elem : objectivesSet)
+		{
+			currentQuestsCategories[elem].emplace_back(id);
+		}
+	}
+}
+
+void GameParty::CompleteQuest(int id)
+{
+	if (auto [it, success, nodeHandle] = completedQuests.insert(currentQuests.extract(id));
+		success)
+	{
+		auto objectivesSet = it->second->GetQuestTypeSet();
+		for (auto const& elem : objectivesSet)
+		{
+			std::erase_if(currentQuestsCategories[elem], [id](int index) { return index == id; });
+		}
+	}
+}
+
+bool GameParty::IsQuestAvailable(int id) const
+{
+	return !(currentQuests.contains(id) || completedQuests.contains(id));
+}
+
+void GameParty::PossibleQuestProgress(QuestType t, std::vector<std::pair<std::string_view, int>> const& names, std::vector<std::pair<int, int>> const& IDs)
+{
+	std::vector<int> const& questsToCheck = currentQuestsCategories[t];
+	for (int questIndex : questsToCheck)
+	{
+		if (auto it = currentQuests.find(questIndex);
+			it != currentQuests.end())
+		{
+			it->second->ProgressQuest(t, names, IDs);
+
+			if (it->second->IsQuestCompleted())
+			{
+				CompleteQuest(questIndex);
+			}
+		}
+		else
+		{
+			std::erase_if(currentQuestsCategories[t], [questIndex](int i) { return questIndex == i; });
+		}
+	}
+}
+
 void GameParty::AddItemToInventory(std::string_view itemToAdd, int amountToAdd)
 {
 	int itemToAddID = dbItems->GetItemID(itemToAdd);

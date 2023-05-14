@@ -5,7 +5,7 @@
 		<organization>UPC</organization>
 	</app>
 	<render>
-		<vsync value="false" />
+		<vsync value="true" />
 	</render>
 	<window>
 		<resolution width="1280" height="720" scale="1" />
@@ -23,19 +23,19 @@
 				<window name="PauseButtonMenu" />
 				<window name="PauseMenu" />
 				<window name="ChatBox" />
-        <window name="StatsMenu" />
+				<window name="StatsMenu" />
 			</map>
 			<map id="3" name="Village">
 				<window name="PauseButtonMenu" />
 				<window name="PauseMenu" />
 				<window name="ChatBox" />
-        <window name="StatsMenu" />
+				<window name="StatsMenu" />
 			</map>
 			<map id="4" name="Market">
 				<window name="PauseButtonMenu" />
 				<window name="PauseMenu" />
 				<window name="ChatBox" />
-        <window name="StatsMenu" />
+				<window name="StatsMenu" />
 			</map>
 		</map_info>
 		<boot_info>
@@ -258,17 +258,15 @@
 					<state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 				</button>
 			</window>
-      <window name="StatsMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
-        <panel startingX="100" targetX="100" startingY="28" targetY="28" width="1000" height="600" path="Assets/UI/GUI_4x_sliced.png">
-          <texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
-        </panel>
-      </window>
+			<window name="StatsMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
+				<panel startingX="100" targetX="100" startingY="28" targetY="28" width="1000" height="600" path="Assets/UI/GUI_4x_sliced.png">
+					<texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
+				</panel>
+			</window>
 			<window name="MenuListFallback" class="MenuList" x="450" y="50" width="250" height="460">
 				<background segmentX="0" segmentY="0" segmentWidth="32" segmentHeight="32" numOfSegmentsX="2" numOfSegmentsY="3" advance="4" path="Assets/UI/GUI_4x_sliced.png">
-          <!--<border missing="Left"/>-->
-          <!--<border missing="Right"/>-->
-          <scrollarrow  rectX="145" rectY="116" rectW="34" rectH="32"/>
-        </background>
+					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
+				</background>
 				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
 			</window>
 		</window_info>

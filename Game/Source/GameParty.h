@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <map>
-#include <set>
+#include <unordered_map>
 
 
 enum class BaseStats
@@ -73,13 +73,27 @@ public:
 
 	void UseItemOnMap(int character, int itemId, int amountToUse = 1);
 
+	void AcceptQuest(int id);
+	void CompleteQuest(int id);
+	bool IsQuestAvailable(int id) const;
+	void PossibleQuestProgress(
+		QuestType t,
+		std::vector<std::pair<std::string_view, int>> const& names,
+		std::vector<std::pair<int, int>> const& IDs
+	);
+
 	std::vector<PartyCharacter> party;
 	std::vector<std::pair<int, int>> inventory;
 
 	std::unique_ptr<DB_Items> dbItems;
 	std::unique_ptr<DB_Quests> dbQuests;
 
-	std::unordered_map<QuestType, std::unordered_set<std::unique_ptr<Quest>>> currentQuests;
+	std::unordered_map<int, std::unique_ptr<Quest>> currentQuests;
+
+	// Questype -> All indexes of accepted Quests that have that Questype
+	std::unordered_map<QuestType, std::vector<int>> currentQuestsCategories;
+
+	std::unordered_map<int, std::unique_ptr<Quest>> completedQuests;
 };
 
 #endif //__GAME_PARTY_H__

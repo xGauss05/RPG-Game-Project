@@ -44,6 +44,7 @@ private:
 	void DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const;
 
 	void DebugItems();
+	void DebugQuests();
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
