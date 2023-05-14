@@ -48,8 +48,8 @@ private:
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
-	std::string PlayMapBgm(std::string name);
-	void PlayDialogueSfx(std::string name);
+	std::string PlayMapBgm(std::string_view name);
+	void PlayDialogueSfx(std::string_view name);
 	void DungeonSfx();
 
 	TransitionScene TryRandomBattle();

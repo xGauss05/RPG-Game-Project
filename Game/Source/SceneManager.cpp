@@ -71,6 +71,7 @@ bool SceneManager::Start()
 	currentScene.get()->Load(assetPath + "UI/", bootInfo, *windowFactory);
 	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
+	currentScene->Start();
 
 	return true;
 }
@@ -176,7 +177,6 @@ bool SceneManager::Update(float dt)
 			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
 			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates(), party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-			nextScene->Start();
 			break;
 		}
 		case START_BATTLE:
@@ -219,6 +219,8 @@ bool SceneManager::PostUpdate()
 			sceneOnHold = std::move(currentScene);
 
 		currentScene = std::move(nextScene);
+
+		currentScene->Start();
 	}
 
 	return true;

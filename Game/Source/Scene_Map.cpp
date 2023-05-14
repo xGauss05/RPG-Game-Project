@@ -23,10 +23,6 @@ Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* 
 
 bool Scene_Map::isReady()
 {
-	std::string musicname = PlayMapBgm(currentMap);
-
-	app->audio->PlayMusic(musicname.c_str());
-
 	return true;
 }
 
@@ -76,10 +72,6 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		}
 	}
 
-	std::string musicname = PlayMapBgm(currentMap);
-
-	app->audio->PlayMusic(musicname.c_str());
-
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 	random1000.param(std::uniform_int_distribution<>::param_type(1, 1000));
 
@@ -91,7 +83,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	torchSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-Torch.wav");
 }
 
-std::string Scene_Map::PlayMapBgm(std::string name)
+std::string Scene_Map::PlayMapBgm(std::string_view name)
 {
 	std::string musicname = "";
 
@@ -106,9 +98,14 @@ std::string Scene_Map::PlayMapBgm(std::string name)
 		musicname = "Assets/Audio/Music/M_Dungeon-Main.ogg";
 	}
 
-	if (name == "Airport" || name == "Base" || name == "Village")
+	if (name == "Base" || name == "Village")
 	{
 		musicname = "Assets/Audio/Music/M_Town-Village.ogg";
+	}
+
+	if (name == "Airport")
+	{
+		musicname = "Assets/Audio/Music/M_Town-Airport.ogg";
 	}
 
 	if (name == "Market")
@@ -119,7 +116,7 @@ std::string Scene_Map::PlayMapBgm(std::string name)
 	return musicname;
 }
 
-void Scene_Map::PlayDialogueSfx(std::string name)
+void Scene_Map::PlayDialogueSfx(std::string_view name)
 {
 	if (StrEquals("high", name))
 		app->audio->PlayFx(highDialogueSfx);
@@ -149,6 +146,8 @@ void Scene_Map::DungeonSfx()
 
 void Scene_Map::Start()
 {
+	app->audio->PlayMusic(PlayMapBgm(currentMap).c_str());
+
 	std::vector<std::pair<std::string_view, int>> locationVisited;
 	locationVisited.emplace_back(currentMap, 1);
 
