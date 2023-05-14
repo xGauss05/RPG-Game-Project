@@ -55,6 +55,7 @@ struct Item
 	explicit Item(pugi::xml_node const& itemNode);
 
 	int id = 0;
+	int textureID = 0;
 	GeneralProperties general;
 	BattleProperties invocation;
 	DamageProperties damage;

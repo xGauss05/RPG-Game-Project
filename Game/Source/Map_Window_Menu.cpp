@@ -40,7 +40,7 @@ void Map_Window_Menu::Start()
 	enabled = true;
 }
 
-void Map_Window_Menu::Update()
+bool Map_Window_Menu::Update()
 {
 	if (bInStatsMenu)
 	{
@@ -51,7 +51,7 @@ void Map_Window_Menu::Update()
 			bInStatsMenu = false;
 		}
 
-		return;
+		return true;
 	}
 
 	if(!panels.empty() && panels[currentActivePanel]->Update())
@@ -66,9 +66,11 @@ void Map_Window_Menu::Update()
 		}
 		else
 		{
-			closeMenu = true;
+			return false;
 		}
 	}
+
+	return true;
 }
 
 void Map_Window_Menu::Draw() const
@@ -89,6 +91,23 @@ void Map_Window_Menu::Draw() const
 void Map_Window_Menu::SetPlayerParty(GameParty* party)
 {
 	playerParty = party;
+
+	for (int i = 0; i < menuLogic.GetGraphSize(); ++i)
+	{
+		switch (menuLogic.At(i).value)
+		{
+			using enum Map_Window_Menu::MenuWindows;
+			case INVENTORY:
+			{
+				dynamic_cast<Map_Menu_ComponentParty*>(panels[i].get())->SetGameParty(party);
+				break;
+			}
+			default:
+			{
+				continue;
+			}
+		}
+	}
 }
 
 void Map_Window_Menu::GoToNextPanel()

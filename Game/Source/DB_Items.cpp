@@ -52,7 +52,7 @@ Item::Item(pugi::xml_node const& itemNode)
 {
 	if (!general.iconIndex.empty())
 	{
-		app->tex->Load(std::format("Assets/Textures/Items/{}.png", general.iconIndex));
+		textureID = app->tex->Load(std::format("Assets/Textures/Items/{}.png", general.iconIndex));
 	}
 }
 

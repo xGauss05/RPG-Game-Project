@@ -5,8 +5,10 @@
 #include "GameParty.h"
 #include "Player.h"
 #include "Map.h"
-#include <unordered_set>
+#include "Map_Window_Menu.h"
 
+
+#include <unordered_set>
 #include <random>
 
 class Scene_Map : public Scene_Base
@@ -17,35 +19,37 @@ public:
 	explicit Scene_Map(std::string const& newMap, GameParty* party);
 	explicit Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* party);
 
-	bool isReady() override;
 	void Load(
 		std::string const& path,
 		LookUpXMLNodeFromString const& info,
 		Window_Factory const& windowFac
 	) override;
-	void Start() override;
-	void Draw() override;
-	TransitionScene Update() override;
-	int OnPause() override;
-	int CheckNextScene() override;
-	bool SaveScene(pugi::xml_node const&) override;
-	bool LoadScene(pugi::xml_node const&) override;
-	void DebugDraw() override;
-	void UpdateStatsMenu();
-	std::string_view GetNextMap() const;
-	iPoint GetTPCoordinates() const;
 	
+	bool isReady() override;
 
+	void Start() override;
+	TransitionScene Update() override;
+	void Draw() override;
+
+	int OnPause() override;
+
+	iPoint GetTPCoordinates() const;
+	int CheckNextScene() override;
+	std::string_view GetNextMap() const;
+	
 	void SetPlayerParty(GameParty* party);
 	void SpawnPlayerPosition();
 
-private:
-	void DrawStatsMenu();
-	void DrawPlayerStats(PartyCharacter const &character, int i) const;
-	void DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const;
+	bool SaveScene(pugi::xml_node const&) override;
+	bool LoadScene(pugi::xml_node const&) override;
+	
+	void DebugDraw() override;
 
+private:
 	void DebugItems();
 	void DebugQuests();
+	void DebugInventory();
+	void DebugAddALLItemsWithRandomAmounts();
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
@@ -60,11 +64,11 @@ private:
 		NORMAL,
 		ON_MESSAGE,
 		ON_DIALOG,
-		ON_MENU_SELECTION
+		ON_MENU_SELECTION,
+		ON_MENU
 	};
 
 	bool godMode = false;
-	bool statusOpen = false;
 
 	std::random_device rd;
 	std::uniform_int_distribution<> random100;
@@ -74,13 +78,12 @@ private:
 
 	EventTrigger tpInfo;
 
-	std::unordered_set<int> currentSfxPlaying;
-
 	Map map;
 	Player player;
 	GameParty* playerParty = nullptr;
 
 	MapState state = MapState::NORMAL;
+	MapState lastState = MapState::NORMAL;
 
 	pugi::xml_document currentDialogDocument;
 	pugi::xml_node currentDialogNode;
@@ -91,7 +94,7 @@ private:
 	LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
-	std::vector<std::unique_ptr<Window_Base>> statsWindow;
+	std::unique_ptr<Map_Window_Menu> mainMenu;
 
 	int highDialogueSfx = -1;
 	int midDialogueSfx = -1;

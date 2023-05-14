@@ -116,7 +116,10 @@ void GuiMenuList::Initialize()
 
 void GuiMenuList::Start()
 {
-	SetCurrentItemSelected(0);
+	if (!items.empty())
+		SetCurrentItemSelected(0);
+	else
+		SetCurrentItemSelected(-1);
 }
 
 void GuiMenuList::SetDefaultBooleanValues()
@@ -175,7 +178,8 @@ void GuiMenuList::DeleteMenuItem(int index)
 
 bool GuiMenuList::Draw() const
 {
-	background->Draw(position, size);
+	if(background)
+		background->Draw(position, size);
 
 	if (!SDL_RectEmpty(&arrowRect))
 	{
@@ -211,8 +215,6 @@ bool GuiMenuList::Draw() const
 		);
 
 		items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
-
-		//items[i].DebugDraw(drawPosition, iPoint(size.x, menuItemHeight), outterMargin.y, menuItemHeight, i, currentScroll);
 	}
 
 	return true;
@@ -270,6 +272,11 @@ void GuiMenuList::ResetCurrentItemSelected()
 	currentItemSelected = -1;
 }
 
+void GuiMenuList::ClearMenuItems()
+{
+	items.clear();
+}
+
 bool GuiMenuList::GetGoToPreviousMenu() const
 {
 	return goToPreviousMenu;
@@ -296,6 +303,9 @@ void GuiMenuList::HandleInput()
 
 void GuiMenuList::HandleLeftClick()
 {
+	if (items.empty())
+		return;
+
 	iPoint mousePos = app->input->GetMousePosition();
 
 	auto IsMouseHovering = [mousePos](iPoint currentPos, iPoint totalSize)
@@ -439,9 +449,10 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 
 	if (currentlySelected)
 	{
+		iPoint cam = { app->render->GetCamera().x, app->render->GetCamera().y };
 		SDL_Rect selectedRect = {
-			originalPos.x,
-			originalPos.y,
+			(-1 * cam.x) + originalPos.x,
+			(-1 * cam.y) + originalPos.y,
 			rectSize.x - (outMargin.x * 2), 
 			rectSize.y - innerMargin.y
 		};
@@ -450,11 +461,15 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 
 	if (sizeIcon > 0)
 	{
-		if(iconTexture != -1)
+		if (iconTexture != -1)
 		{
+			iPoint cam ={ -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
+			
+			drawPosition += cam;
 			drawPosition.y += 5;
 			app->render->DrawTexture(DrawParameters(iconTexture, drawPosition));
 			drawPosition.y -= 5;
+			drawPosition -= cam;
 		}
 
 		drawPosition.x += sizeIcon + innerMargin.x;

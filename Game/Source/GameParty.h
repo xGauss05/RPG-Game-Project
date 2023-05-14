@@ -96,6 +96,8 @@ public:
 	std::unordered_map<QuestType, std::vector<int>> currentQuestsCategories;
 
 	std::unordered_map<int, std::unique_ptr<Quest>> completedQuests;
+
+	friend class Map_Menu_Inventory;
 };
 
 #endif //__GAME_PARTY_H__

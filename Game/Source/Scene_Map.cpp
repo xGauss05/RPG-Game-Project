@@ -77,12 +77,12 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 			{
 				pauseWindow.push_back(std::move(result));
 			}
-			else if (StrEquals("StatsMenu", window.attribute("name").as_string()))
-			{
-				statsWindow.push_back(std::move(result));
-			}
 		}
 	}
+
+	mainMenu = std::make_unique<Map_Window_Menu>(windowFac);
+	mainMenu->SetPlayerParty(playerParty);
+	mainMenu->Start();
 
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 	random1000.param(std::uniform_int_distribution<>::param_type(1, 1000));
@@ -190,7 +190,10 @@ void Scene_Map::Draw()
 		DebugDraw();
 	}
 
-	if (statusOpen) DrawStatsMenu();
+	if (state == MapState::ON_MENU)
+	{
+		mainMenu->Draw();
+	}
 }
 
 void Scene_Map::DebugItems()
@@ -228,9 +231,31 @@ void Scene_Map::DebugQuests()
 	}
 }
 
+void Scene_Map::DebugInventory()
+{
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_DOWN)
+	{
+		DebugAddALLItemsWithRandomAmounts();
+	}
+}
+
+void Scene_Map::DebugAddALLItemsWithRandomAmounts()
+{
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution random99(1, 99);
+
+	for (auto const& item : playerParty->dbItems->items)
+	{
+		if (&item == std::to_address(playerParty->dbItems->items.begin()))
+			continue;
+
+		playerParty->AddItemToInventory(item.id, random99(gen));
+	}
+}
+
 TransitionScene Scene_Map::Update()
 {
-	DebugQuests();
+	DebugInventory();
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
@@ -246,15 +271,32 @@ TransitionScene Scene_Map::Update()
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
-		statusOpen = !statusOpen;
-
-	auto playerAction = player.HandleInput();
-
-	if (statusOpen)
 	{
-		UpdateStatsMenu();
+		using enum Scene_Map::MapState;
+		if(state == NORMAL)
+		{
+			lastState = state;
+			state = ON_MENU;
+			mainMenu->Start();
+		}
+		else if (state == ON_MENU)
+		{
+			state = lastState;
+			state = NORMAL;
+		}
+	}
+
+	if (state == MapState::ON_MENU)
+	{
+		if (!mainMenu->Update())
+		{
+			state = lastState;
+			state = MapState::NORMAL;
+		}
 		return TransitionScene::NONE;
 	}
+
+	auto playerAction = player.HandleInput();
 
 	using PA = Player::PlayerAction::Action;
 
@@ -592,110 +634,4 @@ void Scene_Map::DebugDraw()
 		break;
 	}
 	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{ 40,230 })));
-}
-
-void Scene_Map::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const
-{
-	int w = 0;
-	int h = 0;
-	app->tex->GetSize(app->GetTexture(textureID), w, h);
-
-	SDL_Rect hpBar{};
-	hpBar.x = position.x + 2;
-	hpBar.y = position.y + h * 2 + 10;
-	hpBar.h = 10;
-
-	hpBar.w = 100;
-	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
-
-	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
-	hpBar.w = hp > 0 ? static_cast<int>(hp * 100.0f) : 0;
-
-	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
-	auto green = static_cast<Uint8>(250.0f * hp);
-
-	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
-}
-
-void Scene_Map::DrawPlayerStats(PartyCharacter const& character, int i) const
-{
-	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
-
-	iPoint allyPosition(170 - camera.x, i - camera.y + 55);
-	iPoint hpBarPosition(140 - camera.x, i - camera.y + 80);
-
-	DrawHPBar(character.battlerTextureID, character.currentHP, character.stats[0], hpBarPosition);
-
-	DrawParameters drawAlly(character.battlerTextureID, allyPosition);
-
-	if (character.currentHP <= 0)
-	{
-		drawAlly.RotationAngle(90);
-
-		int w = 0;
-		int h = 0;
-		app->tex->GetSize(app->GetTexture(character.battlerTextureID), w, h);
-
-		SDL_Point pivot = {
-			w / 2,
-			h
-		};
-
-		drawAlly.Center(pivot);
-	}
-
-	drawAlly.Scale(fPoint(3.0f, 3.0f));
-
-	app->render->DrawTexture(drawAlly);
-
-	using enum BaseStats;
-
-	DrawSingleStat(character, MAX_HP, 280, 50 + i);
-	DrawSingleStat(character, ATTACK, 620, 50 + i);
-	DrawSingleStat(character, SPECIAL_ATTACK, 860, 50 + i);
-
-	DrawSingleStat(character, MAX_MANA, 280, 90 + i);
-	DrawSingleStat(character, DEFENSE, 620, 90 + i);
-	DrawSingleStat(character, SPECIAL_DEFENSE, 860, 90 + i);
-
-	DrawSingleStat(character, LEVEL, 450, 130 + i);
-	DrawSingleStat(character, XP, 620, 130 + i);
-	DrawSingleStat(character, SPEED, 860, 130 + i);
-
-	app->fonts->DrawText(
-		character.name,
-		iPoint(280, 130 + i)
-	);
-}
-
-void Scene_Map::DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const
-{
-	app->fonts->DrawText(
-		character.GetStatDisplay(stat),
-		iPoint(x, y)
-	);
-}
-
-void Scene_Map::DrawStatsMenu()
-{
-	for (auto const& elem : statsWindow)
-	{
-		elem->Draw();
-	}
-
-	for (int i = 0; auto const& character : playerParty->party)
-	{
-		DrawPlayerStats(character, i);
-
-		i += 140;
-	}
-
-}
-
-void Scene_Map::UpdateStatsMenu()
-{
-	for (auto const& elem : statsWindow)
-	{
-		elem->Update();
-	}
 }

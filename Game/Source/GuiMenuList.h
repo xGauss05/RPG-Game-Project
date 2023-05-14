@@ -82,6 +82,8 @@ protected:
 
 	void ResetCurrentItemSelected();
 
+	void ClearMenuItems();
+
 private:
 	void HandleInput();
 	void HandleLeftClick();
@@ -127,6 +129,7 @@ private:
 	int lastClick = -1;
 
 	std::vector<MenuItem> items;
+
 };
 
 #endif //__WINDOW_MENU_LIST_H__

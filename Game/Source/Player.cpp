@@ -65,6 +65,7 @@ Player::PlayerAction Player::HandleInput() const
 
 	if (!moveVector.IsZero())
 		return returnAction;
+
 	if (app->input->controllerCount > 0)
 	{
 		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_REPEAT)

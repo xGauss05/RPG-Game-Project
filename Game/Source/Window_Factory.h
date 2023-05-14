@@ -6,6 +6,7 @@
 #include "Window_Panel.h"
 #include "GuiMenuList.h"
 #include "Map_Menu_MainCategories.h"
+#include "Map_Menu_Inventory.h"
 
 #include "PugiXml/src/pugixml.hpp"
 

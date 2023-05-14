@@ -21,16 +21,12 @@ void Map_Menu_MainCategories::HandleRightButtonClick()
 
 void Map_Menu_MainCategories::InitializeElements()
 {
+	ClearMenuItems();
+	
 	std::array elementNames
 	{
-		"Item",
-		"Skill",
-		"Equip",
-		"Status",
-		"Formation",
-		"Options",
-		"Save",
-		"Quit Game"
+		"Items",
+		"Stats"
 	};
 
 	std::ranges::for_each(elementNames, [this, index = 0](const char* elemName) mutable

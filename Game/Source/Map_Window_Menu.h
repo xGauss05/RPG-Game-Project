@@ -29,7 +29,7 @@ public:
 
 	void Start();
 
-	void Update();
+	bool Update();
 	void Draw() const;
 
 	void SetPlayerParty(GameParty* party);
@@ -39,7 +39,6 @@ private:
 	void DrawPlayerStats(PartyCharacter const& character, int i) const;
 	void DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const;
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
-
 
 	void GoToNextPanel();
 	void GoToPreviousPanel();
@@ -57,8 +56,6 @@ private:
 	GameParty* playerParty = nullptr;
 
 	bool bInStatsMenu = false;
-
-	bool closeMenu = false;
 };
 
 #endif //__MAP_WINDOW_MENU_H__

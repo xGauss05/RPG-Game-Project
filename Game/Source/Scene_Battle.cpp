@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Render.h"
 #include "Audio.h"
+#include "Input.h"
 
 #include "GuiButton.h"
 
@@ -55,9 +56,6 @@ bool Scene_Battle::isReady()
 
 void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
 {
-	mwm = std::make_unique<Map_Window_Menu>(windowFactory);
-	mwm->Start();
-	mwm->SetPlayerParty(party);
 
 	windows.clear();
 
@@ -232,8 +230,6 @@ void Scene_Battle::Draw()
 		messages->ModifyLastWidgetText(text);
 	}
 
-	mwm->Update();
-	mwm->Draw();
 }
 
 TransitionScene Scene_Battle::Update()

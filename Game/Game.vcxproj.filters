@@ -108,6 +108,7 @@
     <ClInclude Include="Source\AdjacencyGraph.h" />
     <ClInclude Include="Source\DB_Quests.h" />
     <ClInclude Include="Source\Map_Menu_Inventory.h" />
+    <ClInclude Include="Source\Map_Menu_ComponentParty.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />
