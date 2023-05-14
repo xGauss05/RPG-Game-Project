@@ -255,6 +255,7 @@ TransitionScene Scene_Map::Update()
 			windows.pop_back();
 			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+			PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 			break;
 		}
@@ -266,6 +267,7 @@ TransitionScene Scene_Map::Update()
 			windows.pop_back();
 			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+			PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 			break;
 		}
@@ -329,6 +331,7 @@ TransitionScene Scene_Map::Update()
 			{
 				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
 				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 			}
 		}
