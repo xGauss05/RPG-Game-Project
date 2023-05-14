@@ -89,6 +89,7 @@ private:
     int enemydeadSfx;
     int erYonaTurnSfx;
     int rocioTurnSfx;
+    int antonioTurnSfx;
 
     bool playedTurnSfx = false;
 };

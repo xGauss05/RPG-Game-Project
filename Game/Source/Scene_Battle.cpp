@@ -71,6 +71,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	escapeSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Escape.wav");
 	erYonaTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-ErYona-Turn.wav");
 	rocioTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Rocio-Turn.wav");
+	antonioTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Antonio-Turn.wav");
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
@@ -270,7 +271,7 @@ TransitionScene Scene_Battle::Update()
 			{
 				playedTurnSfx = true;
 				if (StrEquals(party->party[currentPlayer].name, "Antonio")) {
-					//app->audio->PlayFx(erYonaTurnSfx);
+					app->audio->PlayFx(antonioTurnSfx);
 				}
 				if (StrEquals(party->party[currentPlayer].name, "Sayori")) {
 					//app->audio->PlayFx(erYonaTurnSfx);
