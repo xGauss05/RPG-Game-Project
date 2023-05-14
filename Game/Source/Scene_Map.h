@@ -47,6 +47,7 @@ private:
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
+	std::string PlayMapBgm(std::string name);
 	void PlayDialogueSfx(std::string name);
 
 	enum class MapState

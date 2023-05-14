@@ -81,14 +81,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		}
 	}
 
-	std::string musicname;
-	if (currentMap == "Lab_Inside" || currentMap == "Lab_Exterior")
-	{
-		musicname = "Assets/Audio/Music/M_Town-Lab.ogg";
-	}
-	else {
-		musicname = "Assets/Audio/Music/M_Town-" + currentMap + ".ogg";
-	}
+	std::string musicname = PlayMapBgm(currentMap);
 
 	app->audio->PlayMusic(musicname.c_str());
 
@@ -100,15 +93,43 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 }
 
+std::string Scene_Map::PlayMapBgm(std::string name)
+{
+	std::string musicname = "";
+
+	if (name == "Lab_Inside" || name == "Lab_Exterior")
+	{
+		musicname = "Assets/Audio/Music/M_Town-Lab.ogg";
+	}
+
+	if (name == "Dungeon_Outside" || name == "Dungeon01" ||
+		name == "Dungeon02" || name == "Dungeon03")
+	{
+		musicname = "Assets/Audio/Music/M_Dungeon-Main.ogg";
+	}
+
+	if (name == "Airport" || name == "Base" || name == "Village")
+	{
+		musicname = "Assets/Audio/Music/M_Town-Village.ogg";
+	}
+
+	if (name == "Market")
+	{
+		musicname = "Assets/Audio/Music/M_Town-Market.ogg";
+	}
+
+	return musicname;
+}
+
 void Scene_Map::PlayDialogueSfx(std::string name)
 {
-	if (StrEquals("high", name)) 
+	if (StrEquals("high", name))
 		app->audio->PlayFx(highDialogueSfx);
 
-	if (StrEquals("mid", name)) 
+	if (StrEquals("mid", name))
 		app->audio->PlayFx(midDialogueSfx);
 
-	if (StrEquals("low", name)) 
+	if (StrEquals("low", name))
 		app->audio->PlayFx(lowDialogueSfx);
 
 }
@@ -386,9 +407,7 @@ TransitionScene Scene_Map::TryRandomBattle()
 		int randomValue = random100(gen);
 		if (randomValue <= 3)
 		{
-
 			app->audio->PlayFx(battleStartSfx);
-
 
 			return TransitionScene::START_BATTLE;
 		}

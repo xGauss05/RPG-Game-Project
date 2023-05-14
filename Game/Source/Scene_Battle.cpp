@@ -56,7 +56,7 @@ bool Scene_Battle::isReady()
 void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
 {
 	windows.clear();
-	
+
 	actions = windowFactory.CreateWindowList("BattleActions");
 	messages = windowFactory.CreateWindowPanel("BattleMessage");
 
@@ -70,6 +70,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	blockSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Block.wav");
 	escapeSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Escape.wav");
 	erYonaTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_ErYona-Turn.wav");
+	rocioTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Rocio-Turn.wav");
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
@@ -164,7 +165,7 @@ void Scene_Battle::Draw()
 
 	bool enemyHovered = false;
 
-	for (auto &elem : enemies.troop)
+	for (auto& elem : enemies.troop)
 	{
 		DrawHPBar(elem.textureID, elem.currentHP, elem.stats[0], elem.position);
 
@@ -201,15 +202,15 @@ void Scene_Battle::Draw()
 
 		DrawParameters drawEnemy(elem.textureID, elem.position);
 		drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
-		drawEnemy.Scale(fPoint(2,2));
+		drawEnemy.Scale(fPoint(2, 2));
 
 
 		if (elem.currentHP <= 0)
 		{
 			drawEnemy.RotationAngle(270);
-			
+
 			SDL_Point pivot = {
-				elem.size.x/2,
+				elem.size.x / 2,
 				elem.size.y
 			};
 
@@ -232,267 +233,220 @@ TransitionScene Scene_Battle::Update()
 	switch (state)
 	{
 		using enum BattleState;
-		case PLAYER_INPUT:
+	case PLAYER_INPUT:
+	{
+		auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
+
+		if (currentPlayer != 0)
+			actions->widgets.back()->Disable();
+		else
+			actions->widgets.back()->Enable();
+
+		if (actionSelected == 0 || actionSelected == 1)
 		{
-			auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
+			bool targetChosen = ChooseTarget();
 
-			if (currentPlayer != 0)
-				actions->widgets.back()->Disable();
-			else
-				actions->widgets.back()->Enable();
-
-			if(actionSelected == 0 || actionSelected == 1)
+			if (targetChosen)
 			{
-				bool targetChosen = ChooseTarget();
-				
-				if(targetChosen)
-				{
-					actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
-					
-					actionSelected = -1;
-					targetSelected = -1;
-					currentPlayer++; 
-					
-				}
-				else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
-				{
-					actionSelected = -1;
-					targetSelected = -1;
-					
-				}
-			}
-			else if(currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
-			{
-				std::string text = std::format("What will {} do?", party->party[currentPlayer].name);
+				actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
 
-				if (!playedTurnSfx) 
-				{
-					playedTurnSfx = true;
-					if (StrEquals(party->party[currentPlayer].name, "Antonio")) {
-						//app->audio->PlayFx(erYonaTurnSfx);
-					}
-					if (StrEquals(party->party[currentPlayer].name, "Sayuri")) {
-						//app->audio->PlayFx(erYonaTurnSfx);
-					}
-					if (StrEquals(party->party[currentPlayer].name, "Er Yona")) {
-						app->audio->PlayFx(erYonaTurnSfx);
-					}
-					if (StrEquals(party->party[currentPlayer].name, "Rocio")) {
-						//app->audio->PlayFx(erYonaTurnSfx);
-					}
-				}
-
-				messages->ModifyLastWidgetText(text);
-				switch (actions->Update())
-				{
-					case 100:
-					{
-						actionSelected = 0;
-						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-						playedTurnSfx = false;
-						break;
-					}
-					case 101:
-					{
-						actionSelected = 1;
-						dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-						playedTurnSfx = false;
-						break;
-					}
-					case 102:
-					{
-						actionQueue.emplace(2, currentPlayer, 0, true, INT_MAX);
-						currentPlayer++;
-						playedTurnSfx = false;
-						break;
-					}
-					case 103:
-					{
-						if(currentPlayer == 0)
-						{
-							actionQueue.emplace(3, currentPlayer, 0, true, INT_MAX);
-							currentPlayer = party->party.size();
-						}
-						break;
-					}
-					default:
-					{}
-				}
-			}
-			else
-			{
+				actionSelected = -1;
+				targetSelected = -1;
 				currentPlayer++;
-			}
 
-			if (actionSelected == -1 && currentPlayer >= party->party.size())
-			{
-				state = ENEMY_INPUT;
 			}
-			break;
+			else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+			{
+				actionSelected = -1;
+				targetSelected = -1;
+
+			}
 		}
-		case ENEMY_INPUT:
+		else if (currentPlayer < party->party.size() && party->party[currentPlayer].currentHP > 0)
 		{
-			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+			std::string text = std::format("What will {} do?", party->party[currentPlayer].name);
 
-			std::mt19937 gen(rd());
-			random.param(std::uniform_int_distribution<>::param_type(0, party->party.size()-1));
-
-			for (int i = 0; auto const& elem : enemies.troop)
+			if (!playedTurnSfx)
 			{
-				auto actionSpeed = elem.stats[static_cast<int>(BaseStats::SPEED)];
-
-				int target = 0;
-				do
-				{
-					target = random(gen);
-				} while (party->party[target].currentHP <= 0);
-
-				int action = random100(gen);
-				if (action <= 40)		// 40% chance
-				{
-					actionQueue.emplace(0, i, target, false, actionSpeed);
+				playedTurnSfx = true;
+				if (StrEquals(party->party[currentPlayer].name, "Antonio")) {
+					//app->audio->PlayFx(erYonaTurnSfx);
 				}
-				else if (action <= 80)	// 40% chance
-				{
-					actionQueue.emplace(1, i, target, false, actionSpeed);
+				if (StrEquals(party->party[currentPlayer].name, "Sayori")) {
+					//app->audio->PlayFx(erYonaTurnSfx);
 				}
-				else					//20% chance
-				{
-					actionQueue.emplace(2, i, target, false, INT_MAX);
+				if (StrEquals(party->party[currentPlayer].name, "Er Yona")) {
+					app->audio->PlayFx(erYonaTurnSfx);
 				}
-
-				LOG("Target: %i || Action: %i", target, action);
-				
-				i++;
+				if (StrEquals(party->party[currentPlayer].name, "Rocio")) {
+					app->audio->PlayFx(rocioTurnSfx);
+				}
 			}
-			state = RESOLUTION;
-			break;
-		}
-		case RESOLUTION:
-		{
-			std::mt19937 gen(rd());
-			if (!actionQueue.empty() && showNextText && actionSelected != 3)
+
+			messages->ModifyLastWidgetText(text);
+			switch (actions->Update())
 			{
-				BattleAction currentAction = actionQueue.top();
-				std::string text = "";
-				if (currentAction.friendly)
+			case 100:
+			{
+				actionSelected = 0;
+				dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+				playedTurnSfx = false;
+				break;
+			}
+			case 101:
+			{
+				actionSelected = 1;
+				dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+				playedTurnSfx = false;
+				break;
+			}
+			case 102:
+			{
+				actionQueue.emplace(2, currentPlayer, 0, true, INT_MAX);
+				currentPlayer++;
+				playedTurnSfx = false;
+				break;
+			}
+			case 103:
+			{
+				if (currentPlayer == 0)
 				{
-					if (currentAction.action == 3)
-					{
-						text = "You run from battle. Lost 124 gold.";
-						app->audio->PlayFx(escapeSfx);
-						actionSelected = 3;
-					}
-					else if(party->party[currentAction.source].currentHP > 0)
-					{
-						// If defend command selected or enemy is dead
-						if (currentAction.action == 2 || enemies.troop[currentAction.target].currentHP <= 0)
-						{
-							party->party[currentAction.source].isDefending = true;
-							text = std::format("{} is defending.", party->party[currentAction.source].name);
-							app->audio->PlayFx(blockSfx);
-						}
-						else if (currentAction.action == 0)
-						{
-							int attack = party->party[currentAction.source].stats[2];
-							int defense = enemies.troop[currentAction.target].stats[3];
-							if (enemies.troop[currentAction.target].isDefending)
-							{
-								defense *= 2;
-								enemies.troop[currentAction.target].isDefending = false;
-							}
-
-							int randomVariance = random40(gen);
-							int damage = attack - defense;
-							if (randomVariance > 20)
-							{
-								randomVariance -= 20;
-								damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
-							}
-							else
-							{
-								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
-							}
-
-							std::string damageMessage = "{} attacks {}! Deals {} damage.";
-
-							if (random100(gen) <= 10)
-							{
-								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
-								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
-								app->audio->PlayFx(criticalSfx);
-							}
-							else 
-							{
-								app->audio->PlayFx(attackSfx);
-							}
-
-							if (damage <= 0) damage = 1;
-
-							enemies.troop[currentAction.target].currentHP -= damage;
-
-							if (enemies.troop[currentAction.target].currentHP <= 0) 
-							{
-								app->audio->PlayFx(enemies.troop[currentAction.target].deadSfx);
-							}
-
-							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
-						}
-						else if (currentAction.action == 1)
-						{
-							int attack = party->party[currentAction.source].stats[4];
-							int defense = enemies.troop[currentAction.target].stats[5];
-							if (enemies.troop[currentAction.target].isDefending)
-							{
-								defense *= 2;
-								enemies.troop[currentAction.target].isDefending = false;
-							}
-							int randomVariance = random40(gen);
-							int damage = attack - defense;
-							if (randomVariance > 20)
-							{
-								randomVariance -= 20;
-								damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
-							}
-							else
-							{
-								damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
-							}
-							std::string damageMessage = "{} attacks {}! Deals {} damage.";
-							if (random100(gen) <= 10)
-							{
-								damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
-								damageMessage = "{} attacks {}! Criticals for {} damage!!!";
-								app->audio->PlayFx(criticalSfx); // replace for critical hit
-							}
-							else 
-							{
-								app->audio->PlayFx(attackSfx); 
-							}
-							if (damage <= 0) damage = 1;
-							enemies.troop[currentAction.target].currentHP -= damage;
-
-							text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
-						}
-					}
-
+					actionQueue.emplace(3, currentPlayer, 0, true, INT_MAX);
+					currentPlayer = party->party.size();
 				}
-				else if (!currentAction.friendly && enemies.troop[currentAction.source].currentHP > 0)
+				break;
+			}
+			default:
+			{}
+			}
+		}
+		else
+		{
+			currentPlayer++;
+		}
+
+		if (actionSelected == -1 && currentPlayer >= party->party.size())
+		{
+			state = ENEMY_INPUT;
+		}
+		break;
+	}
+	case ENEMY_INPUT:
+	{
+		dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+
+		std::mt19937 gen(rd());
+		random.param(std::uniform_int_distribution<>::param_type(0, party->party.size() - 1));
+
+		for (int i = 0; auto const& elem : enemies.troop)
+		{
+			auto actionSpeed = elem.stats[static_cast<int>(BaseStats::SPEED)];
+
+			int target = 0;
+			do
+			{
+				target = random(gen);
+			} while (party->party[target].currentHP <= 0);
+
+			int action = random100(gen);
+			if (action <= 40)		// 40% chance
+			{
+				actionQueue.emplace(0, i, target, false, actionSpeed);
+			}
+			else if (action <= 80)	// 40% chance
+			{
+				actionQueue.emplace(1, i, target, false, actionSpeed);
+			}
+			else					//20% chance
+			{
+				actionQueue.emplace(2, i, target, false, INT_MAX);
+			}
+
+			LOG("Target: %i || Action: %i", target, action);
+
+			i++;
+		}
+		state = RESOLUTION;
+		break;
+	}
+	case RESOLUTION:
+	{
+		std::mt19937 gen(rd());
+		if (!actionQueue.empty() && showNextText && actionSelected != 3)
+		{
+			BattleAction currentAction = actionQueue.top();
+			std::string text = "";
+			if (currentAction.friendly)
+			{
+				if (currentAction.action == 3)
 				{
-					if (currentAction.action == 2 || party->party[currentAction.target].currentHP <= 0)
+					text = "You run from battle. Lost 124 gold.";
+					app->audio->PlayFx(escapeSfx);
+					actionSelected = 3;
+				}
+				else if (party->party[currentAction.source].currentHP > 0)
+				{
+					// If defend command selected or enemy is dead
+					if (currentAction.action == 2 || enemies.troop[currentAction.target].currentHP <= 0)
 					{
-						enemies.troop[currentAction.source].isDefending = true;
+						party->party[currentAction.source].isDefending = true;
+						text = std::format("{} is defending.", party->party[currentAction.source].name);
 						app->audio->PlayFx(blockSfx);
-						text = std::format("{} is defending.", enemies.troop[currentAction.source].name);
 					}
 					else if (currentAction.action == 0)
 					{
-						int attack = enemies.troop[currentAction.source].stats[2];
-						int defense = party->party[currentAction.target].stats[3];
-						if (party->party[currentAction.target].isDefending)
+						int attack = party->party[currentAction.source].stats[2];
+						int defense = enemies.troop[currentAction.target].stats[3];
+						if (enemies.troop[currentAction.target].isDefending)
 						{
 							defense *= 2;
-							party->party[currentAction.target].isDefending = false;
+							enemies.troop[currentAction.target].isDefending = false;
+						}
+
+						int randomVariance = random40(gen);
+						int damage = attack - defense;
+						if (randomVariance > 20)
+						{
+							randomVariance -= 20;
+							damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+						else
+						{
+							damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+						}
+
+						std::string damageMessage = "{} attacks {}! Deals {} damage.";
+
+						if (random100(gen) <= 10)
+						{
+							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+							app->audio->PlayFx(criticalSfx);
+						}
+						else
+						{
+							app->audio->PlayFx(attackSfx);
+						}
+
+						if (damage <= 0) damage = 1;
+
+						enemies.troop[currentAction.target].currentHP -= damage;
+
+						if (enemies.troop[currentAction.target].currentHP <= 0)
+						{
+							app->audio->PlayFx(enemies.troop[currentAction.target].deadSfx);
+						}
+
+						text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
+					}
+					else if (currentAction.action == 1)
+					{
+						int attack = party->party[currentAction.source].stats[4];
+						int defense = enemies.troop[currentAction.target].stats[5];
+						if (enemies.troop[currentAction.target].isDefending)
+						{
+							defense *= 2;
+							enemies.troop[currentAction.target].isDefending = false;
 						}
 						int randomVariance = random40(gen);
 						int damage = attack - defense;
@@ -512,113 +466,159 @@ TransitionScene Scene_Battle::Update()
 							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
 							app->audio->PlayFx(criticalSfx);
 						}
-						else 
+						else
 						{
 							app->audio->PlayFx(attackSfx);
 						}
 						if (damage <= 0) damage = 1;
-						party->party[currentAction.target].currentHP -= damage;
+						enemies.troop[currentAction.target].currentHP -= damage;
 
-						text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
+						text = AddSaveData(damageMessage, party->party[currentAction.source].name, enemies.troop[currentAction.target].name, damage);
 					}
-					else if (currentAction.action == 1)
+				}
+
+			}
+			else if (!currentAction.friendly && enemies.troop[currentAction.source].currentHP > 0)
+			{
+				if (currentAction.action == 2 || party->party[currentAction.target].currentHP <= 0)
+				{
+					enemies.troop[currentAction.source].isDefending = true;
+					app->audio->PlayFx(blockSfx);
+					text = std::format("{} is defending.", enemies.troop[currentAction.source].name);
+				}
+				else if (currentAction.action == 0)
+				{
+					int attack = enemies.troop[currentAction.source].stats[2];
+					int defense = party->party[currentAction.target].stats[3];
+					if (party->party[currentAction.target].isDefending)
 					{
-						int attack = enemies.troop[currentAction.source].stats[4];
-						int defense = party->party[currentAction.target].stats[5];
-						if (party->party[currentAction.target].isDefending)
-						{
-							defense *= 2;
-							party->party[currentAction.target].isDefending = false;
-						}
-						int randomVariance = random40(gen);
-						int damage = attack - defense;
-						if (randomVariance > 20)
-						{
-							randomVariance -= 20;
-							damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
-						}
-						else
-						{
-							damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
-						}
-						std::string damageMessage = "{} attacks {}! Deals {} damage.";
-						if (random100(gen) <= 10)
-						{
-							
-							damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
-							damageMessage = "{} attacks {}! Criticals for {} damage!!!";
-							app->audio->PlayFx(criticalSfx); 
-						}
-						else 
-						{
-							app->audio->PlayFx(attackSfx); 
-						}
-						if (damage <= 0) damage = 1;
-						party->party[currentAction.target].currentHP -= damage;
-
-						text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
+						defense *= 2;
+						party->party[currentAction.target].isDefending = false;
 					}
+					int randomVariance = random40(gen);
+					int damage = attack - defense;
+					if (randomVariance > 20)
+					{
+						randomVariance -= 20;
+						damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+					}
+					else
+					{
+						damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+					}
+					std::string damageMessage = "{} attacks {}! Deals {} damage.";
+					if (random100(gen) <= 10)
+					{
+						damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+						damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+						app->audio->PlayFx(criticalSfx);
+					}
+					else
+					{
+						app->audio->PlayFx(attackSfx);
+					}
+					if (damage <= 0) damage = 1;
+					party->party[currentAction.target].currentHP -= damage;
+					text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
 				}
-
-				if(!text.empty())
+				else if (currentAction.action == 1)
 				{
-					messages->ModifyLastWidgetText(text);
-					showNextText = false;
+					int attack = enemies.troop[currentAction.source].stats[4];
+					int defense = party->party[currentAction.target].stats[5];
+					if (party->party[currentAction.target].isDefending)
+					{
+						defense *= 2;
+						party->party[currentAction.target].isDefending = false;
+					}
+					int randomVariance = random40(gen);
+					int damage = attack - defense;
+					if (randomVariance > 20)
+					{
+						randomVariance -= 20;
+						damage += static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+					}
+					else
+					{
+						damage -= static_cast<int>(static_cast<float>(damage) * static_cast<float>(randomVariance) / 100.0f);
+					}
+					std::string damageMessage = "{} attacks {}! Deals {} damage.";
+					if (random100(gen) <= 10)
+					{
+
+						damage = static_cast<int>(static_cast<float>(damage) * 1.5f);
+						damageMessage = "{} attacks {}! Criticals for {} damage!!!";
+						app->audio->PlayFx(criticalSfx);
+					}
+					else
+					{
+						app->audio->PlayFx(attackSfx);
+					}
+					if (damage <= 0) damage = 1;
+					party->party[currentAction.target].currentHP -= damage;
+
+					text = AddSaveData(damageMessage, enemies.troop[currentAction.source].name, party->party[currentAction.target].name, damage);
 				}
-				actionQueue.pop();
 			}
-			else if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+
+			if (!text.empty())
 			{
-				showNextText = true;
-
-				if (CheckBattleWin())
-				{
-					LOG("Battle won.");
-					state = BATTLE_WON;
-					app->audio->PlayMusic("Assets/Audio/Music/M_Battle-Win.ogg");
-					break;
-				}
-				if (CheckBattleLoss())
-				{
-					LOG("Battle loss.");
-					state = BATTLE_LOSS;
-					
-					break;
-				}
-				if (actionSelected == 3)
-				{
-					return TransitionScene::RUN_BATTLE;
-				}
+				messages->ModifyLastWidgetText(text);
+				showNextText = false;
 			}
-
-			if (showNextText && actionQueue.empty())
-			{
-				messages->ModifyLastWidgetText("");
-				currentPlayer = 0;
-				state = PLAYER_INPUT;
-			}
-			break;
+			actionQueue.pop();
 		}
-		case BATTLE_WON:
+		else if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 		{
-			messages->ModifyLastWidgetText("You won the battle!");
-			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+			showNextText = true;
+
+			if (CheckBattleWin())
 			{
-				messages->ModifyLastWidgetText("");
-				return TransitionScene::WIN_BATTLE;
+				LOG("Battle won.");
+				state = BATTLE_WON;
+				app->audio->PlayMusic("Assets/Audio/Music/M_Battle-Win.ogg");
+				break;
 			}
-			break;
+			if (CheckBattleLoss())
+			{
+				LOG("Battle loss.");
+				state = BATTLE_LOSS;
+
+				break;
+			}
+			if (actionSelected == 3)
+			{
+				return TransitionScene::RUN_BATTLE;
+			}
 		}
-		case BATTLE_LOSS:
+
+		if (showNextText && actionQueue.empty())
 		{
-			messages->ModifyLastWidgetText("You lost the battle...");
-			if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
-			{
-				messages->ModifyLastWidgetText("");
-				return TransitionScene::LOSE_BATTLE;
-			}
-			break;
+			messages->ModifyLastWidgetText("");
+			currentPlayer = 0;
+			state = PLAYER_INPUT;
 		}
+		break;
+	}
+	case BATTLE_WON:
+	{
+		messages->ModifyLastWidgetText("You won the battle!");
+		if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+		{
+			messages->ModifyLastWidgetText("");
+			return TransitionScene::WIN_BATTLE;
+		}
+		break;
+	}
+	case BATTLE_LOSS:
+	{
+		messages->ModifyLastWidgetText("You lost the battle...");
+		if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+		{
+			messages->ModifyLastWidgetText("");
+			return TransitionScene::LOSE_BATTLE;
+		}
+		break;
+	}
 	}
 
 	return TransitionScene::NONE;
