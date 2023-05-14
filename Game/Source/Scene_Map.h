@@ -34,7 +34,7 @@ public:
 	void UpdateStatsMenu();
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;
-	TransitionScene TryRandomBattle();
+	
 
 	void SetPlayerParty(GameParty* party);
 
@@ -50,6 +50,9 @@ private:
 
 	std::string PlayMapBgm(std::string name);
 	void PlayDialogueSfx(std::string name);
+	void DungeonSfx();
+
+	TransitionScene TryRandomBattle();
 
 	enum class MapState
 	{
@@ -92,6 +95,8 @@ private:
 	int midDialogueSfx;
 	int lowDialogueSfx;
 	int battleStartSfx;
+	int waterDropSfx;
+	int torchSfx;
 };
 
 

@@ -86,6 +86,8 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	midDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
 	lowDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
 	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Gameplay-BattleStart.wav");
+	waterDropSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-WaterDroplet.wav");
+	torchSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-Torch.wav");
 }
 
 std::string Scene_Map::PlayMapBgm(std::string name)
@@ -127,6 +129,21 @@ void Scene_Map::PlayDialogueSfx(std::string name)
 	if (StrEquals("low", name))
 		app->audio->PlayFx(lowDialogueSfx);
 
+}
+
+void Scene_Map::DungeonSfx() 
+{
+	if (currentMap == "Dungeon_Outside" || currentMap == "Dungeon01" ||
+		currentMap == "Dungeon02" || currentMap == "Dungeon03")
+	{
+		std::mt19937 gen(rd());
+		int randomValue = random100(gen);
+		if (randomValue <= 5) app->audio->PlayFx(waterDropSfx);
+
+		randomValue = random100(gen);
+
+		if (randomValue <= 5) app->audio->PlayFx(torchSfx);
+	}
 }
 
 void Scene_Map::Start()
@@ -413,6 +430,8 @@ TransitionScene Scene_Map::Update()
 	{
 		return TransitionScene::EXIT_GAME;
 	}
+
+	DungeonSfx();
 
 	return TransitionScene::NONE;
 }
