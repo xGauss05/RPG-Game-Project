@@ -69,8 +69,8 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	criticalSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-AttackCrit.wav");
 	blockSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Block.wav");
 	escapeSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Escape.wav");
-	erYonaTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_ErYona-Turn.wav");
-	rocioTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Rocio-Turn.wav");
+	erYonaTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-ErYona-Turn.wav");
+	rocioTurnSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Battle-Rocio-Turn.wav");
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
 
