@@ -19,9 +19,18 @@ Scene_Map::Scene_Map(std::string const& newMap, GameParty* party)
 Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* party)
 	: currentMap(newMap)
 {
-	player.SetPosition(playerCoords * 48);
+	spawnPlayerPosition = playerCoords * 48;
 	SetPlayerParty(party);
 	app->audio->RemoveAllFx();
+}
+
+void Scene_Map::SpawnPlayerPosition()
+{
+	if(!spawnPlayerPosition.IsZero())
+	{
+		player.SetPosition(spawnPlayerPosition);
+		spawnPlayerPosition = { 0, 0 };
+	}
 }
 
 bool Scene_Map::isReady()
@@ -42,7 +51,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		LOG("Map %s couldn't be loaded.", mapToLoad);
 	}
 
-	this->windowFactory = &windowFac;
+	windowFactory = &windowFac;
 	xmlNode = info;
 	player.Create();
 
@@ -155,6 +164,10 @@ void Scene_Map::Start()
 	locationVisited.emplace_back(currentMap, 1);
 
 	playerParty->PossibleQuestProgress(QuestType::VISIT, locationVisited, std::vector<std::pair<int, int>>());
+
+	SpawnPlayerPosition();
+
+	app->render->AdjustCamera(player.GetPosition());
 }
 
 void Scene_Map::SetPlayerParty(GameParty* party)

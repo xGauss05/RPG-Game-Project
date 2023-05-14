@@ -37,6 +37,7 @@ public:
 	
 
 	void SetPlayerParty(GameParty* party);
+	void SpawnPlayerPosition();
 
 private:
 	void DrawStatsMenu();
@@ -92,18 +93,18 @@ private:
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 	std::vector<std::unique_ptr<Window_Base>> statsWindow;
 
-	int highDialogueSfx;
-	int midDialogueSfx;
-	int lowDialogueSfx;
-	int battleStartSfx;
-	int waterDropSfx;
-	int torchSfx;
+	int highDialogueSfx = -1;
+	int midDialogueSfx = -1;
+	int lowDialogueSfx = -1;
+	int battleStartSfx = -1;
+	int waterDropSfx = -1;
+	int torchSfx = -1;
+	int doorOpenSfx = -1;
+	int dootCloseSfx = -1;
+	int leverOpenSfx = -1;
+	int levelCloseSfx = -1;
 
-	int doorOpenSfx;
-	int dootCloseSfx;
-	int leverOpenSfx;
-	int levelCloseSfx;
-	
+	iPoint spawnPlayerPosition = { 0, 0 };
 };
 
 

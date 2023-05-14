@@ -69,9 +69,9 @@ bool SceneManager::Awake(pugi::xml_node& config)
 bool SceneManager::Start()
 {
 	currentScene.get()->Load(assetPath + "UI/", bootInfo, *windowFactory);
+	currentScene->Start();
 	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
-	currentScene->Start();
 
 	return true;
 }
@@ -81,13 +81,12 @@ bool SceneManager::PreUpdate()
 {
 	if (loadNextMap && nextScene)
 	{
-		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-		nextScene->Start();
+		//nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+		//nextScene->Start();
 		loadNextMap = false;
 	}
 	return true;
 }
-
 
 bool SceneManager::Pause(int phase)
 {
