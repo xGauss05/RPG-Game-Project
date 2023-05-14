@@ -190,6 +190,7 @@ bool SceneManager::Update(float dt)
 			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::move(sceneOnHold);
 			nextScene->isReady();
+			break;
 		}
 		case EXIT_GAME:
 		{
