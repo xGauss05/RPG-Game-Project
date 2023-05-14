@@ -163,7 +163,6 @@ void Scene_Map::DebugItems()
 
 TransitionScene Scene_Map::Update()
 {
-
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;

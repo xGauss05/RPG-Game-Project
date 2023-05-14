@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="19">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="20">
  <tileset firstgid="1" source="Lab_Exterior.tsx"/>
+ <tileset firstgid="257" source="Village.tsx"/>
  <layer id="1" name="Ground" width="32" height="16">
   <data encoding="csv">
 82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,82,
@@ -214,6 +215,21 @@
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Inside"/>
       <property name="Destination X" type="int" value="3"/>
       <property name="Destination Y" type="int" value="13"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="19" name="Chest1" type="Event Chest" gid="455" x="336" y="48" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Revive"/>
+      <property name="Quantity" type="int" value="1"/>
      </properties>
     </property>
    </properties>

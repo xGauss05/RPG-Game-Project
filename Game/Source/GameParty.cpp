@@ -80,6 +80,7 @@ void GameParty::CreateParty()
 	}
 
 	dbItems = std::make_unique<DB_Items>();
+	dbQuests = std::make_unique<DB_Quests>();
 }
 
 void GameParty::UseItemOnMap(int character, int itemId, int amountToUse)

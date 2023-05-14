@@ -1,11 +1,15 @@
 #ifndef __GAME_PARTY_H__
 #define __GAME_PARTY_H__
 
-#include <vector>
-
 #include "DB_Items.h"
+#include "DB_Quests.h"
 
 #include "Log.h"
+
+#include <vector>
+#include <map>
+#include <set>
+
 
 enum class BaseStats
 {
@@ -73,6 +77,9 @@ public:
 	std::vector<std::pair<int, int>> inventory;
 
 	std::unique_ptr<DB_Items> dbItems;
+	std::unique_ptr<DB_Quests> dbQuests;
+
+	std::unordered_map<QuestType, std::unordered_set<std::unique_ptr<Quest>>> currentQuests;
 };
 
 #endif //__GAME_PARTY_H__
