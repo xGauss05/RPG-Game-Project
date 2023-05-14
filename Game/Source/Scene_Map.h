@@ -5,6 +5,7 @@
 #include "GameParty.h"
 #include "Player.h"
 #include "Map.h"
+#include <unordered_set>
 
 #include <random>
 
@@ -47,6 +48,8 @@ private:
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
+	void PlayDialogueSfx(std::string name);
+
 	enum class MapState
 	{
 		NORMAL,
@@ -57,13 +60,15 @@ private:
 
 	bool godMode = false;
 	bool statusOpen = false;
-	int battleSFX = 0;
+
 	std::random_device rd;
 	std::uniform_int_distribution<> random100;
 
 	std::string currentMap = "";
 
 	EventTrigger tpInfo;
+
+	std::unordered_set<int> currentSfxPlaying;
 
 	Map map;
 	Player player;
@@ -81,6 +86,11 @@ private:
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 	std::vector<std::unique_ptr<Window_Base>> statsWindow;
+
+	int highDialogueSfx;
+	int midDialogueSfx;
+	int lowDialogueSfx;
+	int battleStartSfx;
 };
 
 

@@ -92,9 +92,25 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 
 	app->audio->PlayMusic(musicname.c_str());
 
-	battleSFX = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
-
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
+
+	highDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
+	midDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
+	lowDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
+	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+}
+
+void Scene_Map::PlayDialogueSfx(std::string name)
+{
+	if (StrEquals("high", name)) 
+		app->audio->PlayFx(highDialogueSfx);
+
+	if (StrEquals("mid", name)) 
+		app->audio->PlayFx(midDialogueSfx);
+
+	if (StrEquals("low", name)) 
+		app->audio->PlayFx(lowDialogueSfx);
+
 }
 
 void Scene_Map::Start()
@@ -327,6 +343,10 @@ TransitionScene Scene_Map::Update()
 					windows.emplace_back(windowFactory->CreateWindow("Message"));
 
 					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
+					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
+
+					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 					state = MapState::ON_DIALOG;
@@ -399,7 +419,10 @@ TransitionScene Scene_Map::TryRandomBattle()
 		int randomValue = random100(gen);
 		if (randomValue <= 3)
 		{
-			app->audio->PlayFx(battleSFX);
+
+			app->audio->PlayFx(battleStartSfx);
+
+
 			return TransitionScene::START_BATTLE;
 		}
 	}
@@ -591,7 +614,7 @@ void Scene_Map::DrawPlayerStats(PartyCharacter const& character, int i) const
 	);
 }
 
-void Scene_Map::DrawSingleStat(PartyCharacter const &character, BaseStats stat, int x, int y) const
+void Scene_Map::DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const
 {
 	app->fonts->DrawText(
 		character.GetStatDisplay(stat),
