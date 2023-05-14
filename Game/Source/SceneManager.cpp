@@ -136,12 +136,14 @@ bool SceneManager::Update(float dt)
 	{
 		case BOOT_COMPLETE:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
 		}
 		case LOSE_BATTLE:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			sceneOnHold.reset();
 			nextScene = std::make_unique<Scene_GameOver>();
 			nextScene.get()->Load(assetPath + "UI/", gameOverInfo, *windowFactory);
@@ -155,12 +157,14 @@ bool SceneManager::Update(float dt)
 		}
 		case NEW_GAME:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::make_unique<Scene_Map>(party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			break;
 		}
 		case CONTINUE_GAME:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::make_unique<Scene_Map>(party.get());
 			loadNextMap = true;
 			app->LoadGameRequest();
@@ -168,6 +172,7 @@ bool SceneManager::Update(float dt)
 		}
 		case LOAD_MAP_FROM_MAP:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
 			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates(), party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
@@ -182,9 +187,9 @@ bool SceneManager::Update(float dt)
 		case WIN_BATTLE:
 		case RUN_BATTLE:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::move(sceneOnHold);
-			nextScene->isReady(); //Re plays music
-			break;
+			nextScene->isReady();
 		}
 		case EXIT_GAME:
 		{

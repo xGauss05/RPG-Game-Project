@@ -23,14 +23,8 @@ Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* 
 
 bool Scene_Map::isReady()
 {
-	std::string musicname;
-	if (currentMap == "Lab_Inside" || currentMap == "Lab_Exterior")
-	{
-		musicname = "Assets/Audio/Music/M_Town-Lab.ogg";
-	}
-	else {
-		musicname = "Assets/Audio/Music/M_Town-" + currentMap + ".ogg";
-	}
+	std::string musicname = PlayMapBgm(currentMap);
+
 	app->audio->PlayMusic(musicname.c_str());
 
 	return true;
@@ -91,7 +85,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	highDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
 	midDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
 	lowDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
-	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Gameplay-BattleStart.wav");
 }
 
 std::string Scene_Map::PlayMapBgm(std::string name)
@@ -435,7 +429,8 @@ iPoint Scene_Map::GetTPCoordinates() const
 
 TransitionScene Scene_Map::TryRandomBattle()
 {
-	if (currentMap == "Village" || currentMap == "Lab_Exterior")
+	if (currentMap == "Village" || currentMap == "Lab_Exterior" || currentMap == "Dungeon_Outside" || 
+		currentMap == "Dungeon01" || currentMap == "Dungeon02" || currentMap == "Dungeon03")
 	{
 		std::mt19937 gen(rd());
 		int randomValue = random100(gen);
