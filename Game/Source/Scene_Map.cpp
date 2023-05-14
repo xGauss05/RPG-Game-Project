@@ -92,9 +92,32 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 
 	app->audio->PlayMusic(musicname.c_str());
 
-	battleSFX = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
-
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
+}
+
+int Scene_Map::SelectSfx(std::string_view str)
+{
+	if (StrEquals(str, "high"))
+	{
+		return app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
+	}
+
+	if (StrEquals(str, "mid"))
+	{
+		return app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
+	}
+
+	if (StrEquals(str, "low"))
+	{
+		return app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
+	}
+
+	if (StrEquals(str, "battleStart"))
+	{
+		return app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+	}
+
+	return -1;
 }
 
 void Scene_Map::Start()
@@ -240,7 +263,15 @@ TransitionScene Scene_Map::Update()
 				}
 				else
 				{
+					int sfxID = SelectSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
+					if (auto result = currentSfxPlaying.insert(sfxID);
+						result.second)
+					{
+						app->audio->PlayFx(sfxID);
+					}
+
 					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+					
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 				}
@@ -271,9 +302,17 @@ TransitionScene Scene_Map::Update()
 						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
 					}
 					[[fallthrough]];
+
 				}
 				case SHOW_MESSAGE:
 				{
+					int sfxID = SelectSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
+					if (auto result = currentSfxPlaying.insert(sfxID);
+						result.second)
+					{
+						app->audio->PlayFx(sfxID);
+					}
+
 					windows.emplace_back(windowFactory->CreateWindow("Message"));
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(action.text);
@@ -287,6 +326,14 @@ TransitionScene Scene_Map::Update()
 						LOG("Could not load dialog xml file. Pugi error: %s", result.description());
 						break;
 					}
+
+					int sfxID = SelectSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
+					if (auto result = currentSfxPlaying.insert(sfxID);
+						result.second)
+					{
+						app->audio->PlayFx(sfxID);
+					}
+
 					windows.emplace_back(windowFactory->CreateWindow("Message"));
 					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
@@ -362,7 +409,13 @@ TransitionScene Scene_Map::TryRandomBattle()
 		int randomValue = random100(gen);
 		if (randomValue <= 3)
 		{
-			app->audio->PlayFx(battleSFX);
+			int sfxID = SelectSfx("battleStart");
+			if (auto result = currentSfxPlaying.insert(sfxID);
+				result.second)
+			{
+				app->audio->PlayFx(sfxID);
+			}
+
 			return TransitionScene::START_BATTLE;
 		}
 	}
@@ -554,7 +607,7 @@ void Scene_Map::DrawPlayerStats(PartyCharacter const& character, int i) const
 	);
 }
 
-void Scene_Map::DrawSingleStat(PartyCharacter const &character, BaseStats stat, int x, int y) const
+void Scene_Map::DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const
 {
 	app->fonts->DrawText(
 		character.GetStatDisplay(stat),

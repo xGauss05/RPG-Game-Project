@@ -1,4 +1,4 @@
-<dialog>
+<dialog voicteype="low">
   <message1 text="Don't you know better than to talk with me!?" next="message2"/>
   <message2 text="I'm rich, you know, now begone, filth!" next="end"/>
 </dialog>

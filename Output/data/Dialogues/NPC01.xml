@@ -1,4 +1,4 @@
-<dialog>
+<dialog voicetype="mid">
 	<message1 text="What was that?" next="message2"/>
 	<message2 text="Hmmmm..." next="message3"/>
 	<message3 text="Must have been the wind..." next="end"/>
