@@ -9,7 +9,8 @@ Scene_Map::Scene_Map(GameParty* party)
 	SetPlayerParty(party);
 }
 
-Scene_Map::Scene_Map(std::string const& newMap, GameParty* party) : currentMap(newMap)
+Scene_Map::Scene_Map(std::string const& newMap, GameParty* party)
+	: currentMap(newMap)
 {
 	SetPlayerParty(party);
 }
@@ -100,7 +101,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 }
 
-void Scene_Map::PlayDialogueSfx(std::string name)
+void Scene_Map::PlayDialogueSfx(std::string_view name)
 {
 	if (StrEquals("high", name)) 
 		app->audio->PlayFx(highDialogueSfx);

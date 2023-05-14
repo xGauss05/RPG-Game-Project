@@ -23,8 +23,6 @@ private:
 	QuestType ParseQuestTypeXML(pugi::xml_attribute& node) const;
 	QuestType MapStrToEnum(std::string_view str) const;
 
-	//using QuestMap = std::unordered_map<QuestType, std::unordered_map<int, std::unique_ptr<Quest>>>;
-	
 	std::unordered_map<int, std::unique_ptr<Quest>> availableQuests;
 };
 
