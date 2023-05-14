@@ -84,6 +84,10 @@ std::unique_ptr<GuiMenuList> Window_Factory::CreateMenuList(std::string_view con
 	{
 		returnPtr = std::make_unique<Map_Menu_MainCategories>(info.find("MenuListFallback")->second);
 	}
+	if (StrEquals(windowName, "Menu_MainCategories_NoIcons"))
+	{
+		returnPtr = std::make_unique<Map_Menu_MainCategories>(info.find("Menu_MainCategories_NoIcons")->second);
+	}
 
 	return returnPtr;
 }

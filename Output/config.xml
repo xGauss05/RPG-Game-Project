@@ -269,6 +269,12 @@
 				</background>
 				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
 			</window>
+      <window name="Menu_MainCategories_NoIcons" class="MenuList" x="800" y="50" width="250" height="460">
+        <background segmentX="0" segmentY="0" segmentWidth="32" segmentHeight="32" numOfSegmentsX="2" numOfSegmentsY="3" advance="4" path="Assets/UI/GUI_4x_sliced.png">
+          <scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
+        </background>
+        <itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+      </window>
 		</window_info>
 	</scene>
 	<fonts>

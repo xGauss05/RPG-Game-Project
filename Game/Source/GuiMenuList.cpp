@@ -114,6 +114,11 @@ void GuiMenuList::Initialize()
 	SetDefaultBooleanValues();
 }
 
+void GuiMenuList::Start()
+{
+	SetCurrentItemSelected(0);
+}
+
 void GuiMenuList::SetDefaultBooleanValues()
 {
 	deleteMenu = false;
@@ -122,10 +127,18 @@ void GuiMenuList::SetDefaultBooleanValues()
 	alphaIncreasing = false;
 }
 
-void GuiMenuList::Update()
+bool GuiMenuList::Update()
 {
 	HandleInput();
 	UpdateAlpha();
+
+	if (clickHandled)
+	{
+		clickHandled = false;
+		return true;
+	}
+
+	return false;
 }
 
 void GuiMenuList::UpdateAlpha()
@@ -222,7 +235,7 @@ void GuiMenuList::SetDeleteMenu(bool b)
 	deleteMenu = b;
 }
 
-bool GuiMenuList::GetDeleteMenu() const
+bool GuiMenuList::GoToPreviousMenu() const
 {
 	return deleteMenu;
 }
@@ -232,9 +245,29 @@ bool GuiMenuList::GetClickHandled() const
 	return clickHandled;
 }
 
+int GuiMenuList::GetLastClick() const
+{
+	return lastClick;
+}
+
 void GuiMenuList::SetGoToPreviousMenu(bool b)
 {
 	goToPreviousMenu = b;
+}
+
+void GuiMenuList::SetCurrentAlpha(Uint8 value)
+{
+	currentAlpha = value;
+}
+
+void GuiMenuList::SetCurrentItemSelected(int value)
+{
+	currentItemSelected = value;
+}
+
+void GuiMenuList::ResetCurrentItemSelected()
+{
+	currentItemSelected = -1;
 }
 
 bool GuiMenuList::GetGoToPreviousMenu() const
@@ -296,6 +329,7 @@ void GuiMenuList::HandleLeftClick()
 			if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN
 				&& currentItemSelected == elementClicked)
 			{
+				SetLastClick(elementClicked);
 				HandleLeftButtonClick(elementClicked);
 			}
 			else
@@ -390,8 +424,13 @@ void GuiMenuList::ScrollListDown(int amount)
 	}
 }
 
-GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int textureID)
-	: text(itemText), iconTexture(textureID)
+void GuiMenuList::SetLastClick(int i)
+{
+	lastClick = i;
+}
+
+GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int i, int textureID)
+	: text(itemText), index(i), iconTexture(textureID)
 {}
 
 void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int sizeIcon, bool currentlySelected) const

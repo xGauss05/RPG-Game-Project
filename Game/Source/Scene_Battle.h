@@ -2,7 +2,7 @@
 #include "Scene_Base.h"
 #include "GameParty.h"
 #include "EnemyTroops.h"
-#include "GuiMenuList.h"
+#include "Map_Window_Menu.h"
 
 #include <random>
 
@@ -92,4 +92,6 @@ private:
     int antonioTurnSfx = -1;
 
     bool playedTurnSfx = false;
+
+    std::unique_ptr<Map_Window_Menu> mwm;
 };

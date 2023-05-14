@@ -1,25 +1,22 @@
-#include "Map_Menu_MainCategories.h"
+#include "Map_Menu_Inventory.h"
 #include "Log.h"
 
 
-Map_Menu_MainCategories::Map_Menu_MainCategories(pugi::xml_node const& node)
+Map_Menu_Inventory::Map_Menu_Inventory(pugi::xml_node const& node)
 	: GuiMenuList(node)
 {}
 
-void Map_Menu_MainCategories::HandleLeftButtonClick(int result)
+void Map_Menu_Inventory::HandleLeftButtonClick(int result)
 {
 	SetClickHandled(true);
 }
 
-void Map_Menu_MainCategories::HandleRightButtonClick()
+void Map_Menu_Inventory::HandleRightButtonClick()
 {
-	ResetCurrentItemSelected();
-	SetCurrentAlpha(0);
 	SetDeleteMenu(true);
-	SetClickHandled(true);
 }
 
-void Map_Menu_MainCategories::InitializeElements()
+void Map_Menu_Inventory::InitializeElements()
 {
 	std::array elementNames
 	{

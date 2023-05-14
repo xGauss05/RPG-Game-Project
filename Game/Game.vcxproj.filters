@@ -47,6 +47,7 @@
     <ClCompile Include="Source\Map_Menu_MainCategories.cpp" />
     <ClCompile Include="Source\DB_Quests.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
+    <ClCompile Include="Source\Map_Menu_Inventory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
     <ClInclude Include="Source\AdjacencyGraph.h" />
     <ClInclude Include="Source\DB_Quests.h" />
+    <ClInclude Include="Source\Map_Menu_Inventory.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

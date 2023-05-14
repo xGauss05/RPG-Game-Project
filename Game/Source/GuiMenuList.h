@@ -23,7 +23,7 @@ public:
 		};
 
 		MenuItem() = default;
-		explicit MenuItem(ItemText const& itemText, int textureID = -1);
+		explicit MenuItem(ItemText const& itemText, int i, int textureID = -1);
 
 		void Draw(
 			iPoint originalPos,
@@ -43,6 +43,7 @@ public:
 	private:
 
 		ItemText text;
+		int index = -1;
 		int iconTexture = -1;
 	};
 
@@ -52,7 +53,9 @@ public:
 
 	void Initialize();
 
-	void Update();
+	void Start();
+
+	bool Update();
 
 	void CreateMenuItem(MenuItem const& item);
 	void DeleteMenuItem(int index);
@@ -60,8 +63,9 @@ public:
 	bool Draw() const;
 	void DebugDraw() const;
 
-	bool GetDeleteMenu() const;
+	bool GoToPreviousMenu() const;
 	bool GetClickHandled() const;
+	int GetLastClick() const;
 	bool GetGoToPreviousMenu() const;
 
 protected:
@@ -73,6 +77,11 @@ protected:
 	void SetClickHandled(bool b);
 	void SetGoToPreviousMenu(bool b);
 
+	void SetCurrentAlpha(Uint8 value);
+	void SetCurrentItemSelected(int value);
+
+	void ResetCurrentItemSelected();
+
 private:
 	void HandleInput();
 	void HandleLeftClick();
@@ -81,6 +90,8 @@ private:
 	void SelectAndScrollDownIfNeeded(int amount = 1);
 	void ScrollListUp(int amount = 1);
 	void ScrollListDown(int amount = 1);
+
+	void SetLastClick(int i = -1);
 
 	void UpdateAlpha();
 
@@ -113,6 +124,7 @@ private:
 	bool goToPreviousMenu = false;
 
 	bool clickHandled = false;
+	int lastClick = -1;
 
 	std::vector<MenuItem> items;
 };

@@ -88,6 +88,8 @@ public:
 	std::unique_ptr<DB_Items> dbItems;
 	std::unique_ptr<DB_Quests> dbQuests;
 
+	std::unordered_map<int, bool> globalSwitches;
+
 	std::unordered_map<int, std::unique_ptr<Quest>> currentQuests;
 
 	// Questype -> All indexes of accepted Quests that have that Questype

@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="Source\DB_Quests.cpp" />
     <ClCompile Include="Source\GuiMenuList.cpp" />
+    <ClCompile Include="Source\Map_Menu_Inventory.cpp" />
     <ClCompile Include="Source\Map_Menu_MainCategories.cpp" />
     <ClCompile Include="Source\Map_Window_Menu.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Source\AdjacencyGraph.h" />
     <ClInclude Include="Source\DB_Quests.h" />
     <ClInclude Include="Source\GuiMenuList.h" />
+    <ClInclude Include="Source\Map_Menu_Inventory.h" />
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />
     <ClInclude Include="Source\Transition_Blink.h" />

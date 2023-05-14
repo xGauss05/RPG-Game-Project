@@ -55,6 +55,10 @@ bool Scene_Battle::isReady()
 
 void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& info, Window_Factory const& windowFactory)
 {
+	mwm = std::make_unique<Map_Window_Menu>(windowFactory);
+	mwm->Start();
+	mwm->SetPlayerParty(party);
+
 	windows.clear();
 
 	actions = windowFactory.CreateWindowList("BattleActions");
@@ -227,6 +231,9 @@ void Scene_Battle::Draw()
 		std::string text = "Choose a target.";
 		messages->ModifyLastWidgetText(text);
 	}
+
+	mwm->Update();
+	mwm->Draw();
 }
 
 TransitionScene Scene_Battle::Update()
