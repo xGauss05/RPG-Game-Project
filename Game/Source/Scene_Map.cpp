@@ -93,31 +93,24 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	app->audio->PlayMusic(musicname.c_str());
 
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
+
+	highDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
+	midDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
+	lowDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
+	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
 }
 
-int Scene_Map::SelectSfx(std::string_view str)
+void Scene_Map::PlayDialogueSfx(std::string name)
 {
-	if (StrEquals(str, "high"))
-	{
-		return app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
-	}
+	if (StrEquals("high", name)) 
+		app->audio->PlayFx(highDialogueSfx);
 
-	if (StrEquals(str, "mid"))
-	{
-		return app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
-	}
+	if (StrEquals("mid", name)) 
+		app->audio->PlayFx(midDialogueSfx);
 
-	if (StrEquals(str, "low"))
-	{
-		return app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
-	}
+	if (StrEquals("low", name)) 
+		app->audio->PlayFx(lowDialogueSfx);
 
-	if (StrEquals(str, "battleStart"))
-	{
-		return app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
-	}
-
-	return -1;
 }
 
 void Scene_Map::Start()
@@ -262,15 +255,10 @@ TransitionScene Scene_Map::Update()
 				}
 				else
 				{
-					int sfxID = SelectSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-					if (auto result = currentSfxPlaying.insert(sfxID);
-						result.second)
-					{
-						app->audio->PlayFx(sfxID);
-					}
+					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 
 					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
-					
+
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 				}
@@ -305,12 +293,7 @@ TransitionScene Scene_Map::Update()
 				}
 				case SHOW_MESSAGE:
 				{
-					int sfxID = SelectSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-					if (auto result = currentSfxPlaying.insert(sfxID);
-						result.second)
-					{
-						app->audio->PlayFx(sfxID);
-					}
+					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 
 					windows.emplace_back(windowFactory->CreateWindow("Message"));
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
@@ -326,12 +309,7 @@ TransitionScene Scene_Map::Update()
 						break;
 					}
 
-					int sfxID = SelectSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-					if (auto result = currentSfxPlaying.insert(sfxID);
-						result.second)
-					{
-						app->audio->PlayFx(sfxID);
-					}
+					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 
 					windows.emplace_back(windowFactory->CreateWindow("Message"));
 					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
@@ -408,12 +386,9 @@ TransitionScene Scene_Map::TryRandomBattle()
 		int randomValue = random100(gen);
 		if (randomValue <= 3)
 		{
-			int sfxID = SelectSfx("battleStart");
-			if (auto result = currentSfxPlaying.insert(sfxID);
-				result.second)
-			{
-				app->audio->PlayFx(sfxID);
-			}
+
+			app->audio->PlayFx(battleStartSfx);
+
 
 			return TransitionScene::START_BATTLE;
 		}

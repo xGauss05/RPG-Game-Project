@@ -47,7 +47,7 @@ private:
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
-	int SelectSfx(std::string_view str);
+	void PlayDialogueSfx(std::string name);
 
 	enum class MapState
 	{
@@ -85,6 +85,11 @@ private:
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 	std::vector<std::unique_ptr<Window_Base>> statsWindow;
+
+	int highDialogueSfx;
+	int midDialogueSfx;
+	int lowDialogueSfx;
+	int battleStartSfx;
 };
 
 

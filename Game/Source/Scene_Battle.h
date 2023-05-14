@@ -85,6 +85,7 @@ private:
     int attackSfx;
     int criticalSfx;
     int blockSfx;
+    int escapeSfx;
     int enemydeadSfx;
     int erYonaTurnSfx;
     int erYonadeadSfx;

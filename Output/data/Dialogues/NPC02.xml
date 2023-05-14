@@ -1,4 +1,4 @@
-<dialog voicteype="mid">
+<dialog voicetype="mid">
 	<message1 text="Hello traveler!" next="message2"/>
 	<message2 text="Are you having fun in your adventures?" next="confirmation" yes="message3" no="message4"/>
 	<message3 text="Glad to hear that! Need directions?" next="confirmation" yes="message5" no="message7"/>
