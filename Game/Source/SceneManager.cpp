@@ -69,6 +69,7 @@ bool SceneManager::Awake(pugi::xml_node& config)
 bool SceneManager::Start()
 {
 	currentScene.get()->Load(assetPath + "UI/", bootInfo, *windowFactory);
+	currentScene->Start();
 	party->CreateParty();
 	pauseMenuBackground = app->tex->Load("Assets/Textures/Backgrounds/pause_bg.png");
 
@@ -80,13 +81,12 @@ bool SceneManager::PreUpdate()
 {
 	if (loadNextMap && nextScene)
 	{
-		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-		nextScene->Start();
+		//nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+		//nextScene->Start();
 		loadNextMap = false;
 	}
 	return true;
 }
-
 
 bool SceneManager::Pause(int phase)
 {
@@ -136,12 +136,14 @@ bool SceneManager::Update(float dt)
 	{
 		case BOOT_COMPLETE:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
 		}
 		case LOSE_BATTLE:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			sceneOnHold.reset();
 			nextScene = std::make_unique<Scene_GameOver>();
 			nextScene.get()->Load(assetPath + "UI/", gameOverInfo, *windowFactory);
@@ -155,12 +157,14 @@ bool SceneManager::Update(float dt)
 		}
 		case NEW_GAME:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::make_unique<Scene_Map>(party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
 			break;
 		}
 		case CONTINUE_GAME:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::make_unique<Scene_Map>(party.get());
 			loadNextMap = true;
 			app->LoadGameRequest();
@@ -168,10 +172,10 @@ bool SceneManager::Update(float dt)
 		}
 		case LOAD_MAP_FROM_MAP:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
 			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates(), party.get());
 			nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-			nextScene->Start();
 			break;
 		}
 		case START_BATTLE:
@@ -182,8 +186,9 @@ bool SceneManager::Update(float dt)
 		case WIN_BATTLE:
 		case RUN_BATTLE:
 		{
+			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::move(sceneOnHold);
-			nextScene->isReady(); //Re plays music
+			nextScene->isReady();
 			break;
 		}
 		case EXIT_GAME:
@@ -213,6 +218,8 @@ bool SceneManager::PostUpdate()
 			sceneOnHold = std::move(currentScene);
 
 		currentScene = std::move(nextScene);
+
+		currentScene->Start();
 	}
 
 	return true;

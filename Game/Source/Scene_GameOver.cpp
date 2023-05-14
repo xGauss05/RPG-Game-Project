@@ -39,6 +39,7 @@ void Scene_GameOver::Load(std::string const& path, LookUpXMLNodeFromString const
 	}
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/gameover_bg.png");
+	app->audio->PlayMusic("Assets/Audio/Music/M_Battle-Loose.ogg");
 
 	app->render->ResetCamera();
 

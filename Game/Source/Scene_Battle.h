@@ -82,13 +82,14 @@ private:
     std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
 
     // Sound indexes
-    int attackSfx;
-    int criticalSfx;
-    int blockSfx;
-    int escapeSfx;
-    int enemydeadSfx;
-    int erYonaTurnSfx;
-    int rocioTurnSfx;
+    int attackSfx = -1;
+    int criticalSfx = -1;
+    int blockSfx = -1;
+    int escapeSfx = -1;
+    int enemydeadSfx = -1;
+    int erYonaTurnSfx = -1;
+    int rocioTurnSfx = -1;
+    int antonioTurnSfx = -1;
 
     bool playedTurnSfx = false;
 };

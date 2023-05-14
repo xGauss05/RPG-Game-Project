@@ -35,6 +35,8 @@ public:
 
 	bool RemoveFx(int id);
 
+	void RemoveAllFx();
+
 	void SetBGMVolume(int value);
 
 	void SetSFXVolume(int value);

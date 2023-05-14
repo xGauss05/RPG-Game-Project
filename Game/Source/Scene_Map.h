@@ -34,9 +34,10 @@ public:
 	void UpdateStatsMenu();
 	std::string_view GetNextMap() const;
 	iPoint GetTPCoordinates() const;
-	TransitionScene TryRandomBattle();
+	
 
 	void SetPlayerParty(GameParty* party);
+	void SpawnPlayerPosition();
 
 private:
 	void DrawStatsMenu();
@@ -48,8 +49,11 @@ private:
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
-	std::string PlayMapBgm(std::string name);
-	void PlayDialogueSfx(std::string name);
+	std::string PlayMapBgm(std::string_view name);
+	void PlayDialogueSfx(std::string_view name);
+	void DungeonSfx();
+
+	TransitionScene TryRandomBattle();
 
 	enum class MapState
 	{
@@ -64,6 +68,7 @@ private:
 
 	std::random_device rd;
 	std::uniform_int_distribution<> random100;
+	std::uniform_int_distribution<> random1000;
 
 	std::string currentMap = "";
 
@@ -88,10 +93,18 @@ private:
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 	std::vector<std::unique_ptr<Window_Base>> statsWindow;
 
-	int highDialogueSfx;
-	int midDialogueSfx;
-	int lowDialogueSfx;
-	int battleStartSfx;
+	int highDialogueSfx = -1;
+	int midDialogueSfx = -1;
+	int lowDialogueSfx = -1;
+	int battleStartSfx = -1;
+	int waterDropSfx = -1;
+	int torchSfx = -1;
+	int doorOpenSfx = -1;
+	int dootCloseSfx = -1;
+	int leverOpenSfx = -1;
+	int levelCloseSfx = -1;
+
+	iPoint spawnPlayerPosition = { 0, 0 };
 };
 
 

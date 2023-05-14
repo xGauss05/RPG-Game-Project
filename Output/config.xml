@@ -236,21 +236,21 @@
 				</button>
 			</window>
 			<window name="GameOverMenu" class="List" type="Base" x="50" y="50" width="200" height="100">
-				<button startingX="425" targetX="425" startingY="180" targetY="180" width="400" height="65" text="Load game" function="ContinueGame" segmentwidth="32" segmentheight="32">
+				<button startingX="425" targetX="425" startingY="400" targetY="180" width="400" height="64" text="Load game" function="ContinueGame" segmentwidth="32" segmentheight="32">
 					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 				</button>
-				<button startingX="425" targetX="425" startingY="270" targetY="270" width="400" height="65" text="Return to main menu" function="ExitMainMenu" segmentwidth="32" segmentheight="32">
+				<button startingX="425" targetX="425" startingY="490" targetY="270" width="400" height="64" text="Return to main menu" function="ExitMainMenu" segmentwidth="32" segmentheight="32">
 					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="4" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 				</button>
-				<button startingX="425" targetX="425" startingY="360" targetY="360" width="400" height="65" text="Exit to desktop" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
+				<button startingX="425" targetX="425" startingY="580" targetY="360" width="400" height="64" text="Exit to desktop" function="ExitGameFromTitle" segmentwidth="32" segmentheight="32">
 					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 					<state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />

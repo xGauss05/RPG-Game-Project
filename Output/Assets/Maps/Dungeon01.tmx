@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="45">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="45">
  <tileset firstgid="1" source="Dungeon.tsx"/>
- <tileset firstgid="65" source="Dungeon.tsx"/>
  <layer id="1" name="Ground" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,42,43,43,43,43,0,0,0,0,
@@ -62,7 +61,7 @@
   <object id="11" gid="56" x="192" y="48" width="16" height="16"/>
   <object id="12" gid="56" x="208" y="48" width="16" height="16"/>
   <object id="13" gid="56" x="224" y="48" width="16" height="16"/>
-  <object id="15" name="To Dungeon Outside" type="Event Teleport" x="208" y="304" width="16" height="16">
+  <object id="15" name="To Dungeon Outside" type="Event Teleport" x="208" y="288" width="16" height="16">
    <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
@@ -73,7 +72,7 @@
     </property>
    </properties>
   </object>
-  <object id="16" name="To Dungeon Outside" type="Event Teleport" x="192" y="304" width="16" height="16">
+  <object id="16" name="To Dungeon Outside" type="Event Teleport" x="192" y="288" width="16" height="16">
    <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
@@ -84,7 +83,7 @@
     </property>
    </properties>
   </object>
-  <object id="17" name="To Dungeon Outside" type="Event Teleport" x="224" y="304" width="16" height="16">
+  <object id="17" name="To Dungeon Outside" type="Event Teleport" x="224" y="288" width="16" height="16">
    <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
@@ -95,7 +94,7 @@
     </property>
    </properties>
   </object>
-  <object id="18" name="To Dungeon Outside" type="Event Teleport" x="176" y="304" width="16" height="16">
+  <object id="18" name="To Dungeon Outside" type="Event Teleport" x="176" y="288" width="16" height="16">
    <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
@@ -106,7 +105,7 @@
     </property>
    </properties>
   </object>
-  <object id="19" name="To Dungeon Outside" type="Event Teleport" x="240" y="304" width="16" height="16">
+  <object id="19" name="To Dungeon Outside" type="Event Teleport" x="240" y="288" width="16" height="16">
    <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
@@ -182,15 +181,15 @@
   <object id="32" gid="56" x="192" y="48" width="16" height="16"/>
   <object id="33" gid="56" x="208" y="48" width="16" height="16"/>
   <object id="34" gid="56" x="224" y="48" width="16" height="16"/>
-  <object id="35" gid="127" x="176" y="32" width="16" height="16"/>
-  <object id="36" gid="127" x="176" y="48" width="16" height="16"/>
-  <object id="37" gid="128" x="240" y="32" width="16" height="16"/>
-  <object id="38" gid="128" x="240" y="48" width="16" height="16"/>
-  <object id="39" gid="120" x="192" y="32" width="16" height="16"/>
-  <object id="40" gid="120" x="208" y="32" width="16" height="16"/>
-  <object id="41" gid="120" x="224" y="32" width="16" height="16"/>
-  <object id="42" gid="120" x="224" y="48" width="16" height="16"/>
-  <object id="43" gid="120" x="208" y="48" width="16" height="16"/>
-  <object id="44" gid="120" x="192" y="48" width="16" height="16"/>
+  <object id="35" gid="63" x="176" y="32" width="16" height="16"/>
+  <object id="36" gid="63" x="176" y="48" width="16" height="16"/>
+  <object id="37" gid="64" x="240" y="32" width="16" height="16"/>
+  <object id="38" gid="64" x="240" y="48" width="16" height="16"/>
+  <object id="39" gid="56" x="192" y="32" width="16" height="16"/>
+  <object id="40" gid="56" x="208" y="32" width="16" height="16"/>
+  <object id="41" gid="56" x="224" y="32" width="16" height="16"/>
+  <object id="42" gid="56" x="224" y="48" width="16" height="16"/>
+  <object id="43" gid="56" x="208" y="48" width="16" height="16"/>
+  <object id="44" gid="56" x="192" y="48" width="16" height="16"/>
  </objectgroup>
 </map>

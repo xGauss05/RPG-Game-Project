@@ -7,32 +7,34 @@
 Scene_Map::Scene_Map(GameParty* party)
 {
 	SetPlayerParty(party);
+	app->audio->RemoveAllFx();
 }
 
 Scene_Map::Scene_Map(std::string const& newMap, GameParty* party)
 	: currentMap(newMap)
 {
 	SetPlayerParty(party);
+	app->audio->RemoveAllFx();
 }
 Scene_Map::Scene_Map(std::string const& newMap, iPoint playerCoords, GameParty* party)
 	: currentMap(newMap)
 {
-	player.SetPosition(playerCoords * 48);
+	spawnPlayerPosition = playerCoords * 48;
 	SetPlayerParty(party);
+	app->audio->RemoveAllFx();
+}
+
+void Scene_Map::SpawnPlayerPosition()
+{
+	if(!spawnPlayerPosition.IsZero())
+	{
+		player.SetPosition(spawnPlayerPosition);
+		spawnPlayerPosition = { 0, 0 };
+	}
 }
 
 bool Scene_Map::isReady()
 {
-	std::string musicname;
-	if (currentMap == "Lab_Inside" || currentMap == "Lab_Exterior")
-	{
-		musicname = "Assets/Audio/Music/M_Town-Lab.ogg";
-	}
-	else {
-		musicname = "Assets/Audio/Music/M_Town-" + currentMap + ".ogg";
-	}
-	app->audio->PlayMusic(musicname.c_str());
-
 	return true;
 }
 
@@ -49,7 +51,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		LOG("Map %s couldn't be loaded.", mapToLoad);
 	}
 
-	this->windowFactory = &windowFac;
+	windowFactory = &windowFac;
 	xmlNode = info;
 	player.Create();
 
@@ -82,19 +84,18 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		}
 	}
 
-	std::string musicname = PlayMapBgm(currentMap);
-
-	app->audio->PlayMusic(musicname.c_str());
-
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
+	random1000.param(std::uniform_int_distribution<>::param_type(1, 1000));
 
 	highDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
 	midDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
 	lowDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
-	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Gameplay-BattleStart.wav");
+	waterDropSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-WaterDroplet.wav");
+	torchSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-Torch.wav");
 }
 
-std::string Scene_Map::PlayMapBgm(std::string name)
+std::string Scene_Map::PlayMapBgm(std::string_view name)
 {
 	std::string musicname = "";
 
@@ -109,9 +110,14 @@ std::string Scene_Map::PlayMapBgm(std::string name)
 		musicname = "Assets/Audio/Music/M_Dungeon-Main.ogg";
 	}
 
-	if (name == "Airport" || name == "Base" || name == "Village")
+	if (name == "Base" || name == "Village")
 	{
 		musicname = "Assets/Audio/Music/M_Town-Village.ogg";
+	}
+
+	if (name == "Airport")
+	{
+		musicname = "Assets/Audio/Music/M_Town-Airport.ogg";
 	}
 
 	if (name == "Market")
@@ -122,7 +128,7 @@ std::string Scene_Map::PlayMapBgm(std::string name)
 	return musicname;
 }
 
-void Scene_Map::PlayDialogueSfx(std::string name)
+void Scene_Map::PlayDialogueSfx(std::string_view name)
 {
 	if (StrEquals("high", name))
 		app->audio->PlayFx(highDialogueSfx);
@@ -135,12 +141,33 @@ void Scene_Map::PlayDialogueSfx(std::string name)
 
 }
 
+void Scene_Map::DungeonSfx() 
+{
+	if (currentMap == "Dungeon_Outside" || currentMap == "Dungeon01" ||
+		currentMap == "Dungeon02" || currentMap == "Dungeon03")
+	{
+		std::mt19937 gen(rd());
+		int randomValue = random1000(gen);
+		if (randomValue <= 2) app->audio->PlayFx(waterDropSfx);
+
+		randomValue = random1000(gen);
+
+		if (randomValue <= 1) app->audio->PlayFx(torchSfx);
+	}
+}
+
 void Scene_Map::Start()
 {
+	app->audio->PlayMusic(PlayMapBgm(currentMap).c_str());
+
 	std::vector<std::pair<std::string_view, int>> locationVisited;
 	locationVisited.emplace_back(currentMap, 1);
 
 	playerParty->PossibleQuestProgress(QuestType::VISIT, locationVisited, std::vector<std::pair<int, int>>());
+
+	SpawnPlayerPosition();
+
+	app->render->AdjustCamera(player.GetPosition());
 }
 
 void Scene_Map::SetPlayerParty(GameParty* party)
@@ -243,6 +270,7 @@ TransitionScene Scene_Map::Update()
 			windows.pop_back();
 			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+			PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 			break;
 		}
@@ -254,6 +282,7 @@ TransitionScene Scene_Map::Update()
 			windows.pop_back();
 			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+			PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 			break;
 		}
@@ -317,6 +346,7 @@ TransitionScene Scene_Map::Update()
 			{
 				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
 				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
 			}
 		}
@@ -367,7 +397,8 @@ TransitionScene Scene_Map::Update()
 					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
 					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 
-					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+					// I dont know what this was doing here 
+					//currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
 
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
@@ -420,6 +451,8 @@ TransitionScene Scene_Map::Update()
 		return TransitionScene::EXIT_GAME;
 	}
 
+	DungeonSfx();
+
 	return TransitionScene::NONE;
 }
 
@@ -435,7 +468,8 @@ iPoint Scene_Map::GetTPCoordinates() const
 
 TransitionScene Scene_Map::TryRandomBattle()
 {
-	if (currentMap == "Village" || currentMap == "Lab_Exterior")
+	if (currentMap == "Village" || currentMap == "Lab_Exterior" || currentMap == "Dungeon_Outside" || 
+		currentMap == "Dungeon01" || currentMap == "Dungeon02" || currentMap == "Dungeon03")
 	{
 		std::mt19937 gen(rd());
 		int randomValue = random100(gen);

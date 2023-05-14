@@ -53,7 +53,6 @@ void Player::Create()
 		size.x / 3,
 		size.y / 3
 	};
-	app->render->AdjustCamera(position);
 }
 
 Player::PlayerAction Player::HandleInput() const

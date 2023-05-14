@@ -23,6 +23,8 @@ private:
 
 	bool enabled = false;
 
+
+
 	int currentActivePanel = 0;
 };
 

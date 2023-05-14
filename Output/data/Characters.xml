@@ -26,7 +26,7 @@
 </character>
 <character>
 	<general name="Er Yona" level="1"/>
-	<texture path="Assets/Textures/Battlers/Antonio_Right.PNG"/>
+	<texture path="Assets/Textures/Battlers/Yona_Right.PNG"/>
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
