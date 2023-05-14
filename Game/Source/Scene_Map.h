@@ -67,6 +67,7 @@ private:
 
 	std::random_device rd;
 	std::uniform_int_distribution<> random100;
+	std::uniform_int_distribution<> random1000;
 
 	std::string currentMap = "";
 
@@ -97,6 +98,12 @@ private:
 	int battleStartSfx;
 	int waterDropSfx;
 	int torchSfx;
+
+	int doorOpenSfx;
+	int dootCloseSfx;
+	int leverOpenSfx;
+	int levelCloseSfx;
+	
 };
 
 

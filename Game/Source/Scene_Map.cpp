@@ -81,6 +81,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	app->audio->PlayMusic(musicname.c_str());
 
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
+	random1000.param(std::uniform_int_distribution<>::param_type(1, 1000));
 
 	highDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
 	midDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
@@ -137,12 +138,12 @@ void Scene_Map::DungeonSfx()
 		currentMap == "Dungeon02" || currentMap == "Dungeon03")
 	{
 		std::mt19937 gen(rd());
-		int randomValue = random100(gen);
-		if (randomValue <= 5) app->audio->PlayFx(waterDropSfx);
+		int randomValue = random1000(gen);
+		if (randomValue <= 2) app->audio->PlayFx(waterDropSfx);
 
-		randomValue = random100(gen);
+		randomValue = random1000(gen);
 
-		if (randomValue <= 5) app->audio->PlayFx(torchSfx);
+		if (randomValue <= 1) app->audio->PlayFx(torchSfx);
 	}
 }
 
