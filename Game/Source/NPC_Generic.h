@@ -15,6 +15,9 @@ public:
 	EventTrigger OnTrigger() override;
 	void Create(pugi::xml_node const& node) override;
 
+protected:
+	std::string GetDialoguePath() const;
+
 private:
 	bool isStatic = false;
 	bool hasDialogue = false;

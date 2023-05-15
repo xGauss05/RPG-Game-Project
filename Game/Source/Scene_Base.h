@@ -44,6 +44,7 @@ public:
 	virtual bool SaveScene(pugi::xml_node const&) = 0;
 	virtual bool LoadScene(pugi::xml_node const&) = 0;
 	virtual void DebugDraw() = 0;
+	virtual std::string_view GetFightName() const { return ""; };
 
 
 	bool bActive = false;

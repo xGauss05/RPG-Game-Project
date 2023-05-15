@@ -7,6 +7,7 @@
 #include "Event_Door.h"
 #include "Event_Teleport.h"
 #include "NPC_Generic.h"
+#include "Event_Boss_Combat.h"
 
 #include "Sprite.h"
 
@@ -53,6 +54,10 @@ bool EventManager::CreateEvent(Publisher& publisher, pugi::xml_node const& node)
 		else if (StrEquals("Event Door", child.attribute("type").as_string()))
 		{
 			event = std::make_unique<Event_Door>(publisher);
+		}
+		else if (StrEquals("Event Boss Combat", child.attribute("type").as_string()))
+		{
+			event = std::make_unique<Event_Boss_Combat>();
 		}
 
 		if (!event)

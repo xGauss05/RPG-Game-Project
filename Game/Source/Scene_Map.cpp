@@ -373,6 +373,10 @@ TransitionScene Scene_Map::Update()
 		{
 			player.StartAction(playerAction);
 		}
+		else
+		{
+			player.RotatePlayer();
+		}
 	}
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
@@ -424,12 +428,19 @@ TransitionScene Scene_Map::Update()
 				playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
 			}
 			
+			if (StrEquals(nextDialogName, "combat"))
+			{
+				app->audio->PlayFx(battleStartSfx);
+				nextFightName = currentDialogNode.attribute("fightname").as_string();
+				currentDialogNode = currentDialogDocument.child("dialog").child("victory");
+				return TransitionScene::START_BATTLE;
+			}
 			if (StrEquals(nextDialogName, "end"))
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
 			}
-			else if (StrEquals(nextDialogName, "Confirmation"))
+			else if (StrEquals(nextDialogName, "confirmation"))
 			{
 				// Create Yes/No window
 				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
@@ -437,8 +448,11 @@ TransitionScene Scene_Map::Update()
 			}
 			else
 			{
-				
-				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+				if(!StrEquals(currentDialogNode.name(), "victory"))
+				{
+					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+				}
+
 				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
 				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
@@ -546,11 +560,7 @@ TransitionScene Scene_Map::Update()
 							playerParty->ToggleGlobalSwitchState(it->id);
 							break;
 						}
-						case QUERY:
-						{
-							break;
-						}
-						case NONE:
+						default:
 						{
 							break;
 						}
@@ -656,6 +666,11 @@ int Scene_Map::CheckNextScene()
 	return 0;
 }
 
+std::string_view Scene_Map::GetFightName() const
+{
+	return nextFightName;
+}
+
 bool Scene_Map::SaveScene(pugi::xml_node const& info)
 {
 	pugi::xml_node data = info;
@@ -712,25 +727,23 @@ void Scene_Map::DebugDraw()
 		}
 	}
 
-	//Text display
-	app->fonts->DrawText("GOD MODE ON", TextParameters(0, DrawParameters(0, iPoint{ 20,30 })));
-
-	app->fonts->DrawText("Player pos X: " + std::to_string(player.position.x), TextParameters(0, DrawParameters(0, iPoint{ 40,120 })));
-	app->fonts->DrawText("Player pos Y: " + std::to_string(player.position.y), TextParameters(0, DrawParameters(0, iPoint{ 40,160 })));
+	app->fonts->DrawText(std::format("Player pos X: {}", player.position.x), iPoint(40, 120));
+	app->fonts->DrawText(std::format("Player pos Y: {}", player.position.y), iPoint(40, 160));
 
 	std::string mapState = "Unknown";
 	switch (state)
 	{
-	case Scene_Map::MapState::NORMAL:
+	using enum Scene_Map::MapState;
+	case NORMAL:
 		mapState = "Normal";
 		break;
-	case Scene_Map::MapState::ON_MESSAGE:
+	case ON_MESSAGE:
 		mapState = "On Message";
 		break;
-	case Scene_Map::MapState::ON_DIALOG:
+	case ON_DIALOG:
 		mapState = "On Dialog";
 		break;
-	case Scene_Map::MapState::ON_MENU_SELECTION:
+	case ON_MENU_SELECTION:
 		mapState = "On Menu Selection";
 		break;
 	default:

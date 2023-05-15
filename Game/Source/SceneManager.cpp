@@ -180,7 +180,7 @@ bool SceneManager::Update(float dt)
 		}
 		case START_BATTLE:
 		{
-			StartBattle();
+			StartBattle(currentScene->GetFightName());
 			break;
 		}
 		case WIN_BATTLE:

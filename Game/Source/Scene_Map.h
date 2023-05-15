@@ -44,6 +44,8 @@ public:
 	bool SaveScene(pugi::xml_node const&) override;
 	bool LoadScene(pugi::xml_node const&) override;
 	
+	std::string_view GetFightName() const override;
+
 	void DebugDraw() override;
 
 private:
@@ -110,7 +112,9 @@ private:
 	int levelCloseSfx = -1;
 
 	iPoint spawnPlayerPosition = { 0, 0 };
+	
+	std::string_view nextFightName = "";
 };
 
 
-#endif __SCENE_MAP_H__
+#endif //__SCENE_MAP_H__

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="10">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="31">
  <tileset firstgid="1" source="Dungeon.tsx"/>
+ <tileset firstgid="65" source="Balphogor.tsx"/>
+ <tileset firstgid="66" source="NPCs.tsx"/>
  <layer id="1" name="Capa de patrones 1" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -77,6 +79,126 @@
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon02"/>
       <property name="Destination X" type="int" value="16"/>
       <property name="Destination Y" type="int" value="6"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="12" type="Event Door" gid="55" x="128" y="256" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="21" type="Event Door" gid="55" x="144" y="256" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="22" type="Event Door" gid="55" x="128" y="272" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="23" type="Event Door" gid="55" x="144" y="272" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="24" type="Event Door" gid="55" x="160" y="256" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="25" type="Event Door" gid="55" x="176" y="256" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="26" type="Event Door" gid="55" x="160" y="272" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="27" type="Event Door" gid="55" x="176" y="272" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="28" type="Event Door" gid="55" x="192" y="256" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="29" type="Event Door" gid="55" x="192" y="272" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="200"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="30" name="Balphogor" type="Event Boss Combat" gid="65" x="160" y="144" width="16" height="32">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Dialogue" type="bool" value="true"/>
+      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="Static" type="bool" value="true"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Balphogor01.xml"/>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="1"/>
+      <property name="ID" type="int" value="200"/>
+      <property name="Set To" type="bool" value="true"/>
      </properties>
     </property>
    </properties>

@@ -59,6 +59,7 @@ public:
 	void SetPosition(iPoint newPosition);
 	iPoint GetPosition() const;
 
+	void RotatePlayer();
 	bool FinishedMoving() const;
 
 	iPoint lastDir{ 0 };
@@ -67,6 +68,7 @@ private:
 	void AnimateMove();
 	void SmoothMove();
 	void StartMovement();
+
 
 	int moveTimer = 0;
 	iPoint moveVector{ 0 };

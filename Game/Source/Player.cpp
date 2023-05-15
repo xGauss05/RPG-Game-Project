@@ -189,6 +189,12 @@ void Player::StartMovement()
 	lastDir = moveVector;
 }
 
+void Player::RotatePlayer()
+{
+	StartMovement();
+	moveVector.SetToZero();
+}
+
 void Player::Update()
 {
 	if (!moveVector.IsZero())

@@ -34,7 +34,7 @@ std::string_view Scene_Battle::GetRandomEncounter()
 		return "fallback";
 	}
 
-	int maxEncounters = std::distance(encountersFile.children().begin(), encountersFile.children().end()) - 1;
+	int maxEncounters = std::distance(encountersFile.children().begin(), encountersFile.children().end()) - 2; // 2 because last fight is boss, not random. fk hardcoding
 
 	random.param(std::uniform_int_distribution<>::param_type(0, maxEncounters));
 
