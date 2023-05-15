@@ -74,7 +74,6 @@ void Scene_GameOver::Draw()
 
 TransitionScene Scene_GameOver::Update()
 {
-
 	using enum TransitionScene;
 
 	for (auto const& elem : windows)

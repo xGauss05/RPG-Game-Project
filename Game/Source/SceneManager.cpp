@@ -81,8 +81,8 @@ bool SceneManager::PreUpdate()
 {
 	if (loadNextMap && nextScene)
 	{
-		//nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
-		//nextScene->Start();
+		nextScene->Load(assetPath + "Maps/", mapInfo, *windowFactory);
+		nextScene->Start();
 		loadNextMap = false;
 	}
 	return true;
@@ -166,8 +166,8 @@ bool SceneManager::Update(float dt)
 		{
 			app->transition->SceneToBattle(1000.0f);
 			nextScene = std::make_unique<Scene_Map>(party.get());
-			loadNextMap = true;
 			app->LoadGameRequest();
+			loadNextMap = true;
 			break;
 		}
 		case LOAD_MAP_FROM_MAP:
