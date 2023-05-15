@@ -52,8 +52,16 @@ void Map_Display_QuestLog::UpdateQuests()
 
 		for (auto const& elem : displayInfo)
 		{
-
-			auto objective = AddSaveData(elem.base, elem.objectiveName);
+			std::string objective = "";
+			if (elem.objectiveName.empty())
+			{
+				std::string itemName = playerParty->dbItems->GetItem(elem.objectiveID).general.name;
+				objective = AddSaveData(elem.base, itemName);
+			}
+			else
+			{
+				objective = AddSaveData(elem.base, elem.objectiveName);
+			}
 			auto const& progress = elem.amountToDisplay;
 
 			CreateMenuItem(MenuItem(MenuItem::ItemText(objective, "", progress), i));

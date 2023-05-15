@@ -33,7 +33,7 @@
   			<description>He deserves it for being an ass..</description>
     	</general>
     	<questtype type="Collect">
-     		 <objective objectiveName="1" amountNeeded="1"/>
+     		 <objective objectiveID="1" amountNeeded="1"/>
      		 <!--<objective objectiveName="Tycoon's chest" amountNeeded="1"/>-->
 		</questtype>
  	</quest>
