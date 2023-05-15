@@ -46,8 +46,8 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
 	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
 	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
-	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
-	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+	app->audio->PlayMusic("Music/M_Menu-Music.ogg");
+	logoFx = app->audio->LoadFx("Fx/S_Menu-Title.wav");
 	playedLogo = false;
 	
 	app->render->ResetCamera();
@@ -71,8 +71,8 @@ void Scene_Title::Start()
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
 	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
 	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
-	app->audio->PlayMusic("Assets/Audio/Music/M_Menu-Music.ogg");
-	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Title.wav");
+	app->audio->PlayMusic("Music/M_Menu-Music.ogg");
+	logoFx = app->audio->LoadFx("Fx/S_Menu-Title.wav");
 	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 }
 

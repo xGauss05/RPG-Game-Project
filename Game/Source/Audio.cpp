@@ -4,6 +4,7 @@
 #include "Defs.h"
 #include "Log.h"
 #include <memory>
+#include "AssetManager.h"
 
 // NOTE: Recommended using: Additional Include Directories,
 // instead of 'hardcoding' library location path in code logic
@@ -91,7 +92,7 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	music = Mix_LoadMUS_RW(app->assets->Load(path), 1);
 
 	if (!music)
 	{
@@ -126,7 +127,7 @@ int Audio::LoadFx(const char* path)
 	if (!active)
 		return 0;
 
-	fx.push_back(Mix_LoadWAV(path));
+	fx.push_back(Mix_LoadWAV_RW(app->assets->Load(path), 1));
 	if (!fx.back())
 	{
 		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());

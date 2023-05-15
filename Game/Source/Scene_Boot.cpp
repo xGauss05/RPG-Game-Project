@@ -24,8 +24,8 @@ void Scene_Boot::Load(std::string const& path, LookUpXMLNodeFromString const& in
 	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
 	presentsTexture = app->tex->Load("Assets/Textures/Backgrounds/boot_presents.png");
 
-	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
-	logoFx = app->audio->LoadFx("Assets/Audio/Fx/S_Boot-Logo.wav");
+	logoFx = app->audio->LoadFx("Fx/S_Boot-Logo.wav");
+	logoFx = app->audio->LoadFx("Fx/S_Boot-Logo.wav");
 	playedLogo = false;
 	start = std::chrono::high_resolution_clock::now();
 

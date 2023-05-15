@@ -20,8 +20,8 @@ GuiCheckbox::GuiCheckbox(uPoint startingPos, uPoint targetPos, uPoint size, std:
 	Initialize(funcPtr, startingPos, targetPos, size);
 
 	textureID = app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-	pressedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Pressed.wav");
-	focusedFx = app->audio->LoadFx("Assets/Audio/Fx/S_Menu-Focused.wav");
+	pressedFx = app->audio->LoadFx("Fx/S_Menu-Pressed.wav");
+	focusedFx = app->audio->LoadFx("Fx/S_Menu-Focused.wav");
 
 	for (int i = 0; auto const& elem : buttonStates)
 	{

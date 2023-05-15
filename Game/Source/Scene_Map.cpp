@@ -92,12 +92,12 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 	random1000.param(std::uniform_int_distribution<>::param_type(1, 1000));
 
-	highDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkHigh.wav");
-	midDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkMid.wav");
-	lowDialogueSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Town-NPC-TalkLow.wav");
-	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Gameplay-BattleStart.wav");
-	waterDropSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-WaterDroplet.wav");
-	torchSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-Torch.wav");
+	highDialogueSfx = app->audio->LoadFx("Fx/S_Town-NPC-TalkHigh.wav");
+	midDialogueSfx = app->audio->LoadFx("Fx/S_Town-NPC-TalkMid.wav");
+	lowDialogueSfx = app->audio->LoadFx("Fx/S_Town-NPC-TalkLow.wav");
+	battleStartSfx = app->audio->LoadFx("Fx/S_Gameplay-BattleStart.wav");
+	waterDropSfx = app->audio->LoadFx("Fx/S_Dungeon-WaterDroplet.wav");
+	torchSfx = app->audio->LoadFx("Fx/S_Dungeon-Torch.wav");
 }
 
 std::string Scene_Map::PlayMapBgm(std::string_view name)
@@ -106,28 +106,28 @@ std::string Scene_Map::PlayMapBgm(std::string_view name)
 
 	if (name == "Lab_Inside" || name == "Lab_Exterior")
 	{
-		musicname = "Assets/Audio/Music/M_Town-Lab.ogg";
+		musicname = "Music/M_Town-Lab.ogg";
 	}
 
 	if (name == "Dungeon_Outside" || name == "Dungeon01" ||
 		name == "Dungeon02" || name == "Dungeon03")
 	{
-		musicname = "Assets/Audio/Music/M_Dungeon-Main.ogg";
+		musicname = "Music/M_Dungeon-Main.ogg";
 	}
 
 	if (name == "Base" || name == "Village")
 	{
-		musicname = "Assets/Audio/Music/M_Town-Village.ogg";
+		musicname = "Music/M_Town-Village.ogg";
 	}
 
 	if (name == "Airport")
 	{
-		musicname = "Assets/Audio/Music/M_Town-Airport.ogg";
+		musicname = "Music/M_Town-Airport.ogg";
 	}
 
 	if (name == "Market")
 	{
-		musicname = "Assets/Audio/Music/M_Town-Market.ogg";
+		musicname = "Music/M_Town-Market.ogg";
 	}
 
 	return musicname;

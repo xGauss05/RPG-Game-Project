@@ -29,7 +29,8 @@ bool AssetManager::Awake(pugi::xml_node& config)
 
 	// Here we set up any archives that will be read from. This
 	//adds an archive to the search path (as its name says)
-	PHYSFS_addToSearchPath("Assets.zip", 1);
+
+	PHYSFS_addToSearchPath("Assets/Audio.zip", 1);
 
 	return true;
 }
@@ -78,13 +79,15 @@ uint AssetManager::LoadData(const char* file, char** buffer) const
 			}
 		}
 		else
+		{
 			ret = read; //If everything goes well, we return the size of the data
-
+		}
 		PHYSFS_close(data_file); //Now we close the PhysFs handle used to read the data
 	}
-	else
+	else 
+	{
 		LOG("Error while opening file %s: %s\n", file, PHYSFS_getLastError());
-
+	}
 	return ret;
 }
 
@@ -97,7 +100,7 @@ SDL_RWops* AssetManager::Load(const char* file) const
 	if (size > 0)
 	{
 		SDL_RWops* r = SDL_RWFromConstMem(buffer, size); //We prepare a read-only buffer
-		
+
 		return r;
 	}
 	else
