@@ -33,6 +33,7 @@ bool EventManager::CreateEvent(pugi::xml_node const& node)
 		else if (StrEquals("Event Teleport", child.attribute("type").as_string()))
 		{
 			event = std::make_unique<Event_Teleport>();
+			event->walkable = true;
 		}
 		else if (StrEquals("Event NPC", child.attribute("type").as_string()))
 		{
@@ -55,6 +56,21 @@ bool EventManager::CreateEvent(pugi::xml_node const& node)
 int EventManager::GetEventLayerSize() const
 {
 	return events.size();
+}
+
+bool EventManager::IsWalkable(iPoint position) const
+{
+	position = position * 48;
+	position.y -= 48;
+
+	return std::ranges::none_of(
+		events,
+		[position](std::unique_ptr<Event_Base> const& event)
+		{
+			return  ((!event->walkable && event->position == position)
+					 || (!event->topwalkable && event->position.y - 48 == position.y && event->position.x == position.x));
+		}
+	);
 }
 
 EventTrigger EventManager::TriggerEvent(iPoint destination) const

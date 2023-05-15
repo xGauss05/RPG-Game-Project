@@ -244,7 +244,7 @@ bool Map::IsWalkable(iPoint pos) const
 			return false;
 	}
 
-	return true;
+	return eventManager.IsWalkable(pos);
 }
 
 int Map::GetWidth() const { return size.x; }

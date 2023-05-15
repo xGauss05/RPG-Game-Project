@@ -26,6 +26,8 @@ public:
 
 	int GetEventLayerSize() const;
 
+	bool IsWalkable(iPoint position) const;
+
 	EventTrigger TriggerEvent(iPoint destination) const;
 	EventTrigger TriggerFloorEvent(iPoint destination) const;
 

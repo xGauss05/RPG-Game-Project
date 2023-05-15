@@ -64,6 +64,8 @@ public:
 	GameParty();
 	void CreateParty();
 
+	std::unordered_map<int, bool> globalSwitch;
+
 	void AddItemToInventory(std::string_view itemToAdd, int amountToAdd = 1);
 	void AddItemToInventory(int  itemToAdd, int amountToAdd = 1);
 

@@ -43,8 +43,12 @@ void NPC_Generic::parseXMLProperties(pugi::xml_node const& node)
 		}
 	}
 
+	topwalkable = numberOfTilesChecked;
+
 	if (!numberOfTilesChecked)
+	{
 		bIsTwoTiles = true;
+	}
 }
 
 EventTrigger NPC_Generic::OnTrigger()

@@ -197,6 +197,8 @@ public:
 	std::string name = "";
 	std::string type = "";
 	EventProperties::CommonProperties common;
+	bool walkable = false;
+	bool topwalkable = true;
 };
 
 #endif // __EVENT_BASE_H__
