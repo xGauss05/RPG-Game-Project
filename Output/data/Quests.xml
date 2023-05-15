@@ -70,4 +70,17 @@
       <objective objectiveName="Slime_B" amountNeeded="1"/>
     </questtype>
   </quest>
+  <quest id="7">
+    <general name="Aether's challenge2">
+      <description>Visit every location in the Village.</description>
+    </general>
+    <questtype type="Visit">
+      <objective objectiveName="Village" amountNeeded="1"/>
+    </questtype>
+    <questtype type="Hunt">
+      <objective objectiveName="Skeleton_R" amountNeeded="1"/>
+      <objective objectiveName="Skeleton_G" amountNeeded="1"/>
+      <objective objectiveName="Skeleton_B" amountNeeded="1"/>
+    </questtype>
+  </quest>
 </quests_list>

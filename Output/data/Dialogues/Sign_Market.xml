@@ -3,5 +3,10 @@
   <message2 text="Come visit us!" next="quest" questid="4"/>
   <quest text="Will you visit us?" next="confirmation" yes="acceptquest" no="declinequest"/>
   <acceptquest text="We will wait you there!" next="end" questid="4"/>
-  <declinequest text="Having fun talking with a sign, huh?" next="end"/>
+  <declinequest text="Having fun talking with a sign, huh?" next="message3"/>
+  <message3 text="Well f*ck you" next="quest2" questid="7"/>
+  <message4 text="ljñsakjflkj" next="quest2" questid="7"/>
+  <quest2 text="asdasdasd?" next="confirmation" yes="acceptquest2" no="declinequest2"/>
+  <acceptquest2 text="Nice" next="end" questid="7"/>
+  <declinequest2 text="Not Nice" next="end"/>
 </dialog>
