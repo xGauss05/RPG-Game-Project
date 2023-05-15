@@ -877,6 +877,12 @@
       <property name="Set To" type="bool" value="false"/>
      </properties>
     </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="2"/>
+     </properties>
+    </property>
    </properties>
   </object>
   <object id="134" type="Event Lever" gid="305" x="240" y="848" width="16" height="16">
@@ -1001,19 +1007,19 @@
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="1"/>
+      <property name="ID" type="int" value="11"/>
      </properties>
     </property>
     <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2"/>
+      <property name="ID" type="int" value="12"/>
      </properties>
     </property>
     <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="3"/>
+      <property name="ID" type="int" value="13"/>
      </properties>
     </property>
    </properties>
@@ -1023,19 +1029,19 @@
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="1"/>
+      <property name="ID" type="int" value="11"/>
      </properties>
     </property>
     <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2"/>
+      <property name="ID" type="int" value="12"/>
      </properties>
     </property>
     <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="3"/>
+      <property name="ID" type="int" value="13"/>
      </properties>
     </property>
    </properties>
@@ -1045,19 +1051,19 @@
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="1"/>
+      <property name="ID" type="int" value="11"/>
      </properties>
     </property>
     <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2"/>
+      <property name="ID" type="int" value="12"/>
      </properties>
     </property>
     <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="3"/>
+      <property name="ID" type="int" value="13"/>
      </properties>
     </property>
    </properties>
@@ -1067,19 +1073,19 @@
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="1"/>
+      <property name="ID" type="int" value="11"/>
      </properties>
     </property>
     <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2"/>
+      <property name="ID" type="int" value="12"/>
      </properties>
     </property>
     <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="3"/>
+      <property name="ID" type="int" value="13"/>
      </properties>
     </property>
    </properties>
