@@ -1,15 +1,15 @@
-#include "Event_Torch.h"
+#include "Event_Door.h"
 
 #include "Log.h"
 
 #include <format>
 #include <string>
 
-Event_Torch::Event_Torch(Publisher& pub)
+Event_Door::Event_Door(Publisher& pub)
 	: Subscriber(pub)
 {}
 
-void Event_Torch::parseXMLProperties(pugi::xml_node const& node)
+void Event_Door::parseXMLProperties(pugi::xml_node const& node)
 {
 	for (auto const& child : node.children())
 	{
@@ -24,6 +24,7 @@ void Event_Torch::parseXMLProperties(pugi::xml_node const& node)
 		{
 			globalSwitch.emplace_back();
 			globalSwitch.back().ReadProperty(child);
+			switchesState[globalSwitch.back().id] = false;
 		}
 		else if (StrEquals("state", attributeName))
 		{
@@ -38,12 +39,12 @@ void Event_Torch::parseXMLProperties(pugi::xml_node const& node)
 	bIsTwoTiles = true;
 }
 
-EventTrigger Event_Torch::OnTrigger()
+EventTrigger Event_Door::OnTrigger()
 {
 	return EventTrigger();
 }
 
-void Event_Torch::Create(pugi::xml_node const& node)
+void Event_Door::Create(pugi::xml_node const& node)
 {
 	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
@@ -51,22 +52,22 @@ void Event_Torch::Create(pugi::xml_node const& node)
 	SetInteractedGid();
 }
 
-void Event_Torch::UpdateSubscriber(int id, bool s)
+void Event_Door::UpdateSubscriber(int id, bool s)
 {
-	state = !state;
+	LOG(std::format("Event Door updated via switch {} id to state {}", id, state).c_str());
 
-	for (auto const& elem : globalSwitch)
+	switchesState[id] = s;
+
+	for (auto const& [index, gsState] : switchesState)
 	{
-		if (elem.functionOnInteract == EventProperties::GlobalSwitchOnInteract::SAME_VALUE_AS_STATE)
-		{
-			UpdateGlobalSwitchValue(elem.id, state);
-		}
+		if (gsState == false)
+			return;
 	}
 
-	LOG(std::format("Event Torch updated via switch {} id to state {}", id, state).c_str());
+	common.isActive = false;
 }
 
-void Event_Torch::AttachToGlobalSwitches()
+void Event_Door::AttachToGlobalSwitches()
 {
 	for (auto const& elem : globalSwitch)
 	{

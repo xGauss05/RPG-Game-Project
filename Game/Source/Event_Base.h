@@ -85,7 +85,8 @@ namespace EventProperties
 		NONE,					// Default value, does nothing
 		SET,					// Sets the global switch on a certain value (e.g. lever)
 		TOGGLE,					// Toggles the global switch (e.g. button)
-		QUERY
+		QUERY,
+		SAME_VALUE_AS_STATE
 	};
 
 	struct GlobalSwitchProperty : public Property 
@@ -211,6 +212,8 @@ public:
 	EventProperties::CommonProperties common;
 	bool walkable = false;
 	bool topwalkable = true;
+
+	bool state = false;
 };
 
 #endif // __EVENT_BASE_H__

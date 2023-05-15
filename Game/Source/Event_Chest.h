@@ -20,7 +20,6 @@ private:
 	std::vector<std::unique_ptr<EventProperties::GlobalSwitchProperty>> globalSwitch;
 
 	bool isLocked = false;
-	bool isOpen = false;
 };
 
 #endif __EVENT_CHEST_H__

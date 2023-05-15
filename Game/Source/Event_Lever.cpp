@@ -30,6 +30,8 @@ void Event_Lever::parseXMLProperties(pugi::xml_node const& node)
 
 EventTrigger Event_Lever::OnTrigger()
 {
+	state = !state;
+
 	EventTrigger returnTrigger;
 
 	returnTrigger.eventFunction = EventTrigger::WhatToDo::GLOBAL_SWITCH;
@@ -46,4 +48,5 @@ void Event_Lever::Create(pugi::xml_node const& node)
 {
 	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
+	SetInteractedGid();
 }

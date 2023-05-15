@@ -17,8 +17,6 @@ public:
 
 private:
 	std::vector<EventProperties::GlobalSwitchProperty> globalSwitch;
-
-	bool state = false;
 };
 
 #endif __EVENT_LEVER_H__

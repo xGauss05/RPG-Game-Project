@@ -1,5 +1,5 @@
-#ifndef __EVENT_TORCH_H__
-#define __EVENT_TORCH_H__
+#ifndef __EVENT_DOOR_H__
+#define __EVENT_DOOR_H__
 
 #include "Event_Base.h"
 #include "Sprite.h"
@@ -7,10 +7,10 @@
 
 #include <memory>
 
-class Event_Torch : public Event_Base, public Sprite, public Subscriber
+class Event_Door : public Event_Base, public Sprite, public Subscriber
 {
 public:
-	explicit Event_Torch(Publisher& pub);
+	explicit Event_Door(Publisher& pub);
 
 	void parseXMLProperties(pugi::xml_node const& node) override;
 	EventTrigger OnTrigger() override;
@@ -23,6 +23,7 @@ protected:
 
 private:
 	std::vector<EventProperties::GlobalSwitchProperty> globalSwitch;
+	std::unordered_map<int, bool> switchesState;
 };
 
-#endif __EVENT_TORCH_H__
+#endif //__EVENT_DOOR_H__

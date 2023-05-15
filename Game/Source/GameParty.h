@@ -113,6 +113,8 @@ public:
 
 	void Attach(ISubscriber* sub, int id) final;
 
+	void Notify(int id, bool state) final;
+
 	std::unordered_map<int, bool> globalSwitches;
 
 	bool updateQuestLog = false;
