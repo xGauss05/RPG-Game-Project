@@ -385,13 +385,40 @@ TransitionScene Scene_Map::Update()
 			auto nextDialogName = currentDialogNode.attribute("next").as_string();
 			std::string currentDialogName = currentDialogNode.name();
 
-			if (StrEquals(nextDialogName, "quest")
+			std::string altDialogName = currentDialogName;
+			altDialogName.pop_back();
+
+			std::string altNextDialogName = nextDialogName;
+			altNextDialogName.pop_back();
+
+			if ((StrEquals(nextDialogName, "quest")
 				&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
+				|| (StrEquals(altNextDialogName, "quest")
+					&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int())))
 			{
-				nextDialogName = "end";
+				bool messageFound = false;
+
+				for (auto auxDialogNode = currentDialogNode; auxDialogNode.next_sibling(); auxDialogNode = auxDialogNode.next_sibling())
+				{
+					std::string innerLoopName = auxDialogNode.next_sibling().name();
+					innerLoopName.pop_back();
+
+					if (StrEquals(auxDialogNode.next_sibling().name(), "questnotavailable") || StrEquals(innerLoopName, "questnotavailable"))
+					{
+						messageFound = true;
+						break;
+					}
+				}
+
+				if (!messageFound)
+				{
+					nextDialogName = "end";
+					messageFound = false;
+				}
 			}
 
-			if (StrEquals(currentDialogName, "acceptquest"))
+
+			if (StrEquals(currentDialogName, "acceptquest") || StrEquals(altDialogName, "acceptquest"))
 			{
 				playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
 			}
@@ -409,6 +436,7 @@ TransitionScene Scene_Map::Update()
 			}
 			else
 			{
+				
 				currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
 				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());

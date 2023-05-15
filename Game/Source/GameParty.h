@@ -104,11 +104,11 @@ public:
 	bool updateQuestLog = false;
 	Quest *lastQuestCompleted;
 
-	std::unordered_map<int, std::unique_ptr<Quest>> currentQuests;
-
 	// Questype -> All indexes of accepted Quests that have that Questype
 	std::unordered_map<QuestType, std::vector<int>> currentQuestsCategories;
 
+
+	std::unordered_map<int, std::unique_ptr<Quest>> currentQuests;
 	std::unordered_map<int, std::unique_ptr<Quest>> completedQuests;
 
 	friend class Map_Menu_Inventory;
