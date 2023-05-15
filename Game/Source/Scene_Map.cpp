@@ -265,15 +265,18 @@ void Scene_Map::DebugAddALLItemsWithRandomAmounts()
 TransitionScene Scene_Map::Update()
 {
 	DebugQuests();
-	if (playerParty->GetUpdateQuestLog() && state == MapState::NORMAL)
+	if (state == MapState::NORMAL)
 	{
-		questLog->UpdateQuests();
-		if (playerParty->IsQuestMessagePending())
+		if(playerParty->GetUpdateQuestLog())
 		{
-			windows.emplace_back(windowFactory->CreateWindow("Message"));
-			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-			currentPanel->ModifyLastWidgetText(playerParty->QuestCompleteMessage());
-			state = MapState::ON_MESSAGE;
+			questLog->UpdateQuests();
+			if (playerParty->IsQuestMessagePending())
+			{
+				windows.emplace_back(windowFactory->CreateWindow("Message"));
+				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+				currentPanel->ModifyLastWidgetText(playerParty->QuestCompleteMessage());
+				state = MapState::ON_MESSAGE;
+			}
 		}
 	}
 

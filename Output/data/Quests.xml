@@ -12,7 +12,7 @@
       		<objective objectiveName="Aether" amountNeeded="1"/>
     	</questtype>
     	<rewardlist>
-			    <item id="1" amount="9"/>
+		    <item id="1" amount="9"/>
       		<item id="3" amount="5"/>
       		<item id="2" amount="6"/>
     	</rewardlist>
@@ -68,15 +68,6 @@
     </questtype>
     <questtype type="Hunt">
       <objective objectiveName="Slime_B" amountNeeded="1"/>
-    </questtype>
-  </quest>
-  <quest id="3">
-    <general name="Steal the Tycoon's chests">
-      <description>He deserves it for being an ass..</description>
-    </general>
-    <questtype type="Collect">
-      <objective objectiveName="1" amountNeeded="1"/>
-      <!--<objective objectiveName="Tycoon's chest" amountNeeded="1"/>-->
     </questtype>
   </quest>
 </quests_list>
