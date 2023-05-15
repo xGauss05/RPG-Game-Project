@@ -1,4 +1,4 @@
-<dialog voicteype="low" name="Aether">
+<dialog voicetype="low" name="Aether">
   <message1 text="Arrr, so ye be comin' from another realm, aye?" next="message2"/>
   <message2 text="That be quite interestin' matey!" next="message3"/>
   <message3 text="Do ye be wieldin' some sort o' mystical powers in yer world?" next="confirmation" yes="message4" no="message7"/>
@@ -10,12 +10,10 @@
   <message7 text="Avast ye! Me tiny brain can't reckon how that might be" next="message8"/>
   <message8 text="Ye savvy?" next="message9"/>
   <message9 text="Ye'll have to fill me sails with more details, arrr!" next="message10"/>
-  <message10 text="But not now." next="message11"/>
+  <message10 text="But not now." next="quest" questid="6"/>
+	<quest text="I reckon ye might need sum trainin', wanna challenge?" next="confirmation" yes="acceptquest" no="declinequest"/>
+
+  <acceptquest text="Aye, let's send those slimy scallywags to Davy Jones' locker!" next="end" questid="6"/>
+  <declinequest text="Ahoy matey, that be a shameful display of cowardice." next="end"/>
   
-	<message11 text="I reckon ye might need sum trainin', wanna fight?" next="confirmation" yes="message12" no="message14"/>
-  
-  <message12 text="Let's do this!" next="message13"/>
-  <message13 text="pininininini... (battle  goes here)" next="end"/>
-  
-  <message14 text="You should train harder..." next="end"/>
 </dialog>

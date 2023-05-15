@@ -1,7 +1,7 @@
 <dialog>
   <message1 text="THE MARKET" next="message2"/>
-  <message2 text="We need people" next="quest" questid="4"/>
-  <quest text="Will you help us?" next="confirmation" yes="acceptquest" no="declinequest"/>
-  <acceptquest text="Look for Kiko, he's our biggest investor" next="end" questid="4"/>
+  <message2 text="Come visit us!" next="quest" questid="4"/>
+  <quest text="Will you visit us?" next="confirmation" yes="acceptquest" no="declinequest"/>
+  <acceptquest text="We will wait you there!" next="end" questid="4"/>
   <declinequest text="Having fun talking with a sign, huh?" next="end"/>
 </dialog>
