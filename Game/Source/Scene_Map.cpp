@@ -265,7 +265,7 @@ void Scene_Map::DebugAddALLItemsWithRandomAmounts()
 
 TransitionScene Scene_Map::Update()
 {
-	DebugQuests();
+	DebugInventory();
 	if (state == MapState::NORMAL)
 	{
 		if(playerParty->GetUpdateQuestLog())
@@ -286,11 +286,11 @@ TransitionScene Scene_Map::Update()
 		godMode = !godMode;
 		if (godMode)
 		{
-			player.SetSpeed(16);
+			player.SetSpeed(32);
 		}
 		else
 		{
-			player.SetSpeed(8);
+			player.SetSpeed(16);
 		}
 	}
 

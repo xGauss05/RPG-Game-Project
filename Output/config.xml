@@ -263,7 +263,7 @@
 					<texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
 				</panel>
 			</window>
-			<window name="MenuListFallback" class="MenuList" x="290" y="50" width="500" height="400">
+			<window name="MenuListFallback" class="MenuList" x="300" y="50" width="500" height="400">
 				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png">
 					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
 				</background>
@@ -288,7 +288,7 @@
 		<property path="Assets/Textures/Fonts/" />
 	</fonts>
 	<audio>
-		<sfx value="5" />
-		<bgm value="6" />
+		<sfx value="0" />
+		<bgm value="0" />
 	</audio>
 </config>
