@@ -45,6 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Build\$(Configuration)</OutDir>
@@ -97,6 +98,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\DB_Quests.cpp" />
     <ClCompile Include="Source\Event_Door.cpp" />
     <ClCompile Include="Source\Event_Lever.cpp" />
@@ -107,6 +109,29 @@
     <ClCompile Include="Source\Map_Menu_Inventory.cpp" />
     <ClCompile Include="Source\Map_Menu_MainCategories.cpp" />
     <ClCompile Include="Source\Map_Window_Menu.cpp" />
+    <ClCompile Include="Source\physfs.c" />
+    <ClCompile Include="Source\physfs_archiver_7z.c" />
+    <ClCompile Include="Source\physfs_archiver_dir.c" />
+    <ClCompile Include="Source\physfs_archiver_grp.c" />
+    <ClCompile Include="Source\physfs_archiver_hog.c" />
+    <ClCompile Include="Source\physfs_archiver_iso9660.c" />
+    <ClCompile Include="Source\physfs_archiver_mvl.c" />
+    <ClCompile Include="Source\physfs_archiver_qpak.c" />
+    <ClCompile Include="Source\physfs_archiver_slb.c" />
+    <ClCompile Include="Source\physfs_archiver_unpacked.c" />
+    <ClCompile Include="Source\physfs_archiver_vdf.c" />
+    <ClCompile Include="Source\physfs_archiver_wad.c" />
+    <ClCompile Include="Source\physfs_archiver_zip.c" />
+    <ClCompile Include="Source\physfs_byteorder.c" />
+    <ClCompile Include="Source\physfs_platform_android.c" />
+    <ClCompile Include="Source\physfs_platform_haiku.cpp" />
+    <ClCompile Include="Source\physfs_platform_os2.c" />
+    <ClCompile Include="Source\physfs_platform_posix.c" />
+    <ClCompile Include="Source\physfs_platform_qnx.c" />
+    <ClCompile Include="Source\physfs_platform_unix.c" />
+    <ClCompile Include="Source\physfs_platform_windows.c" />
+    <ClCompile Include="Source\physfs_platform_winrt.cpp" />
+    <ClCompile Include="Source\physfs_unicode.c" />
     <ClCompile Include="Source\Quest.cpp" />
     <ClCompile Include="Source\Transition_Blink.cpp" />
     <ClCompile Include="Source\DB_Items.cpp" />
@@ -147,6 +172,7 @@
     <ClCompile Include="Source\Window_Factory.cpp" />
     <ClCompile Include="Source\Window_List.cpp" />
     <ClInclude Include="Source\AdjacencyGraph.h" />
+    <ClInclude Include="Source\AssetManager.h" />
     <ClInclude Include="Source\DB_Quests.h" />
     <ClInclude Include="Source\Event_Door.h" />
     <ClInclude Include="Source\Event_Lever.h" />
@@ -159,6 +185,12 @@
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />
     <ClInclude Include="Source\ObserverPattern.h" />
+    <ClInclude Include="Source\physfs.h" />
+    <ClInclude Include="Source\physfs_casefolding.h" />
+    <ClInclude Include="Source\physfs_internal.h" />
+    <ClInclude Include="Source\physfs_lzmasdk.h" />
+    <ClInclude Include="Source\physfs_miniz.h" />
+    <ClInclude Include="Source\physfs_platforms.h" />
     <ClInclude Include="Source\Transition_Blink.h" />
     <ClInclude Include="Source\Colour.h" />
     <ClInclude Include="Source\DB_Items.h" />
@@ -223,6 +255,7 @@
     <None Include="..\Output\Assets\Maps\hello.tmx" />
     <None Include="..\Output\Assets\Maps\iso.tmx" />
     <None Include="..\Output\Assets\Maps\MapTemplate.tmx" />
+    <None Include="Source\physfs_platform_apple.m" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

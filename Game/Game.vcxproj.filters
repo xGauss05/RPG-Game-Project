@@ -53,6 +53,76 @@
     <ClCompile Include="Source\Event_Lever.cpp" />
     <ClCompile Include="Source\Event_Torch.cpp" />
     <ClCompile Include="Source\Event_Door.cpp" />
+    <ClCompile Include="Source\AssetManager.cpp" />
+    <ClCompile Include="Source\physfs.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_7z.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_dir.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_grp.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_hog.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_iso9660.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_mvl.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_qpak.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_slb.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_unpacked.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_vdf.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_wad.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_archiver_zip.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_byteorder.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_android.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_haiku.cpp">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_os2.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_posix.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_qnx.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_unix.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_windows.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_platform_winrt.cpp">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physfs_unicode.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -120,6 +190,25 @@
     <ClInclude Include="Source\ObserverPattern.h" />
     <ClInclude Include="Source\Event_Torch.h" />
     <ClInclude Include="Source\Event_Door.h" />
+    <ClInclude Include="Source\AssetManager.h" />
+    <ClInclude Include="Source\physfs.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physfs_casefolding.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physfs_internal.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physfs_lzmasdk.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physfs_miniz.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physfs_platforms.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />
@@ -129,5 +218,13 @@
     <None Include="..\Output\Assets\Maps\hello.tmx" />
     <None Include="..\Output\Assets\Maps\iso.tmx" />
     <None Include="..\Output\Assets\Maps\MapTemplate.tmx" />
+    <None Include="Source\physfs_platform_apple.m">
+      <Filter>PhysFS</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="PhysFS">
+      <UniqueIdentifier>{e431b13d-2166-498c-abe0-9654a9b724fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
