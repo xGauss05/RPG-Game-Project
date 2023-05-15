@@ -363,9 +363,9 @@
 <item>
   <id>9</id>
   <general>
-    <name>Weird cilinder</name>
+    <name>Weird cylinder</name>
     <iconIndex>006</iconIndex>
-    <description>A suspicious cilinder shaped weapon.</description>
+    <description>A suspicious cylinder shaped weapon.</description>
     <itypeId>1</itypeId>
     <!-- 1 - Regular Item || 2 - Key Item || 3 - Hidden Item -->
     <price>100</price>
