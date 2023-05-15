@@ -89,6 +89,7 @@ private:
     int erYonaTurnSfx = -1;
     int rocioTurnSfx = -1;
     int antonioTurnSfx = -1;
+    int sayoriTurnSfx = -1;
 
     bool playedTurnSfx = false;
 };
