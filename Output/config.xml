@@ -160,11 +160,11 @@
 					<state_texture state="4" x="428" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 				</button>
 				<button startingX="1080" targetX="1080" startingY="420" targetY="420" width="160" height="65" text="Special" function="BattleSpecialAttack" segmentwidth="32" segmentheight="32">
-          <state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
-          <state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
-          <state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
-          <state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
-          <state_texture state="4" x="428" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+					<state_texture state="1" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+					<state_texture state="2" x="212" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+					<state_texture state="3" x="320" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+					<state_texture state="4" x="428" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
 				</button>
 				<button startingX="1080" targetX="1080" startingY="510" targetY="510" width="160" height="65" text="Defend" function="BattleDefend" segmentwidth="32" segmentheight="32">
 					<state_texture state="0" x="108" y="0" horizontalsegments="3" verticalsegments="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
@@ -269,22 +269,26 @@
 				</background>
 				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
 			</window>
-	      <window name="Menu_MainCategories_NoIcons" class="MenuList" x="100" y="50" width="250" height="400">
-	        	<background segmentX="0" segmentY="0" segmentWidth="32" segmentHeight="32" numOfSegmentsX="2" numOfSegmentsY="3" advance="4" path="Assets/UI/GUI_4x_sliced.png">
-	          		<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
-	        	</background>
-	        	<itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
-	      </window>
-	      <window name="Display_Gold" class="MenuList" x="100" y="500" width="250" height="96">
-	        	<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="6" itemMarginX="0" itemMarginY="0" maxElements="-1" />
-	        	<background segmentX="0" segmentY="0" segmentWidth="32" segmentHeight="32" numOfSegmentsX="2" numOfSegmentsY="3" advance="4" path="Assets/UI/GUI_4x_sliced.png"/>
-	      	</window>
-	      <window name="Display_Base" class="MenuList" x="800" y="110" width="450" height="460">
-	        	<itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
-	      </window>
+			<window name="Menu_MainCategories_NoIcons" class="MenuList" x="100" y="50" width="250" height="400">
+				<background segmentX="0" segmentY="0" segmentWidth="32" segmentHeight="32" numOfSegmentsX="2" numOfSegmentsY="3" advance="4" path="Assets/UI/GUI_4x_sliced.png">
+					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
+				</background>
+				<itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+			</window>
+			<window name="Display_Gold" class="MenuList" x="100" y="500" width="250" height="96">
+				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="6" itemMarginX="0" itemMarginY="0" maxElements="-1" />
+				<background segmentX="0" segmentY="0" segmentWidth="32" segmentHeight="32" numOfSegmentsX="2" numOfSegmentsY="3" advance="4" path="Assets/UI/GUI_4x_sliced.png" />
+			</window>
+			<window name="Display_Base" class="MenuList" x="800" y="110" width="450" height="460">
+				<itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+			</window>
 		</window_info>
 	</scene>
 	<fonts>
 		<property path="Assets/Textures/Fonts/" />
 	</fonts>
+	<audio>
+		<sfx value="48" />
+		<bgm value="58" />
+	</audio>
 </config>

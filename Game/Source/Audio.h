@@ -52,10 +52,6 @@ public:
 	}
 
 
-	bool HasSaveData() const;
-	bool LoadState(pugi::xml_node const&) final;
-	pugi::xml_node SaveState(pugi::xml_node const&)  const final;
-	
 private:
 
 	_Mix_Music* music = nullptr;
