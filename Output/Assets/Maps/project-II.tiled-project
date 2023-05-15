@@ -74,6 +74,45 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 21,
+            "members": [
+                {
+                    "name": "Base",
+                    "propertyType": "Base Event",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "GlobalSwitch1",
+                    "propertyType": "Global Switch",
+                    "type": "class",
+                    "value": {
+                        "Function": 0
+                    }
+                },
+                {
+                    "name": "state",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Event Door",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
             "color": "#ffff0000",
             "drawFill": true,
             "id": 15,
@@ -349,7 +388,8 @@
                 "None",
                 "Set",
                 "Toggle",
-                "Query"
+                "Query",
+                "SameValueAsState"
             ],
             "valuesAsFlags": false
         },

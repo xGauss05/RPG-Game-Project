@@ -1,6 +1,8 @@
 #ifndef __OBSERVER_PATTERN_H__
 #define __OBSERVER_PATTERN_H__
 
+#include <stack>
+
 class ISubscriber
 {
 public:
@@ -58,8 +60,24 @@ public:
 		}
 	}
 
+	void RequestGlobalSwitchUpdate(int id, bool s)
+	{
+		globalSwitchsToUpdate.emplace(id, s);
+	}
+
+	void ClearGlobalSwitchsToUpdate()
+	{
+		//globalSwitchsToUpdate.;
+	}
+
+	std::stack<std::pair<int, bool>>& GetGlobalSwitchsToUpdate()
+	{
+		return globalSwitchsToUpdate;
+	}
+
 private:
 	std::unordered_map<int, std::vector<ISubscriber*>> subscribers;
+	std::stack<std::pair<int, bool>> globalSwitchsToUpdate;
 };
 
 class Subscriber : public ISubscriber
@@ -81,6 +99,12 @@ public:
 
 protected:
 	virtual void AttachToGlobalSwitches() = 0;
+
+	void UpdateGlobalSwitchValue(int id, bool s)
+	{
+		publisher.RequestGlobalSwitchUpdate(id, s);
+	}
+
 	void AttachToPublisherID(int id)
 	{
 		bool alreadyTrackingID = std::ranges::any_of(trackingIDs, [id](int i) { return i == id; });

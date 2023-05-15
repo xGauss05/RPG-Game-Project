@@ -4,6 +4,7 @@
 #include "Event_Chest.h"
 #include "Event_Lever.h"
 #include "Event_Torch.h"
+#include "Event_Door.h"
 #include "Event_Teleport.h"
 #include "NPC_Generic.h"
 
@@ -49,6 +50,10 @@ bool EventManager::CreateEvent(Publisher& publisher, pugi::xml_node const& node)
 		{
 			event = std::make_unique<Event_Torch>(publisher);
 		}
+		else if (StrEquals("Event Door", child.attribute("type").as_string()))
+		{
+			event = std::make_unique<Event_Door>(publisher);
+		}
 
 		if (!event)
 		{
@@ -77,8 +82,9 @@ bool EventManager::IsWalkable(iPoint position) const
 		events,
 		[position](std::unique_ptr<Event_Base> const& event)
 		{
-			return  ((!event->walkable && event->position == position)
-					 || (!event->topwalkable && event->position.y - 48 == position.y && event->position.x == position.x));
+			return  (event->IsEventActive()
+					 && ((!event->walkable && event->position == position)
+					 || (!event->topwalkable && event->position.y - 48 == position.y && event->position.x == position.x)));
 		}
 	);
 }
@@ -87,6 +93,11 @@ EventTrigger EventManager::TriggerEvent(iPoint destination) const
 {
 	for (auto const& event : events)
 	{
+		if (!event->IsEventActive())
+		{
+			continue;
+		}
+
 		if (event->common.trigger == EventProperties::EventTriggerOn::PLAYER_TOUCH && event->position == destination)
 		{
 			return event->OnTrigger();
@@ -100,6 +111,11 @@ EventTrigger EventManager::TriggerFloorEvent(iPoint destination) const
 {
 	for (auto const& event : events)
 	{
+		if (!event->IsEventActive())
+		{
+			continue;
+		}
+
 		if (event->common.trigger == EventProperties::EventTriggerOn::EVENT_TOUCH && event->position == destination)
 		{
 			return event->OnTrigger();
@@ -113,7 +129,7 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 {
 	if (events.empty() || drawIterator == events.end())
 		return std::make_tuple(0, iPoint(0, 0), false);
-	
+
 	auto sprite = dynamic_cast<Sprite*>(drawIterator->get());
 	
 	if (!sprite)
@@ -128,7 +144,7 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 		return std::make_tuple(0, iPoint(0, 0), true);
 	}
 
-	auto gid = sprite->GetGid();
+	auto gid = sprite->GetGid(drawIterator->get()->state);
 
 	auto pos = dynamic_cast<Transform*>(drawIterator->get())->GetPosition();
 	auto twoTiles = dynamic_cast<Transform*>(drawIterator->get())->bIsTwoTiles;
@@ -146,7 +162,6 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 	} while (!drawIterator->get()->IsEventActive());
 
 	return std::make_tuple(gid, pos, true);
-	
 }
 
 

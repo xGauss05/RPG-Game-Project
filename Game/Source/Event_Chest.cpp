@@ -17,7 +17,7 @@ void Event_Chest::parseXMLProperties(pugi::xml_node const& node)
 		}
 		else if (StrEquals("isOpen", attributeName))
 		{
-			isOpen = child.attribute("value").as_bool();
+			state = child.attribute("value").as_bool();
 		}
 		else if (StrEquals("Base", attributeName))
 		{
@@ -46,7 +46,7 @@ EventTrigger Event_Chest::OnTrigger()
 {
 	EventTrigger returnTrigger;
 
-	if (isOpen)
+	if (state)
 	{
 		returnTrigger.eventFunction = EventTrigger::WhatToDo::NO_EVENT;
 		return returnTrigger;
@@ -59,7 +59,7 @@ EventTrigger Event_Chest::OnTrigger()
 		return returnTrigger;
 	}
 	
-	isOpen = true;
+	state = true;
 	returnTrigger.text = "You find {} {}.";
 	returnTrigger.eventFunction = EventTrigger::WhatToDo::LOOT;
 	for (auto const& elem : loot)
@@ -74,4 +74,5 @@ void Event_Chest::Create(pugi::xml_node const& node)
 {
 	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
+	SetInteractedGid();
 }

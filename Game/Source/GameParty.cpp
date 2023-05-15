@@ -206,6 +206,21 @@ void GameParty::Attach(ISubscriber* sub, int id)
 	Publisher::Attach(sub, id);
 }
 
+void GameParty::Notify(int id, bool state)
+{
+	Publisher::Notify(id, state);
+
+	auto &gSToUpdate = GetGlobalSwitchsToUpdate();
+
+	while (!gSToUpdate.empty())
+	{
+		auto const &[index, gSState] = gSToUpdate.top();
+		gSToUpdate.pop();
+
+		SetGlobalSwitchState(index, !gSState);
+	}
+}
+
 std::pair<bool, bool> GameParty::AddGlobalSwitch(int id, bool state)
 {
 	auto const &[it, success] = globalSwitches.try_emplace(id, state);

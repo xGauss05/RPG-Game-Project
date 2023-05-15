@@ -12,11 +12,15 @@
 class Sprite
 {
 public:
-	int GetGid() const { return gid; };
+	int GetGid(bool interacted = false) const
+	{ 
+		return interacted ? interactedGid : gid;
+	};
 	int GetTextureID() const { return textureID; };
 	iPoint GetTextureIndex() const { return textureIndex; };
 
 protected:
+
 	void Initialize(std::string const &texturePath, int index)
 	{
 		textureID = app->tex->GetTextureID(texturePath);
@@ -28,11 +32,18 @@ protected:
 	{
 		textureID = node.attribute("id").as_int();
 		gid = node.attribute("gid").as_uint();
+		
 	};
+
+	void SetInteractedGid()
+	{
+		interactedGid = gid + 1;
+	}
 
 private:
 	int textureID = -1;
 	int gid = -1;
+	int interactedGid = -1;
 	iPoint textureIndex = { 0, 0 };
 };
 
