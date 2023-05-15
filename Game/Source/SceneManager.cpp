@@ -259,7 +259,7 @@ bool SceneManager::LoadState(pugi::xml_node const& data)
 			character.SetCurrentHP(node.attribute("currentHP").as_int());
 			character.SetCurrentMana(node.attribute("currentMP").as_int());
 			character.SetCurrentXP(node.attribute("currentXP").as_int());
-
+			
 			break;
 		}
 	}
