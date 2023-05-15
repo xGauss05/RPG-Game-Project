@@ -4,10 +4,10 @@
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
-    <attack value="20"/>
+    <attack value="13"/>
     <defense value="5"/>
-    <specialattack value="20"/>
-    <specialdefense value="5"/>
+    <specialattack value="12"/>
+    <specialdefense value="2"/>
     <speed value="1"/>
   </stats>
 </Slime_R>
@@ -17,10 +17,10 @@
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
-    <attack value="20"/>
-    <defense value="5"/>
-    <specialattack value="20"/>
-    <specialdefense value="5"/>
+    <attack value="10"/>
+    <defense value="7"/>
+    <specialattack value="13"/>
+    <specialdefense value="1"/>
     <speed value="1"/>
   </stats>
 </Slime_G>
@@ -30,10 +30,10 @@
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
-    <attack value="20"/>
-    <defense value="5"/>
-    <specialattack value="20"/>
-    <specialdefense value="5"/>
+    <attack value="17"/>
+    <defense value="6"/>
+    <specialattack value="11"/>
+    <specialdefense value="3"/>
     <speed value="1"/>
   </stats>
 </Slime_B>
@@ -43,10 +43,10 @@
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
-    <attack value="20"/>
-    <defense value="5"/>
+    <attack value="16"/>
+    <defense value="2"/>
     <specialattack value="20"/>
-    <specialdefense value="5"/>
+    <specialdefense value="4"/>
     <speed value="4"/>
   </stats>
 </Bat_R>
@@ -56,10 +56,10 @@
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
-		<attack value="20"/>
-		<defense value="5"/>
+		<attack value="17"/>
+		<defense value="2"/>
 		<specialattack value="20"/>
-		<specialdefense value="5"/>
+		<specialdefense value="3"/>
 		<speed value="4"/>
 	</stats>
 </Bat_G>
@@ -69,11 +69,11 @@
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
-    <attack value="20"/>
-    <defense value="5"/>
+    <attack value="14"/>
+    <defense value="2"/>
     <specialattack value="20"/>
-    <specialdefense value="5"/>
-    <speed value="2"/>
+    <specialdefense value="1"/>
+    <speed value="4"/>
   </stats>
 </Bat_B>
 <Skeleton_R>
@@ -83,8 +83,8 @@
     <maxhp value="100"/>
     <maxmana value="100"/>
     <attack value="20"/>
-    <defense value="8"/>
-    <specialattack value="5"/>
+    <defense value="1"/>
+    <specialattack value="7"/>
     <specialdefense value="2"/>
     <speed value="2"/>
   </stats>
@@ -95,10 +95,10 @@
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
-    <attack value="20"/>
-    <defense value="8"/>
-    <specialattack value="5"/>
-    <specialdefense value="2"/>
+    <attack value="18"/>
+    <defense value="2"/>
+    <specialattack value="11"/>
+    <specialdefense value="3"/>
     <speed value="2"/>
   </stats>
 </Skeleton_B>
@@ -108,10 +108,23 @@
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
-    <attack value="20"/>
+    <attack value="16"/>
     <defense value="8"/>
     <specialattack value="5"/>
-    <specialdefense value="2"/>
+    <specialdefense value="1"/>
     <speed value="2"/>
   </stats>
 </Skeleton_G>
+<Balphogor>
+  <texture path="Assets/Textures/Battlers/Balphogor_Right.png"/>
+  <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
+  <stats>
+    <maxhp value="200"/>
+    <maxmana value="200"/>
+    <attack value="25"/>
+    <defense value="3"/>
+    <specialattack value="10"/>
+    <specialdefense value="2"/>
+    <speed value="2"/>
+  </stats>
+</Balphogor>
