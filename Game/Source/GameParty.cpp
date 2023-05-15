@@ -217,7 +217,7 @@ void GameParty::Notify(int id, bool state)
 		auto const &[index, gSState] = gSToUpdate.top();
 		gSToUpdate.pop();
 
-		SetGlobalSwitchState(index, gSState);
+		SetGlobalSwitchState(index, !gSState);
 	}
 }
 
