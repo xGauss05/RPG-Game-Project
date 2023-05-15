@@ -1,4 +1,8 @@
 <dialog voicetype="low" name="Tycoon">
-  <message1 text="Don't you know better than to talk with me!?" next="message2"/>
-  <message2 text="I'm rich, you know, now begone, filth!" next="end"/>
+  <message1 text="What are you looking at you filth!" next="message2"/>
+  <message2 text="F*ck off. Go bother someone else!" next="message3"/>
+  <message3 text="Time is gold. Go away!" next="quest" questid="1"/>
+  <quest text="Should I bother someone else?" next="confirmation" yes="acceptquest" no="declinequest"/>
+  <acceptquest text="Now scram! You punk!" next="end" questid="1"/>
+  <declinequest text="I swear... this kids nowadays..." next="end"/>
 </dialog>
