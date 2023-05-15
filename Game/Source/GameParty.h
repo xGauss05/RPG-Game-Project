@@ -73,6 +73,10 @@ public:
 	void RemoveItemFromInventory(int itemToRemove, int amountToRemove = 1);
 	void RemoveItemFromInventory(std::vector<std::pair<int, int>>::iterator it, int amountToRemove = 1);
 
+	void AddGold(int amount);
+	void RemoveGold(int amount);
+	int GetGold() const;
+
 	void UseItemOnMap(int character, int itemId, int amountToUse = 1);
 
 	void AcceptQuest(int id);
@@ -89,6 +93,8 @@ public:
 
 	std::vector<PartyCharacter> party;
 	std::vector<std::pair<int, int>> inventory;
+
+	int currentGold = 0;
 
 	std::unique_ptr<DB_Items> dbItems;
 	std::unique_ptr<DB_Quests> dbQuests;

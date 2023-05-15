@@ -1,8 +1,8 @@
 <item>
     <id>0</id>
     <general>
-        <name>PLACEHOLDER DO NOT TOUCH</name>
-        <iconIndex>001</iconIndex>
+        <name>Gold</name>
+        <iconIndex>000</iconIndex>
         <description>Recovers HP by 500 points.</description>
         <itypeId>1</itypeId> <!-- 1 - Regular Item || 2 - Key Item || 3 - Hidden Item -->
         <price>100</price>

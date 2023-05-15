@@ -8,6 +8,7 @@
 #include "Map_Menu_MainCategories.h"
 #include "Map_Menu_Inventory.h"
 #include "Map_Display_QuestLog.h"
+#include "Map_Menu_GoldDisplay.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
@@ -22,6 +23,8 @@ public:
 	std::unique_ptr<GuiMenuList> CreateMenuList(std::string_view const& windowName = "MenuListFallback") const;
 
 	std::unique_ptr<Map_Display_QuestLog> CreateQuestLog() const;
+
+	std::unique_ptr<Map_Menu_GoldDisplay> CreateGoldDisplay() const;
 
 private:
 	LookUpXMLNodeFromString info;

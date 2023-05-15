@@ -100,6 +100,7 @@
     <ClCompile Include="Source\DB_Quests.cpp" />
     <ClCompile Include="Source\GuiMenuList.cpp" />
     <ClCompile Include="Source\Map_Display_QuestLog.cpp" />
+    <ClCompile Include="Source\Map_Menu_GoldDisplay.cpp" />
     <ClCompile Include="Source\Map_Menu_Inventory.cpp" />
     <ClCompile Include="Source\Map_Menu_MainCategories.cpp" />
     <ClCompile Include="Source\Map_Window_Menu.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Source\GuiMenuList.h" />
     <ClInclude Include="Source\Map_Display_QuestLog.h" />
     <ClInclude Include="Source\Map_Menu_ComponentParty.h" />
+    <ClInclude Include="Source\Map_Menu_GoldDisplay.h" />
     <ClInclude Include="Source\Map_Menu_Inventory.h" />
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />

@@ -18,7 +18,8 @@ private:
 	{
 		MAIN,
 		INVENTORY,
-		STATS
+		STATS,
+		COINS
 	};
 
 public:

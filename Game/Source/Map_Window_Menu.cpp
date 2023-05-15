@@ -14,7 +14,8 @@ Map_Window_Menu::Map_Window_Menu(Window_Factory const& windowFac)
 	menuLogic.AddVertex(MAIN);
 	panels.emplace_back(windowFac.CreateMenuList("Menu_MainCategories"));
 	menuLogic.AddVertex(INVENTORY);
-
+	panels.emplace_back(windowFac.CreateGoldDisplay());
+	menuLogic.AddVertex(COINS);
 
 	menuLogic.AddVertex(STATS);
 }
@@ -98,6 +99,7 @@ void Map_Window_Menu::SetPlayerParty(GameParty* party)
 		{
 			using enum Map_Window_Menu::MenuWindows;
 			case INVENTORY:
+			case COINS:
 			{
 				dynamic_cast<Map_Menu_ComponentParty*>(panels[i].get())->SetGameParty(party);
 				break;

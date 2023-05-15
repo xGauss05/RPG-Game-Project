@@ -434,8 +434,22 @@ TransitionScene Scene_Map::Update()
 
 					for (auto const& [itemToAdd, amountToAdd] : action.values)
 					{
-						playerParty->AddItemToInventory(itemToAdd, amountToAdd);
-						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+						if (StrEquals(itemToAdd, "Coins"))
+						{
+							playerParty->AddGold(amountToAdd);
+							if (amountToAdd == 1)
+								action.text = AddSaveData(action.text, amountToAdd, "coin");
+							else
+								action.text = AddSaveData(action.text, amountToAdd, "coins");
+
+						}
+						else
+						{
+							playerParty->AddItemToInventory(itemToAdd, amountToAdd);
+							action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+
+						}
+
 					}
 					[[fallthrough]];
 				}

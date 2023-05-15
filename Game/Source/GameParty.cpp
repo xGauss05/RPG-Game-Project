@@ -246,6 +246,29 @@ void GameParty::RemoveItemFromInventory(std::vector<std::pair<int, int>>::iterat
 	}
 }
 
+void GameParty::AddGold(int amount)
+{
+	currentGold += amount;
+	if (currentGold > 999999)
+	{
+		currentGold = 999999;
+	}
+}
+
+void GameParty::RemoveGold(int amount)
+{
+	currentGold -= amount;
+	if (currentGold < 0) [[unlikely]]
+	{
+		currentGold = 0;
+	}
+}
+
+int GameParty::GetGold() const
+{
+	return currentGold;
+}
+
 std::string PartyCharacter::GetStatDisplay(BaseStats stat) const
 {
 	using enum BaseStats;

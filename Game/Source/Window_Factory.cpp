@@ -96,3 +96,7 @@ std::unique_ptr<Map_Display_QuestLog> Window_Factory::CreateQuestLog() const
 {
 	return std::make_unique<Map_Display_QuestLog>(info.find("Display_Base")->second);
 }
+std::unique_ptr<Map_Menu_GoldDisplay> Window_Factory::CreateGoldDisplay() const
+{
+	return std::make_unique<Map_Menu_GoldDisplay>(info.find("Display_Gold")->second);
+}
