@@ -610,6 +610,29 @@ TransitionScene Scene_Battle::Update()
 		if (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 		{
 			messages->ModifyLastWidgetText("");
+
+			std::vector<std::pair<std::string_view, int>> enemiesDefeated;
+
+			for (auto const& enemy : enemies.troop)
+			{
+				std::string_view enemyName = enemy.name;
+				bool enemyFound = false;
+				for (auto &[name, amount]: enemiesDefeated)
+				{
+					if (name == enemyName)
+					{
+						amount++;
+						enemyFound = true;
+					}
+				}
+				if(!enemyFound)
+				{
+					enemiesDefeated.emplace_back(enemyName, 1);
+				}
+			}
+
+			party->PossibleQuestProgress(QuestType::HUNT, enemiesDefeated, std::vector<std::pair<int, int>>());
+
 			return TransitionScene::WIN_BATTLE;
 		}
 		break;
