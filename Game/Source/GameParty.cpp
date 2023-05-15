@@ -216,7 +216,6 @@ void GameParty::AddItemToInventory(int itemToAdd, int amountToAdd)
 	itemAddedToInventory.emplace_back(itemToAdd, amountToAdd);
 
 	PossibleQuestProgress(QuestType::COLLECT, std::vector<std::pair<std::string_view, int>>(), itemAddedToInventory);
-
 }
 
 void GameParty::RemoveItemFromInventory(std::string_view itemToRemove, int amountToRemove)

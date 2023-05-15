@@ -265,7 +265,7 @@ void Scene_Map::DebugAddALLItemsWithRandomAmounts()
 TransitionScene Scene_Map::Update()
 {
 	DebugQuests();
-	if (playerParty->GetUpdateQuestLog())
+	if (playerParty->GetUpdateQuestLog() && state == MapState::NORMAL)
 	{
 		questLog->UpdateQuests();
 		if (playerParty->IsQuestMessagePending())
@@ -454,6 +454,17 @@ TransitionScene Scene_Map::Update()
 						LOG("Could not load dialog xml file. Pugi error: %s", result.description());
 						break;
 					}
+
+					if (std::string npcName = currentDialogDocument.child("dialog").attribute("name").as_string();
+						!npcName.empty())
+					{
+						std::vector<std::pair<std::string_view, int>> npcTalkedTo;
+						npcTalkedTo.emplace_back(npcName, 1);
+
+						playerParty->PossibleQuestProgress(QuestType::TALK_TO, npcTalkedTo, std::vector<std::pair<int, int>>());
+
+					}
+
 					windows.emplace_back(windowFactory->CreateWindow("Message"));
 
 					currentDialogNode = currentDialogDocument.child("dialog").child("message1");

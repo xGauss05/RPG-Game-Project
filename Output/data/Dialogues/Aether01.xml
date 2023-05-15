@@ -1,4 +1,4 @@
-<dialog voicteype="low">
+<dialog voicteype="low" name="Aether">
   <message1 text="Arrr, so ye be comin' from another realm, aye?" next="message2"/>
   <message2 text="That be quite interestin' matey!" next="message3"/>
   <message3 text="Do ye be wieldin' some sort o' mystical powers in yer world?" next="confirmation" yes="message4" no="message7"/>

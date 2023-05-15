@@ -1,4 +1,4 @@
-<dialog voicteype="low">
+<dialog voicteype="low" name="Captain">
 	<message1 text="Hello there! I'm the pilot managing this facility!" next="message2"/>
 	<message2 text="Would you like to know what kind of place this is?" next="confirmation" yes="message3" no="message6"/>
   
