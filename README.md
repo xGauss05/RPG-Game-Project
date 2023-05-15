@@ -6,11 +6,15 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 
 ## Key Features
 - Turn-based battle system
-- TOWN map with at least 3 locations to visit
-- 2 Playable Characters available as the base Team Party
-- 3 NPC Characters
-- 4 Dialogs with branching with NPC characters
+- Village map with at least 4 locations to visit
+- 4 Playable Characters available as the base Team Party
+- Various NPC Characters
+- Various dialogues with branching options
 - Save/Load implemented
+- Stats and inventory menu
+- Playable quests
+- Screen transitions
+- Dungeon with 3 puzzles
 
 ## Controls
 
@@ -22,8 +26,10 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 | <code>A</code> | Left movement | 
 | <code>D</code> | Right movement | 
 | <code>ESC</code> | Pause | 
+| <code>C</code> | Open menu | 
 | <code>E</code> | Interact / Next dialogue |
 | <code>MOUSE LMB</code> | Select button |
+| <code>MOUSE RMB</code> | Return previous menu / Close menu |
 
 ### Controller (PS4 Layout)
 | Key | Description |
