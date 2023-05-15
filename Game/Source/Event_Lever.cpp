@@ -23,7 +23,7 @@ void Event_Lever::parseXMLProperties(pugi::xml_node const& node)
 		}
 		else
 		{
-			LOG("Chest property %s not implemented.", attributeName);
+			LOG("Lever property %s not implemented.", attributeName);
 		}
 	}
 }

@@ -44,9 +44,10 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	{
 		currentMap = "Village";
 	}
+	auto publisherParty = static_cast<Publisher*>(playerParty);
 
 	if (std::string mapToLoad = currentMap + ".tmx";
-		!map.Load(path, mapToLoad))
+		!map.Load(path, mapToLoad, *publisherParty))
 	{
 		LOG("Map %s couldn't be loaded.", mapToLoad);
 	}

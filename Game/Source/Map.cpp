@@ -21,7 +21,7 @@ Map::~Map()
 	}
 }
 
-bool Map::Load(const std::string& directory, const std::string& level)
+bool Map::Load(const std::string& directory, const std::string& level, Publisher& publisher)
 {
 	pugi::xml_document mapFile;
 
@@ -76,7 +76,7 @@ bool Map::Load(const std::string& directory, const std::string& level)
 			if (StrEquals("Layer of Events", child.attribute("class").as_string()))
 			{
 				drawOrder.emplace_back(LayerType::EVENT_LAYER, eventManager.GetEventLayerSize());
-				eventManager.CreateEvent(child);
+				eventManager.CreateEvent(publisher, child);
 			}
 			else 
 			{

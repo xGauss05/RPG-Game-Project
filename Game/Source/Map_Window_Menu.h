@@ -7,7 +7,7 @@
 
 #include "AdjacencyGraph.h"
 
-#include "GameParty.h";
+#include "GameParty.h"
 
 #include <stack>
 

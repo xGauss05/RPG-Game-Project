@@ -194,20 +194,37 @@ void GameParty::SetGlobalSwitchState(int id, bool newState)
 {
 	globalSwitches[id] = newState;
 	LOG(std::format("Set global Switch {} to {}.", id, newState).c_str());
+	Notify(id, globalSwitches[id]);
+}
+
+void GameParty::Attach(ISubscriber* sub, int id)
+{
+	/*if (!GlobalSwitchExists(id))
+	{
+		SetGlobalSwitchState(id, false);
+	}*/
+	Publisher::Attach(sub, id);
 }
 
 std::pair<bool, bool> GameParty::AddGlobalSwitch(int id, bool state)
 {
 	auto const &[it, success] = globalSwitches.try_emplace(id, state);
 	if(success)
+	{
+		Notify(id, globalSwitches[id]);
 		LOG(std::format("Succesfully added global Switch {} with state {}.", id, state).c_str());
+	}
 	else	
+	{
 		LOG(std::format("Couldn't add global Switch {}.", id).c_str());
+	}
+
 	return std::pair(it->second, success);
 }
 
 bool GameParty::ToggleGlobalSwitchState(int id)
 {
+	Notify(id, !globalSwitches[id]);
 	LOG(std::format("Global Switch {} toggled to {}.", id, !globalSwitches[id]).c_str());
 	return globalSwitches[id] = !globalSwitches[id];
 }

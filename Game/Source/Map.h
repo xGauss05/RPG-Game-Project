@@ -40,7 +40,11 @@ public:
 	// Destructor
 	~Map();
 
-	bool Load(const std::string& directory, const std::string& level);
+	bool Load(
+		const std::string& directory,
+		const std::string& level,
+		Publisher &publisher
+	);
 
 	iPoint MapToWorld(int x, int y) const;
 

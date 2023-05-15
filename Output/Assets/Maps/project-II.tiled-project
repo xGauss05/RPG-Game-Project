@@ -45,6 +45,7 @@
                     "propertyType": "Base Event",
                     "type": "class",
                     "value": {
+                        "Trigger": 1
                     }
                 },
                 {
@@ -82,6 +83,7 @@
                     "propertyType": "Base Event",
                     "type": "class",
                     "value": {
+                        "Trigger": 1
                     }
                 },
                 {
@@ -143,6 +145,45 @@
             "useAs": [
                 "property",
                 "object"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 20,
+            "members": [
+                {
+                    "name": "Base",
+                    "propertyType": "Base Event",
+                    "type": "class",
+                    "value": {
+                        "Trigger": 1
+                    }
+                },
+                {
+                    "name": "GlobalSwitch1",
+                    "propertyType": "Global Switch",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "state",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Event Torch",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
             ]
         },
         {
@@ -308,8 +349,7 @@
                 "None",
                 "Set",
                 "Toggle",
-                "Unlock",
-                "Lock"
+                "Query"
             ],
             "valuesAsFlags": false
         },

@@ -3,6 +3,7 @@
 
 #include "Event_Chest.h"
 #include "Event_Lever.h"
+#include "Event_Torch.h"
 #include "Event_Teleport.h"
 #include "NPC_Generic.h"
 
@@ -21,7 +22,7 @@ void EventManager::Initialize()
 		drawIterator = events.begin();
 }
 
-bool EventManager::CreateEvent(pugi::xml_node const& node)
+bool EventManager::CreateEvent(Publisher& publisher, pugi::xml_node const& node)
 {
 	for (auto const& child : node.children("object"))
 	{
@@ -43,6 +44,10 @@ bool EventManager::CreateEvent(pugi::xml_node const& node)
 		else if (StrEquals("Event Lever", child.attribute("type").as_string()))
 		{
 			event = std::make_unique<Event_Lever>();
+		}
+		else if (StrEquals("Event Torch", child.attribute("type").as_string()))
+		{
+			event = std::make_unique<Event_Torch>(publisher);
 		}
 
 		if (!event)

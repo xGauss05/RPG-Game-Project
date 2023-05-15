@@ -4,6 +4,8 @@
 #include "DB_Items.h"
 #include "DB_Quests.h"
 
+#include "ObserverPattern.h"
+
 #include "Log.h"
 
 #include <vector>
@@ -58,7 +60,7 @@ struct PartyCharacter
 	bool RestoreHP(float amount1, float amount2);
 };
 
-class GameParty
+class GameParty : public Publisher
 {
 public:
 	GameParty();
@@ -109,6 +111,13 @@ public:
 	// Inserts a new element in case it doesn't exist. 
 	void SetGlobalSwitchState(int id, bool newState);
 
+	void Attach(ISubscriber* sub, int id) final;
+
+	std::unordered_map<int, bool> globalSwitches;
+
+	bool updateQuestLog = false;
+	Quest *lastQuestCompleted = nullptr;
+
 	std::vector<PartyCharacter> party;
 	std::vector<std::pair<int, int>> inventory;
 
@@ -116,11 +125,6 @@ public:
 
 	std::unique_ptr<DB_Items> dbItems;
 	std::unique_ptr<DB_Quests> dbQuests;
-
-	std::unordered_map<int, bool> globalSwitches;
-
-	bool updateQuestLog = false;
-	Quest *lastQuestCompleted;
 
 	// Questype -> All indexes of accepted Quests that have that Questype
 	std::unordered_map<QuestType, std::vector<int>> currentQuestsCategories;

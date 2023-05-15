@@ -1,10 +1,12 @@
 #ifndef __EVENT_BASE_H__
 #define __EVENT_BASE_H__
 
-
 #include "Point.h"
 #include "Transform.h"
 #include "Defs.h"
+
+#include "ObserverPattern.h"
+
 #include "PugiXml/src/pugixml.hpp"
 #include <SDL/include/SDL_pixels.h>
 
@@ -86,7 +88,7 @@ namespace EventProperties
 		QUERY
 	};
 
-	struct GlobalSwitchProperty : public Property
+	struct GlobalSwitchProperty : public Property 
 	{
 		std::string searchKey = "";
 		uint id = 0;

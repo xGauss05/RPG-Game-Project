@@ -22,7 +22,10 @@ public:
 
 	// ------ Event
 	// --- Constructors
-	bool CreateEvent(pugi::xml_node const &node = pugi::xml_node());
+	bool CreateEvent(
+		Publisher &publisher,
+		pugi::xml_node const &node = pugi::xml_node()
+	);
 
 	int GetEventLayerSize() const;
 

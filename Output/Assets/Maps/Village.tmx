@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="135">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="136">
  <tileset firstgid="1" source="Village.tsx"/>
  <tileset firstgid="257" source="NPCs.tsx"/>
  <tileset firstgid="261" source="Dungeon.tsx"/>
@@ -890,6 +890,16 @@
      <properties>
       <property name="Function" type="int" propertytype="Helper Switch Function" value="1"/>
       <property name="ID" type="int" value="1"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="135" type="Event Torch" gid="322" x="48" y="752" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2"/>
      </properties>
     </property>
    </properties>

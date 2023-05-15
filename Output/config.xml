@@ -264,13 +264,13 @@
 				</panel>
 			</window>
 			<window name="MenuListFallback" class="MenuList" x="290" y="50" width="500" height="400">
-				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png" >
+				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png">
 					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
 				</background>
 				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
 			</window>
 			<window name="Menu_MainCategories_NoIcons" class="MenuList" x="100" y="50" width="180" height="400">
-				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png" >
+				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png">
 					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
 				</background>
 				<itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
@@ -288,7 +288,7 @@
 		<property path="Assets/Textures/Fonts/" />
 	</fonts>
 	<audio>
-		<sfx value="16" />
-		<bgm value="19" />
+		<sfx value="5" />
+		<bgm value="6" />
 	</audio>
 </config>
