@@ -361,13 +361,13 @@ bool Render::LoadState(pugi::xml_node const &data)
 
 pugi::xml_node Render::SaveState(pugi::xml_node const &data) const
 {
-	pugi::xml_node cam = data;
-	cam = cam.append_child("render");
+	pugi::xml_node node = data;
+	node = node.append_child("render");
 	
-	cam.append_child("graphics").append_attribute("vsync").set_value(vSyncOnRestart ? "true" : "false");
-	cam.child("graphics").append_attribute("targetfps").set_value(std::to_string(fpsTarget).c_str());
+	node.append_child("graphics").append_attribute("vsync").set_value(vSyncOnRestart ? "true" : "false");
+	node.child("graphics").append_attribute("targetfps").set_value(std::to_string(fpsTarget).c_str());
 
-	return cam;
+	return node;
 }
 
 bool Render::HasSaveData() const
