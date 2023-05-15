@@ -51,22 +51,9 @@ bool Input::Awake(pugi::xml_node& config)
 		if (SDL_IsGameController(i))
 		{
 			SDLcontrollers[i] = SDL_GameControllerOpen(i);
-
-			if (SDLcontrollers[i])
-			{
-				SDL_Log("Index \'%i\' is a compatible controller, named \'%s\'", i, SDL_GameControllerNameForIndex(i));
-				break;
-			}
-			else
-			{
-				SDL_Log("Could not open gamecontroller %i: %s\n", i, SDL_GetError());
-			}
-		}
-		else
-		{
-			SDL_Log("Index \'%i\' is empty\n", i);
 		}
 	}
+
 	for (size_t i = 0; i < controllerCount; i++)
 	{
 		if (controllerCount < MAX_CONTROLLERS)
@@ -261,6 +248,16 @@ bool Input::CleanUp()
 {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+
+	LOG("Freeing SDL controllers");
+	for (size_t i = 0; i < controllerCount; i++)
+	{
+		if (controllerCount < MAX_CONTROLLERS)
+		{
+			delete controllers[i];
+		}
+	}
+
 	return true;
 }
 
