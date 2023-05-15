@@ -76,6 +76,7 @@ public:
 	void AddGold(int amount);
 	void RemoveGold(int amount);
 	int GetGold() const;
+	void SetGold(int amount);
 
 	void UseItemOnMap(int character, int itemId, int amountToUse = 1);
 

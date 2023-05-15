@@ -9,7 +9,7 @@
 	</render>
 	<window>
 		<resolution width="1280" height="720" scale="1" />
-		<fullscreen value="true" />
+		<fullscreen value="false" />
 		<borderless value="false" />
 		<resizable value="false" />
 		<fullscreen_window value="false" />
@@ -288,7 +288,7 @@
 		<property path="Assets/Textures/Fonts/" />
 	</fonts>
 	<audio>
-		<sfx value="48" />
-		<bgm value="58" />
+		<sfx value="16" />
+		<bgm value="19" />
 	</audio>
 </config>

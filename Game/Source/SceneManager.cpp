@@ -264,6 +264,8 @@ bool SceneManager::LoadState(pugi::xml_node const& data)
 		}
 	}
 
+	party.get()->SetGold(data.child("gold").attribute("value").as_int());
+
 	currentScene->LoadScene(data);
 	if (nextScene)
 	{
@@ -289,8 +291,11 @@ pugi::xml_node SceneManager::SaveState(pugi::xml_node const& data) const
 		currentNode.append_attribute("currentHP").set_value(character.currentHP);
 		currentNode.append_attribute("currentMP").set_value(character.currentMana);
 		currentNode.append_attribute("currentXP").set_value(character.currentXP);
-
+		
 	}
+
+	auto currentNode = node.append_child("gold");
+	currentNode.append_attribute("value").set_value(party.get()->GetGold());
 
 	return node;
 }

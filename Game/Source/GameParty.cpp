@@ -269,6 +269,11 @@ int GameParty::GetGold() const
 	return currentGold;
 }
 
+void GameParty::SetGold(int amount)
+{
+	currentGold = amount;
+}
+
 std::string PartyCharacter::GetStatDisplay(BaseStats stat) const
 {
 	using enum BaseStats;
