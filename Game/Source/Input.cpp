@@ -38,8 +38,13 @@ bool Input::Awake(pugi::xml_node& config)
 #pragma region Controller initialization
 
 	//Count the numbers of compatible controllers to display it
-	for (int i = 0; i < SDL_NumJoysticks(); ++i) { if (SDL_IsGameController(i)) { controllerCount++; } }
-	SDL_Log("Controllers found: %i\n", controllerCount);
+	for (int i = 0; i < SDL_NumJoysticks(); ++i) 
+	{
+		if (SDL_IsGameController(i))
+		{
+			controllerCount++;
+		}
+	}
 
 	for (int i = 0; i < SDL_NumJoysticks(); ++i)
 	{
