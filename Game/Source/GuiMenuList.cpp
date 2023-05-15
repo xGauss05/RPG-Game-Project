@@ -105,7 +105,8 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 
 GuiMenuList::~GuiMenuList()
 {
-	background->Unload();
+	if(background)
+		background->Unload();
 }
 
 void GuiMenuList::Initialize()

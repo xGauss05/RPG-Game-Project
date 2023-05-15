@@ -1,7 +1,6 @@
 #include "Map_Menu_MainCategories.h"
 #include "Log.h"
 
-
 Map_Menu_MainCategories::Map_Menu_MainCategories(pugi::xml_node const& node)
 	: GuiMenuList(node)
 {}

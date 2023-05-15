@@ -112,6 +112,7 @@ void GameParty::AcceptQuest(int id)
 		{
 			currentQuestsCategories[elem].emplace_back(id);
 		}
+		updateQuestLog = true;
 	}
 }
 
@@ -120,7 +121,10 @@ void GameParty::CompleteQuest(int id)
 	if (auto [it, success, nodeHandle] = completedQuests.insert(currentQuests.extract(id));
 		success)
 	{
+		lastQuestCompleted = (it->second).get();
+
 		auto objectivesSet = it->second->GetQuestTypeSet();
+
 		for (auto const& elem : objectivesSet)
 		{
 			std::erase_if(currentQuestsCategories[elem], [id](int index) { return index == id; });
@@ -147,12 +151,36 @@ void GameParty::PossibleQuestProgress(QuestType t, std::vector<std::pair<std::st
 			{
 				CompleteQuest(questIndex);
 			}
+
+			updateQuestLog = true;
 		}
 		else
 		{
 			std::erase_if(currentQuestsCategories[t], [questIndex](int i) { return questIndex == i; });
 		}
 	}
+}
+
+bool GameParty::GetUpdateQuestLog()
+{
+	bool retValue = updateQuestLog;
+	updateQuestLog = false;
+
+	return retValue;
+}
+
+bool GameParty::IsQuestMessagePending() const
+{
+	return lastQuestCompleted;
+}
+
+std::string GameParty::QuestCompleteMessage()
+{
+	std::string_view questName = lastQuestCompleted->GetQuestName();
+
+	lastQuestCompleted = nullptr;
+
+	return std::format("Quest \"{}\" completed.", questName);
 }
 
 void GameParty::AddItemToInventory(std::string_view itemToAdd, int amountToAdd)

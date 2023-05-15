@@ -6,7 +6,8 @@
 class Map_Menu_ComponentParty
 {
 public:
-	void SetGameParty(GameParty *party)
+	virtual ~Map_Menu_ComponentParty() = default;
+	virtual void SetGameParty(GameParty *party)
 	{
 		playerParty = party;
 	}

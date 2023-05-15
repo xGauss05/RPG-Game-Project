@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Map_Window_Menu.h"
+#include "Map_Display_QuestLog.h"
 
 
 #include <unordered_set>
@@ -95,6 +96,7 @@ private:
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 	std::unique_ptr<Map_Window_Menu> mainMenu;
+	std::unique_ptr<Map_Display_QuestLog> questLog;
 
 	int highDialogueSfx = -1;
 	int midDialogueSfx = -1;

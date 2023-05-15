@@ -84,6 +84,10 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	mainMenu->SetPlayerParty(playerParty);
 	mainMenu->Start();
 
+	questLog = windowFac.CreateQuestLog();
+	questLog->SetPlayerParty(playerParty);
+	questLog->Start();
+
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 	random1000.param(std::uniform_int_distribution<>::param_type(1, 1000));
 
@@ -180,19 +184,24 @@ void Scene_Map::Draw()
 	map.Draw();
 	player.Draw();
 
-	for (auto const& elem : windows)
-	{
-		elem->Draw();
-	}
-
 	if (godMode)
 	{
 		DebugDraw();
 	}
 
+	for (auto const& elem : windows)
+	{
+		elem->Draw();
+	}
+
 	if (state == MapState::ON_MENU)
 	{
 		mainMenu->Draw();
+	}
+	
+	if(state != MapState::ON_MENU)
+	{
+		questLog->Draw();
 	}
 }
 
@@ -255,7 +264,18 @@ void Scene_Map::DebugAddALLItemsWithRandomAmounts()
 
 TransitionScene Scene_Map::Update()
 {
-	DebugInventory();
+	DebugQuests();
+	if (playerParty->GetUpdateQuestLog())
+	{
+		questLog->UpdateQuests();
+		if (playerParty->IsQuestMessagePending())
+		{
+			windows.emplace_back(windowFactory->CreateWindow("Message"));
+			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+			currentPanel->ModifyLastWidgetText(playerParty->QuestCompleteMessage());
+			state = MapState::ON_MESSAGE;
+		}
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{

@@ -7,6 +7,7 @@
 #include "GuiMenuList.h"
 #include "Map_Menu_MainCategories.h"
 #include "Map_Menu_Inventory.h"
+#include "Map_Display_QuestLog.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
@@ -19,6 +20,8 @@ public:
 	std::unique_ptr<Window_List> CreateWindowList(std::string_view const& windowName = "ListFallback") const;
 	std::unique_ptr<Window_Panel> CreateWindowPanel(std::string_view const& windowName = "PanelFallback") const;
 	std::unique_ptr<GuiMenuList> CreateMenuList(std::string_view const& windowName = "MenuListFallback") const;
+
+	std::unique_ptr<Map_Display_QuestLog> CreateQuestLog() const;
 
 private:
 	LookUpXMLNodeFromString info;

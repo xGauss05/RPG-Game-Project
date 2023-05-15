@@ -91,3 +91,8 @@ std::unique_ptr<GuiMenuList> Window_Factory::CreateMenuList(std::string_view con
 
 	return returnPtr;
 }
+
+std::unique_ptr<Map_Display_QuestLog> Window_Factory::CreateQuestLog() const
+{
+	return std::make_unique<Map_Display_QuestLog>(info.find("Display_Base")->second);
+}

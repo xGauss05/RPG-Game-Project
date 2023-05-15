@@ -25,6 +25,10 @@ inline QuestType operator|(QuestType a, QuestType b)
 {
 	return static_cast<QuestType>(std::byte(a) | std::byte(b));
 }
+inline QuestType operator&(QuestType a, QuestType b)
+{
+	return static_cast<QuestType>(std::byte(a) & std::byte(b));
+}
 inline QuestType& operator|=(QuestType& a, QuestType b)
 {
 	return a = a | b;
@@ -32,6 +36,14 @@ inline QuestType& operator|=(QuestType& a, QuestType b)
 
 class Quest_Leaf;
 class Quest_Branch;
+
+struct Quest_Display
+{
+	std::string base = "";
+	int objectiveID = 0;
+	std::string objectiveName = "";
+	std::string amountToDisplay = "";
+};
 
 class Quest_Component
 {
@@ -54,8 +66,8 @@ public:
 	);
 	virtual QuestType GetType() const;
 	virtual void CheckChildrenProgress();
-
-
+	virtual void FillObjectiveInfo(std::vector<Quest_Display>& display) const;
+	
 private:
 	Quest_Component* parent = nullptr;
 	bool enabled = true;
@@ -77,6 +89,7 @@ public:
 
 	std::pair<int, int> GetCurrentProgress() const;
 	std::pair<std::string_view, int>  GetObjective() const;
+	void FillObjectiveInfo(std::vector<Quest_Display>& display) const override;
 
 	void Debug() const override;
 
@@ -102,7 +115,8 @@ public:
 		std::vector<std::pair<int, int>> const& IDs
 	) override;
 	void CheckChildrenProgress() override;
-
+	void FillObjectiveInfo(std::vector<Quest_Display>& display) const override;
+	
 	void SetType(QuestType t);
 	QuestType GetType() const override;
 
@@ -129,7 +143,8 @@ public:
 	) const;
 
 	void CheckChildrenProgress() override;
-
+	void FillObjectiveInfo(std::vector<Quest_Display>& display) const override;
+	
 	void ToggleQuestCompleted();
 	bool IsQuestCompleted() const;
 
@@ -160,6 +175,10 @@ public:
 	void DebugQuests() const;
 
 	std::unordered_set<QuestType> GetQuestTypeSet() const;
+
+	std::string_view GetQuestName() const;
+	std::string_view GetQuestDescription() const;
+	std::vector<Quest_Display> GetQuestDisplayInfo() const;
 
 private:
 	void ParseGeneralProperties(pugi::xml_node const& generalNode);

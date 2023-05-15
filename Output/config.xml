@@ -275,6 +275,9 @@
         </background>
         <itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
       </window>
+      <window name="Display_Base" class="MenuList" x="800" y="110" width="450" height="460">
+        <itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+      </window>
 		</window_info>
 	</scene>
 	<fonts>

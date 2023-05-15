@@ -48,9 +48,10 @@ void Quest_Component::ProgressQuest(std::vector<std::pair<std::string_view, int>
 { /* To override if Component wants to use it */ }
 
 void Quest_Component::CheckChildrenProgress()
-{ /* To override if Component wants to use it */
-}
+{ /* To override if Component wants to use it */ }
 
+void Quest_Component::FillObjectiveInfo(std::vector<Quest_Display>& display) const
+{ /* To override if Component wants to use it */ }
 
 
 /*======================================*/
@@ -111,6 +112,13 @@ void Quest_Leaf::AddToProgress(int amount)
 std::pair<std::string_view, int> Quest_Leaf::GetObjective() const
 {
 	return std::pair(objectiveName, objectiveID);
+}
+
+void Quest_Leaf::FillObjectiveInfo(std::vector<Quest_Display>& display) const
+{
+	display.back().objectiveName = objectiveName;
+	display.back().objectiveID = objectiveID;
+	display.back().amountToDisplay = std::format("{}/{}", amountAcquired, amountNeeded);
 }
 
 void Quest_Leaf::Debug() const
@@ -189,6 +197,33 @@ void Quest_Branch::CheckChildrenProgress()
 	GetParent()->CheckChildrenProgress();
 }
 
+void Quest_Branch::FillObjectiveInfo(std::vector<Quest_Display>& display) const
+{
+	for (auto const& elem : children)
+	{
+		display.emplace_back();
+		switch (GetType())
+		{
+			using enum QuestType;
+		case TALK_TO:
+			display.back().base = "Talk to {}.";
+			break;
+		case COLLECT:
+			display.back().base = "Collect {}.";
+			break;
+		case VISIT:
+			display.back().base = "Visit {}.";
+			break;
+		case HUNT:
+			display.back().base = "Kill {}.";
+			break;
+		default:
+			continue;
+		}
+		elem->FillObjectiveInfo(display);
+	}
+}
+
 void Quest_Branch::SetType(QuestType t)
 {
 	type = t;
@@ -249,6 +284,22 @@ void Quest_Root::CheckChildrenProgress()
 	{
 		ToggleQuestCompleted();
 		ToggleEnabled();
+	}
+}
+
+void Quest_Root::FillObjectiveInfo(std::vector<Quest_Display>& display) const
+{
+	for (auto const& elem : children)
+	{
+		using enum QuestType;
+
+		QuestType displayTypes = UNKNOWN;
+		displayTypes = TALK_TO | COLLECT | VISIT | HUNT;
+
+		if ((displayTypes & elem->GetType()) == elem->GetType())
+		{
+			elem->FillObjectiveInfo(display);
+		}
 	}
 }
 
@@ -339,6 +390,22 @@ std::unordered_set<QuestType> Quest::GetQuestTypeSet() const
 	return objectivesType;
 }
 
+std::string_view Quest::GetQuestName() const
+{
+	return name;
+}
+
+std::string_view Quest::GetQuestDescription() const
+{
+	return description;
+}
+
+std::vector<Quest_Display> Quest::GetQuestDisplayInfo() const
+{
+	std::vector<Quest_Display> returnDisplay;
+	root->FillObjectiveInfo(returnDisplay);
+	return returnDisplay;
+}
 void Quest::ParseGeneralProperties(pugi::xml_node const& generalNode)
 {
 	name = generalNode.attribute("name").as_string();

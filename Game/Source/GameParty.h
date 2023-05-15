@@ -81,6 +81,9 @@ public:
 		std::vector<std::pair<std::string_view, int>> const& names,
 		std::vector<std::pair<int, int>> const& IDs
 	);
+	bool GetUpdateQuestLog();
+	std::string QuestCompleteMessage();
+	bool IsQuestMessagePending() const;
 
 	std::vector<PartyCharacter> party;
 	std::vector<std::pair<int, int>> inventory;
@@ -89,6 +92,9 @@ public:
 	std::unique_ptr<DB_Quests> dbQuests;
 
 	std::unordered_map<int, bool> globalSwitches;
+
+	bool updateQuestLog = false;
+	Quest *lastQuestCompleted;
 
 	std::unordered_map<int, std::unique_ptr<Quest>> currentQuests;
 

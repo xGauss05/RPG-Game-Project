@@ -53,7 +53,7 @@ public:
 
 	void Initialize();
 
-	void Start();
+	virtual void Start();
 
 	bool Update();
 
