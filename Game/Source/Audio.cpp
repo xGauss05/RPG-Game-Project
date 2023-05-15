@@ -51,11 +51,8 @@ bool Audio::Awake(pugi::xml_node& config)
 		active = false;
 	}
 
-	BGMVolume = 64;
-	SFXVolume = 64;
-
-	SetBGMVolume(BGMVolume);
-	SetSFXVolume(SFXVolume);
+	SFXVolume = config.child("sfx").attribute("value").as_int();
+	BGMVolume = config.child("bgm").attribute("value").as_int();
 
 	return true;
 }
@@ -184,10 +181,12 @@ void Audio::SetSFXVolume(int value)
 {
 	SFXVolume = value;
 	Mix_Volume(-1, value);
+	app->SaveAttributeToConfig(name, "sfx", "value", std::to_string(SFXVolume));
 }
 
 void Audio::SetBGMVolume(int value)
 {
 	BGMVolume = value;
 	Mix_VolumeMusic(value);
+	app->SaveAttributeToConfig(name, "bgm", "value", std::to_string(BGMVolume));
 }

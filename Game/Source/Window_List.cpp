@@ -272,13 +272,7 @@ int Window_List::ToggleFullscreen()
 {
 	LOG("ToggleFullscreen function called");
 
-	auto flag = SDL_GetWindowFlags(app->win->GetWindow());
-	auto is_fullscreen = flag & SDL_WINDOW_FULLSCREEN;
-
-	if (is_fullscreen == SDL_WINDOW_FULLSCREEN)
-		SDL_SetWindowFullscreen(app->win->GetWindow(), 0);
-	else
-		SDL_SetWindowFullscreen(app->win->GetWindow(), 1);
+	app->win->ToggleFullscreen();
 
 	return 15;
 }

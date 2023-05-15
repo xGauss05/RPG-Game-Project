@@ -51,6 +51,7 @@ public:
 		return SFXVolume;
 	}
 
+
 private:
 
 	_Mix_Music* music = nullptr;
