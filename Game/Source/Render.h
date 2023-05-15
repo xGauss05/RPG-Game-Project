@@ -125,6 +125,7 @@ public:
 	void SetMapAndTileSize(iPoint mSize, iPoint tSize);
 
 	void ToggleVSync();
+
 	SDL_Rect GetCamera() const;
 	void AdjustCamera(iPoint position);
 	void ResetCamera();

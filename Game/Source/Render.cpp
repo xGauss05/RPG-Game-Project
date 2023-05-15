@@ -387,6 +387,8 @@ void Render::ToggleVSync()
 	app->SaveAttributeToConfig(name, "vsync", "value", vSyncOnRestart ? "true" : "false");
 }
 
+
+
 SDL_Rect Render::GetCamera() const
 {
 	return camera;

@@ -41,6 +41,7 @@ public:
 	int GetHeight() const; 
 	int GetWidth() const; 
 
+	void ToggleFullscreen();
 private:
 	// The window we'll be rendering to
 	std::unique_ptr<SDL_Window, std::function<void(SDL_Window *)>> window;

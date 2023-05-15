@@ -20,7 +20,7 @@ Window::Window() : Module()
 Window::~Window() = default;
 
 // Called before render is available
-bool Window::Awake(pugi::xml_node& config)
+bool Window::Awake(pugi::xml_node & config)
 {
 	LOG("Init SDL window & surface");
 
@@ -33,13 +33,13 @@ bool Window::Awake(pugi::xml_node& config)
 	// Read config.xml
 	width = config.child("resolution").attribute("width").as_int();
 	height = config.child("resolution").attribute("height").as_int();
-	scale = config.child("resolution").attribute("scale").as_float(); 
+	scale = config.child("resolution").attribute("scale").as_float();
 
 	bool fullscreen = config.child("fullscreen").attribute("value").as_bool();
 	bool borderless = config.child("bordeless").attribute("value").as_bool();
 	bool resizable = config.child("resizable").attribute("value").as_bool();
 	bool fullscreen_window = config.child("fullscreen_window").attribute("value").as_bool();
-		
+
 	// Set Window flags
 	Uint32 flags = SDL_WINDOW_SHOWN;
 	if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
@@ -48,7 +48,7 @@ bool Window::Awake(pugi::xml_node& config)
 	if (fullscreen_window) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 	// Create Window
-	std::unique_ptr<SDL_Window, std::function<void(SDL_Window *)>>windowPtr(
+	std::unique_ptr<SDL_Window, std::function<void(SDL_Window*)>>windowPtr(
 		SDL_CreateWindow(
 			app->GetTitle().c_str(),
 			SDL_WINDOWPOS_UNDEFINED,
@@ -57,21 +57,21 @@ bool Window::Awake(pugi::xml_node& config)
 			height,
 			flags
 		),
-		[](SDL_Window *win) { if(win) SDL_DestroyWindow(win); }
+		[](SDL_Window* win) { if (win) SDL_DestroyWindow(win); }
 	);
 
 	window = std::move(windowPtr);
-	
+
 	if (!window)
 	{
 		LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
-	
+
 	// Get window surface
-	std::unique_ptr<SDL_Surface, std::function<void(SDL_Surface *)>>surfacePtr(
+	std::unique_ptr<SDL_Surface, std::function<void(SDL_Surface*)>>surfacePtr(
 		SDL_GetWindowSurface(window.get()),
-		[](SDL_Surface *surface) { if(surface) SDL_FreeSurface(surface);  }
+		[](SDL_Surface* surface) { if (surface) SDL_FreeSurface(surface);  }
 	);
 
 	screenSurface = std::move(surfacePtr);
@@ -90,22 +90,22 @@ bool Window::CleanUp()
 }
 
 // Set new window title
-void Window::SetTitle(std::string const &newTitle)
+void Window::SetTitle(std::string const& newTitle)
 {
 	SDL_SetWindowTitle(window.get(), newTitle.c_str());
 }
 
-SDL_Window *Window::GetWindow() const
+SDL_Window* Window::GetWindow() const
 {
 	return window.get();
 }
 
-SDL_Surface *Window::GetSurface() const
+SDL_Surface* Window::GetSurface() const
 {
 	return screenSurface.get();
 }
 
-void Window::GetWindowSize(uint &w, uint &h) const
+void Window::GetWindowSize(uint & w, uint & h) const
 {
 	w = width;
 	h = height;
@@ -129,4 +129,18 @@ int Window::GetHeight() const
 int Window::GetWidth() const
 {
 	return width;
+}
+
+void Window::ToggleFullscreen()
+{
+
+	auto flag = SDL_GetWindowFlags(app->win->GetWindow());
+	auto is_fullscreen = flag & SDL_WINDOW_FULLSCREEN;
+
+	if (is_fullscreen == SDL_WINDOW_FULLSCREEN)
+		SDL_SetWindowFullscreen(GetWindow(), 0);
+	else
+		SDL_SetWindowFullscreen(GetWindow(), 1);
+
+	app->SaveAttributeToConfig(name, "fullscreen", "value", is_fullscreen == SDL_WINDOW_FULLSCREEN ? "false" : "true");
 }
