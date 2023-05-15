@@ -214,7 +214,7 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Inside"/>
       <property name="Destination X" type="int" value="3"/>
-      <property name="Destination Y" type="int" value="13"/>
+      <property name="Destination Y" type="int" value="12"/>
      </properties>
     </property>
    </properties>
