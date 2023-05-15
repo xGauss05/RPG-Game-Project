@@ -99,7 +99,10 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 
 		size.y = correctedYSize;
 
-		size.CeilToNearest(32);
+		if (background)
+		{
+			size.CeilToNearest(background->GetSegmentSize().h);
+		}
 	}
 }
 
@@ -467,9 +470,9 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 			iPoint cam ={ -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
 			
 			drawPosition += cam;
-			drawPosition.y += 5;
+			drawPosition.y += 2;
 			app->render->DrawTexture(DrawParameters(iconTexture, drawPosition));
-			drawPosition.y -= 5;
+			drawPosition.y -= 2;
 			drawPosition -= cam;
 		}
 

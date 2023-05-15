@@ -83,8 +83,7 @@ namespace EventProperties
 		NONE,					// Default value, does nothing
 		SET,					// Sets the global switch on a certain value (e.g. lever)
 		TOGGLE,					// Toggles the global switch (e.g. button)
-		UNLOCK,					// Event is unlocked if switch is on
-		LOCK					// Event is locked if switch is on
+		QUERY
 	};
 
 	struct GlobalSwitchProperty : public Property
@@ -92,6 +91,7 @@ namespace EventProperties
 		std::string searchKey = "";
 		uint id = 0;
 		GlobalSwitchOnInteract functionOnInteract = GlobalSwitchOnInteract::NONE;
+		bool setTo = false;
 
 		void ReadProperty(pugi::xml_node const& node) override
 		{
@@ -111,6 +111,10 @@ namespace EventProperties
 				else if (StrEquals("Function", attributeName))
 				{
 					functionOnInteract = static_cast<GlobalSwitchOnInteract>(child.attribute("value").as_int());
+				}
+				else if (StrEquals("Set To", attributeName))
+				{
+					setTo = child.attribute("value").as_bool();
 				}
 			}
 		}
@@ -153,20 +157,23 @@ namespace EventProperties
 
 struct EventTrigger
 {
-	std::string text; // Can be a path (dialog), message (loot/show_message) or map name (teleport)
-	std::vector<std::pair<std::string, int>> values; // e.g.: Loot 5 of item 6, tp to x = 10, y = 20
-
 	enum class WhatToDo
 	{
 		NO_EVENT,
 		LOOT,
 		SHOW_MESSAGE,
 		TELEPORT,
-		DIALOG_PATH
+		DIALOG_PATH,
+		GLOBAL_SWITCH
 	};
 
+	std::string text; // Can be a path (dialog), message (loot/show_message) or map name (teleport)
+	std::vector<std::pair<std::string, int>> values; // e.g.: Loot 5 of item 6, tp to x = 10, y = 20
+	std::vector<EventProperties::GlobalSwitchProperty>::iterator globalSwitchIteratorBegin;
+	std::vector<EventProperties::GlobalSwitchProperty>::iterator globalSwitchIteratorEnd;
 	WhatToDo eventFunction = WhatToDo::NO_EVENT;
 };
+
 class Event_Base : public Transform
 {
 public:
@@ -180,7 +187,9 @@ public:
 	{
 		Transform::Initialize(node);
 
+		id = node.attribute("id").as_int();
 		name = node.attribute("name").as_string();
+		type = node.attribute("type").as_string();
 
 		if (auto propertiesNode = node.child("properties");
 			!propertiesNode.empty())
@@ -194,6 +203,7 @@ public:
 		return common.isActive;
 	}
 
+	int id = -1;
 	std::string name = "";
 	std::string type = "";
 	EventProperties::CommonProperties common;

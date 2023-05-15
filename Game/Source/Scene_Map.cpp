@@ -528,6 +528,34 @@ TransitionScene Scene_Map::Update()
 					tpInfo = action;
 					return TransitionScene::LOAD_MAP_FROM_MAP;
 				}
+				case GLOBAL_SWITCH:
+				{
+					for (auto& it = action.globalSwitchIteratorBegin; it != action.globalSwitchIteratorEnd; ++it)
+					{
+						switch (it->functionOnInteract)
+						{
+							using enum EventProperties::GlobalSwitchOnInteract;
+						case SET:
+						{
+							playerParty->SetGlobalSwitchState(it->id, it->setTo);
+							break;
+						}
+						case TOGGLE:
+						{
+							playerParty->ToggleGlobalSwitchState(it->id);
+							break;
+						}
+						case QUERY:
+						{
+							break;
+						}
+						case NONE:
+						{
+							break;
+						}
+						}
+					}
+				}
 			}
 		}
 	}

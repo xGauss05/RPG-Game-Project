@@ -2,6 +2,7 @@
 #include "App.h"
 
 #include "Event_Chest.h"
+#include "Event_Lever.h"
 #include "Event_Teleport.h"
 #include "NPC_Generic.h"
 
@@ -38,6 +39,10 @@ bool EventManager::CreateEvent(pugi::xml_node const& node)
 		else if (StrEquals("Event NPC", child.attribute("type").as_string()))
 		{
 			event = std::make_unique<NPC_Generic>();
+		}
+		else if (StrEquals("Event Lever", child.attribute("type").as_string()))
+		{
+			event = std::make_unique<Event_Lever>();
 		}
 
 		if (!event)

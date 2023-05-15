@@ -50,6 +50,7 @@
     <ClCompile Include="Source\Map_Menu_Inventory.cpp" />
     <ClCompile Include="Source\Map_Display_QuestLog.cpp" />
     <ClCompile Include="Source\Map_Menu_GoldDisplay.cpp" />
+    <ClCompile Include="Source\Event_Lever.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -113,6 +114,7 @@
     <ClInclude Include="Source\Map_Menu_ComponentParty.h" />
     <ClInclude Include="Source\Map_Display_QuestLog.h" />
     <ClInclude Include="Source\Map_Menu_GoldDisplay.h" />
+    <ClInclude Include="Source\Event_Lever.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

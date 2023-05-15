@@ -64,8 +64,6 @@ public:
 	GameParty();
 	void CreateParty();
 
-	std::unordered_map<int, bool> globalSwitch;
-
 	void AddItemToInventory(std::string_view itemToAdd, int amountToAdd = 1);
 	void AddItemToInventory(int  itemToAdd, int amountToAdd = 1);
 
@@ -91,6 +89,25 @@ public:
 	bool GetUpdateQuestLog();
 	std::string QuestCompleteMessage();
 	bool IsQuestMessagePending() const;
+
+
+	// Returns a pair consisting of an state of the inserted element,
+	// or the already-existing element if no insertion happened,
+	// and a bool denoting whether the insertion took place 
+	// (true if insertion happened, false if it did not).
+	std::pair<bool, bool>AddGlobalSwitch(int id, bool state = false);
+
+	// Returns new state
+	bool ToggleGlobalSwitchState(int id);
+
+	bool GlobalSwitchExists(int id) const;
+
+	// Inserts a new element in case it doesn't exist. 
+	// Doesn't initialize bool value.
+	bool GetGlobalSwitchState(int id);
+
+	// Inserts a new element in case it doesn't exist. 
+	void SetGlobalSwitchState(int id, bool newState);
 
 	std::vector<PartyCharacter> party;
 	std::vector<std::pair<int, int>> inventory;

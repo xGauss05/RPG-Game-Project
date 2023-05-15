@@ -85,7 +85,7 @@
                     }
                 },
                 {
-                    "name": "Global Switch",
+                    "name": "GlobalSwitch1",
                     "propertyType": "Global Switch",
                     "type": "class",
                     "value": {
@@ -160,6 +160,11 @@
                     "name": "ID",
                     "type": "int",
                     "value": 0
+                },
+                {
+                    "name": "Set To",
+                    "type": "bool",
+                    "value": false
                 },
                 {
                     "name": "SwitchName",

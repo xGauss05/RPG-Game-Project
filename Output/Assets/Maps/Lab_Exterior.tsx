@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="Lab Exterior" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+<tileset version="1.10" tiledversion="1.10.0" name="Lab Exterior" tilewidth="16" tileheight="16" tilecount="256" columns="16">
  <image source="lab_exterior_tileset.png" width="256" height="256"/>
  <tile id="0">
   <properties>
@@ -50,6 +50,10 @@
   <properties>
    <property name="isWalkable" type="bool" value="false"/>
   </properties>
+  <animation>
+   <frame tileid="9" duration="100"/>
+   <frame tileid="10" duration="100"/>
+  </animation>
  </tile>
  <tile id="10">
   <properties>

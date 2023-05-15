@@ -98,6 +98,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\DB_Quests.cpp" />
+    <ClCompile Include="Source\Event_Lever.cpp" />
     <ClCompile Include="Source\GuiMenuList.cpp" />
     <ClCompile Include="Source\Map_Display_QuestLog.cpp" />
     <ClCompile Include="Source\Map_Menu_GoldDisplay.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Source\Window_List.cpp" />
     <ClInclude Include="Source\AdjacencyGraph.h" />
     <ClInclude Include="Source\DB_Quests.h" />
+    <ClInclude Include="Source\Event_Lever.h" />
     <ClInclude Include="Source\GuiMenuList.h" />
     <ClInclude Include="Source\Map_Display_QuestLog.h" />
     <ClInclude Include="Source\Map_Menu_ComponentParty.h" />

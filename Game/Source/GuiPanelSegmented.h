@@ -40,6 +40,9 @@ public:
 
 	GuiPanel_Border MapStringToGuiPanelBorder(std::string_view str) const;
 
+	iPoint GetSegmentCount() const;
+	SDL_Rect GetSegmentSize() const;
+
 private:
 	void DrawHorizontalSegment(iPoint topLeftPosition, SDL_Rect currentSegment, iPoint size) const;
 

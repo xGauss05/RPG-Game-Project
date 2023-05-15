@@ -121,3 +121,13 @@ GuiPanel_Border GuiPanelSegmented::MapStringToGuiPanelBorder(std::string_view st
 	
 	return ALL;
 }
+
+iPoint GuiPanelSegmented::GetSegmentCount() const
+{
+	return textureSegments;
+}
+
+SDL_Rect GuiPanelSegmented::GetSegmentSize() const
+{
+	return rect;
+}

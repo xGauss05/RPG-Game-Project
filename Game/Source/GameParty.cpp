@@ -174,6 +174,44 @@ bool GameParty::IsQuestMessagePending() const
 	return lastQuestCompleted;
 }
 
+bool GameParty::GlobalSwitchExists(int id) const
+{
+	if (auto it = globalSwitches.find(id);
+		it != globalSwitches.end())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool GameParty::GetGlobalSwitchState(int id)
+{
+	return globalSwitches[id];
+}
+
+void GameParty::SetGlobalSwitchState(int id, bool newState)
+{
+	globalSwitches[id] = newState;
+	LOG(std::format("Set global Switch {} to {}.", id, newState).c_str());
+}
+
+std::pair<bool, bool> GameParty::AddGlobalSwitch(int id, bool state)
+{
+	auto const &[it, success] = globalSwitches.try_emplace(id, state);
+	if(success)
+		LOG(std::format("Succesfully added global Switch {} with state {}.", id, state).c_str());
+	else	
+		LOG(std::format("Couldn't add global Switch {}.", id).c_str());
+	return std::pair(it->second, success);
+}
+
+bool GameParty::ToggleGlobalSwitchState(int id)
+{
+	LOG(std::format("Global Switch {} toggled to {}.", id, !globalSwitches[id]).c_str());
+	return globalSwitches[id] = !globalSwitches[id];
+}
+
 std::string GameParty::QuestCompleteMessage()
 {
 	std::string_view questName = lastQuestCompleted->GetQuestName();
