@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "Map.h"
 #include "TextManager.h"
+#include "AssetManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -28,9 +29,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fonts = std::make_unique<TextManager>();
 	scene = std::make_unique<SceneManager>();
 	transition = std::make_unique<TransitionManager>();
+	assets = std::make_unique<AssetManager>();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
+	AddModule(assets.get());
 	AddModule(input.get());
 	AddModule(win.get());
 	AddModule(tex.get());

@@ -1,6 +1,6 @@
 <Slime_R>
   <texture path="Assets/Textures/Battlers/Slime_R.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Slime-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Slime-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
@@ -13,7 +13,7 @@
 </Slime_R>
 <Slime_G>
   <texture path="Assets/Textures/Battlers/Slime_G.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Slime-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Slime-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
@@ -26,7 +26,7 @@
 </Slime_G>
 <Slime_B>
   <texture path="Assets/Textures/Battlers/Slime_B.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Slime-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Slime-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
@@ -39,7 +39,7 @@
 </Slime_B>
 <Bat_R>
   <texture path="Assets/Textures/Battlers/Bat_R.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Flyer-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Flyer-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
@@ -52,7 +52,7 @@
 </Bat_R>
 <Bat_G>
 	<texture path="Assets/Textures/Battlers/Bat_G.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Flyer-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Flyer-Death.wav"/>
 	<stats>
 		<maxhp value="100"/>
 		<maxmana value="100"/>
@@ -65,7 +65,7 @@
 </Bat_G>
 <Bat_B>
   <texture path="Assets/Textures/Battlers/Bat_B.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Flyer-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Flyer-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
@@ -78,7 +78,7 @@
 </Bat_B>
 <Skeleton_R>
   <texture path="Assets/Textures/Battlers/Skeleton_R.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Driller-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
@@ -91,7 +91,7 @@
 </Skeleton_R>
 <Skeleton_B>
   <texture path="Assets/Textures/Battlers/Skeleton_B.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Driller-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
@@ -104,7 +104,7 @@
 </Skeleton_B>
 <Skeleton_G>
   <texture path="Assets/Textures/Battlers/Skeleton_G.png"/>
-  <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
+  <deadaudio path="Fx/S_Battle-Driller-Death.wav"/>
   <stats>
     <maxhp value="100"/>
     <maxmana value="100"/>
