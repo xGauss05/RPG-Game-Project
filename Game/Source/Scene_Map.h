@@ -116,6 +116,8 @@ private:
 	iPoint spawnPlayerPosition = { 0, 0 };
 	
 	std::string_view nextFightName = "";
+	std::tuple<EventProperties::GlobalSwitchOnInteract, int, bool> globalSwitchWaiting;
+
 };
 
 

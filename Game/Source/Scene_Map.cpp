@@ -100,6 +100,28 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	torchSfx = app->audio->LoadFx("Fx/S_Dungeon-Torch.wav");
 
 	SubscribeEventsToGlobalSwitches();
+
+	auto & [triggerAction, id, st] = globalSwitchWaiting;
+
+	if (id != -1 && triggerAction != EventProperties::GlobalSwitchOnInteract::NONE)
+	{
+		switch (triggerAction)
+		{
+			using enum EventProperties::GlobalSwitchOnInteract;
+		case SET:
+			playerParty->SetGlobalSwitchState(id, st);
+			break;
+		case TOGGLE:
+			playerParty->ToggleGlobalSwitchState(id);
+			break;
+		default:
+			break;
+		}
+
+		triggerAction = EventProperties::GlobalSwitchOnInteract::NONE;
+		id = -1;
+		st = false;
+	}
 }
 
 std::string Scene_Map::PlayMapBgm(std::string_view name)
@@ -440,6 +462,13 @@ TransitionScene Scene_Map::Update()
 				app->audio->PlayFx(battleStartSfx);
 				nextFightName = currentDialogNode.attribute("fightname").as_string();
 				currentDialogNode = currentDialogDocument.child("dialog").child("victory");
+
+				globalSwitchWaiting = std::make_tuple(
+					EventProperties::GlobalSwitchOnInteract::SET,
+					currentDialogDocument.child("dialog").attribute("globalswitch").as_int(),
+					currentDialogDocument.child("dialog").attribute("value").as_bool()
+				);
+
 				return TransitionScene::START_BATTLE;
 			}
 			if (StrEquals(nextDialogName, "end"))
@@ -536,9 +565,6 @@ TransitionScene Scene_Map::Update()
 
 					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
 					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-
-					// I dont know what this was doing here 
-					//currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
 
 					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
 					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());

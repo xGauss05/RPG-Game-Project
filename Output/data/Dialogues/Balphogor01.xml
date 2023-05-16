@@ -1,4 +1,4 @@
-<dialog voicetype="low" name="Balphogor">
+<dialog voicetype="low" name="Balphogor" globalswitch="2000" switchtype="SET" value="true">
   <message1 text="What are you looking at you filth!" next="message2"/>
   <message2 text="I swear... this kids nowadays..." next="combat" fightname="boss"/>
   <victory text="asdasdasd" next="end"/>

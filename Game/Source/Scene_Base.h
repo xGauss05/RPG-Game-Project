@@ -44,7 +44,12 @@ public:
 	virtual bool SaveScene(pugi::xml_node const&) = 0;
 	virtual bool LoadScene(pugi::xml_node const&) = 0;
 	virtual void DebugDraw() = 0;
+
 	virtual std::string_view GetFightName() const { return std::string_view(); };
+	virtual std::tuple<EventProperties::GlobalSwitchOnInteract, int, bool> GetWaitingGlobalSwitch() const
+	{
+		return std::tuple(EventProperties::GlobalSwitchOnInteract::NONE, -1, false);
+	};
 
 
 	bool bActive = false;
