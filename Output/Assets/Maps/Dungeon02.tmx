@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="41">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="62">
  <tileset firstgid="1" source="Dungeon.tsx"/>
  <layer id="1" name="Ground" width="20" height="20">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,43,43,43,43,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,43,43,43,43,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,19,19,12,13,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,51,19,50,37,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,19,13,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,19,13,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,59,12,58,5,0,
-0,1,2,3,2,2,2,2,3,2,2,2,3,2,59,19,19,19,13,0,
-0,9,19,19,19,19,12,19,19,19,19,19,19,19,19,19,19,19,21,0,
-0,9,12,19,19,19,19,19,19,19,12,19,19,19,19,19,19,19,13,0,
-0,17,19,19,19,19,19,19,19,19,19,19,19,19,12,19,19,19,13,0,
-0,9,19,19,19,19,19,19,12,19,19,19,19,19,19,19,19,19,21,0,
-0,9,19,19,19,19,19,19,19,19,19,12,19,19,19,19,19,19,13,0,
-0,9,19,19,12,19,19,19,19,19,19,19,19,19,19,19,19,12,13,0,
-0,9,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,13,0,
-0,17,19,12,19,19,19,19,19,12,19,19,19,12,19,19,19,19,21,0,
-0,9,19,19,19,19,12,19,19,19,19,19,19,19,19,19,19,19,13,0,
-0,33,34,35,34,34,34,51,19,19,19,50,34,34,35,34,34,35,37,0,
-0,0,0,0,0,0,0,42,43,43,43,43,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,42,43,43,43,43,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,15,42,43,43,43,43,15,
+0,0,0,0,0,0,0,0,0,0,0,0,0,15,42,43,43,43,43,15,
+0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,19,19,12,13,15,
+0,0,0,0,0,0,0,0,0,0,0,0,0,15,33,51,19,50,37,15,
+0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,9,19,13,15,15,
+0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,9,19,13,15,15,
+15,15,15,15,15,15,15,15,15,15,15,15,15,15,1,59,12,58,5,15,
+15,1,2,3,2,2,2,2,3,2,2,2,3,2,59,19,19,19,13,15,
+15,9,19,19,19,19,12,19,19,19,19,19,19,19,19,19,19,19,21,15,
+15,9,12,19,19,19,19,19,19,19,12,19,19,19,19,19,19,19,13,15,
+15,17,19,19,19,19,19,19,19,19,19,19,19,19,12,19,19,19,13,15,
+15,9,19,19,19,19,19,19,12,19,19,19,19,19,19,19,19,19,21,15,
+15,9,19,19,19,19,19,19,19,19,19,12,19,19,19,19,19,19,13,15,
+15,9,19,19,12,19,19,19,19,19,19,19,19,19,19,19,19,12,13,15,
+15,9,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,13,15,
+15,17,19,12,19,19,19,19,19,12,19,19,19,12,19,19,19,19,21,15,
+15,9,19,19,19,19,12,19,19,19,19,19,19,19,19,19,19,19,13,15,
+15,33,34,35,34,34,34,51,19,19,19,50,34,34,35,34,34,35,37,15,
+15,15,15,15,15,15,15,42,43,43,43,43,15,15,15,15,15,15,15,15,
+0,0,0,0,0,0,15,42,43,43,43,43,15,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="3" name="Top" width="20" height="20">
@@ -50,22 +50,6 @@
 </data>
  </layer>
  <objectgroup id="2" name="Events" class="Layer of Events">
-  <object id="2" gid="63" x="240" y="80" width="16" height="16"/>
-  <object id="3" gid="63" x="240" y="64" width="16" height="16"/>
-  <object id="4" gid="64" x="272" y="80" width="16" height="16"/>
-  <object id="5" gid="64" x="272" y="64" width="16" height="16"/>
-  <object id="6" gid="56" x="256" y="80" width="16" height="16"/>
-  <object id="7" gid="56" x="256" y="64" width="16" height="16"/>
-  <object id="9" gid="62" x="48" y="128" width="16" height="16"/>
-  <object id="10" gid="62" x="80" y="128" width="16" height="16"/>
-  <object id="11" gid="62" x="112" y="128" width="16" height="16"/>
-  <object id="12" gid="62" x="144" y="128" width="16" height="16"/>
-  <object id="13" gid="62" x="176" y="128" width="16" height="16"/>
-  <object id="14" type="Event Lever" gid="45" x="48" y="160" width="16" height="16"/>
-  <object id="15" type="Event Lever" gid="45" x="80" y="160" width="16" height="16"/>
-  <object id="16" type="Event Lever" gid="45" x="112" y="160" width="16" height="16"/>
-  <object id="17" type="Event Lever" gid="45" x="144" y="160" width="16" height="16"/>
-  <object id="18" type="Event Lever" gid="45" x="176" y="160" width="16" height="16"/>
   <object id="22" name="To Dungeon 01" type="Event Teleport" x="112" y="288" width="16" height="16">
    <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
@@ -127,7 +111,7 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
       <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="17"/>
+      <property name="Destination Y" type="int" value="13"/>
      </properties>
     </property>
    </properties>
@@ -138,7 +122,7 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
       <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="17"/>
+      <property name="Destination Y" type="int" value="13"/>
      </properties>
     </property>
    </properties>
@@ -149,7 +133,7 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
       <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="17"/>
+      <property name="Destination Y" type="int" value="13"/>
      </properties>
     </property>
    </properties>
@@ -160,7 +144,7 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
       <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="17"/>
+      <property name="Destination Y" type="int" value="13"/>
      </properties>
     </property>
    </properties>
@@ -171,7 +155,497 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
       <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="17"/>
+      <property name="Destination Y" type="int" value="13"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="41" type="Event Lever" gid="45" x="48" y="176" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="201"/>
+      <property name="Set To" type="bool" value="false"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="202"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="42" type="Event Torch" gid="61" x="48" y="128" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="201"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="43" type="Event Torch" gid="53" x="48" y="112" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="201"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="44" type="Event Torch" gid="61" x="80" y="128" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="202"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="45" type="Event Torch" gid="53" x="80" y="112" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="202"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="46" type="Event Torch" gid="61" x="112" y="128" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="203"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="47" type="Event Torch" gid="53" x="112" y="112" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="203"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="48" type="Event Torch" gid="61" x="144" y="128" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="204"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="49" type="Event Torch" gid="53" x="144" y="112" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="204"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="50" type="Event Torch" gid="61" x="176" y="128" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="205"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="51" type="Event Torch" gid="53" x="176" y="112" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="205"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="52" type="Event Lever" gid="45" x="80" y="176" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="201"/>
+      <property name="Set To" type="bool" value="false"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="204"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="53" type="Event Lever" gid="45" x="112" y="176" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="202"/>
+      <property name="Set To" type="bool" value="false"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="203"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="54" type="Event Lever" gid="45" x="144" y="176" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="203"/>
+      <property name="Set To" type="bool" value="false"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="204"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="205"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="55" type="Event Lever" gid="45" x="176" y="176" width="16" height="16">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="202"/>
+      <property name="Set To" type="bool" value="false"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="205"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="56" type="Event Door" gid="55" x="240" y="64" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="57" type="Event Door" gid="63" x="240" y="80" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="58" type="Event Door" gid="64" x="256" y="80" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="59" type="Event Door" gid="56" x="256" y="64" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="60" type="Event Door" gid="64" x="272" y="80" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="61" type="Event Door" gid="56" x="272" y="64" width="16" height="16">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
      </properties>
     </property>
    </properties>
