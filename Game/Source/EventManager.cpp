@@ -73,6 +73,14 @@ bool EventManager::CreateEvent(Publisher& publisher, pugi::xml_node const& node)
 	return true;
 }
 
+void EventManager::SubscribeEventsToGlobalSwitches()
+{
+	for (auto const& elem : events)
+	{
+		elem->AttachToGlobalSwitches();
+	}
+}
+
 int EventManager::GetEventLayerSize() const
 {
 	return events.size();

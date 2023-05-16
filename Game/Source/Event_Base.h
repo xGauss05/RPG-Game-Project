@@ -206,6 +206,8 @@ public:
 		return common.isActive;
 	}
 
+	virtual void AttachToGlobalSwitches() {};
+
 	int id = -1;
 	std::string name = "";
 	std::string type = "";

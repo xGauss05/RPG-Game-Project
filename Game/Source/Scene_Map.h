@@ -48,6 +48,8 @@ public:
 
 	void DebugDraw() override;
 
+	void SubscribeEventsToGlobalSwitches();
+
 private:
 	void DebugItems();
 	void DebugQuests();

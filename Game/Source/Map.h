@@ -74,6 +74,8 @@ public:
 
 	bool IsWalkable(iPoint pos) const;
 
+	void SubscribeEventsToGlobalSwitches();
+
 private:
 	std::vector<TileSet> tilesets;
 	std::vector<MapLayer> tileLayers;

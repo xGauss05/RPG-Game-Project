@@ -93,7 +93,8 @@ bool SceneManager::Pause(int phase)
 	iPoint camera = { app->render->GetCamera().x * -1, app->render->GetCamera().y * -1 };
 	app->render->DrawTexture(DrawParameters(pauseMenuBackground, camera));
 
-	if (currentScene->OnPause() == 4) return false;
+	if (currentScene->OnPause() == 4)
+		return false;
 
 	return true;
 }
@@ -143,6 +144,7 @@ bool SceneManager::Update(float dt)
 		}
 		case LOSE_BATTLE:
 		{
+			party->CleanUpNullSubscribers();
 			app->transition->SceneToBattle(1000.0f);
 			sceneOnHold.reset();
 			nextScene = std::make_unique<Scene_GameOver>();
@@ -151,6 +153,8 @@ bool SceneManager::Update(float dt)
 		}
 		case MAIN_MENU:
 		{
+			party->CleanUpNullSubscribers();
+
 			nextScene = std::make_unique<Scene_Title>();
 			nextScene.get()->Load(assetPath + "UI/", sceneInfo, *windowFactory);
 			break;
@@ -172,6 +176,7 @@ bool SceneManager::Update(float dt)
 		}
 		case LOAD_MAP_FROM_MAP:
 		{
+			party->CleanUpNullSubscribers();
 			app->transition->SceneToBattle(1000.0f);
 			auto const* mapScene = dynamic_cast<Scene_Map*>(currentScene.get());
 			nextScene = std::make_unique<Scene_Map>(std::string(mapScene->GetNextMap()), mapScene->GetTPCoordinates(), party.get());

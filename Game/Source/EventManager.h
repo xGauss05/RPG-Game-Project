@@ -27,6 +27,8 @@ public:
 		pugi::xml_node const &node = pugi::xml_node()
 	);
 
+	void SubscribeEventsToGlobalSwitches();
+
 	int GetEventLayerSize() const;
 
 	bool IsWalkable(iPoint position) const;

@@ -247,6 +247,11 @@ bool Map::IsWalkable(iPoint pos) const
 	return eventManager.IsWalkable(pos);
 }
 
+void Map::SubscribeEventsToGlobalSwitches()
+{
+	eventManager.SubscribeEventsToGlobalSwitches();
+}
+
 int Map::GetWidth() const { return size.x; }
 int Map::GetHeight() const { return size.y; }
 int Map::GetTileWidth() const { return tileSize.x; }

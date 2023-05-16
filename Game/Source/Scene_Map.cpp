@@ -98,6 +98,8 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	battleStartSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Gameplay-BattleStart.wav");
 	waterDropSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-WaterDroplet.wav");
 	torchSfx = app->audio->LoadFx("Assets/Audio/Fx/S_Dungeon-Torch.wav");
+
+	SubscribeEventsToGlobalSwitches();
 }
 
 std::string Scene_Map::PlayMapBgm(std::string_view name)
@@ -159,6 +161,11 @@ void Scene_Map::DungeonSfx()
 
 		if (randomValue <= 1) app->audio->PlayFx(torchSfx);
 	}
+}
+
+void Scene_Map::SubscribeEventsToGlobalSwitches()
+{
+	map.SubscribeEventsToGlobalSwitches();
 }
 
 void Scene_Map::Start()

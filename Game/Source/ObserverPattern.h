@@ -8,6 +8,7 @@ class ISubscriber
 public:
 	virtual ~ISubscriber() = default;
 	virtual void UpdateSubscriber(int id, bool state) = 0;
+	virtual void ClearTrackingIDs() = 0;
 };
 
 class IPublisher
@@ -49,15 +50,14 @@ public:
 	{
 		for (auto& [id, subVector] : subscribers)
 		{
-			std::erase_if
-			(
-				subVector,
-				[](ISubscriber* sub)
-				{
-					return !sub;
-				}
-			);
+			for (auto& elem : subVector)
+			{
+				elem->ClearTrackingIDs();
+			}
+
+			subVector.clear();
 		}
+		subscribers.clear();
 	}
 
 	void RequestGlobalSwitchUpdate(int id, bool s)
@@ -97,8 +97,13 @@ public:
 		}
 	}
 
+	void ClearTrackingIDs() override
+	{
+		trackingIDs.clear();
+	}
+
 protected:
-	virtual void AttachToGlobalSwitches() = 0;
+	
 
 	void UpdateGlobalSwitchValue(int id, bool s)
 	{
