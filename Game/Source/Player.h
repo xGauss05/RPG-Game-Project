@@ -60,7 +60,10 @@ public:
 	iPoint GetPosition() const;
 
 	void RotatePlayer();
-	bool FinishedMoving() const;
+	bool IsStandingStill() const;
+
+	void SetMovementStopped(bool b);
+	bool GetMovementStopped() const;
 
 	iPoint lastDir{ 0 };
 
@@ -77,6 +80,8 @@ private:
 	const int tileSize = 48;
 
 	int animTimer = 0;
+
+	bool movementStopped = false;
 
 	SDL_Rect currentSpriteSlice{ 0 };
 };

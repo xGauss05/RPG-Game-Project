@@ -204,30 +204,13 @@ void Scene_Map::Start()
 
 	app->render->AdjustCamera(player.GetPosition());
 
-	auto& [triggerAction, id, st] = globalSwitchWaiting;
-
-	/*if (id != -1 && triggerAction != EventProperties::GlobalSwitchOnInteract::NONE)
+	if (auto &[triggerAction, id, st] = globalSwitchWaiting;
+		id != 1)
 	{
-		switch (triggerAction)
-		{
-			using enum EventProperties::GlobalSwitchOnInteract;
-		case SET:
-			playerParty->SetGlobalSwitchState(id, st);
-			break;
-		case TOGGLE:
-			playerParty->ToggleGlobalSwitchState(id);
-			break;
-		default:
-			break;
-		}
-
-		triggerAction = EventProperties::GlobalSwitchOnInteract::NONE;
-		id = -1;
-		st = false;
-	}*/
-
-	if (id != 1) { playerParty->SetGlobalSwitchState(id, st);         
-	globalSwitchWaiting = std::tuple(EventProperties::GlobalSwitchOnInteract::NONE, -1, false); }
+		playerParty->SetGlobalSwitchState(id, st);         
+	
+		globalSwitchWaiting = std::tuple(EventProperties::GlobalSwitchOnInteract::NONE, -1, false);
+	}
 }
 
 void Scene_Map::SetPlayerParty(GameParty* party)
@@ -545,6 +528,67 @@ TransitionScene Scene_Map::Update()
 			state = MapState::NORMAL;
 		}
 	}
+	case ON_DIALOG:
+	{
+		if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+		{
+			auto const &dialogNode = currentDialogDocument.child("dialog");
+
+			std::string_view nextDialogName = currentDialogNode.attribute("next").as_string();
+			std::string_view currentDialogName = currentDialogNode.name();
+
+			// If the next node is quest, and, quest with quest id is not available -> end dialog.
+			if (StrEquals(nextDialogName, "quest")
+				&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
+			{
+				nextDialogName = "end";
+			}
+			
+			// If we've accepted the quest via jumping to accept quest node, we add the quest to the party
+			if (StrEquals(currentDialogName, "acceptquest"))
+			{
+				playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
+			}
+			
+			if (StrEquals(nextDialogName, "combat"))
+			{
+				PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
+
+				nextFightName = currentDialogNode.attribute("fightname").as_string();
+
+				currentDialogNode = currentDialogDocument.child("dialog").child("victory");
+
+				globalSwitchWaiting = std::make_tuple(
+					EventProperties::GlobalSwitchOnInteract::SET,
+					currentDialogDocument.child("dialog").attribute("globalswitch").as_int(),
+					currentDialogDocument.child("dialog").attribute("value").as_bool()
+				);
+
+				return TransitionScene::START_BATTLE;
+			}
+			else if (StrEquals(nextDialogName, "end"))
+			{
+				windows.pop_back();
+				state = MapState::NORMAL;
+			}
+			else if (StrEquals(nextDialogName, "confirmation"))
+			{
+				// Create Yes/No window
+				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
+				state = MapState::ON_MENU_SELECTION;
+			}
+			else
+			{
+				if (!StrEquals(currentDialogNode.name(), "victory"))
+				{
+					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+				}
+
+				auto *currentPanel = dynamic_cast<Window_Panel *>(windows.back().get());
+				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
+				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+			}
+		}
 	}
 
 	
@@ -604,8 +648,10 @@ TransitionScene Scene_Map::Update()
 			
 			if (StrEquals(nextDialogName, "combat"))
 			{
-				app->audio->PlayFx(battleStartSfx);
+				PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
+
 				nextFightName = currentDialogNode.attribute("fightname").as_string();
+
 				currentDialogNode = currentDialogDocument.child("dialog").child("victory");
 
 				globalSwitchWaiting = std::make_tuple(
@@ -679,6 +725,8 @@ iPoint Scene_Map::GetTPCoordinates() const
 	return iPoint(tpInfo.values[0].second, tpInfo.values[1].second);
 }
 
+void Scene_Map::CheckRandomBattle() {};
+
 TransitionScene Scene_Map::TryRandomBattle()
 {
 	if (currentMap == "Village" || currentMap == "Lab_Exterior" || currentMap == "Dungeon_Outside" || 
@@ -688,7 +736,7 @@ TransitionScene Scene_Map::TryRandomBattle()
 		int randomValue = random100(gen);
 		if (randomValue <= 3)
 		{
-			app->audio->PlayFx(battleStartSfx);
+			PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
 
 			return TransitionScene::START_BATTLE;
 		}

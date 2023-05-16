@@ -26,9 +26,19 @@ iPoint Player::GetPosition() const
 	return position;
 }
 
-bool Player::FinishedMoving() const
+bool Player::IsStandingStill() const
 {
 	return moveVector.IsZero();
+}
+
+void Player::SetMovementStopped(bool b)
+{
+	movementStopped = b;
+}
+
+bool Player::GetMovementStopped() const
+{
+	return movementStopped;
 }
 
 void Player::Draw() const
