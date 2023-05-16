@@ -4,6 +4,7 @@
 #include "Window_Factory.h"
 
 #include "Render.h"
+#include "Event_Base.h"
 #include "Log.h"
 
 #include <vector>
