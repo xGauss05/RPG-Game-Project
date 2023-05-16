@@ -483,7 +483,7 @@
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
       <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
+      <property name="SFX" type="file" value="../Audio/Fx/S_Town-NPC-TalkMid.wav"/>
       <property name="Static" type="bool" value="true"/>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>

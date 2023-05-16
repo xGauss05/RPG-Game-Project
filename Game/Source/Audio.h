@@ -3,6 +3,10 @@
 
 #include "Module.h"
 #include <memory>
+#include <queue>
+#include <unordered_map>
+#include <map>
+#include <set>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -28,7 +32,7 @@ public:
 	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
 
 	// Load a WAV in memory
-	int LoadFx(const char* path);
+	int LoadFx(std::string_view path);
 
 	// Play a previously loaded WAV
 	bool PlayFx(int fx, int repeat = 0);
@@ -53,9 +57,18 @@ public:
 
 
 private:
+	struct InfoLoadedSFX
+	{
+		int id = -1;
+		int references = 0;
+	};
+
+	std::unordered_map<std::string_view, InfoLoadedSFX> m_PathToLoadedInfo;
+	std::unordered_map<int, std::string_view> m_IndexToPath;
+	std::map<int, Mix_Chunk*> m_sfxMap;
+	std::priority_queue<int, std::vector<int>, std::greater<int>> m_AvailableIndexes;
 
 	_Mix_Music* music = nullptr;
-	std::list<Mix_Chunk*> fx;
 
 	int BGMVolume;
 	int SFXVolume;
