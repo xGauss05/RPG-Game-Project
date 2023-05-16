@@ -76,6 +76,8 @@ private:
 	void DebugQuests();
 	void DebugInventory();
 	void DebugAddALLItemsWithRandomAmounts();
+
+	TransitionScene UpdateNormalMapState(Player::PlayerAction playerAction);
 	
 	void CreateMessageWindow(std::string_view message, MapState newState = MapState::ON_MESSAGE);
 	void ModifyLastWidgetMessage(std::string_view message);

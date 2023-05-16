@@ -136,12 +136,15 @@ Player::PlayerAction Player::HandleInput() const
 	return returnAction;
 }
 
-void Player::StartAction(PlayerAction playerAction)
+void Player::StartMovementIfAble(bool walkable)
 {
-	if (playerAction.action == PlayerAction::Action::MOVE)
-	{
-		StartMovement();
-	}
+	// We start the movement no matter what, as it holds the input handler
+	StartMovement();
+
+	// Although, if the tile it's non-walkable, we stop the velocity
+	if (!walkable)
+		moveVector.SetToZero();
+	
 }
 
 void Player::StartMovement()

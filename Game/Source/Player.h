@@ -51,7 +51,7 @@ public:
 	void Draw() const;
 
 	PlayerAction HandleInput() const;
-	void StartAction(PlayerAction playerAction);
+	void StartMovementIfAble(bool walkable = true);
 	
 	void Update();
 

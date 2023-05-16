@@ -350,367 +350,257 @@ void Scene_Map::StateMenu_HandleInput()
 	}
 }
 
+TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
+{
+	using PA = Player::PlayerAction::Action;
+
+	// Update quest log (and tracker) if needed
+	if (playerParty->GetUpdateQuestLog())
+	{
+		questLog->UpdateQuests();
+		if (playerParty->IsQuestMessagePending())
+		{
+			CreateMessageWindow(playerParty->QuestCompleteMessage());
+		}
+	}
+
+	if ((playerAction.action & PA::MOVE) == PA::MOVE)
+	{
+		player.StartMovementIfAble(map.IsWalkable(playerAction.destinationTile));
+	}
+	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+	{
+		iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
+		EventTrigger action = map.TriggerEvent(checktile);
+
+		switch (action.eventFunction)
+		{
+			using enum EventTrigger::WhatToDo;
+		case LOOT:
+		{
+			if (!playerParty)
+			{
+				break;
+			}
+
+			for (auto const& [itemToAdd, amountToAdd] : action.values)
+			{
+				if (StrEquals(itemToAdd, "Coins")) [[unlikely]]
+				{
+					playerParty->AddGold(amountToAdd);
+
+					action.text = (amountToAdd == 1)
+						? AddSaveData(action.text, amountToAdd, "coin")
+						: AddSaveData(action.text, amountToAdd, "coins");
+				}
+				else [[likely]]
+				{
+					playerParty->AddItemToInventory(itemToAdd, amountToAdd);
+					action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+				}
+			}
+		}
+		case SHOW_MESSAGE:
+		{
+			CreateMessageWindow(action.text);
+			break;
+		}
+		case DIALOG_PATH:
+		{
+			if (auto result = currentDialogDocument.load_file(action.text.c_str());
+				!result)
+			{
+				LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+				break;
+			}
+
+			auto const& dialogNode = currentDialogDocument.child("dialog");
+
+			// Check if player has any quest of "TALK_TO" type, and if it does, update progress.
+			if (std::string npcName = dialogNode.attribute("name").as_string();
+				!npcName.empty())
+			{
+				std::vector<std::pair<std::string_view, int>> npcTalkedTo;
+				npcTalkedTo.emplace_back(npcName, 1);
+
+				playerParty->PossibleQuestProgress(QuestType::TALK_TO, npcTalkedTo, std::vector<std::pair<int, int>>());
+
+			}
+
+			currentDialogNode = dialogNode.child("message1");
+
+			// Create the window that will be used
+			CreateMessageWindow(currentDialogNode.attribute("text").as_string(), MapState::ON_DIALOG);
+
+			PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
+		}
+		case TELEPORT:
+		{
+			tpInfo = action;
+			// TODO: Decide if this stays here or it checks if tpInfo.empty() at the end of post-update.
+			return TransitionScene::LOAD_MAP_FROM_MAP;
+		}
+		case GLOBAL_SWITCH:
+		{
+			for (auto& it = action.globalSwitchIteratorBegin; it != action.globalSwitchIteratorEnd; ++it)
+			{
+				using enum EventProperties::GlobalSwitchOnInteract;
+				if (it->functionOnInteract == SET)
+				{
+					playerParty->SetGlobalSwitchState(it->id, it->setTo);
+				}
+				else if (it->functionOnInteract == TOGGLE)
+				{
+					playerParty->ToggleGlobalSwitchState(it->id);
+				}
+			}
+		}
+		case NO_EVENT:
+		{
+			break;
+		}
+		}
+	}
+
+	player.Update();
+
+	// TODO: Change this to only check the frame the player has stopped movement
+	if (player.IsStandingStill())
+	{
+		EventTrigger action = map.TriggerFloorEvent(player.GetPosition());
+		CheckRandomBattle();
+		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
+		{
+			tpInfo = action;
+			return TransitionScene::LOAD_MAP_FROM_MAP;
+		}
+	}
+}
+
 TransitionScene Scene_Map::Update()
 {
+	DungeonSfx();
+
 	auto playerAction = player.HandleInput();
 	using PA = Player::PlayerAction::Action;
 
 	switch (state)
 	{
-	using enum MapState;
-	case NORMAL:
-	{
-		// Update quest log (and tracker) if needed
-		if (playerParty->GetUpdateQuestLog())
+		using enum MapState;
+		case NORMAL:
 		{
-			questLog->UpdateQuests();
-			if (playerParty->IsQuestMessagePending())
+			UpdateNormalMapState(playerAction);
+		}
+		case ON_MENU:
+		{
+			break;
+		}
+		case ON_MENU_SELECTION:
+		{
+			auto const& dialogNode = currentDialogDocument.child("dialog");
+
+			if (int buttonClicked = windows.back()->Update();
+				buttonClicked == 200 || buttonClicked == 201)
 			{
-				CreateMessageWindow(playerParty->QuestCompleteMessage());
+				// Remove Yes/No confirmation window
+				windows.pop_back();
+
+				// After a confimation screen ALWAYS goes a dialog.
+				state = MapState::ON_DIALOG;
+
+				// Play corresponding SFX dialogue voice
+				PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
+
+				// Check if yes or no was clicked
+				std::string optionClicked = buttonClicked == 200 ? "yes" : "no";
+
+				// We get the value of attribute "next" so we know the node we have to jump to.
+				// It will always be a message.
+				auto const nextNodeName = currentDialogNode.attribute(optionClicked.c_str()).as_string();
+				currentDialogNode = dialogNode.child(nextNodeName);
+
+				// Modify the text on the message window.
+				ModifyLastWidgetMessage(currentDialogNode.attribute("text").as_string());
 			}
 		}
-
-		if ((playerAction.action & PA::MOVE) == PA::MOVE)
+		case ON_MESSAGE:
 		{
-			if (map.IsWalkable(playerAction.destinationTile))
-			{
-				player.StartAction(playerAction);
-				CheckRandomBattle();
-			}
-			else
-			{
-				player.RotatePlayer();
-			}
-		}
-		else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
-		{
-			iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
-			EventTrigger action = map.TriggerEvent(checktile);
-
-			switch (action.eventFunction)
-			{
-				using enum EventTrigger::WhatToDo;
-				case LOOT:
-				{
-					if (!playerParty)
-					{
-						break;
-					}
-
-					for (auto const& [itemToAdd, amountToAdd] : action.values)
-					{
-						if (StrEquals(itemToAdd, "Coins")) [[unlikely]]
-						{
-							playerParty->AddGold(amountToAdd);
-
-							action.text = (amountToAdd == 1)
-								? AddSaveData(action.text, amountToAdd, "coin")
-								: AddSaveData(action.text, amountToAdd, "coins");
-						}
-						else [[likely]]
-						{
-							playerParty->AddItemToInventory(itemToAdd, amountToAdd);
-							action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
-						}
-					}
-				}
-				case SHOW_MESSAGE:
-				{
-					CreateMessageWindow(action.text);
-					break;
-				}
-				case DIALOG_PATH:
-				{
-					if (auto result = currentDialogDocument.load_file(action.text.c_str());
-						!result)
-					{
-						LOG("Could not load dialog xml file. Pugi error: %s", result.description());
-						break;
-					}
-
-					auto const& dialogNode = currentDialogDocument.child("dialog");
-
-					// Check if player has any quest of "TALK_TO" type, and if it does, update progress.
-					if (std::string npcName = dialogNode.attribute("name").as_string();
-						!npcName.empty())
-					{
-						std::vector<std::pair<std::string_view, int>> npcTalkedTo;
-						npcTalkedTo.emplace_back(npcName, 1);
-
-						playerParty->PossibleQuestProgress(QuestType::TALK_TO, npcTalkedTo, std::vector<std::pair<int, int>>());
-
-					}
-
-					currentDialogNode = dialogNode.child("message1");
-
-					// Create the window that will be used
-					CreateMessageWindow(currentDialogNode.attribute("text").as_string(), MapState::ON_DIALOG);
-
-					PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
-				}
-				case TELEPORT:
-				{
-					tpInfo = action;
-					// TODO: Decide if this stays here or it checks if tpInfo.empty() at the end of post-update.
-					return TransitionScene::LOAD_MAP_FROM_MAP;
-				}
-				case GLOBAL_SWITCH:
-				{
-					for (auto& it = action.globalSwitchIteratorBegin; it != action.globalSwitchIteratorEnd; ++it)
-					{
-						using enum EventProperties::GlobalSwitchOnInteract;
-						if (it->functionOnInteract == SET)
-						{
-							playerParty->SetGlobalSwitchState(it->id, it->setTo);
-						}
-						else if (it->functionOnInteract == TOGGLE)
-						{
-							playerParty->ToggleGlobalSwitchState(it->id);
-						}
-					}
-				}
-				case NO_EVENT:
-				{
-					break;
-				}
-			}
-		}
-
-		player.Update();
-
-		if (player.IsStandingStill())
-		{
-			EventTrigger action = map.TriggerFloorEvent(player.GetPosition());
-			if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
-			{
-				tpInfo = action;
-				return TransitionScene::LOAD_MAP_FROM_MAP;
-			}
-		}
-	}
-	case ON_MENU:
-	{
-		break;
-	}
-	case ON_MENU_SELECTION:
-	{
-		auto const &dialogNode = currentDialogDocument.child("dialog");
-
-		if (int buttonClicked = windows.back()->Update();
-			buttonClicked == 200 || buttonClicked == 201)
-		{
-			// Remove Yes/No confirmation window
-			windows.pop_back();
-
-			// After a confimation screen ALWAYS goes a dialog.
-			state = MapState::ON_DIALOG;
-
-			// Play corresponding SFX dialogue voice
-			PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
-
-			// Check if yes or no was clicked
-			std::string optionClicked = buttonClicked == 200 ? "yes" : "no";
-
-			// We get the value of attribute "next" so we know the node we have to jump to.
-			// It will always be a message.
-			auto const nextNodeName = currentDialogNode.attribute(optionClicked.c_str()).as_string();
-			currentDialogNode = dialogNode.child(nextNodeName);
-
-			// Modify the text on the message window.
-			ModifyLastWidgetMessage(currentDialogNode.attribute("text").as_string());
-		}
-	}
-	case ON_MESSAGE:
-	{
-		if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
-		{
-			windows.pop_back();
-			state = MapState::NORMAL;
-		}
-	}
-	case ON_DIALOG:
-	{
-		if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
-		{
-			auto const &dialogNode = currentDialogDocument.child("dialog");
-
-			std::string_view nextDialogName = currentDialogNode.attribute("next").as_string();
-			std::string_view currentDialogName = currentDialogNode.name();
-
-			// If the next node is quest, and, quest with quest id is not available -> end dialog.
-			if (StrEquals(nextDialogName, "quest")
-				&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
-			{
-				nextDialogName = "end";
-			}
-			
-			// If we've accepted the quest via jumping to accept quest node, we add the quest to the party
-			if (StrEquals(currentDialogName, "acceptquest"))
-			{
-				playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
-			}
-			
-			if (StrEquals(nextDialogName, "combat"))
-			{
-				PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
-
-				nextFightName = currentDialogNode.attribute("fightname").as_string();
-
-				currentDialogNode = currentDialogDocument.child("dialog").child("victory");
-
-				globalSwitchWaiting = std::make_tuple(
-					EventProperties::GlobalSwitchOnInteract::SET,
-					currentDialogDocument.child("dialog").attribute("globalswitch").as_int(),
-					currentDialogDocument.child("dialog").attribute("value").as_bool()
-				);
-
-				return TransitionScene::START_BATTLE;
-			}
-			else if (StrEquals(nextDialogName, "end"))
+			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
 			}
-			else if (StrEquals(nextDialogName, "confirmation"))
-			{
-				// Create Yes/No window
-				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
-				state = MapState::ON_MENU_SELECTION;
-			}
-			else
-			{
-				if (!StrEquals(currentDialogNode.name(), "victory"))
-				{
-					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
-				}
-
-				auto *currentPanel = dynamic_cast<Window_Panel *>(windows.back().get());
-				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-			}
 		}
-	}
-
-	
-	if (app->input->controllerCount <= 0)
-	{
-		windows.back()->Update();
-	}
-
-	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
-	{
-		
-	}
-	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
-	{
-		if (state == MapState::ON_DIALOG)
+		case ON_DIALOG:
 		{
-			auto nextDialogName = currentDialogNode.attribute("next").as_string();
-			std::string currentDialogName = currentDialogNode.name();
-
-			std::string altDialogName = currentDialogName;
-			altDialogName.pop_back();
-
-			std::string altNextDialogName = nextDialogName;
-			altNextDialogName.pop_back();
-
-			if ((StrEquals(nextDialogName, "quest")
-				&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
-				|| (StrEquals(altNextDialogName, "quest")
-					&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int())))
+			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 			{
-				bool messageFound = false;
+				auto const& dialogNode = currentDialogDocument.child("dialog");
 
-				for (auto auxDialogNode = currentDialogNode; auxDialogNode.next_sibling(); auxDialogNode = auxDialogNode.next_sibling())
-				{
-					std::string innerLoopName = auxDialogNode.next_sibling().name();
-					innerLoopName.pop_back();
+				std::string_view nextDialogName = currentDialogNode.attribute("next").as_string();
+				std::string_view currentDialogName = currentDialogNode.name();
 
-					if (StrEquals(auxDialogNode.next_sibling().name(), "questnotavailable") || StrEquals(innerLoopName, "questnotavailable"))
-					{
-						messageFound = true;
-						break;
-					}
-				}
-
-				if (!messageFound)
+				// If the next node is quest, and, quest with quest id is not available -> end dialog.
+				if (StrEquals(nextDialogName, "quest")
+					&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
 				{
 					nextDialogName = "end";
-					messageFound = false;
 				}
-			}
 
-
-			if (StrEquals(currentDialogName, "acceptquest") || StrEquals(altDialogName, "acceptquest"))
-			{
-				playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
-			}
-			
-			if (StrEquals(nextDialogName, "combat"))
-			{
-				PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
-
-				nextFightName = currentDialogNode.attribute("fightname").as_string();
-
-				currentDialogNode = currentDialogDocument.child("dialog").child("victory");
-
-				globalSwitchWaiting = std::make_tuple(
-					EventProperties::GlobalSwitchOnInteract::SET,
-					currentDialogDocument.child("dialog").attribute("globalswitch").as_int(),
-					currentDialogDocument.child("dialog").attribute("value").as_bool()
-				);
-
-				return TransitionScene::START_BATTLE;
-			}
-			if (StrEquals(nextDialogName, "end"))
-			{
-				windows.pop_back();
-				state = MapState::NORMAL;
-			}
-			else if (StrEquals(nextDialogName, "confirmation"))
-			{
-				// Create Yes/No window
-				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
-				state = MapState::ON_MENU_SELECTION;
-			}
-			else
-			{
-				if(!StrEquals(currentDialogNode.name(), "victory"))
+				// If we've accepted the quest via jumping to accept quest node, we add the quest to the party
+				if (StrEquals(currentDialogName, "acceptquest"))
 				{
-					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
+					playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
 				}
 
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
+				if (StrEquals(nextDialogName, "combat"))
+				{
+					PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
+
+					nextFightName = currentDialogNode.attribute("fightname").as_string();
+
+					currentDialogNode = dialogNode.child("victory");
+
+					globalSwitchWaiting = std::make_tuple(
+						EventProperties::GlobalSwitchOnInteract::SET,
+						dialogNode.attribute("globalswitch").as_int(),
+						dialogNode.attribute("value").as_bool()
+					);
+
+					return TransitionScene::START_BATTLE;
+				}
+				else if (StrEquals(nextDialogName, "end"))
+				{
+					windows.pop_back();
+					state = MapState::NORMAL;
+				}
+				else if (StrEquals(nextDialogName, "confirmation"))
+				{
+					// Create Yes/No window
+					windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
+					state = MapState::ON_MENU_SELECTION;
+				}
+				else
+				{
+					if (!StrEquals(currentDialogNode.name(), "victory"))
+					{
+						currentDialogNode = dialogNode.child(currentDialogNode.attribute("next").as_string());
+					}
+
+					PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
+
+					ModifyLastWidgetMessage(currentDialogNode.attribute("text").as_string());
+				}
 			}
 		}
 	}
 
-	if (state == MapState::NORMAL)
+	if (transitionTo != TransitionScene::NONE)
 	{
-
-		if (app->input->controllerCount > 0)
-		{
-			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KeyState::KEY_DOWN)
-			{
-				dynamic_cast<Window_List*>(pauseWindow.back().get())->ResetHoveredButton();
-				app->PauseGame();
-			}
-		}
-	}
-
-	if (transitionTo == TransitionScene::MAIN_MENU)
-	{
+		auto retValue = transitionTo;
 		transitionTo = TransitionScene::NONE;
-		return TransitionScene::MAIN_MENU;
+		return retValue;
 	}
-	if (transitionTo == TransitionScene::EXIT_GAME)
-	{
-		return TransitionScene::EXIT_GAME;
-	}
-
-	DungeonSfx();
 
 	return TransitionScene::NONE;
 }
