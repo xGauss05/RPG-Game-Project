@@ -1,10 +1,14 @@
 <dialog voicetype="low" name="Captain">
 	<message1 text="Hello there! I'm the pilot managing this facility!" next="message2"/>
-	<message2 text="Would you like to know what kind of place this is?" next="confirmation" yes="message3" no="message6"/>
+	<message2 text="Would you like to know what kind of place this is?" next="confirmation" yes="message3" no="message7"/>
   
 	<message3 text="In this facility we fly airships." next="message4"/>
 	<message4 text="We can take you up to the sky," next="message5"/>
-	<message5 text="to places beyond your reach by foot!" next="end"/>
-  
-	<message6 text="Oh, alright then, have a nice day!" next="end"/>
+	<message5 text="to places beyond your reach by foot!" next="quest"/>
+
+	<quest text="Thanks for listening to me, want to know a secret?" next="confirmation" yes="acceptquest" no="declinequest"/>
+  	<acceptquest text="There's a very rich guy around, he might have dropped something..." next="end" questid="3"/>
+
+  	<declinequest text="Oh, alright then, have a nice day!" next="end"/>
+	<message7 text="Oh, alright then, have a nice day!" next="end"/>
 </dialog>

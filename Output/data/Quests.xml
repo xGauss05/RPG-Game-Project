@@ -16,61 +16,34 @@
       		<item id="3" amount="5"/>
       		<item id="2" amount="6"/>
     	</rewardlist>
-  	</quest>
+	</quest>
 	<quest id="2">
-    	<general name="Sightseeing the Village">
-     		 <description>Visit every location in the Village.</description>
+  	<general name="Sightseeing the Village">
+   		 <description>Visit every location in the Village.</description>
 		</general>
-    	<questtype type="Visit">
-      		<objective objectiveName="Market" amountNeeded="1"/>
-    	</questtype>
-    	<questtype type="Visit">
+  	<questtype type="Visit">
+    		<objective objectiveName="Market" amountNeeded="1"/>
         <objective objectiveName="Airport" amountNeeded="1"/>
-    	</questtype>
-  	</quest>
-  	<quest id="3">
-    	<general name="Steal the Tycoon's chests">
-  			<description>He deserves it for being an ass..</description>
-    	</general>
-    	<questtype type="Collect">
-     		 <objective objectiveID="1" amountNeeded="1"/>
-     		 <!--<objective objectiveName="Tycoon's chest" amountNeeded="1"/>-->
-		</questtype>
+  	</questtype>
+	</quest>
+	<quest id="3">
+	 <general name="Steal the Tycoon's chests">
+			<description>He deserves it for being an ass..</description>
+  	</general>
+  	<questtype type="Collect">
+   		 <objective objectiveID="1" amountNeeded="1"/>
+   		 <!--<objective objectiveName="Tycoon's chest" amountNeeded="1"/>-->
+  	</questtype>
  	</quest>
-  	<quest id="4">
-    	<questtype type="Visit">
-  			<objective objectiveName="Market" amountNeeded="1"/>
-    	</questtype>
-    	<general name="A marketing encounter">
-      		<description>Just visit the market.</description>
-    	</general>
-  	</quest>
-  	<quest id="5">
-    	<questtype type="Hunt">
-  			<objective objectiveName="Slime_G" amountNeeded="1"/>
-    	</questtype>
-    	<general name="Cleaning the Village">
-      		<description>The village smells bad due to a problem with slimes.</description>
-    	</general>
-  	</quest>
-  <quest id="6">
-    <general name="Aether's challenge">
-      <description>Visit every location in the Village.</description>
-    </general>
-    <questtype type="Visit">
-      <objective objectiveName="Village" amountNeeded="1"/>
-    </questtype>
-    <questtype type="Hunt">
-      <objective objectiveName="Slime_R" amountNeeded="1"/>
-    </questtype>
-    <questtype type="Hunt">
-      <objective objectiveName="Slime_G" amountNeeded="1"/>
-    </questtype>
-    <questtype type="Hunt">
-      <objective objectiveName="Slime_B" amountNeeded="1"/>
-    </questtype>
-  </quest>
-  <quest id="7">
+	<quest id="4">
+  	<questtype type="Visit">
+			<objective objectiveName="Market" amountNeeded="1"/>
+  	</questtype>
+  	<general name="A marketing encounter">
+    		<description>Just visit the market.</description>
+  	</general>
+	</quest>
+  <quest id="5">
     <general name="Aether's challenge2">
       <description>Visit every location in the Village.</description>
     </general>
@@ -81,6 +54,19 @@
       <objective objectiveName="Skeleton_R" amountNeeded="1"/>
       <objective objectiveName="Skeleton_G" amountNeeded="1"/>
       <objective objectiveName="Skeleton_B" amountNeeded="1"/>
+    </questtype>
+  </quest>
+  <quest id="6">
+    <general name="Aether's challenge">
+      <description>Visit every location in the Village.</description>
+    </general>
+    <questtype type="Visit">
+      <objective objectiveName="Village" amountNeeded="1"/>
+    </questtype>
+    <questtype type="Hunt">
+      <objective objectiveName="Slime_R" amountNeeded="4"/>
+      <objective objectiveName="Slime_G" amountNeeded="2"/>
+      <objective objectiveName="Slime_B" amountNeeded="1"/>
     </questtype>
   </quest>
 </quests_list>
