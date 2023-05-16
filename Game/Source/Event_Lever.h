@@ -17,6 +17,8 @@ public:
 
 private:
 	std::vector<EventProperties::GlobalSwitchProperty> globalSwitch;
+	int leverCloseSfx = -1;
+	int levelOpenSfx = -1;
 };
 
 #endif __EVENT_LEVER_H__
