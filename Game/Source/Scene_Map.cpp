@@ -727,6 +727,7 @@ void Scene_Map::DebugDraw()
 		}
 	}
 
+	app->fonts->DrawText("GOD MODE ON", iPoint( 20,40 ));
 	app->fonts->DrawText(std::format("Player pos X: {}", player.position.x), iPoint(40, 120));
 	app->fonts->DrawText(std::format("Player pos Y: {}", player.position.y), iPoint(40, 160));
 
