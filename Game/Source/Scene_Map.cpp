@@ -100,28 +100,6 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	torchSfx = app->audio->LoadFx("Fx/S_Dungeon-Torch.wav");
 
 	SubscribeEventsToGlobalSwitches();
-
-	auto & [triggerAction, id, st] = globalSwitchWaiting;
-
-	if (id != -1 && triggerAction != EventProperties::GlobalSwitchOnInteract::NONE)
-	{
-		switch (triggerAction)
-		{
-			using enum EventProperties::GlobalSwitchOnInteract;
-		case SET:
-			playerParty->SetGlobalSwitchState(id, st);
-			break;
-		case TOGGLE:
-			playerParty->ToggleGlobalSwitchState(id);
-			break;
-		default:
-			break;
-		}
-
-		triggerAction = EventProperties::GlobalSwitchOnInteract::NONE;
-		id = -1;
-		st = false;
-	}
 }
 
 std::string Scene_Map::PlayMapBgm(std::string_view name)
@@ -202,6 +180,31 @@ void Scene_Map::Start()
 	SpawnPlayerPosition();
 
 	app->render->AdjustCamera(player.GetPosition());
+
+	auto& [triggerAction, id, st] = globalSwitchWaiting;
+
+	/*if (id != -1 && triggerAction != EventProperties::GlobalSwitchOnInteract::NONE)
+	{
+		switch (triggerAction)
+		{
+			using enum EventProperties::GlobalSwitchOnInteract;
+		case SET:
+			playerParty->SetGlobalSwitchState(id, st);
+			break;
+		case TOGGLE:
+			playerParty->ToggleGlobalSwitchState(id);
+			break;
+		default:
+			break;
+		}
+
+		triggerAction = EventProperties::GlobalSwitchOnInteract::NONE;
+		id = -1;
+		st = false;
+	}*/
+
+	if (id != 1) { playerParty->SetGlobalSwitchState(id, st);         
+	globalSwitchWaiting = std::tuple(EventProperties::GlobalSwitchOnInteract::NONE, -1, false); }
 }
 
 void Scene_Map::SetPlayerParty(GameParty* party)
@@ -659,7 +662,7 @@ iPoint Scene_Map::GetTPCoordinates() const
 TransitionScene Scene_Map::TryRandomBattle()
 {
 	if (currentMap == "Village" || currentMap == "Lab_Exterior" || currentMap == "Dungeon_Outside" || 
-		currentMap == "Dungeon01" || currentMap == "Dungeon02" || currentMap == "Dungeon03")
+		currentMap == "Dungeon01" || currentMap == "Dungeon02")
 	{
 		std::mt19937 gen(rd());
 		int randomValue = random100(gen);
