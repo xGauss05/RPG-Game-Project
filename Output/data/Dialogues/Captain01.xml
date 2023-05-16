@@ -4,7 +4,7 @@
   
 	<message3 text="In this facility we fly airships." next="message4"/>
 	<message4 text="We can take you up to the sky," next="message5"/>
-	<message5 text="to places beyond your reach by foot!" next="quest"/>
+	<message5 text="to places beyond your reach by foot!" next="quest" questid="3"/>
 
 	<quest text="Thanks for listening to me, want to know a secret?" next="confirmation" yes="acceptquest" no="declinequest"/>
   	<acceptquest text="There's a very rich guy around, he might have dropped something..." next="end" questid="3"/>

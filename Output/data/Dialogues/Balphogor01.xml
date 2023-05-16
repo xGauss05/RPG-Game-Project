@@ -1,5 +1,6 @@
 <dialog voicetype="low" name="Balphogor" globalswitch="2000" switchtype="SET" value="true">
-  <message1 text="What are you looking at you filth!" next="message2"/>
-  <message2 text="I swear... this kids nowadays..." next="combat" fightname="boss"/>
-  <victory text="asdasdasd" next="end"/>
+  <message1 text="You look like a weeabo" next="message2"/>
+  <message2 text="Now you are trapped here" next="message3"/>
+  <message3 text="I'm going to kick your ass!" next="combat" fightname="boss"/>
+  <victory text="If you see this line contact Uri." next="end"/>
 </dialog>

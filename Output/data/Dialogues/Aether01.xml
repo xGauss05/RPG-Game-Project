@@ -5,12 +5,12 @@
   
 	<message4 text="Blimey! Be that so, ye scallywag?" next="message5"/>
 	<message5 text="What manner o' sorcery might that be, arrr?" next="message6"/>
-	<message6 text="Though, fer now scratch that... ye seem untrained..." next="message11"/>
+	<message6 text="Though, fer now scratch that... ye seem untrained..." next="quest" questid="6"/>
   
   <message7 text="Avast ye! Me tiny brain can't reckon how that might be" next="message8"/>
   <message8 text="Ye savvy?" next="message9"/>
   <message9 text="Ye'll have to fill me sails with more details, arrr!" next="message10"/>
-  <message10 text="But not now." next="quest" questid="6"/>
+  <message10 text="But not now." next="end"/>
 	<quest text="I reckon ye might need sum trainin', wanna challenge?" next="confirmation" yes="acceptquest" no="declinequest"/>
 
   <acceptquest text="Aye, let's send those slimy scallywags to Davy Jones' locker!" next="end" questid="6"/>
