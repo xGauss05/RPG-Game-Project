@@ -51,8 +51,8 @@ bool Audio::Awake(pugi::xml_node& config)
 		active = false;
 	}
 
-	SFXVolume = config.child("sfx").attribute("value").as_int();
-	BGMVolume = config.child("bgm").attribute("value").as_int();
+	SetSFXVolume(config.child("sfx").attribute("value").as_int());
+	SetBGMVolume(config.child("bgm").attribute("value").as_int());
 
 	return true;
 }
