@@ -90,16 +90,28 @@ bool EventManager::IsWalkable(iPoint position) const
 {
 	position = position * 48;
 	position.y -= 48;
+	for (auto const& elem : events)
+	{
+		iPoint eventPos = elem->position;
 
-	return std::ranges::none_of(
-		events,
-		[position](std::unique_ptr<Event_Base> const& event)
+		if (!elem->IsEventActive() || (elem->walkable && elem->topwalkable))
+			continue;
+
+		if (StrEquals(elem->type, "Event Door") || StrEquals(elem->type, "Event Torch"))
 		{
-			return  (event->IsEventActive()
-					 && ((!event->walkable && event->position == position)
-					 || (!event->topwalkable && event->position.y - 48 == position.y && event->position.x == position.x)));
+			eventPos.y -= 48;
 		}
-	);
+
+		if (!elem->walkable && eventPos == position)
+			return false;
+
+		eventPos.y -= 48;
+
+		if (!elem->topwalkable && eventPos == position)
+			return false;
+	}
+
+	return true;
 }
 
 EventTrigger EventManager::TriggerEvent(iPoint destination) const
