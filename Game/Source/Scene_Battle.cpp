@@ -385,7 +385,7 @@ TransitionScene Scene_Battle::Update()
 			{
 				if (currentAction.action == 3)
 				{
-					text = "You run from battle. Lost 124 gold.";
+					text = "You run from battle. Shame.";
 					app->audio->PlayFx(escapeSfx);
 					actionSelected = 3;
 				}
