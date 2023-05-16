@@ -72,7 +72,7 @@ private:
 
 	int moveTimer = 0;
 	iPoint moveVector{ 0 };
-	int speed = 8;
+	int speed = 16;
 	const int timeForATile = 2;
 	const int tileSize = 48;
 
