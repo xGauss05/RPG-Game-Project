@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="Dungeon" tilewidth="48" tileheight="48" tilecount="576" columns="8">
+<tileset version="1.10" tiledversion="1.10.1" name="Dungeon" tilewidth="48" tileheight="48" tilecount="576" columns="8" objectalignment="topleft">
  <grid orientation="orthogonal" width="16" height="16"/>
  <image source="dungeon_tileset.png" width="384" height="384"/>
  <tile id="0">

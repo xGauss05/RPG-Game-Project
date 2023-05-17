@@ -13,6 +13,10 @@ Player::~Player() = default;
 void Player::SetPosition(iPoint newPosition)
 {
 	position = newPosition;
+
+	drawPosition = position;
+	drawPosition.y -= tileSize;
+
 	app->render->AdjustCamera(position);
 }
 

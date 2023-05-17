@@ -322,7 +322,7 @@ void Scene_Map::StateNormal_HandleInput()
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;
-		int newSpeed = godMode ? 32 : 16;
+		int newSpeed = godMode ? 16 : 16;
 		player.SetSpeed(newSpeed);
 	}
 
@@ -711,10 +711,10 @@ void Scene_Map::DebugDraw()
 	iPoint cameraSize = { app->render->GetCamera().w, app->render->GetCamera().h };
 
 	SDL_Rect renderView{};
-	renderView.x = -camera.x - map.GetTileWidth();
-	renderView.y = -camera.y - map.GetTileHeight();
-	renderView.w = -camera.x + cameraSize.x + map.GetTileWidth();
-	renderView.h = -camera.y + cameraSize.y + map.GetTileHeight();
+	renderView.x = -camera.x - map.GetTileWidth() + 2;
+	renderView.y = -camera.y - map.GetTileHeight() + 2;
+	renderView.w = -camera.x + cameraSize.x + map.GetTileWidth() - 2;
+	renderView.h = -camera.y + cameraSize.y + map.GetTileHeight() - 2;
 
 	for (int y = 0; y < map.GetHeight(); y++)
 	{
@@ -723,7 +723,7 @@ void Scene_Map::DebugDraw()
 			if (x * map.GetTileHeight() > renderView.y && x * map.GetTileHeight() < renderView.h &&
 				y * map.GetTileWidth() > renderView.x && y * map.GetTileWidth() < renderView.w)
 			{
-				if (!map.IsWalkable(iPoint{ y * map.GetTileWidth(),x * map.GetTileHeight() }))
+				if (!map.IsWalkable(iPoint{ y * map.GetTileWidth() ,x * map.GetTileHeight() }))
 				{
 					SDL_Rect rect = {
 						y * map.GetTileWidth(),
@@ -731,15 +731,40 @@ void Scene_Map::DebugDraw()
 						map.GetTileWidth(),
 						map.GetTileHeight()
 					};
-					app->render->DrawShape(rect, true, SDL_Color(255, 0, 0, 100));
+					app->render->DrawShape(rect, false, SDL_Color(255, 0, 0, 100));
 				}
 			}
 		}
 	}
 
-	app->fonts->DrawText("GOD MODE ON", iPoint( 20,40 ));
-	app->fonts->DrawText(std::format("Player pos X: {}", player.position.x), iPoint(40, 120));
-	app->fonts->DrawText(std::format("Player pos Y: {}", player.position.y), iPoint(40, 160));
+	iPoint debugTextPosition = { 40, 0 };
+	iPoint mousePosition = app->input->GetMousePosition();
+
+	std::string debugTextMessage = "GOD MODE ON";
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = "Reminder: Position is bottom square.";
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = std::format("Player Position: \"{},{}\"", player.GetPosition().x, player.GetPosition().y);
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = std::format("Player Coordinates: \"{},{}\"", player.GetPosition().x / map.GetTileWidth(), player.GetPosition().y / map.GetTileHeight());
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	mousePosition = { -app->render->GetCamera().x + mousePosition.x, -app->render->GetCamera().y + mousePosition.y };
+
+	debugTextMessage = std::format("Mouse World Position: \"{},{}\"", mousePosition.x, mousePosition.y);
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = std::format("Mouse Coordinates: \"{},{}\"", mousePosition.x / map.GetTileWidth(), mousePosition.y / map.GetTileHeight());
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+	{
+		player.SetPosition(map.MapToWorld(map.WorldToMap(mousePosition)));
+	}
 
 	std::string mapState = "Unknown";
 	switch (state)
@@ -761,5 +786,13 @@ void Scene_Map::DebugDraw()
 		mapState = "Unknown";
 		break;
 	}
-	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{ 40,230 })));
+
+	debugTextMessage = std::format("Map state is {}", mapState);
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+}
+
+void Scene_Map::DrawDebugTextLine(std::string_view text, iPoint& pos) const
+{
+	pos.y += 40;
+	app->fonts->DrawText(text, pos);
 }

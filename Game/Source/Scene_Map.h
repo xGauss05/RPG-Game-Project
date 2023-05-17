@@ -71,7 +71,7 @@ public:
 	void SubscribeEventsToGlobalSwitches();
 
 private:
-
+	void DrawDebugTextLine(std::string_view text, iPoint& pos) const;
 	void DebugItems();
 	void DebugQuests();
 	void DebugInventory();
