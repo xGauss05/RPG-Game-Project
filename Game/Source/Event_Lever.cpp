@@ -1,5 +1,5 @@
 #include "Event_Lever.h"
-
+#include "Audio.h"
 #include "Log.h"
 
 #include <format>
@@ -10,7 +10,7 @@ void Event_Lever::parseXMLProperties(pugi::xml_node const& node)
 	for (auto const& child : node.children())
 	{
 		auto attributeName = child.attribute("name").as_string();
-		
+
 		if (StrEquals("Base", attributeName))
 		{
 			common.ReadProperty(child);
@@ -32,6 +32,15 @@ EventTrigger Event_Lever::OnTrigger()
 {
 	state = !state;
 
+	if (state) 
+	{
+		app->audio->PlayFx(levelOpenSfx);
+	}
+	else 
+	{
+		app->audio->PlayFx(leverCloseSfx);
+	}
+
 	EventTrigger returnTrigger;
 
 	returnTrigger.eventFunction = EventTrigger::WhatToDo::GLOBAL_SWITCH;
@@ -49,4 +58,7 @@ void Event_Lever::Create(pugi::xml_node const& node)
 	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
 	SetInteractedGid();
+
+	leverCloseSfx = app->audio->LoadFx("Fx/S_Dungeon-Lever-Close.wav");
+	levelOpenSfx = app->audio->LoadFx("Fx/S_Dungeon-Lever-Open.wav");
 }
