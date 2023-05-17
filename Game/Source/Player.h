@@ -51,7 +51,7 @@ public:
 	void Draw() const;
 
 	PlayerAction HandleInput() const;
-	void StartMovementIfAble(bool walkable = true);
+	void StartOrRotateMovement(bool walkable = true);
 	
 	void Update();
 
@@ -79,6 +79,7 @@ private:
 	int speed = 16;
 	const int timeForATile = 2;
 	const int tileSize = 48;
+	int animIncrease = 1;
 
 	int animTimer = 0;
 

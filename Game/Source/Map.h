@@ -78,6 +78,8 @@ public:
 
 	void SubscribeEventsToGlobalSwitches();
 
+	bool AreThereEnemyEncounters() const;
+
 private:
 	std::vector<TileSet> tilesets;
 	std::vector<MapLayer> tileLayers;
@@ -90,6 +92,8 @@ private:
 
 	iPoint size = { 0, 0 };
 	iPoint tileSize = { 0, 0 };
+
+	bool randomEncounters = false;
 };
 
 #endif // __MAP_H__

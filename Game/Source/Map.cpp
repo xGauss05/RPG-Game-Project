@@ -83,6 +83,20 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 				objectLayers.emplace_back(child);
 			}
 		}
+		else if (StrEquals(child.name(), "properties"))
+		{
+			for (auto const& property : child.children("property"))
+			{
+				if (StrEquals(property.attribute("name").as_string(), "RandomEncounters"))
+				{
+					randomEncounters = property.attribute("value").as_bool();
+				}
+				else
+				{
+					LOG("Property [ %s ] for map not implemented.", child.attribute("name").as_string());
+				}
+			}
+		}
 		else
 		{
 			LOG("Error parsing xml file: '%s' tag not implemented.", child.name());
@@ -260,6 +274,11 @@ bool Map::IsWalkable(iPoint pos) const
 void Map::SubscribeEventsToGlobalSwitches()
 {
 	eventManager.SubscribeEventsToGlobalSwitches();
+}
+
+bool Map::AreThereEnemyEncounters() const
+{
+	return randomEncounters;
 }
 
 int Map::GetWidth() const { return size.x; }

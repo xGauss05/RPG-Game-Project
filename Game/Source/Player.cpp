@@ -141,7 +141,7 @@ Player::PlayerAction Player::HandleInput() const
 	return returnAction;
 }
 
-void Player::StartMovementIfAble(bool walkable)
+void Player::StartOrRotateMovement(bool walkable)
 {
 	// We start the movement no matter what, as it holds the input handler
 	StartMovement();
@@ -227,11 +227,13 @@ void Player::AnimateMove()
 {
 	if (animTimer == 8)
 	{
-		currentSpriteSlice.x += size.x;
-		if (currentSpriteSlice.x == size.x * (GetTextureIndex().x + 3))
+		currentSpriteSlice.x += (size.x * animIncrease);
+
+		if (currentSpriteSlice.x == size.x * (GetTextureIndex().x + 2) || (currentSpriteSlice.x <= size.x * GetTextureIndex().x))
 		{
-			currentSpriteSlice.x = GetTextureIndex().x * (size.x);
+			animIncrease *= -1;
 		}
+
 		animTimer = 0;
 	}
 	else

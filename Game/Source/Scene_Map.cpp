@@ -352,7 +352,7 @@ void Scene_Map::StateMenu_HandleInput()
 	}
 }
 
-TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
+void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 {
 	using PA = Player::PlayerAction::Action;
 
@@ -370,7 +370,13 @@ TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerActio
 
 	if ((playerAction.action & PA::MOVE) == PA::MOVE)
 	{
-		player.StartMovementIfAble(map.IsWalkable(playerAction.destinationTile));
+		if (CheckRandomBattle())
+		{
+			transitionTo = TransitionScene::START_BATTLE;
+			return;
+		}
+
+		player.StartOrRotateMovement(map.IsWalkable(playerAction.destinationTile));
 	}
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
@@ -442,8 +448,7 @@ TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerActio
 		case TELEPORT:
 		{
 			tpInfo = action;
-			// TODO: Decide if this stays here or it checks if tpInfo.empty() at the end of post-update.
-			return TransitionScene::LOAD_MAP_FROM_MAP;
+			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
 		}
 		case GLOBAL_SWITCH:
 		{
@@ -473,7 +478,7 @@ TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerActio
 	if (player.IsStandingStill())
 	{
 		EventTrigger action = map.TriggerFloorEvent(player.GetPosition());
-		CheckRandomBattle();
+		
 		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
 		{
 			tpInfo = action;
@@ -624,12 +629,9 @@ iPoint Scene_Map::GetTPCoordinates() const
 	return iPoint(tpInfo.values[0].second, tpInfo.values[1].second);
 }
 
-void Scene_Map::CheckRandomBattle() {};
-
-TransitionScene Scene_Map::TryRandomBattle()
+bool Scene_Map::CheckRandomBattle()
 {
-	if (currentMap == "Village" || currentMap == "Lab_Exterior" || currentMap == "Dungeon_Outside" || 
-		currentMap == "Dungeon01" || currentMap == "Dungeon02")
+	if (map.AreThereEnemyEncounters())
 	{
 		std::mt19937 gen(rd());
 		int randomValue = random100(gen);
@@ -637,11 +639,11 @@ TransitionScene Scene_Map::TryRandomBattle()
 		{
 			PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
 
-			return TransitionScene::START_BATTLE;
+			return true;
 		}
 	}
-	return TransitionScene::NONE;
-}
+	return false;
+};
 
 int Scene_Map::OnPause()
 {

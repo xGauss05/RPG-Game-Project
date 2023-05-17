@@ -77,14 +77,14 @@ private:
 	void DebugInventory();
 	void DebugAddALLItemsWithRandomAmounts();
 
-	TransitionScene UpdateNormalMapState(Player::PlayerAction playerAction);
+	void UpdateNormalMapState(Player::PlayerAction playerAction);
 	
 	void CreateMessageWindow(std::string_view message, MapState newState = MapState::ON_MESSAGE);
 	void ModifyLastWidgetMessage(std::string_view message);
 	void StateNormal_HandleInput();
 	void StateMenu_HandleInput();
 
-	void CheckRandomBattle();
+	bool CheckRandomBattle();
 
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
