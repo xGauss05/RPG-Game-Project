@@ -34,8 +34,6 @@ void Event_Torch::parseXMLProperties(pugi::xml_node const& node)
 			LOG("Torch property %s not implemented.", attributeName);
 		}
 	}
-
-	bIsTwoTiles = true;
 }
 
 EventTrigger Event_Torch::OnTrigger()

@@ -204,7 +204,7 @@ void Scene_Map::Start()
 
 	app->render->AdjustCamera(player.GetPosition());
 
-	if (auto &[triggerAction, id, st] = globalSwitchWaiting;
+	if (auto const &[triggerAction, id, st] = globalSwitchWaiting;
 		id != 1)
 	{
 		playerParty->SetGlobalSwitchState(id, st);         
@@ -322,7 +322,8 @@ void Scene_Map::StateNormal_HandleInput()
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;
-		player.SetSpeed(godMode ? 32 : 16);
+		int newSpeed = godMode ? 32 : 16;
+		player.SetSpeed(newSpeed);
 	}
 
 	// Open character menu if C is pressed
@@ -343,7 +344,8 @@ void Scene_Map::StateNormal_HandleInput()
 void Scene_Map::StateMenu_HandleInput()
 {
 	// Close character window if 
-	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN
+		|| app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
 	{
 		state = lastState;
 		state = MapState::NORMAL;
@@ -353,6 +355,8 @@ void Scene_Map::StateMenu_HandleInput()
 TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 {
 	using PA = Player::PlayerAction::Action;
+
+	StateNormal_HandleInput();
 
 	// Update quest log (and tracker) if needed
 	if (playerParty->GetUpdateQuestLog())
@@ -370,7 +374,7 @@ TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerActio
 	}
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
-		iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
+		iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth()));
 		EventTrigger action = map.TriggerEvent(checktile);
 
 		switch (action.eventFunction)
@@ -399,6 +403,7 @@ TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerActio
 					action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
 				}
 			}
+			[[fallthrough]];
 		}
 		case SHOW_MESSAGE:
 		{
@@ -472,7 +477,7 @@ TransitionScene Scene_Map::UpdateNormalMapState(Player::PlayerAction playerActio
 		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
 		{
 			tpInfo = action;
-			return TransitionScene::LOAD_MAP_FROM_MAP;
+			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
 		}
 	}
 }
@@ -490,6 +495,7 @@ TransitionScene Scene_Map::Update()
 		case NORMAL:
 		{
 			UpdateNormalMapState(playerAction);
+			break;
 		}
 		case ON_MENU:
 		{
@@ -522,6 +528,7 @@ TransitionScene Scene_Map::Update()
 				// Modify the text on the message window.
 				ModifyLastWidgetMessage(currentDialogNode.attribute("text").as_string());
 			}
+			break;
 		}
 		case ON_MESSAGE:
 		{
@@ -530,6 +537,7 @@ TransitionScene Scene_Map::Update()
 				windows.pop_back();
 				state = MapState::NORMAL;
 			}
+			break;
 		}
 		case ON_DIALOG:
 		{
@@ -592,6 +600,7 @@ TransitionScene Scene_Map::Update()
 					ModifyLastWidgetMessage(currentDialogNode.attribute("text").as_string());
 				}
 			}
+			break;
 		}
 	}
 
@@ -691,8 +700,10 @@ bool Scene_Map::LoadScene(pugi::xml_node const& info)
 void Scene_Map::DebugDraw()
 {
 	//Player Hitbox
-	SDL_Rect debugPosition = { player.position.x, player.position.y + player.size.y / 2, player.size.x, player.size.y / 2 };
-	app->render->DrawShape(debugPosition, true, SDL_Colour(0, 255, 0, 100));
+	SDL_Rect debugPosition = { player.GetDrawPosition().x, player.GetDrawPosition().y, player.size.x, player.size.y};
+	app->render->DrawShape(debugPosition, true, SDL_Color(0, 255, 255, 100));
+	debugPosition = { player.GetPosition().x, player.GetPosition().y, player.size.x, map.GetTileHeight()};
+	app->render->DrawShape(debugPosition, true, SDL_Color(0, 255, 0, 100));
 
 	//Map Hitboxes
 
@@ -700,8 +711,8 @@ void Scene_Map::DebugDraw()
 	iPoint cameraSize = { app->render->GetCamera().w, app->render->GetCamera().h };
 
 	SDL_Rect renderView{};
-	renderView.x = -camera.x - 48;
-	renderView.y = -camera.y - 48;
+	renderView.x = -camera.x - map.GetTileWidth();
+	renderView.y = -camera.y - map.GetTileHeight();
 	renderView.w = -camera.x + cameraSize.x + map.GetTileWidth();
 	renderView.h = -camera.y + cameraSize.y + map.GetTileHeight();
 
@@ -709,13 +720,18 @@ void Scene_Map::DebugDraw()
 	{
 		for (int x = 0; x < map.GetWidth(); x++)
 		{
-			if (x * 48 > renderView.y && x * 48 < renderView.h &&
-				y * 48 > renderView.x && y * 48 < renderView.w)
+			if (x * map.GetTileHeight() > renderView.y && x * map.GetTileHeight() < renderView.h &&
+				y * map.GetTileWidth() > renderView.x && y * map.GetTileWidth() < renderView.w)
 			{
-				if (!map.IsWalkable(iPoint{ y * 48,x * 48 }))
+				if (!map.IsWalkable(iPoint{ y * map.GetTileWidth(),x * map.GetTileHeight() }))
 				{
-					SDL_Rect rect = { (y * 48), x * 48,48,48 };
-					app->render->DrawShape(rect, true, SDL_Colour(255, 0, 0, 100));
+					SDL_Rect rect = {
+						y * map.GetTileWidth(),
+						x * map.GetTileHeight(),
+						map.GetTileWidth(),
+						map.GetTileHeight()
+					};
+					app->render->DrawShape(rect, true, SDL_Color(255, 0, 0, 100));
 				}
 			}
 		}

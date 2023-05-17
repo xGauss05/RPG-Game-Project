@@ -62,9 +62,11 @@ public:
 	
 	int GetWidth() const;
 	int GetHeight() const;
+	iPoint GetSize() const;
 
 	int GetTileWidth() const;
 	int GetTileHeight() const;
+	iPoint GetTileSize() const;
 
 	int GetTileSetSize() const;
 

@@ -45,7 +45,7 @@ public:
 	};
 
 	Player();
-	~Player();
+	~Player() override;
 	void Create();
 
 	void Draw() const;
@@ -57,7 +57,7 @@ public:
 
 	void SetSpeed(int speed);
 	void SetPosition(iPoint newPosition);
-	iPoint GetPosition() const;
+	iPoint GetDrawPosition() const;
 
 	void RotatePlayer();
 	bool IsStandingStill() const;
@@ -72,6 +72,7 @@ private:
 	void SmoothMove();
 	void StartMovement();
 
+	iPoint drawPosition = { 0, 0 };
 
 	int moveTimer = 0;
 	iPoint moveVector{ 0 };

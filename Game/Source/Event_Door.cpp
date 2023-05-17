@@ -36,7 +36,6 @@ void Event_Door::parseXMLProperties(pugi::xml_node const& node)
 		}
 	}
 
-	bIsTwoTiles = true;
 }
 
 EventTrigger Event_Door::OnTrigger()
