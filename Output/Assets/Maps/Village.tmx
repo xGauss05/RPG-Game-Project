@@ -598,12 +598,12 @@
     </property>
    </properties>
   </object>
-  <object id="93" name="NPC_01" type="Event NPC" gid="258" x="1008" y="2304" width="48" height="96">
+  <object id="93" name="NPC_01" type="Event NPC" gid="258" x="1008" y="2352" width="48" height="96">
    <properties>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
-  <object id="97" name="NPC_02" type="Event NPC" gid="258" x="816" y="2304" width="48.4948" height="96.9897">
+  <object id="97" name="NPC_02" type="Event NPC" gid="258" x="816" y="2352" width="48.4948" height="96.9897">
    <properties>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
@@ -943,7 +943,7 @@
     </property>
    </properties>
   </object>
-  <object id="154" name="Balphogor" type="Event NPC" gid="869" x="912" y="2304" width="48" height="96">
+  <object id="154" name="Balphogor" type="Event NPC" gid="869" x="912" y="2352" width="48" height="96">
    <properties>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Balphogor01.xml"/>
    </properties>

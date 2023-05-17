@@ -21,12 +21,13 @@ public:
 
 protected:
 
-	void Initialize(std::string const &texturePath, int index)
+	void Initialize(std::string const& texturePath, int index)
 	{
 		textureID = app->tex->GetTextureID(texturePath);
 		textureIndex = (index < 4)
 			? iPoint(index * 3, 0)
 			: iPoint((index - 4) * 3, 4);
+
 	}
 	void Initialize(pugi::xml_node const& node)
 	{
@@ -44,6 +45,7 @@ private:
 	int textureID = -1;
 	int gid = -1;
 	int interactedGid = -1;
+	iPoint drawingPosition = { 0 };
 	iPoint textureIndex = { 0, 0 };
 };
 

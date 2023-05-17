@@ -186,8 +186,12 @@ void Map::DrawTile(int gid, iPoint pos) const
 
 	SDL_Rect r = (*result).GetTileRect(gid);
 
+	iPoint drawingPosition = pos;
+	drawingPosition.x += GetTileHeight() - r.w;
+	drawingPosition.y += GetTileWidth()  - r.h;
+
 	app->render->DrawTexture(
-		DrawParameters((*result).GetTextureID(), iPoint(pos.x, pos.y))
+		DrawParameters((*result).GetTextureID(), drawingPosition)
 		.Section(&r)
 	);
 }
