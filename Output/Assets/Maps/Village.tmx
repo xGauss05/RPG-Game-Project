@@ -991,7 +991,7 @@
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
