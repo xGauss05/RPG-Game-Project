@@ -105,6 +105,11 @@ bool EventManager::IsWalkable(iPoint position) const
 	return true;
 }
 
+void EventManager::RedrawnCompleted()
+{
+	alreadyRedrawnEvents.clear();
+}
+
 EventTrigger EventManager::TriggerActionButtonEvent(iPoint position) const
 {
 	for (auto const& event : events)
@@ -194,7 +199,7 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 
 	// Set the position of the event to its feet so it draws correctly
 	pos -= dynamic_cast<Transform*>(drawIterator->get())->GetSize();
-	pos = pos + 48;
+	pos = pos + tileSize;
 	
 	do {
 		++drawIterator;
@@ -206,6 +211,43 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 	} while (!drawIterator->get()->IsEventActive());
 
 	return std::make_tuple(gid, pos, true);
+}
+
+std::pair<int, iPoint> EventManager::GetRedrawEventGID(iPoint position)
+{
+	for (auto const& event : events)
+	{
+		if (!event->IsEventActive()
+			||event->position.x > position.x + tileSize
+			|| event->position.x < position.x - tileSize)
+		{
+			continue;
+		}
+
+		if (auto sprite = dynamic_cast<Sprite*>(event.get());
+			sprite)
+		{
+			// Set the position of the event to its feet so it draws correctly
+			auto const &eventTransform = dynamic_cast<Transform*>(event.get());
+
+			if (auto [it, success] = alreadyRedrawnEvents.insert(event.get());
+			!success || eventTransform->GetPosition().y < position.y)
+			{
+				continue;
+			}
+
+			auto eventPosition = eventTransform->GetPosition();
+			eventPosition.y -= eventTransform->GetSize().y;
+			eventPosition.y += tileSize;
+			if (eventPosition.y <= position.y)
+			{
+				return { sprite->GetGid(event->state), eventPosition };
+			}
+		}
+
+	}
+
+	return { 0, iPoint(0, 0) };
 }
 
 

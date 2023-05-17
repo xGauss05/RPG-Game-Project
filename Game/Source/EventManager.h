@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_set>
 
 struct TileInfo;
 
@@ -33,6 +34,8 @@ public:
 
 	bool IsWalkable(iPoint position) const;
 
+	void RedrawnCompleted();
+
 	EventTrigger TriggerActionButtonEvent(iPoint position) const;
 	EventTrigger TriggerPlayerTouchEvent(iPoint position) const;
 
@@ -40,6 +43,7 @@ public:
 
 	// Returns Gid, position, keepDrawing ? true : false;
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);
+	std::pair<int, iPoint> GetRedrawEventGID(iPoint position);
 
 private:
 	const int tileSize = 48;
@@ -48,6 +52,8 @@ private:
 	std::vector<std::unique_ptr<Event_Base>> events;
 
 	std::vector<std::unique_ptr<Event_Base>>::const_iterator drawIterator;
+
+	std::unordered_set<Event_Base*> alreadyRedrawnEvents;
 };
 
 

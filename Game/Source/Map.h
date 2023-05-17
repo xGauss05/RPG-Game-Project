@@ -80,6 +80,9 @@ public:
 
 	bool AreThereEnemyEncounters() const;
 
+	void RedrawBelowPlayer(iPoint position);
+	void RedrawnCompleted();
+
 private:
 	std::vector<TileSet> tilesets;
 	std::vector<MapLayer> tileLayers;

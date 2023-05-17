@@ -222,15 +222,12 @@ void Scene_Map::Draw()
 {
 	map.Draw();
 	player.Draw();
+	map.RedrawBelowPlayer(player.position);
+	map.RedrawnCompleted();
 
 	if (godMode)
 	{
 		DebugDraw();
-	}
-
-	for (auto const& elem : windows)
-	{
-		elem->Draw();
 	}
 
 	if (state == MapState::ON_MENU)
@@ -241,6 +238,11 @@ void Scene_Map::Draw()
 	if(state != MapState::ON_MENU)
 	{
 		questLog->Draw();
+	}
+
+	for (auto const& elem : windows)
+	{
+		elem->Draw();
 	}
 }
 

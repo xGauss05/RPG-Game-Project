@@ -132,7 +132,10 @@ bool Map::DrawObjectLayer(int index)
 {
 	auto [gid, pos, keepDrawing] = eventManager.GetDrawEventInfo(index);
 	
-	if (gid > 0) DrawTile(gid, pos);
+	if (gid > 0)
+	{
+		DrawTile(gid, pos);
+	}
 
 	return keepDrawing;
 }
@@ -178,7 +181,10 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 		{
 			int gid = layer.GetTileGid(x, y);
 
-			if (gid == 0) continue;
+			if (gid == 0)
+			{
+				continue;
+			}
 
 			DrawTile(gid, MapToWorld(x, y));
 		}
@@ -261,7 +267,9 @@ bool Map::IsWalkable(iPoint pos) const
 		}
 
 		if (!result->IsWalkable(gid))
+		{
 			return false;
+		}
 	}
 
 	return eventManager.IsWalkable(pos);
@@ -275,6 +283,30 @@ void Map::SubscribeEventsToGlobalSwitches()
 bool Map::AreThereEnemyEncounters() const
 {
 	return randomEncounters;
+}
+
+void Map::RedrawBelowPlayer(iPoint position)
+{
+	int distanceToCheck = GetTileWidth();
+
+	for(int i = position.x - distanceToCheck; i <= position.x + distanceToCheck; i += GetTileWidth())
+	{
+		for (int j = position.y; j <= position.y + GetTileHeight() + distanceToCheck; j += GetTileHeight())
+		{
+			iPoint positionToCheck = { i, j };
+			positionToCheck.CeilToNearest(GetTileSize());
+			if (auto const &[resultGID, eventPosition] = eventManager.GetRedrawEventGID(positionToCheck);
+				resultGID > 0)
+			{
+				DrawTile(resultGID, eventPosition);
+			}
+		}
+	}
+}
+
+void Map::RedrawnCompleted()
+{
+	eventManager.RedrawnCompleted();
 }
 
 int Map::GetWidth() const { return size.x; }
