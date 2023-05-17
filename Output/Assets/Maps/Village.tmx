@@ -212,7 +212,7 @@
 </data>
  </layer>
  <objectgroup id="9" name="Events" class="Layer of Events">
-  <object id="93" name="NPC_01" type="Event NPC" gid="258" x="288" y="2400" width="48" height="96">
+  <object id="93" name="NPC_01" type="Event NPC" gid="258" x="528" y="2496" width="48" height="96">
    <properties>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
@@ -396,11 +396,6 @@
       <property name="Destination Y" type="int" value="11"/>
      </properties>
     </property>
-   </properties>
-  </object>
-  <object id="180" name="NPC_01" type="Event NPC" gid="258" x="336" y="2400" width="48" height="96">
-   <properties>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
  </objectgroup>

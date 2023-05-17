@@ -1,6 +1,10 @@
 #ifndef __DEFS_H__
 #define __DEFS_H__
 
+#include "Point.h"
+
+#include "SDL/include/SDL.h"
+
 #include <string>
 #include <cstdio>
 
@@ -23,6 +27,13 @@ template<typename T> requires std::is_convertible_v<T, int> || std::is_convertib
 constexpr auto to_bool(T a) 
 { 
 	return ((a != 0) ? true : false );
+}
+
+inline bool PointInRect(iPoint ipoint, iPoint rectPosition, iPoint rectSize)
+{
+	SDL_Point point = { ipoint.x, ipoint.y };
+	SDL_Rect rect = { rectPosition.x, rectPosition.y, rectSize.x, rectSize.y };
+	return SDL_PointInRect(&point, &rect);
 }
 
 using uint = unsigned int;

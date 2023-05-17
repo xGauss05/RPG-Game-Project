@@ -160,15 +160,9 @@ std::pair<EventTrigger, bool> EventManager::TriggerEvent(iPoint position, Event_
 	iPoint eventPos = event->GetPosition();
 	iPoint eventSize = event->GetSize();
 
-	for (int i = 0; i < eventSize.x; i += tileSize)
+	if (PointInRect(position, eventPos, eventSize))
 	{
-		for (int j = 0; j < eventSize.y; j += tileSize)
-		{
-			if (eventPos + iPoint(i, j) == position)
-			{
-				return { event->OnTrigger(), true };
-			}
-		}
+		return { event->OnTrigger(), true };
 	}
 
 	return { EventTrigger(), false };
