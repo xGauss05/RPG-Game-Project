@@ -375,12 +375,6 @@ bool Render::HasSaveData() const
 	return true;
 }
 
-void Render::SetMapAndTileSize(iPoint mSize, iPoint tSize)
-{
-	mapSize = mSize;
-	tileSize = tSize;
-}
-
 void Render::ToggleVSync()
 {
 	vSyncOnRestart = !vSyncOnRestart;

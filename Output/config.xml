@@ -288,7 +288,7 @@
 		<property path="Assets/Textures/Fonts/" />
 	</fonts>
 	<audio>
-		<sfx value="21" />
-		<bgm value="21" />
+		<sfx value="0" />
+		<bgm value="0" />
 	</audio>
 </config>

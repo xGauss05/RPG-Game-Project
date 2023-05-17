@@ -25,7 +25,8 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 {
 	pugi::xml_document mapFile;
 
-	if (auto result = mapFile.load_file((directory + level).c_str()); !result)
+	if (auto result = mapFile.load_file((directory + level).c_str());
+		!result)
 	{
 		LOG("Could not load map xml file %s. pugi error: %s", directory + level, result.description());
 		return false;
@@ -56,8 +57,6 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 	tileSize.x = map.attribute("tileheight").as_int();
 	tileSize.y = map.attribute("tilewidth").as_int();
 
-	app->render->SetMapAndTileSize(size, tileSize);
-
 	for (auto const& child : mapFile.child("map"))
 	{
 		if (StrEquals(child.name(), "tileset"))
@@ -82,6 +81,20 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 			{
 				drawOrder.emplace_back(LayerType::OBJECT_LAYER, objectLayers.size());
 				objectLayers.emplace_back(child);
+			}
+		}
+		else if (StrEquals(child.name(), "properties"))
+		{
+			for (auto const& property : child.children("property"))
+			{
+				if (StrEquals(property.attribute("name").as_string(), "RandomEncounters"))
+				{
+					randomEncounters = property.attribute("value").as_bool();
+				}
+				else
+				{
+					LOG("Property [ %s ] for map not implemented.", child.attribute("name").as_string());
+				}
 			}
 		}
 		else
@@ -131,7 +144,7 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 	camera.y *= -1;
 
 	iPoint cameraPosition = { camera.x, camera.y };
-	cameraPosition = WorldToMap((cameraPosition / 3) - tileSize);
+	cameraPosition = WorldToMap(cameraPosition);
 
 	iPoint cameraSize = { camera.w, camera.h };
 	cameraSize = WorldToMap(cameraSize);
@@ -139,16 +152,24 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 	SDL_Rect renderView{};
 
 	renderView.x = cameraPosition.x;
-	if (renderView.x < 0) renderView.x = 0;
+
+	if (renderView.x < 0)
+		renderView.x = 0;
 
 	renderView.w = cameraPosition.x + cameraSize.x + tileSize.x;
-	if (renderView.w > layer.GetSize().x) renderView.w = layer.GetSize().x;
+
+	if (renderView.w > layer.GetSize().x)
+		renderView.w = layer.GetSize().x;
 	
 	renderView.y = cameraPosition.y;
-	if (renderView.y < 0) renderView.y = 0;
+
+	if (renderView.y < 0)
+		renderView.y = 0;
 
 	renderView.h = cameraPosition.y + cameraSize.y + tileSize.y;
-	if (renderView.h > layer.GetSize().y) renderView.h = layer.GetSize().y;
+
+	if (renderView.h > layer.GetSize().y)
+		renderView.h = layer.GetSize().y;
 
 
 	for (int x = renderView.x; x < renderView.w; x++)
@@ -159,7 +180,7 @@ void Map::DrawTileLayer(const MapLayer& layer) const
 
 			if (gid == 0) continue;
 
-			DrawTile(gid, MapToWorld(x*3, y*3));
+			DrawTile(gid, MapToWorld(x, y));
 		}
 	}
 }
@@ -179,10 +200,13 @@ void Map::DrawTile(int gid, iPoint pos) const
 
 	SDL_Rect r = (*result).GetTileRect(gid);
 
+	iPoint drawingPosition = pos;
+	drawingPosition.x += GetTileHeight() - r.w;
+	drawingPosition.y += GetTileWidth()  - r.h;
+
 	app->render->DrawTexture(
-		DrawParameters((*result).GetTextureID(), iPoint(pos.x, pos.y))
+		DrawParameters((*result).GetTextureID(), drawingPosition)
 		.Section(&r)
-		.Scale(fPoint(3.0, 3.0))
 	);
 }
 
@@ -221,7 +245,7 @@ EventTrigger Map::TriggerFloorEvent(iPoint position) const
 
 bool Map::IsWalkable(iPoint pos) const
 {
-	pos = WorldToMap(pos) / 3;
+	pos = WorldToMap(pos);
 
 	for (auto const &layer : tileLayers)
 	{
@@ -252,8 +276,15 @@ void Map::SubscribeEventsToGlobalSwitches()
 	eventManager.SubscribeEventsToGlobalSwitches();
 }
 
+bool Map::AreThereEnemyEncounters() const
+{
+	return randomEncounters;
+}
+
 int Map::GetWidth() const { return size.x; }
 int Map::GetHeight() const { return size.y; }
+iPoint Map::GetSize() const { return size; }
 int Map::GetTileWidth() const { return tileSize.x; }
 int Map::GetTileHeight() const { return tileSize.y; }
+iPoint Map::GetTileSize() const { return tileSize; }
 int Map::GetTileSetSize() const { return tilesets.size(); }

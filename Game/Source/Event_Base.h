@@ -181,12 +181,12 @@ class Event_Base : public Transform
 {
 public:
 	Event_Base() = default;
-	virtual ~Event_Base() = default;
+	~Event_Base() override = default;
 	virtual void parseXMLProperties(pugi::xml_node const& node) = 0;
 	virtual void Create(pugi::xml_node const &node) = 0;
 	virtual EventTrigger OnTrigger() = 0;
 
-	void Initialize(pugi::xml_node const &node)
+	void Initialize(pugi::xml_node const &node) override
 	{
 		Transform::Initialize(node);
 
@@ -213,7 +213,6 @@ public:
 	std::string type = "";
 	EventProperties::CommonProperties common;
 	bool walkable = false;
-	bool topwalkable = true;
 
 	bool state = false;
 };

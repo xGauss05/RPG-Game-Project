@@ -42,6 +42,16 @@ public:
 		return r;
 	}
 
+	Point operator *(const Point &v) const
+	{
+		Point r;
+
+		r.x = x * v.x;
+		r.y = y * v.y;
+
+		return r;
+	}
+
 	Point operator +(T a) const
 	{
 		return {x + a, y + a};

@@ -89,26 +89,17 @@ int EventManager::GetEventLayerSize() const
 bool EventManager::IsWalkable(iPoint position) const
 {
 	position = position * 48;
-	position.y -= 48;
+
 	for (auto const& elem : events)
 	{
 		iPoint eventPos = elem->position;
 
-		if (!elem->IsEventActive() || (elem->walkable && elem->topwalkable))
+		if (!elem->IsEventActive() || elem->walkable)
 			continue;
 
-		if (StrEquals(elem->type, "Event Door") || StrEquals(elem->type, "Event Torch"))
-		{
-			eventPos.y -= 48;
-		}
-
-		if (!elem->walkable && eventPos == position)
+		if (eventPos == position)
 			return false;
 
-		eventPos.y -= 48;
-
-		if (!elem->topwalkable && eventPos == position)
-			return false;
 	}
 
 	return true;
@@ -123,7 +114,8 @@ EventTrigger EventManager::TriggerEvent(iPoint destination) const
 			continue;
 		}
 
-		if (event->common.trigger == EventProperties::EventTriggerOn::PLAYER_TOUCH && event->position == destination)
+		if (event->common.trigger == EventProperties::EventTriggerOn::ACTION_BUTTON
+			&& event->position == destination)
 		{
 			return event->OnTrigger();
 		}
@@ -136,12 +128,14 @@ EventTrigger EventManager::TriggerFloorEvent(iPoint destination) const
 {
 	for (auto const& event : events)
 	{
-		if (!event->IsEventActive())
+		// We ignore the event if it's not active nor is player touch actived
+		if (!event->IsEventActive()
+			|| event->common.trigger != EventProperties::EventTriggerOn::PLAYER_TOUCH)
 		{
 			continue;
 		}
 
-		if (event->common.trigger == EventProperties::EventTriggerOn::EVENT_TOUCH && event->position == destination)
+		if (event->position / 48 == destination / 48)
 		{
 			return event->OnTrigger();
 		}
@@ -172,11 +166,7 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 	auto gid = sprite->GetGid(drawIterator->get()->state);
 
 	auto pos = dynamic_cast<Transform*>(drawIterator->get())->GetPosition();
-	auto twoTiles = dynamic_cast<Transform*>(drawIterator->get())->bIsTwoTiles;
-
-	if(!twoTiles) 
-		pos.y += 48;
-
+	
 	do {
 		++drawIterator;
 		if (drawIterator == events.end())

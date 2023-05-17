@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="Village.tsx"/>
+ <object name="Chest1" type="Event Chest" gid="199" width="48" height="48">
+  <properties>
+   <property name="Base" type="class" propertytype="Base Event">
+    <properties>
+     <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
+    </properties>
+   </property>
+   <property name="Loot1" type="class" propertytype="Helper Loot">
+    <properties>
+     <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+     <property name="Quantity" type="int" value="1"/>
+    </properties>
+   </property>
+  </properties>
+ </object>
+</template>

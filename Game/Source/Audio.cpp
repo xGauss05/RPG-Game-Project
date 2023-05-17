@@ -17,11 +17,11 @@
 Audio::Audio() : Module()
 {
 	name = "audio";
+	m_AvailableIndexes.push(1);
 }
 
 // Destructor
-Audio::~Audio()
-{}
+Audio::~Audio() = default;
 
 // Called before render is available
 bool Audio::Awake(pugi::xml_node& config)
@@ -61,14 +61,19 @@ bool Audio::Awake(pugi::xml_node& config)
 // Called before quitting
 bool Audio::CleanUp()
 {
-	if (!active) return true;
+	if (!active) 
+	{
+		return true;
+	}
 
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
-	if (music) Mix_FreeMusic(music);
+	if (music) 
+	{
+		Mix_FreeMusic(music);
+	}
 
-	for (auto const& item : fx)
-		Mix_FreeChunk(item);
+	RemoveAllFx();
 
 	Mix_CloseAudio();
 	Mix_Quit();
@@ -108,13 +113,10 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 			return false;
 		}
 	}
-	else
+	else if (Mix_PlayMusic(music, -1) < 0)
 	{
-		if (Mix_PlayMusic(music, -1) < 0)
-		{
-			LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
-			return false;
-		}
+		LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
+		return false;
 	}
 
 	LOG("Successfully playing %s", path);
@@ -122,19 +124,41 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 }
 
 // Load WAV
-int Audio::LoadFx(const char* path)
+int Audio::LoadFx(std::string_view path)
 {
 	if (!active)
 		return 0;
 
-	fx.push_back(Mix_LoadWAV_RW(app->assets->Load(path), 1));
-	if (!fx.back())
+	if (auto result = m_PathToLoadedInfo.find(path);
+		result == m_PathToLoadedInfo.end())
 	{
-		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
-		fx.pop_back();
+		LOG("SFX [ %s ] already loaded", path);
+		result->second.references++;
+		return result->second.id;
 	}
 
-	return fx.size() - 1;
+	auto sfxChunk = Mix_LoadWAV_RW(app->assets->Load(std::string(path).c_str()), 1);
+
+	if (!sfxChunk)
+	{
+		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
+		return -1;
+	}
+
+	int availableID = m_AvailableIndexes.top();
+	m_AvailableIndexes.pop();
+
+	m_sfxMap[availableID] = sfxChunk;
+
+	if (m_AvailableIndexes.empty())
+	{
+		m_AvailableIndexes.emplace(m_sfxMap.size());
+	}
+
+	m_PathToLoadedInfo.try_emplace(path, InfoLoadedSFX(availableID, 1));
+	m_IndexToPath[availableID] = path;
+
+	return availableID;
 }
 
 // Play WAV
@@ -143,39 +167,55 @@ bool Audio::PlayFx(int id, int repeat)
 	if (!active)
 		return false;
 
-	if (id >= 0 && id < fx.size())
+	if (auto result = m_sfxMap.find(id);
+		result != m_sfxMap.end())
 	{
-		for (int i = 0; auto const& item : fx)
-		{
-			if (i == id)
-				Mix_PlayChannel(-1, item, repeat);
-
-			++i;
-		}
+		Mix_PlayChannel(-1, result->second, repeat);
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 bool Audio::RemoveFx(int id)
 {
-	if (id >= 0 && id < fx.size())
+	if (auto result = m_IndexToPath.find(id);
+		result != m_IndexToPath.end())
 	{
-		auto eraseIt = fx.begin();
-		std::advance(eraseIt, id);
-		fx.erase(eraseIt);
+		auto& loadedInfo = m_PathToLoadedInfo[result->second];
+		loadedInfo.references--;
 
-		return true;
+		LOG("Removed reference to [ %s ].", result->second);
+
+		if (loadedInfo.references <= 0)
+		{
+			int removedElementID = loadedInfo.id;
+
+			Mix_FreeChunk(m_sfxMap[removedElementID]);
+
+			LOG("SFX Chunk [ %s ] removed.", result->second);
+
+			m_AvailableIndexes.emplace(removedElementID);
+
+			m_PathToLoadedInfo.erase(result->second);
+			m_IndexToPath.erase(removedElementID);
+
+			return true;
+		}
 	}
+
 	return false;
 }
 
 void Audio::RemoveAllFx()
 {
-	for (auto const& item : fx)
-		Mix_FreeChunk(item);
-
-	fx.clear();
+	for (auto const& [id, sfx] : m_sfxMap)
+	{
+		Mix_FreeChunk(sfx);
+	}
+	m_PathToLoadedInfo.clear();
+	m_sfxMap.clear();
+	m_sfxMap.clear();
 }
 
 void Audio::SetSFXVolume(int value)

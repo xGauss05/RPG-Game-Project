@@ -1,8 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="154">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="48" tileheight="48" infinite="0" nextlayerid="12" nextobjectid="165">
+ <properties>
+  <property name="RandomEncounters" type="bool" value="true"/>
+ </properties>
  <tileset firstgid="1" source="Village.tsx"/>
  <tileset firstgid="257" source="NPCs.tsx"/>
- <tileset firstgid="261" source="Dungeon.tsx"/>
+ <tileset firstgid="293" source="Dungeon.tsx"/>
+ <tileset firstgid="869" source="Balphogor.tsx"/>
+ <layer id="11" name="Tile Layer 3" width="144" height="64">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
  <layer id="1" name="Ground" width="144" height="64">
   <data encoding="csv">
 87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,88,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,86,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,
@@ -140,9 +212,14 @@
 </data>
  </layer>
  <objectgroup id="9" name="Events" class="Layer of Events">
-  <object id="24" name="Spawn" x="64" y="784" width="16" height="16"/>
-  <object id="28" name="To Market Left" type="Event Teleport" x="224" y="688" width="16" height="16">
+  <object id="24" name="Spawn" x="192" y="2352" width="48" height="48"/>
+  <object id="28" name="To Market Left" type="Event Teleport" x="673" y="2113" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
@@ -152,92 +229,33 @@
     </property>
    </properties>
   </object>
-  <object id="39" name="Directions" type="Event NPC" gid="25" x="832" y="704" width="16" height="16">
+  <object id="39" name="Directions" type="Event NPC" gid="25" x="432" y="2352" width="48" height="48">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Directions.xml"/>
-    <property name="isOneTile" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="41" name="Market Sign" type="Event NPC" gid="42" x="400" y="784" width="16" height="16">
+  <object id="42" name="Closed 1" type="Event NPC" gid="42" x="480" y="2352" width="48" height="48">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Market.xml"/>
-    <property name="isOneTile" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="42" name="Closed 1" type="Event NPC" gid="42" x="1184" y="448" width="16" height="16">
-   <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Closed.xml"/>
-    <property name="isOneTile" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="43" name="Closed 2" type="Event NPC" gid="42" x="1424" y="448" width="16" height="16">
+  <object id="44" name="Danger 1" type="Event NPC" gid="42" x="576" y="2352" width="48" height="48">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Closed.xml"/>
-    <property name="isOneTile" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="44" name="Danger 1" type="Event NPC" gid="42" x="1776" y="640" width="16" height="16">
-   <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Danger.xml"/>
-    <property name="isOneTile" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="62" name="To Lab Sign" type="Event NPC" gid="42" x="1344" y="192" width="16" height="16">
+  <object id="62" name="To Lab Sign" type="Event NPC" gid="42" x="624" y="2352" width="48" height="48">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_ToLab.xml"/>
+   </properties>
+  </object>
+  <object id="65" name="To Market Left" type="Event Teleport" x="720" y="2113" width="48" height="47">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_ToLab.xml"/>
-    <property name="isOneTile" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="65" name="To Market Left" type="Event Teleport" x="240" y="688" width="16" height="16">
-   <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
@@ -247,8 +265,13 @@
     </property>
    </properties>
   </object>
-  <object id="66" name="To Market Left" type="Event Teleport" x="256" y="688" width="16" height="16">
+  <object id="66" name="To Market Left" type="Event Teleport" x="768" y="2113" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
@@ -258,8 +281,13 @@
     </property>
    </properties>
   </object>
-  <object id="67" name="To Market Right" type="Event Teleport" x="544" y="688" width="16" height="16">
+  <object id="67" name="To Market Right" type="Event Teleport" x="1632" y="2112" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
@@ -269,8 +297,13 @@
     </property>
    </properties>
   </object>
-  <object id="68" name="To Market Right" type="Event Teleport" x="560" y="688" width="16" height="16">
+  <object id="68" name="To Market Right" type="Event Teleport" x="1680" y="2112" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
@@ -280,8 +313,13 @@
     </property>
    </properties>
   </object>
-  <object id="69" name="To Market Right" type="Event Teleport" x="576" y="688" width="16" height="16">
+  <object id="69" name="To Market Right" type="Event Teleport" x="1728" y="2112" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
@@ -291,8 +329,13 @@
     </property>
    </properties>
   </object>
-  <object id="70" name="To Airport" type="Event Teleport" x="592" y="960" width="16" height="16">
+  <object id="70" name="To Airport" type="Event Teleport" x="1776" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -302,8 +345,13 @@
     </property>
    </properties>
   </object>
-  <object id="71" name="To Airport" type="Event Teleport" x="608" y="960" width="16" height="16">
+  <object id="71" name="To Airport" type="Event Teleport" x="1823" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -313,8 +361,13 @@
     </property>
    </properties>
   </object>
-  <object id="72" name="To Airport" type="Event Teleport" x="704" y="960" width="16" height="16">
+  <object id="72" name="To Airport" type="Event Teleport" x="2105" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -324,8 +377,13 @@
     </property>
    </properties>
   </object>
-  <object id="73" name="To Airport" type="Event Teleport" x="688" y="960" width="16" height="16">
+  <object id="73" name="To Airport" type="Event Teleport" x="2058" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -335,8 +393,13 @@
     </property>
    </properties>
   </object>
-  <object id="74" name="To Airport" type="Event Teleport" x="672" y="960" width="16" height="16">
+  <object id="74" name="To Airport" type="Event Teleport" x="2011" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -346,8 +409,13 @@
     </property>
    </properties>
   </object>
-  <object id="75" name="To Airport" type="Event Teleport" x="656" y="960" width="16" height="16">
+  <object id="75" name="To Airport" type="Event Teleport" x="1964" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -357,8 +425,13 @@
     </property>
    </properties>
   </object>
-  <object id="76" name="To Airport" type="Event Teleport" x="640" y="960" width="16" height="16">
+  <object id="76" name="To Airport" type="Event Teleport" x="1917" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -368,8 +441,13 @@
     </property>
    </properties>
   </object>
-  <object id="77" name="To Airport" type="Event Teleport" x="624" y="960" width="16" height="16">
+  <object id="77" name="To Airport" type="Event Teleport" x="1870" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -379,8 +457,13 @@
     </property>
    </properties>
   </object>
-  <object id="78" name="To Airport" type="Event Teleport" x="736" y="960" width="16" height="16">
+  <object id="78" name="To Airport" type="Event Teleport" x="2199" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -390,8 +473,13 @@
     </property>
    </properties>
   </object>
-  <object id="79" name="To Airport" type="Event Teleport" x="752" y="960" width="16" height="16">
+  <object id="79" name="To Airport" type="Event Teleport" x="2246" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -401,8 +489,13 @@
     </property>
    </properties>
   </object>
-  <object id="80" name="To Airport" type="Event Teleport" x="768" y="960" width="16" height="16">
+  <object id="80" name="To Airport" type="Event Teleport" x="2293" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -412,8 +505,13 @@
     </property>
    </properties>
   </object>
-  <object id="81" name="To Airport" type="Event Teleport" x="784" y="960" width="16" height="16">
+  <object id="81" name="To Airport" type="Event Teleport" x="2340" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -423,8 +521,13 @@
     </property>
    </properties>
   </object>
-  <object id="82" name="To Airport" type="Event Teleport" x="800" y="960" width="16" height="16">
+  <object id="82" name="To Airport" type="Event Teleport" x="2387" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -434,8 +537,13 @@
     </property>
    </properties>
   </object>
-  <object id="83" name="To Airport" type="Event Teleport" x="816" y="960" width="16" height="16">
+  <object id="83" name="To Airport" type="Event Teleport" x="2434" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -445,8 +553,13 @@
     </property>
    </properties>
   </object>
-  <object id="84" name="To Airport" type="Event Teleport" x="832" y="960" width="16" height="16">
+  <object id="84" name="To Airport" type="Event Teleport" x="2481" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -456,8 +569,13 @@
     </property>
    </properties>
   </object>
-  <object id="85" name="To Airport" type="Event Teleport" x="720" y="960" width="16" height="16">
+  <object id="85" name="To Airport" type="Event Teleport" x="2152" y="2832" width="47" height="47">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
@@ -467,8 +585,13 @@
     </property>
    </properties>
   </object>
-  <object id="86" name="To Lab" type="Event Teleport" x="1248" y="112" width="16" height="16">
+  <object id="86" name="To Lab" type="Event Teleport" x="3744" y="528" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
@@ -478,102 +601,245 @@
     </property>
    </properties>
   </object>
-  <object id="93" name="NPC_Generic_01" type="Event NPC" gid="258" x="352" y="848" width="16" height="32">
+  <object id="93" name="NPC_01" type="Event NPC" gid="258" x="1008" y="2352" width="48" height="96">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
-  <object id="94" name="NPC_Generic_02" type="Event NPC" gid="258" x="800" y="720" width="16" height="32">
+  <object id="97" name="NPC_02" type="Event NPC" gid="258" x="816" y="2352" width="48.4948" height="96.9897">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
   </object>
-  <object id="95" name="NPC_Generic_01" type="Event NPC" gid="258" x="336" y="496" width="16" height="32">
+  <object id="101" name="To Dungeon Outside" type="Event Teleport" x="5280" y="2016" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
    </properties>
   </object>
-  <object id="96" name="NPC_Generic_02" type="Event NPC" gid="258" x="640" y="336" width="16" height="32">
+  <object id="108" name="To Dungeon Outside" type="Event Teleport" x="5328" y="2016" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
    </properties>
   </object>
-  <object id="97" name="NPC_Generic_02" type="Event NPC" gid="258" x="1376" y="416" width="16" height="32">
+  <object id="109" name="To Dungeon Outside" type="Event Teleport" x="5376" y="2016" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
    </properties>
   </object>
-  <object id="98" name="NPC_Generic_01" type="Event NPC" gid="258" x="992" y="576" width="16" height="32">
+  <object id="110" name="To Dungeon Outside" type="Event Teleport" x="5424" y="2016" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
    </properties>
   </object>
-  <object id="99" name="NPC_Generic_01" type="Event NPC" gid="258" x="1488" y="720" width="16" height="32">
+  <object id="111" name="To Dungeon Outside" type="Event Teleport" x="5472" y="2016" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
    </properties>
   </object>
-  <object id="100" name="Chest1" type="Event Chest" gid="199" x="128" y="640" width="16" height="16">
+  <object id="112" name="To Dungeon Outside" type="Event Teleport" x="5520" y="2016" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="113" name="To Dungeon Outside" type="Event Teleport" x="5568" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="114" name="To Dungeon Outside" type="Event Teleport" x="5616" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="115" name="To Dungeon Outside" type="Event Teleport" x="5664" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="116" name="To Dungeon Outside" type="Event Teleport" x="5712" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="117" name="To Dungeon Outside" type="Event Teleport" x="5760" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="118" name="To Dungeon Outside" type="Event Teleport" x="5808" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="119" name="To Dungeon Outside" type="Event Teleport" x="5856" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="120" name="To Dungeon Outside" type="Event Teleport" x="5904" y="2016" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="29"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="123" name="Chest" type="Event Chest" gid="199" x="1392" y="2352" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="Loot1" type="class" propertytype="Helper Loot">
@@ -584,206 +850,29 @@
     </property>
    </properties>
   </object>
-  <object id="101" name="To Dungeon Outside" type="Event Teleport" x="1760" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="108" name="To Dungeon Outside" type="Event Teleport" x="1776" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="109" name="To Dungeon Outside" type="Event Teleport" x="1792" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="110" name="To Dungeon Outside" type="Event Teleport" x="1808" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="111" name="To Dungeon Outside" type="Event Teleport" x="1824" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="112" name="To Dungeon Outside" type="Event Teleport" x="1840" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="113" name="To Dungeon Outside" type="Event Teleport" x="1856" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="114" name="To Dungeon Outside" type="Event Teleport" x="1872" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="115" name="To Dungeon Outside" type="Event Teleport" x="1888" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="116" name="To Dungeon Outside" type="Event Teleport" x="1904" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="117" name="To Dungeon Outside" type="Event Teleport" x="1920" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="118" name="To Dungeon Outside" type="Event Teleport" x="1936" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="119" name="To Dungeon Outside" type="Event Teleport" x="1952" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="120" name="To Dungeon Outside" type="Event Teleport" x="1968" y="592" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="11"/>
-      <property name="Destination Y" type="int" value="29"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="121" name="Danger 2" type="Event NPC" gid="42" x="1952" y="640" width="16" height="16">
-   <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Danger.xml"/>
-    <property name="isOneTile" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="123" name="Chest1" type="Event Chest" gid="199" x="432" y="272" width="16" height="16">
+  <object id="125" name="To Lab" type="Event Teleport" x="3792" y="528" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="Loot1" type="class" propertytype="Helper Loot">
+    <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
-      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
-      <property name="Quantity" type="int" value="1"/>
+      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
+      <property name="Destination X" type="int" value="16"/>
+      <property name="Destination Y" type="int" value="13"/>
      </properties>
     </property>
    </properties>
   </object>
-  <object id="124" name="Chest1" type="Event Chest" gid="199" x="1072" y="464" width="16" height="16">
+  <object id="127" name="To Lab" type="Event Teleport" x="3840" y="528" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
       <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-    <property name="Loot1" type="class" propertytype="Helper Loot">
-     <properties>
-      <property name="Item" propertytype="Helper Items" value="MP Potion"/>
-      <property name="Quantity" type="int" value="1"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="125" name="To Lab" type="Event Teleport" x="1264" y="112" width="16" height="16">
-   <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
@@ -793,8 +882,13 @@
     </property>
    </properties>
   </object>
-  <object id="127" name="To Lab" type="Event Teleport" x="1280" y="112" width="16" height="16">
+  <object id="128" name="To Lab" type="Event Teleport" x="3888" y="528" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
@@ -804,8 +898,13 @@
     </property>
    </properties>
   </object>
-  <object id="128" name="To Lab" type="Event Teleport" x="1296" y="112" width="16" height="16">
+  <object id="129" name="To Lab" type="Event Teleport" x="3936" y="528" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
@@ -815,8 +914,13 @@
     </property>
    </properties>
   </object>
-  <object id="129" name="To Lab" type="Event Teleport" x="1312" y="112" width="16" height="16">
+  <object id="130" name="To Lab" type="Event Teleport" x="3984" y="528" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
@@ -826,8 +930,13 @@
     </property>
    </properties>
   </object>
-  <object id="130" name="To Lab" type="Event Teleport" x="1328" y="112" width="16" height="16">
+  <object id="131" name="To Lab" type="Event Teleport" x="4032" y="528" width="48" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
@@ -837,13 +946,136 @@
     </property>
    </properties>
   </object>
-  <object id="131" name="To Lab" type="Event Teleport" x="1344" y="112" width="16" height="16">
+  <object id="154" name="Balphogor" type="Event NPC" gid="869" x="912" y="2352" width="48" height="96">
    <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Balphogor01.xml"/>
+   </properties>
+  </object>
+  <object id="155" name="Market Sign" type="Event NPC" gid="42" x="528" y="2352" width="48" height="48">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Market.xml"/>
+   </properties>
+  </object>
+  <object id="156" type="Event Torch" gid="353" x="1104" y="2352" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
-      <property name="Destination X" type="int" value="16"/>
-      <property name="Destination Y" type="int" value="13"/>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="201"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="157" name="Torch" type="Event Torch" gid="345" x="1104" y="2304" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="201"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="158" name="Lever" type="Event Lever" gid="337" x="1200" y="2352" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="201"/>
+      <property name="Set To" type="bool" value="false"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="2"/>
+      <property name="ID" type="int" value="202"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="159" name="Door" type="Event Door" gid="347" x="1296" y="2304" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="160" type="Event Door" gid="355" x="1296" y="2352" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="212"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch3" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="213"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch4" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="214"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch5" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="215"/>
      </properties>
     </property>
    </properties>

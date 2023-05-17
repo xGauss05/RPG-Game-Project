@@ -45,22 +45,25 @@ public:
 	};
 
 	Player();
-	~Player();
+	~Player() override;
 	void Create();
 
 	void Draw() const;
 
 	PlayerAction HandleInput() const;
-	void StartAction(PlayerAction playerAction);
+	void StartOrRotateMovement(bool walkable = true);
 	
 	void Update();
 
 	void SetSpeed(int speed);
 	void SetPosition(iPoint newPosition);
-	iPoint GetPosition() const;
+	iPoint GetDrawPosition() const;
 
 	void RotatePlayer();
-	bool FinishedMoving() const;
+	bool IsStandingStill() const;
+
+	void SetMovementStopped(bool b);
+	bool GetMovementStopped() const;
 
 	iPoint lastDir{ 0 };
 
@@ -69,14 +72,18 @@ private:
 	void SmoothMove();
 	void StartMovement();
 
+	iPoint drawPosition = { 0, 0 };
 
 	int moveTimer = 0;
 	iPoint moveVector{ 0 };
 	int speed = 16;
 	const int timeForATile = 2;
 	const int tileSize = 48;
+	int animIncrease = 1;
 
 	int animTimer = 0;
+
+	bool movementStopped = false;
 
 	SDL_Rect currentSpriteSlice{ 0 };
 };

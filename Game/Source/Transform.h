@@ -8,17 +8,18 @@
 class Transform
 {
 public:
+	virtual ~Transform() = default;
 	iPoint GetPosition() const { return position; };
 	iPoint GetSize() const { return size; };
 
 	iPoint position = { 0 };
 	iPoint originalPosition = { 0 };
 	iPoint size = { 0 };
-	bool bIsTwoTiles = false;
+
 protected:
-	void Initialize(pugi::xml_node const& node)
+	virtual void Initialize(pugi::xml_node const& node)
 	{
-		originalPosition = { node.attribute("x").as_int() * 3, node.attribute("y").as_int() * 3 };
+		originalPosition = { node.attribute("x").as_int(), node.attribute("y").as_int() };
 		position = originalPosition;
 		size = { node.attribute("width").as_int(), node.attribute("height").as_int() };
 	}

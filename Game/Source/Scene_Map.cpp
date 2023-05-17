@@ -92,12 +92,13 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
 	random1000.param(std::uniform_int_distribution<>::param_type(1, 1000));
 
-	highDialogueSfx = app->audio->LoadFx("Fx/S_Town-NPC-TalkHigh.wav");
-	midDialogueSfx = app->audio->LoadFx("Fx/S_Town-NPC-TalkMid.wav");
-	lowDialogueSfx = app->audio->LoadFx("Fx/S_Town-NPC-TalkLow.wav");
-	battleStartSfx = app->audio->LoadFx("Fx/S_Gameplay-BattleStart.wav");
-	waterDropSfx = app->audio->LoadFx("Fx/S_Dungeon-WaterDroplet.wav");
-	torchSfx = app->audio->LoadFx("Fx/S_Dungeon-Torch.wav");
+	using enum AvailableSFXs;
+	sfx[DIALOGUE_HIGH] = app->audio->LoadFx("Fx/S_Town-NPC-TalkHigh.wav");
+	sfx[DIALOGUE_MID] = app->audio->LoadFx("Fx/S_Town-NPC-TalkMid.wav");
+	sfx[DIALOGUE_LOW] = app->audio->LoadFx("Fx/S_Town-NPC-TalkLow.wav");
+	sfx[BATTLE_START] = app->audio->LoadFx("Fx/S_Gameplay-BattleStart.wav");
+	sfx[WATER_DROP] = app->audio->LoadFx("Fx/S_Dungeon-WaterDroplet.wav");
+	sfx[TORCH] = app->audio->LoadFx("Fx/S_Dungeon-Torch.wav");
 
 	SubscribeEventsToGlobalSwitches();
 }
@@ -135,19 +136,35 @@ std::string Scene_Map::PlayMapBgm(std::string_view name)
 	return musicname;
 }
 
+void Scene_Map::PlaySFX(int id) const
+{
+	app->audio->PlayFx(id);
+}
+
+// TODO: Move this to NPC_Generic.cpp
 void Scene_Map::PlayDialogueSfx(std::string_view name)
 {
 	if (StrEquals("high", name))
-		app->audio->PlayFx(highDialogueSfx);
+	{
+		PlaySFX(sfx[AvailableSFXs::DIALOGUE_HIGH]);
+		return;
+	}
 
 	if (StrEquals("mid", name))
-		app->audio->PlayFx(midDialogueSfx);
+	{
+		PlaySFX(sfx[AvailableSFXs::DIALOGUE_MID]);
+		return;
+	}
 
 	if (StrEquals("low", name))
-		app->audio->PlayFx(lowDialogueSfx);
+	{
+		PlaySFX(sfx[AvailableSFXs::DIALOGUE_LOW]);
+		return;
+	}
 
 }
 
+// TODO: Move this to Map.cpp (and turn it on depending on *.tmx properties)
 void Scene_Map::DungeonSfx() 
 {
 	if (currentMap == "Dungeon_Outside" || currentMap == "Dungeon01" ||
@@ -155,11 +172,17 @@ void Scene_Map::DungeonSfx()
 	{
 		std::mt19937 gen(rd());
 		int randomValue = random1000(gen);
-		if (randomValue <= 2) app->audio->PlayFx(waterDropSfx);
+		if (randomValue <= 2)
+		{
+			PlaySFX(sfx[AvailableSFXs::WATER_DROP]);
+		}
 
 		randomValue = random1000(gen);
 
-		if (randomValue <= 1) app->audio->PlayFx(torchSfx);
+		if (randomValue <= 1)
+		{
+			PlaySFX(sfx[AvailableSFXs::TORCH]);
+		}
 	}
 }
 
@@ -181,30 +204,13 @@ void Scene_Map::Start()
 
 	app->render->AdjustCamera(player.GetPosition());
 
-	auto& [triggerAction, id, st] = globalSwitchWaiting;
-
-	/*if (id != -1 && triggerAction != EventProperties::GlobalSwitchOnInteract::NONE)
+	if (auto const &[triggerAction, id, st] = globalSwitchWaiting;
+		id != 1)
 	{
-		switch (triggerAction)
-		{
-			using enum EventProperties::GlobalSwitchOnInteract;
-		case SET:
-			playerParty->SetGlobalSwitchState(id, st);
-			break;
-		case TOGGLE:
-			playerParty->ToggleGlobalSwitchState(id);
-			break;
-		default:
-			break;
-		}
-
-		triggerAction = EventProperties::GlobalSwitchOnInteract::NONE;
-		id = -1;
-		st = false;
-	}*/
-
-	if (id != 1) { playerParty->SetGlobalSwitchState(id, st);         
-	globalSwitchWaiting = std::tuple(EventProperties::GlobalSwitchOnInteract::NONE, -1, false); }
+		playerParty->SetGlobalSwitchState(id, st);         
+	
+		globalSwitchWaiting = std::tuple(EventProperties::GlobalSwitchOnInteract::NONE, -1, false);
+	}
 }
 
 void Scene_Map::SetPlayerParty(GameParty* party)
@@ -295,356 +301,320 @@ void Scene_Map::DebugAddALLItemsWithRandomAmounts()
 	}
 }
 
-TransitionScene Scene_Map::Update()
+void Scene_Map::CreateMessageWindow(std::string_view message, MapState newState)
 {
-	DebugInventory();
-	if (state == MapState::NORMAL)
-	{
-		if(playerParty->GetUpdateQuestLog())
-		{
-			questLog->UpdateQuests();
-			if (playerParty->IsQuestMessagePending())
-			{
-				windows.emplace_back(windowFactory->CreateWindow("Message"));
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				currentPanel->ModifyLastWidgetText(playerParty->QuestCompleteMessage());
-				state = MapState::ON_MESSAGE;
-			}
-		}
-	}
+	windows.emplace_back(windowFactory->CreateWindow("Message"));
 
+	ModifyLastWidgetMessage(message);
+
+	state = newState;
+}
+
+void Scene_Map::ModifyLastWidgetMessage(std::string_view message)
+{
+	auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
+	currentPanel->ModifyLastWidgetText(message);
+}
+
+void Scene_Map::StateNormal_HandleInput()
+{
+	// Toggle God Mode if F10 is pressed
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;
-		if (godMode)
-		{
-			player.SetSpeed(32);
-		}
-		else
-		{
-			player.SetSpeed(16);
-		}
+		int newSpeed = godMode ? 16 : 16;
+		player.SetSpeed(newSpeed);
 	}
 
+	// Open character menu if C is pressed
 	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
 	{
-		using enum Scene_Map::MapState;
-		if(state == NORMAL)
-		{
-			lastState = state;
-			state = ON_MENU;
-			mainMenu->Start();
-		}
-		else if (state == ON_MENU)
-		{
-			state = lastState;
-			state = NORMAL;
-		}
+		lastState = state;
+		state = MapState::ON_MENU;
+		mainMenu->Start();
 	}
 
-	if (state == MapState::ON_MENU)
+	// Pause game on Escape press
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 	{
-		if (!mainMenu->Update())
-		{
-			state = lastState;
-			state = MapState::NORMAL;
-		}
-		return TransitionScene::NONE;
+		app->PauseGame();
 	}
+}
 
-	auto playerAction = player.HandleInput();
+void Scene_Map::StateMenu_HandleInput()
+{
+	// Close character window if 
+	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN
+		|| app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+	{
+		state = lastState;
+		state = MapState::NORMAL;
+	}
+}
 
+void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
+{
 	using PA = Player::PlayerAction::Action;
 
-	if (state == MapState::ON_MENU_SELECTION)
+	StateNormal_HandleInput();
+
+	// Update quest log (and tracker) if needed
+	if (playerParty->GetUpdateQuestLog())
 	{
-		switch (windows.back()->Update())
+		questLog->UpdateQuests();
+		if (playerParty->IsQuestMessagePending())
 		{
-		case 200: //Yes
-		{
-			LOG("Said yes");
-			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("yes").as_string());
-			state = MapState::ON_DIALOG;
-			windows.pop_back();
-			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-			PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-			break;
-		}
-		case 201: //No
-		{
-			LOG("Said no");
-			currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("no").as_string());
-			state = MapState::ON_DIALOG;
-			windows.pop_back();
-			app->tex->Load("Assets/UI/GUI_4x_sliced.png");
-			auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-			PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-			currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-			break;
-		}
-		default:
-			break;
+			CreateMessageWindow(playerParty->QuestCompleteMessage());
 		}
 	}
-	else if (app->input->controllerCount <= 0)
-	{
-		windows.back()->Update();
-	}
 
-	if ((playerAction.action & PA::MOVE) == PA::MOVE && state == MapState::NORMAL)
+	if ((playerAction.action & PA::MOVE) == PA::MOVE)
 	{
-		if (map.IsWalkable(playerAction.destinationTile) && !godMode)
+		if (CheckRandomBattle())
 		{
-			player.StartAction(playerAction);
+			transitionTo = TransitionScene::START_BATTLE;
+			return;
+		}
 
-			return TryRandomBattle();
-		}
-		else if (godMode)
-		{
-			player.StartAction(playerAction);
-		}
-		else
-		{
-			player.RotatePlayer();
-		}
+		player.StartOrRotateMovement(map.IsWalkable(playerAction.destinationTile));
 	}
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
-		if (state == MapState::ON_MESSAGE)
+		iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth()));
+		EventTrigger action = map.TriggerEvent(checktile);
+
+		switch (action.eventFunction)
 		{
-			windows.pop_back();
-			state = MapState::NORMAL;
+			using enum EventTrigger::WhatToDo;
+		case LOOT:
+		{
+			if (!playerParty)
+			{
+				break;
+			}
+
+			for (auto const& [itemToAdd, amountToAdd] : action.values)
+			{
+				if (StrEquals(itemToAdd, "Coins")) [[unlikely]]
+				{
+					playerParty->AddGold(amountToAdd);
+
+					action.text = (amountToAdd == 1)
+						? AddSaveData(action.text, amountToAdd, "coin")
+						: AddSaveData(action.text, amountToAdd, "coins");
+				}
+				else [[likely]]
+				{
+					playerParty->AddItemToInventory(itemToAdd, amountToAdd);
+					action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+				}
+			}
+			[[fallthrough]];
 		}
-		else if (state == MapState::ON_DIALOG)
+		case SHOW_MESSAGE:
 		{
-			auto nextDialogName = currentDialogNode.attribute("next").as_string();
-			std::string currentDialogName = currentDialogNode.name();
-
-			std::string altDialogName = currentDialogName;
-			altDialogName.pop_back();
-
-			std::string altNextDialogName = nextDialogName;
-			altNextDialogName.pop_back();
-
-			if ((StrEquals(nextDialogName, "quest")
-				&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
-				|| (StrEquals(altNextDialogName, "quest")
-					&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int())))
+			CreateMessageWindow(action.text);
+			break;
+		}
+		case DIALOG_PATH:
+		{
+			if (auto result = currentDialogDocument.load_file(action.text.c_str());
+				!result)
 			{
-				bool messageFound = false;
+				LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+				break;
+			}
 
-				for (auto auxDialogNode = currentDialogNode; auxDialogNode.next_sibling(); auxDialogNode = auxDialogNode.next_sibling())
+			auto const& dialogNode = currentDialogDocument.child("dialog");
+
+			// Check if player has any quest of "TALK_TO" type, and if it does, update progress.
+			if (std::string npcName = dialogNode.attribute("name").as_string();
+				!npcName.empty())
+			{
+				std::vector<std::pair<std::string_view, int>> npcTalkedTo;
+				npcTalkedTo.emplace_back(npcName, 1);
+
+				playerParty->PossibleQuestProgress(QuestType::TALK_TO, npcTalkedTo, std::vector<std::pair<int, int>>());
+
+			}
+
+			currentDialogNode = dialogNode.child("message1");
+
+			// Create the window that will be used
+			CreateMessageWindow(currentDialogNode.attribute("text").as_string(), MapState::ON_DIALOG);
+
+			PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
+		}
+		case TELEPORT:
+		{
+			tpInfo = action;
+			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
+		}
+		case GLOBAL_SWITCH:
+		{
+			for (auto& it = action.globalSwitchIteratorBegin; it != action.globalSwitchIteratorEnd; ++it)
+			{
+				using enum EventProperties::GlobalSwitchOnInteract;
+				if (it->functionOnInteract == SET)
 				{
-					std::string innerLoopName = auxDialogNode.next_sibling().name();
-					innerLoopName.pop_back();
-
-					if (StrEquals(auxDialogNode.next_sibling().name(), "questnotavailable") || StrEquals(innerLoopName, "questnotavailable"))
-					{
-						messageFound = true;
-						break;
-					}
+					playerParty->SetGlobalSwitchState(it->id, it->setTo);
 				}
-
-				if (!messageFound)
+				else if (it->functionOnInteract == TOGGLE)
 				{
-					nextDialogName = "end";
-					messageFound = false;
+					playerParty->ToggleGlobalSwitchState(it->id);
 				}
 			}
+		}
+		case NO_EVENT:
+		{
+			break;
+		}
+		}
+	}
 
+	player.Update();
 
-			if (StrEquals(currentDialogName, "acceptquest") || StrEquals(altDialogName, "acceptquest"))
+	// TODO: Change this to only check the frame the player has stopped movement
+	if (player.IsStandingStill())
+	{
+		EventTrigger action = map.TriggerFloorEvent(player.GetPosition());
+		
+		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
+		{
+			tpInfo = action;
+			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
+		}
+	}
+}
+
+TransitionScene Scene_Map::Update()
+{
+	DungeonSfx();
+
+	auto playerAction = player.HandleInput();
+	using PA = Player::PlayerAction::Action;
+
+	switch (state)
+	{
+		using enum MapState;
+		case NORMAL:
+		{
+			UpdateNormalMapState(playerAction);
+			break;
+		}
+		case ON_MENU:
+		{
+			break;
+		}
+		case ON_MENU_SELECTION:
+		{
+			auto const& dialogNode = currentDialogDocument.child("dialog");
+
+			if (int buttonClicked = windows.back()->Update();
+				buttonClicked == 200 || buttonClicked == 201)
 			{
-				playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
-			}
-			
-			if (StrEquals(nextDialogName, "combat"))
-			{
-				app->audio->PlayFx(battleStartSfx);
-				nextFightName = currentDialogNode.attribute("fightname").as_string();
-				currentDialogNode = currentDialogDocument.child("dialog").child("victory");
+				// Remove Yes/No confirmation window
+				windows.pop_back();
 
-				globalSwitchWaiting = std::make_tuple(
-					EventProperties::GlobalSwitchOnInteract::SET,
-					currentDialogDocument.child("dialog").attribute("globalswitch").as_int(),
-					currentDialogDocument.child("dialog").attribute("value").as_bool()
-				);
+				// After a confimation screen ALWAYS goes a dialog.
+				state = MapState::ON_DIALOG;
 
-				return TransitionScene::START_BATTLE;
+				// Play corresponding SFX dialogue voice
+				PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
+
+				// Check if yes or no was clicked
+				std::string optionClicked = buttonClicked == 200 ? "yes" : "no";
+
+				// We get the value of attribute "next" so we know the node we have to jump to.
+				// It will always be a message.
+				auto const nextNodeName = currentDialogNode.attribute(optionClicked.c_str()).as_string();
+				currentDialogNode = dialogNode.child(nextNodeName);
+
+				// Modify the text on the message window.
+				ModifyLastWidgetMessage(currentDialogNode.attribute("text").as_string());
 			}
-			if (StrEquals(nextDialogName, "end"))
+			break;
+		}
+		case ON_MESSAGE:
+		{
+			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
 			}
-			else if (StrEquals(nextDialogName, "confirmation"))
-			{
-				// Create Yes/No window
-				windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
-				state = MapState::ON_MENU_SELECTION;
-			}
-			else
-			{
-				if(!StrEquals(currentDialogNode.name(), "victory"))
-				{
-					currentDialogNode = currentDialogDocument.child("dialog").child(currentDialogNode.attribute("next").as_string());
-				}
-
-				auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-				PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-				currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-			}
+			break;
 		}
-		else if (state == MapState::NORMAL)
+		case ON_DIALOG:
 		{
-			iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth() * 3));
-
-			EventTrigger action = map.TriggerEvent(checktile);
-
-			switch (action.eventFunction)
+			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 			{
-				using enum EventTrigger::WhatToDo;
-				case NO_EVENT:
+				auto const& dialogNode = currentDialogDocument.child("dialog");
+
+				std::string_view nextDialogName = currentDialogNode.attribute("next").as_string();
+				std::string_view currentDialogName = currentDialogNode.name();
+
+				// If the next node is quest, and, quest with quest id is not available -> end dialog.
+				if (StrEquals(nextDialogName, "quest")
+					&& !playerParty->IsQuestAvailable(currentDialogNode.attribute("questid").as_int()))
 				{
-					break;
+					nextDialogName = "end";
 				}
-				case LOOT:
+
+				// If we've accepted the quest via jumping to accept quest node, we add the quest to the party
+				if (StrEquals(currentDialogName, "acceptquest"))
 				{
-					if (action.values.empty() || !playerParty)
+					playerParty->AcceptQuest(currentDialogNode.attribute("questid").as_int());
+				}
+
+				if (StrEquals(nextDialogName, "combat"))
+				{
+					PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
+
+					nextFightName = currentDialogNode.attribute("fightname").as_string();
+
+					currentDialogNode = dialogNode.child("victory");
+
+					globalSwitchWaiting = std::make_tuple(
+						EventProperties::GlobalSwitchOnInteract::SET,
+						dialogNode.attribute("globalswitch").as_int(),
+						dialogNode.attribute("value").as_bool()
+					);
+
+					return TransitionScene::START_BATTLE;
+				}
+				else if (StrEquals(nextDialogName, "end"))
+				{
+					windows.pop_back();
+					state = MapState::NORMAL;
+				}
+				else if (StrEquals(nextDialogName, "confirmation"))
+				{
+					// Create Yes/No window
+					windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
+					state = MapState::ON_MENU_SELECTION;
+				}
+				else
+				{
+					if (!StrEquals(currentDialogNode.name(), "victory"))
 					{
-						break;
+						currentDialogNode = dialogNode.child(currentDialogNode.attribute("next").as_string());
 					}
 
-					for (auto const& [itemToAdd, amountToAdd] : action.values)
-					{
-						if (StrEquals(itemToAdd, "Coins"))
-						{
-							playerParty->AddGold(amountToAdd);
-							if (amountToAdd == 1)
-								action.text = AddSaveData(action.text, amountToAdd, "coin");
-							else
-								action.text = AddSaveData(action.text, amountToAdd, "coins");
+					PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
 
-						}
-						else
-						{
-							playerParty->AddItemToInventory(itemToAdd, amountToAdd);
-							action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
-
-						}
-
-					}
-					[[fallthrough]];
-				}
-				case SHOW_MESSAGE:
-				{
-					windows.emplace_back(windowFactory->CreateWindow("Message"));
-					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-					currentPanel->ModifyLastWidgetText(action.text);
-					state = MapState::ON_MESSAGE;
-					break;
-				}
-				case DIALOG_PATH:
-				{
-					if (auto result = currentDialogDocument.load_file(action.text.c_str()); !result)
-					{
-						LOG("Could not load dialog xml file. Pugi error: %s", result.description());
-						break;
-					}
-
-					if (std::string npcName = currentDialogDocument.child("dialog").attribute("name").as_string();
-						!npcName.empty())
-					{
-						std::vector<std::pair<std::string_view, int>> npcTalkedTo;
-						npcTalkedTo.emplace_back(npcName, 1);
-
-						playerParty->PossibleQuestProgress(QuestType::TALK_TO, npcTalkedTo, std::vector<std::pair<int, int>>());
-
-					}
-
-					windows.emplace_back(windowFactory->CreateWindow("Message"));
-
-					currentDialogNode = currentDialogDocument.child("dialog").child("message1");
-					PlayDialogueSfx(currentDialogDocument.child("dialog").attribute("voicetype").as_string());
-
-					auto* currentPanel = dynamic_cast<Window_Panel*>(windows.back().get());
-					currentPanel->ModifyLastWidgetText(currentDialogNode.attribute("text").as_string());
-					state = MapState::ON_DIALOG;
-					break;
-				}
-				case TELEPORT:
-				{
-					tpInfo = action;
-					return TransitionScene::LOAD_MAP_FROM_MAP;
-				}
-				case GLOBAL_SWITCH:
-				{
-					for (auto& it = action.globalSwitchIteratorBegin; it != action.globalSwitchIteratorEnd; ++it)
-					{
-						switch (it->functionOnInteract)
-						{
-							using enum EventProperties::GlobalSwitchOnInteract;
-						case SET:
-						{
-							playerParty->SetGlobalSwitchState(it->id, it->setTo);
-							break;
-						}
-						case TOGGLE:
-						{
-							playerParty->ToggleGlobalSwitchState(it->id);
-							break;
-						}
-						default:
-						{
-							break;
-						}
-						}
-					}
+					ModifyLastWidgetMessage(currentDialogNode.attribute("text").as_string());
 				}
 			}
+			break;
 		}
 	}
 
-	if (state == MapState::NORMAL)
+	if (transitionTo != TransitionScene::NONE)
 	{
-		player.Update();
-		if (player.FinishedMoving())
-		{
-			EventTrigger action = map.TriggerFloorEvent(player.GetPosition());
-			if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
-			{
-				tpInfo = action;
-				return TransitionScene::LOAD_MAP_FROM_MAP;
-			}
-		}
-
-		if (app->input->controllerCount > 0)
-		{
-			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KeyState::KEY_DOWN)
-			{
-				dynamic_cast<Window_List*>(pauseWindow.back().get())->ResetHoveredButton();
-				app->PauseGame();
-			}
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
-		{
-			app->PauseGame();
-		}
-	}
-
-	if (transitionTo == TransitionScene::MAIN_MENU)
-	{
+		auto retValue = transitionTo;
 		transitionTo = TransitionScene::NONE;
-		return TransitionScene::MAIN_MENU;
+		return retValue;
 	}
-	if (transitionTo == TransitionScene::EXIT_GAME)
-	{
-		return TransitionScene::EXIT_GAME;
-	}
-
-	DungeonSfx();
 
 	return TransitionScene::NONE;
 }
@@ -659,22 +629,21 @@ iPoint Scene_Map::GetTPCoordinates() const
 	return iPoint(tpInfo.values[0].second, tpInfo.values[1].second);
 }
 
-TransitionScene Scene_Map::TryRandomBattle()
+bool Scene_Map::CheckRandomBattle()
 {
-	if (currentMap == "Village" || currentMap == "Lab_Exterior" || currentMap == "Dungeon_Outside" || 
-		currentMap == "Dungeon01" || currentMap == "Dungeon02")
+	if (map.AreThereEnemyEncounters())
 	{
 		std::mt19937 gen(rd());
 		int randomValue = random100(gen);
 		if (randomValue <= 3)
 		{
-			app->audio->PlayFx(battleStartSfx);
+			PlaySFX(sfx[AvailableSFXs::BATTLE_START]);
 
-			return TransitionScene::START_BATTLE;
+			return true;
 		}
 	}
-	return TransitionScene::NONE;
-}
+	return false;
+};
 
 int Scene_Map::OnPause()
 {
@@ -733,8 +702,10 @@ bool Scene_Map::LoadScene(pugi::xml_node const& info)
 void Scene_Map::DebugDraw()
 {
 	//Player Hitbox
-	SDL_Rect debugPosition = { player.position.x, player.position.y + player.size.y / 2, player.size.x, player.size.y / 2 };
-	app->render->DrawShape(debugPosition, true, SDL_Colour(0, 255, 0, 100));
+	SDL_Rect debugPosition = { player.GetDrawPosition().x, player.GetDrawPosition().y, player.size.x, player.size.y};
+	app->render->DrawShape(debugPosition, true, SDL_Color(0, 255, 255, 100));
+	debugPosition = { player.GetPosition().x, player.GetPosition().y, player.size.x, map.GetTileHeight()};
+	app->render->DrawShape(debugPosition, true, SDL_Color(0, 255, 0, 100));
 
 	//Map Hitboxes
 
@@ -742,30 +713,60 @@ void Scene_Map::DebugDraw()
 	iPoint cameraSize = { app->render->GetCamera().w, app->render->GetCamera().h };
 
 	SDL_Rect renderView{};
-	renderView.x = -camera.x - 48;
-	renderView.y = -camera.y - 48;
-	renderView.w = -camera.x + cameraSize.x + map.GetTileWidth();
-	renderView.h = -camera.y + cameraSize.y + map.GetTileHeight();
+	renderView.x = -camera.x - map.GetTileWidth() + 2;
+	renderView.y = -camera.y - map.GetTileHeight() + 2;
+	renderView.w = -camera.x + cameraSize.x + map.GetTileWidth() - 2;
+	renderView.h = -camera.y + cameraSize.y + map.GetTileHeight() - 2;
 
 	for (int y = 0; y < map.GetHeight(); y++)
 	{
 		for (int x = 0; x < map.GetWidth(); x++)
 		{
-			if (x * 48 > renderView.y && x * 48 < renderView.h &&
-				y * 48 > renderView.x && y * 48 < renderView.w)
+			if (x * map.GetTileHeight() > renderView.y && x * map.GetTileHeight() < renderView.h &&
+				y * map.GetTileWidth() > renderView.x && y * map.GetTileWidth() < renderView.w)
 			{
-				if (!map.IsWalkable(iPoint{ y * 48,x * 48 }))
+				if (!map.IsWalkable(iPoint{ y * map.GetTileWidth() ,x * map.GetTileHeight() }))
 				{
-					SDL_Rect rect = { (y * 48), x * 48,48,48 };
-					app->render->DrawShape(rect, true, SDL_Colour(255, 0, 0, 100));
+					SDL_Rect rect = {
+						y * map.GetTileWidth(),
+						x * map.GetTileHeight(),
+						map.GetTileWidth(),
+						map.GetTileHeight()
+					};
+					app->render->DrawShape(rect, false, SDL_Color(255, 0, 0, 100));
 				}
 			}
 		}
 	}
 
-	app->fonts->DrawText("GOD MODE ON", iPoint( 20,40 ));
-	app->fonts->DrawText(std::format("Player pos X: {}", player.position.x), iPoint(40, 120));
-	app->fonts->DrawText(std::format("Player pos Y: {}", player.position.y), iPoint(40, 160));
+	iPoint debugTextPosition = { 40, 0 };
+	iPoint mousePosition = app->input->GetMousePosition();
+
+	std::string debugTextMessage = "GOD MODE ON";
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = "Reminder: Position is bottom square.";
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = std::format("Player Position: \"{},{}\"", player.GetPosition().x, player.GetPosition().y);
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = std::format("Player Coordinates: \"{},{}\"", player.GetPosition().x / map.GetTileWidth(), player.GetPosition().y / map.GetTileHeight());
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	mousePosition = { -app->render->GetCamera().x + mousePosition.x, -app->render->GetCamera().y + mousePosition.y };
+
+	debugTextMessage = std::format("Mouse World Position: \"{},{}\"", mousePosition.x, mousePosition.y);
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+	debugTextMessage = std::format("Mouse Coordinates: \"{},{}\"", mousePosition.x / map.GetTileWidth(), mousePosition.y / map.GetTileHeight());
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+
+
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+	{
+		player.SetPosition(map.MapToWorld(map.WorldToMap(mousePosition)));
+	}
 
 	std::string mapState = "Unknown";
 	switch (state)
@@ -787,5 +788,13 @@ void Scene_Map::DebugDraw()
 		mapState = "Unknown";
 		break;
 	}
-	app->fonts->DrawText("Map state: " + mapState, TextParameters(0, DrawParameters(0, iPoint{ 40,230 })));
+
+	debugTextMessage = std::format("Map state is {}", mapState);
+	DrawDebugTextLine(debugTextMessage, debugTextPosition);
+}
+
+void Scene_Map::DrawDebugTextLine(std::string_view text, iPoint& pos) const
+{
+	pos.y += 40;
+	app->fonts->DrawText(text, pos);
 }

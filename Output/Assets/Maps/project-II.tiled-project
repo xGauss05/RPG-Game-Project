@@ -74,7 +74,7 @@
             ]
         },
         {
-            "color": "#ffa0a0a4",
+            "color": "#ff806da4",
             "drawFill": true,
             "id": 21,
             "members": [
@@ -103,17 +103,11 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset"
+                "object"
             ]
         },
         {
-            "color": "#ffff0000",
+            "color": "#ffffc003",
             "drawFill": true,
             "id": 15,
             "members": [
@@ -146,6 +140,31 @@
             ]
         },
         {
+            "color": "#ff17ef14",
+            "drawFill": true,
+            "id": 22,
+            "members": [
+                {
+                    "name": "Base",
+                    "propertyType": "Base Event",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "DialoguePath",
+                    "type": "file",
+                    "value": ""
+                }
+            ],
+            "name": "Event NPC",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object"
+            ]
+        },
+        {
             "color": "#ff00fff7",
             "drawFill": true,
             "id": 14,
@@ -155,7 +174,7 @@
                     "propertyType": "Base Event",
                     "type": "class",
                     "value": {
-                        "Trigger": 1
+                        "Trigger": 0
                     }
                 },
                 {
@@ -187,7 +206,7 @@
             ]
         },
         {
-            "color": "#ffa0a0a4",
+            "color": "#ffff0303",
             "drawFill": true,
             "id": 20,
             "members": [
@@ -216,13 +235,7 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset"
+                "object"
             ]
         },
         {

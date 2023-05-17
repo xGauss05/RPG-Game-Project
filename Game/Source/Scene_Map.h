@@ -14,6 +14,26 @@
 
 class Scene_Map : public Scene_Base
 {
+private:
+	enum class AvailableSFXs
+	{
+		DIALOGUE_HIGH,
+		DIALOGUE_MID,
+		DIALOGUE_LOW,
+		BATTLE_START,
+		WATER_DROP,
+		TORCH
+	};
+
+	enum class MapState
+	{
+		NORMAL,
+		ON_MESSAGE,
+		ON_DIALOG,
+		ON_MENU_SELECTION,
+		ON_MENU
+	};
+
 public:
 	Scene_Map() = default;
 	explicit Scene_Map(GameParty* party);
@@ -51,27 +71,30 @@ public:
 	void SubscribeEventsToGlobalSwitches();
 
 private:
+	void DrawDebugTextLine(std::string_view text, iPoint& pos) const;
 	void DebugItems();
 	void DebugQuests();
 	void DebugInventory();
 	void DebugAddALLItemsWithRandomAmounts();
 
+	void UpdateNormalMapState(Player::PlayerAction playerAction);
+	
+	void CreateMessageWindow(std::string_view message, MapState newState = MapState::ON_MESSAGE);
+	void ModifyLastWidgetMessage(std::string_view message);
+	void StateNormal_HandleInput();
+	void StateMenu_HandleInput();
+
+	bool CheckRandomBattle();
+
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
 	std::string PlayMapBgm(std::string_view name);
 	void PlayDialogueSfx(std::string_view name);
+	void PlaySFX(int id) const;
 	void DungeonSfx();
 
 	TransitionScene TryRandomBattle();
-
-	enum class MapState
-	{
-		NORMAL,
-		ON_MESSAGE,
-		ON_DIALOG,
-		ON_MENU_SELECTION,
-		ON_MENU
-	};
+	
 
 	bool godMode = false;
 
@@ -102,22 +125,17 @@ private:
 	std::unique_ptr<Map_Window_Menu> mainMenu;
 	std::unique_ptr<Map_Display_QuestLog> questLog;
 
-	int highDialogueSfx = -1;
-	int midDialogueSfx = -1;
-	int lowDialogueSfx = -1;
-	int battleStartSfx = -1;
-	int waterDropSfx = -1;
-	int torchSfx = -1;
-	int doorOpenSfx = -1;
-	int dootCloseSfx = -1;
-	int leverOpenSfx = -1;
-	int levelCloseSfx = -1;
+	std::unordered_map<AvailableSFXs, int> sfx;
+
+	//int doorOpenSfx = -1;
+	//int dootCloseSfx = -1;
+	//int leverOpenSfx = -1;
+	//int levelCloseSfx = -1;
 
 	iPoint spawnPlayerPosition = { 0, 0 };
 	
 	std::string_view nextFightName = "";
 	std::tuple<EventProperties::GlobalSwitchOnInteract, int, bool> globalSwitchWaiting;
-
 };
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="Village" tilewidth="16" tileheight="16" tilecount="256" columns="16">
- <image source="village_tileset.png" width="256" height="256"/>
+<tileset version="1.10" tiledversion="1.10.0" name="Village" tilewidth="48" tileheight="48" tilecount="256" columns="16" objectalignment="topleft" fillmode="preserve-aspect-fit">
+ <image source="village_tileset_x3.png" width="768" height="768"/>
  <tile id="0">
   <properties>
    <property name="isWalkable" type="bool" value="true"/>
@@ -993,12 +993,12 @@
  </tile>
  <tile id="198">
   <properties>
-   <property name="isWalkable" type="bool" value="true"/>
+   <property name="isWalkable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="199">
   <properties>
-   <property name="isWalkable" type="bool" value="true"/>
+   <property name="isWalkable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="200">

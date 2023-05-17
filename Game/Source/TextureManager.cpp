@@ -77,7 +77,7 @@ int TextureManager::Load(std::string const &path)
 		auto texID = *texIter;
 
 		// Add texture with key ID
-		textures[texID] = (texture);
+		textures[texID] = texture;
 
 		// Add texture path/id to look up maps
 		auto pairToEmplace = std::make_pair(texID, 1);
@@ -108,7 +108,7 @@ int TextureManager::GetTextureID(std::string const& path)
 		result != pathToInfo.end())
 	{
 		return result->second.first;
-	};
+	}
 	return -1;
 }
 
@@ -145,7 +145,7 @@ void TextureManager::Unload(int index)
 // Retrieve size of a texture
 void TextureManager::GetSize(SDL_Texture* const texture, int &width, int &height) const
 {
-	SDL_QueryTexture(texture, nullptr, nullptr, (int*) &width, (int*) &height);
+	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 }
 
 SDL_Texture *TextureManager::GetTexture(int textureID) const

@@ -7,7 +7,6 @@
 
 void NPC_Generic::parseXMLProperties(pugi::xml_node const& node)
 {
-	bool numberOfTilesChecked = false;
 	for (auto const& child : node.children())
 	{
 		auto attributeName = child.attribute("name").as_string();
@@ -32,22 +31,10 @@ void NPC_Generic::parseXMLProperties(pugi::xml_node const& node)
 		{
 			common.ReadProperty(child);
 		}
-		else if (StrEquals("isOneTile", attributeName))
-		{
-			bIsTwoTiles = !child.attribute("value").as_bool();
-			numberOfTilesChecked = true;
-		}
 		else
 		{
 			LOG("NPC_Base property %s not implemented.", attributeName);
 		}
-	}
-
-	topwalkable = numberOfTilesChecked;
-
-	if (!numberOfTilesChecked)
-	{
-		bIsTwoTiles = true;
 	}
 }
 

@@ -62,9 +62,11 @@ public:
 	
 	int GetWidth() const;
 	int GetHeight() const;
+	iPoint GetSize() const;
 
 	int GetTileWidth() const;
 	int GetTileHeight() const;
+	iPoint GetTileSize() const;
 
 	int GetTileSetSize() const;
 
@@ -75,6 +77,8 @@ public:
 	bool IsWalkable(iPoint pos) const;
 
 	void SubscribeEventsToGlobalSwitches();
+
+	bool AreThereEnemyEncounters() const;
 
 private:
 	std::vector<TileSet> tilesets;
@@ -88,6 +92,8 @@ private:
 
 	iPoint size = { 0, 0 };
 	iPoint tileSize = { 0, 0 };
+
+	bool randomEncounters = false;
 };
 
 #endif // __MAP_H__
