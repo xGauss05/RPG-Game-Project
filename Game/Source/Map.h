@@ -71,8 +71,8 @@ public:
 	int GetTileSetSize() const;
 
 	// Returns path to XML
-	EventTrigger TriggerEvent(iPoint Position) const;
-	EventTrigger TriggerFloorEvent(iPoint Position) const;
+	EventTrigger TriggerActionButtonEvent(iPoint Position) const;
+	EventTrigger TriggerPlayerTouchEvent(iPoint Position) const;
 
 	bool IsWalkable(iPoint pos) const;
 

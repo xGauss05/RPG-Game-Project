@@ -381,7 +381,7 @@ void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
 	{
 		iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth()));
-		EventTrigger action = map.TriggerEvent(checktile);
+		EventTrigger action = map.TriggerActionButtonEvent(checktile);
 
 		switch (action.eventFunction)
 		{
@@ -443,7 +443,12 @@ void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 			// Create the window that will be used
 			CreateMessageWindow(currentDialogNode.attribute("text").as_string(), MapState::ON_DIALOG);
 
-			PlayDialogueSfx(dialogNode.attribute("voicetype").as_string());
+			if (std::string sfxToPlay = dialogNode.attribute("voicetype").as_string();
+				!sfxToPlay.empty())
+			{
+				PlayDialogueSfx(sfxToPlay);
+			}
+			break;
 		}
 		case TELEPORT:
 		{
@@ -464,6 +469,7 @@ void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 					playerParty->ToggleGlobalSwitchState(it->id);
 				}
 			}
+			break;
 		}
 		case NO_EVENT:
 		{
@@ -477,7 +483,7 @@ void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 	// TODO: Change this to only check the frame the player has stopped movement
 	if (player.IsStandingStill())
 	{
-		EventTrigger action = map.TriggerFloorEvent(player.GetPosition());
+		EventTrigger action = map.TriggerPlayerTouchEvent(player.GetPosition());
 		
 		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
 		{

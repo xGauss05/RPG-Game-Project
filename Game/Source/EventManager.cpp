@@ -105,7 +105,7 @@ bool EventManager::IsWalkable(iPoint position) const
 	return true;
 }
 
-EventTrigger EventManager::TriggerEvent(iPoint destination) const
+EventTrigger EventManager::TriggerActionButtonEvent(iPoint position) const
 {
 	for (auto const& event : events)
 	{
@@ -113,35 +113,60 @@ EventTrigger EventManager::TriggerEvent(iPoint destination) const
 		{
 			continue;
 		}
-
-		if (event->common.trigger == EventProperties::EventTriggerOn::ACTION_BUTTON
-			&& event->position == destination)
+		
+		if (event->common.trigger == EventProperties::EventTriggerOn::ACTION_BUTTON)
 		{
-			return event->OnTrigger();
+			if (auto [returnValue, success] = TriggerEvent(position, event.get());
+				success)
+			{
+				return returnValue;
+			}
 		}
 	}
 
 	return EventTrigger();
 }
 
-EventTrigger EventManager::TriggerFloorEvent(iPoint destination) const
+EventTrigger EventManager::TriggerPlayerTouchEvent(iPoint position) const
 {
 	for (auto const& event : events)
 	{
 		// We ignore the event if it's not active nor is player touch actived
-		if (!event->IsEventActive()
-			|| event->common.trigger != EventProperties::EventTriggerOn::PLAYER_TOUCH)
+		if (!event->IsEventActive())
 		{
 			continue;
 		}
 
-		if (event->position / 48 == destination / 48)
+		if (event->common.trigger == EventProperties::EventTriggerOn::PLAYER_TOUCH)
 		{
-			return event->OnTrigger();
+			if (auto [returnValue, success] = TriggerEvent(position, event.get());
+				success)
+			{
+				return returnValue;
+			}
 		}
 	}
 
 	return EventTrigger();
+}
+
+std::pair<EventTrigger, bool> EventManager::TriggerEvent(iPoint position, Event_Base * event) const
+{
+	iPoint eventPos = event->GetPosition();
+	iPoint eventSize = event->GetSize();
+
+	for (int i = 0; i < eventSize.x; i += tileSize)
+	{
+		for (int j = 0; j < eventSize.y; j += tileSize)
+		{
+			if (eventPos + iPoint(i, j) == position)
+			{
+				return { event->OnTrigger(), true };
+			}
+		}
+	}
+
+	return { EventTrigger(), false };
 }
  
 std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] int index)
@@ -166,6 +191,10 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 	auto gid = sprite->GetGid(drawIterator->get()->state);
 
 	auto pos = dynamic_cast<Transform*>(drawIterator->get())->GetPosition();
+
+	// Set the position of the event to its feet so it draws correctly
+	pos -= dynamic_cast<Transform*>(drawIterator->get())->GetSize();
+	pos = pos + 48;
 	
 	do {
 		++drawIterator;

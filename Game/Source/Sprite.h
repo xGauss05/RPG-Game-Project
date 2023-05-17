@@ -29,6 +29,7 @@ protected:
 			: iPoint((index - 4) * 3, 4);
 
 	}
+
 	void Initialize(pugi::xml_node const& node)
 	{
 		textureID = node.attribute("id").as_int();

@@ -200,12 +200,8 @@ void Map::DrawTile(int gid, iPoint pos) const
 
 	SDL_Rect r = (*result).GetTileRect(gid);
 
-	iPoint drawingPosition = pos;
-	drawingPosition.x += GetTileHeight() - r.w;
-	drawingPosition.y += GetTileWidth()  - r.h;
-
 	app->render->DrawTexture(
-		DrawParameters((*result).GetTextureID(), drawingPosition)
+		DrawParameters((*result).GetTextureID(), pos)
 		.Section(&r)
 	);
 }
@@ -233,14 +229,14 @@ iPoint Map::WorldToMap(iPoint position) const
 	return { position.x / tileSize.x, position.y / tileSize.y };
 }
 
-EventTrigger Map::TriggerEvent(iPoint position) const
+EventTrigger Map::TriggerActionButtonEvent(iPoint position) const
 {
-	return eventManager.TriggerEvent(position);
+	return eventManager.TriggerActionButtonEvent(position);
 }
 
-EventTrigger Map::TriggerFloorEvent(iPoint position) const
+EventTrigger Map::TriggerPlayerTouchEvent(iPoint position) const
 {
-	return eventManager.TriggerFloorEvent(position);
+	return eventManager.TriggerPlayerTouchEvent(position);
 }
 
 bool Map::IsWalkable(iPoint pos) const

@@ -33,12 +33,18 @@ public:
 
 	bool IsWalkable(iPoint position) const;
 
-	EventTrigger TriggerEvent(iPoint destination) const;
-	EventTrigger TriggerFloorEvent(iPoint destination) const;
+	EventTrigger TriggerActionButtonEvent(iPoint position) const;
+	EventTrigger TriggerPlayerTouchEvent(iPoint position) const;
+
+	
 
 	// Returns Gid, position, keepDrawing ? true : false;
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);
+
 private:
+	const int tileSize = 48;
+	std::pair<EventTrigger, bool> TriggerEvent(iPoint position, Event_Base * const event) const;
+
 	std::vector<std::unique_ptr<Event_Base>> events;
 
 	std::vector<std::unique_ptr<Event_Base>>::const_iterator drawIterator;
