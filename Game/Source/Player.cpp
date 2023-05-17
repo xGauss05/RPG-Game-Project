@@ -72,9 +72,7 @@ Player::PlayerAction Player::HandleInput() const
 {
 	using enum KeyState;
 	using enum Player::PlayerAction::Action;
-	iPoint positionCheck = position;
-	positionCheck.y += tileSize;
-	PlayerAction returnAction = { positionCheck, NONE };
+	PlayerAction returnAction = { position, NONE };
 
 	if (!moveVector.IsZero())
 		return returnAction;
