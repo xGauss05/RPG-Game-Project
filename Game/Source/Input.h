@@ -15,7 +15,7 @@ constexpr auto MAX_CONTROLLERS = 8;
 
 struct SDL_Rect;
 
-enum class EventWindow : uint
+enum class EventWindow : int
 {
 	WE_QUIT = 0,
 	WE_HIDE = 1,
@@ -23,12 +23,12 @@ enum class EventWindow : uint
 	WE_COUNT = 3
 };
 
-enum class KeyState : uint
+enum class KeyState : int
 {
-	KEY_IDLE = 0,
-	KEY_DOWN,
-	KEY_REPEAT,
-	KEY_UP
+	KEY_IDLE	= 0,
+	KEY_DOWN	= 1,
+	KEY_REPEAT	= 2,
+	KEY_UP		= 4
 };
 
 struct GameController {
@@ -70,6 +70,7 @@ public:
 	{
 		return keyboard[id];
 	}
+
 	KeyState GetControllerKey(uint controllerId, SDL_GameControllerButton key) const
 	{
 		return controllers[controllerId]->buttons[key];
@@ -89,6 +90,7 @@ public:
 	uPoint GetUnsignedMousePosition() const;
 	void GetMousePosition(int &x, int &y) const;
 	void GetMouseMotion(int& x, int& y) const;
+
 
 	int GetYWheelMotion() const;
 
