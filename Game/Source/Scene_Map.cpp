@@ -356,7 +356,7 @@ void Scene_Map::StateMenu_HandleInput()
 
 void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 {
-	using PA = Player::PlayerAction::Action;
+	using PA = Player::PlayerAction;
 
 	StateNormal_HandleInput();
 
@@ -370,19 +370,33 @@ void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 		}
 	}
 
-	if ((playerAction.action & PA::MOVE) == PA::MOVE)
+	if (player.MovedToNewTileThisFrame())
 	{
+		player.NewTileChecksDone();
+
+		EventTrigger action = map.TriggerPlayerTouchEvent(player.GetPosition());
+
+		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
+		{
+			tpInfo = action;
+			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
+			return;
+		}
+
 		if (CheckRandomBattle())
 		{
 			transitionTo = TransitionScene::START_BATTLE;
 			return;
 		}
-
-		player.StartOrRotateMovement(map.IsWalkable(playerAction.destinationTile));
 	}
-	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+
+	if (playerAction == PA::MOVE)
 	{
-		iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth()));
+		player.StartOrRotateMovement(map.IsWalkable(player.GetTileInFront()));
+	}
+	else if (playerAction == PA::INTERACT)
+	{
+		iPoint checktile = player.GetTileInFront();
 		EventTrigger action = map.TriggerActionButtonEvent(checktile);
 
 		switch (action.eventFunction)
@@ -483,16 +497,7 @@ void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 	player.Update();
 
 	// TODO: Change this to only check the frame the player has stopped movement
-	if (player.IsStandingStill())
-	{
-		EventTrigger action = map.TriggerPlayerTouchEvent(player.GetPosition());
-		
-		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
-		{
-			tpInfo = action;
-			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
-		}
-	}
+	
 }
 
 TransitionScene Scene_Map::Update()
@@ -500,7 +505,7 @@ TransitionScene Scene_Map::Update()
 	DungeonSfx();
 
 	auto playerAction = player.HandleInput();
-	using PA = Player::PlayerAction::Action;
+	using PA = Player::PlayerAction;
 
 	switch (state)
 	{
@@ -545,7 +550,7 @@ TransitionScene Scene_Map::Update()
 		}
 		case ON_MESSAGE:
 		{
-			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+			if (playerAction == PA::INTERACT)
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
@@ -554,7 +559,7 @@ TransitionScene Scene_Map::Update()
 		}
 		case ON_DIALOG:
 		{
-			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+			if (playerAction == PA::INTERACT)
 			{
 				auto const& dialogNode = currentDialogDocument.child("dialog");
 
