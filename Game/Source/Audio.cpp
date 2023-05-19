@@ -173,8 +173,8 @@ int Audio::LoadFx(std::string_view p)
 		m_AvailableIndexes.emplace(m_sfxMap.size() + 1);
 	}
 
-	m_PathToLoadedInfo.try_emplace(path, InfoLoadedSFX(availableID, 1));
-	m_IndexToPath[availableID] = path;
+	m_PathToLoadedInfo.try_emplace(p, InfoLoadedSFX(availableID, 1));
+	m_IndexToPath[availableID] = p;
 
 	return availableID;
 }
