@@ -85,8 +85,6 @@ Player::PlayerAction Player::HandleInput()
 	using enum KeyState;
 	using enum PlayerMoveControlsToBind;
 
-	
-
 	if (uint16_t actionKeysFlags = GetActionKeysPressed();
 		actionKeysFlags & INTERACT_DOWN)
 	{
