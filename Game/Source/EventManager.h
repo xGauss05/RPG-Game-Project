@@ -10,6 +10,22 @@
 
 struct TileInfo;
 
+struct AmbienceSFX
+{
+	int baseCooldown = 10;
+	int cooldownVariance = 0;
+	int maxCooldown = INT_MAX;
+	int minCooldown = 0;
+	int randomChance = 100;
+	std::string path = "";
+	int sfxID = 0;
+
+	explicit AmbienceSFX(pugi::xml_node const& node);
+
+	void ReadProperty(pugi::xml_node const& node);
+	
+};
+
 class EventManager
 {
 public:
@@ -23,12 +39,12 @@ public:
 
 	// ------ Event
 	// --- Constructors
-	bool CreateEvent(
+	bool CreateEvents(
 		Publisher &publisher,
 		pugi::xml_node const &node = pugi::xml_node()
 	);
 
-	void SubscribeEventsToGlobalSwitches();
+	void SubscribeEventsToGlobalSwitches() const;
 
 	int GetEventLayerSize() const;
 
@@ -39,7 +55,7 @@ public:
 	EventTrigger TriggerActionButtonEvent(iPoint position) const;
 	EventTrigger TriggerPlayerTouchEvent(iPoint position) const;
 
-	
+	std::vector<AmbienceSFX>& GetPeriodicSFXs();
 
 	// Returns Gid, position, keepDrawing ? true : false;
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);
@@ -54,6 +70,8 @@ private:
 	std::vector<std::unique_ptr<Event_Base>>::const_iterator drawIterator;
 
 	std::unordered_set<Event_Base*> alreadyRedrawnEvents;
+
+	std::vector<AmbienceSFX> periodicSFXs;
 };
 
 

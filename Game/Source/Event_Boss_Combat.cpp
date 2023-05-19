@@ -11,10 +11,9 @@ void Event_Boss_Combat::parseXMLProperties(pugi::xml_node const& node)
 
 	for (auto const& child : node.children())
 	{
-		auto attributeName = child.attribute("name").as_string();
+		auto attributeType = child.attribute("propertytype").as_string();
 		
-		// GlobalSwitch1, GlobalSwitch2... Way to add multiple global switches to a single lever.
-		if (StrEquals(std::format("{}{}", "GlobalSwitch", std::to_string(globalSwitch.size() + 1)), attributeName))
+		if (StrEquals("Global Switch", attributeType))
 		{
 			globalSwitch.emplace_back();
 			globalSwitch.back().ReadProperty(child);

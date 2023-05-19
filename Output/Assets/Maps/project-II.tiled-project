@@ -10,10 +10,52 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
+            "id": 24,
+            "members": [
+                {
+                    "name": "Cooldown (seconds)",
+                    "type": "int",
+                    "value": 10
+                },
+                {
+                    "name": "Cooldown variance (%)",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "Max Cooldown",
+                    "type": "int",
+                    "value": 2147483647
+                },
+                {
+                    "name": "Min Cooldown",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "Random chance (%)",
+                    "type": "int",
+                    "value": 100
+                },
+                {
+                    "name": "SFX",
+                    "type": "file",
+                    "value": ""
+                }
+            ],
+            "name": "Automatic SFX",
+            "type": "class",
+            "useAs": [
+                "property"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
             "id": 17,
             "members": [
                 {
-                    "name": "SFX",
+                    "name": "SFX On trigger",
                     "type": "file",
                     "value": ""
                 },

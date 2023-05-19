@@ -24,7 +24,7 @@ void EventManager::Initialize()
 		drawIterator = events.begin();
 }
 
-bool EventManager::CreateEvent(Publisher& publisher, pugi::xml_node const& node)
+bool EventManager::CreateEvents(Publisher& publisher, pugi::xml_node const& node)
 {
 	for (auto const& child : node.children("object"))
 	{
@@ -68,12 +68,35 @@ bool EventManager::CreateEvent(Publisher& publisher, pugi::xml_node const& node)
 
 		event->type = child.attribute("type").as_string();
 		event->Create(child);
+		
+		if (auto const& SFXNode = child.child("properties").find_child_by_attribute("name", "PeriodicSFX");
+			SFXNode)
+		{
+			auto const &SFXProperties = SFXNode.child("properties");
+
+			std::string_view pathNode = SFXProperties.find_child_by_attribute("name", "SFX").attribute("value").as_string();
+
+			bool sfxAlreadyInVector = std::ranges::any_of(
+				   periodicSFXs,
+				   [pathNode](AmbienceSFX const& sfx)
+				   {
+						  return StrEquals(pathNode, sfx.path);
+				   }
+			);
+
+			if (!sfxAlreadyInVector)
+			{
+				periodicSFXs.emplace_back(SFXNode);
+			}
+
+		}
+
 		events.push_back(std::move(event));
 	}
 	return true;
 }
 
-void EventManager::SubscribeEventsToGlobalSwitches()
+void EventManager::SubscribeEventsToGlobalSwitches() const
 {
 	for (auto const& elem : events)
 	{
@@ -153,6 +176,11 @@ EventTrigger EventManager::TriggerPlayerTouchEvent(iPoint position) const
 	}
 
 	return EventTrigger();
+}
+
+std::vector<AmbienceSFX>& EventManager::GetPeriodicSFXs()
+{
+	return periodicSFXs;
 }
 
 std::pair<EventTrigger, bool> EventManager::TriggerEvent(iPoint position, Event_Base * event) const
@@ -244,4 +272,41 @@ std::pair<int, iPoint> EventManager::GetRedrawEventGID(iPoint position)
 	return { 0, iPoint(0, 0) };
 }
 
+AmbienceSFX::AmbienceSFX(pugi::xml_node const& node)
+{
+	ReadProperty(node);
+}
 
+void AmbienceSFX::ReadProperty(pugi::xml_node const& node)
+{
+	auto propertiesNode = node.child("properties");
+
+	for (auto const& child : propertiesNode.children("property"))
+	{
+		auto attributeName = child.attribute("name").as_string();
+		if (StrEquals("Cooldown (seconds)", attributeName))
+		{
+			baseCooldown = child.attribute("value").as_int();
+		}
+		else if (StrEquals("Cooldown variance (%)", attributeName))
+		{
+			cooldownVariance = child.attribute("value").as_int();
+		}
+		else if (StrEquals("Max Cooldown", attributeName))
+		{
+			maxCooldown = child.attribute("value").as_int();
+		}
+		else if (StrEquals("Min Cooldown", attributeName))
+		{
+			minCooldown = child.attribute("value").as_int();
+		}
+		else if (StrEquals("Random chance (%)", attributeName))
+		{
+			randomChance = child.attribute("value").as_int();
+		}
+		else if (StrEquals("SFX", attributeName))
+		{
+			path = child.attribute("value").as_string();
+		}
+	}
+}

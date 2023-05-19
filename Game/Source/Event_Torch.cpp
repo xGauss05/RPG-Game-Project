@@ -13,25 +13,30 @@ void Event_Torch::parseXMLProperties(pugi::xml_node const& node)
 {
 	for (auto const& child : node.children())
 	{
-		auto attributeName = child.attribute("name").as_string();
-		
-		if (StrEquals("Base", attributeName))
+		if (std::string_view attributeType = child.attribute("propertytype").as_string();
+			!attributeType.empty())
 		{
-			common.ReadProperty(child);
-		}
-		// GlobalSwitch1, GlobalSwitch2... Way to add multiple global switches to a single lever.
-		else if (StrEquals(std::format("{}{}", "GlobalSwitch", std::to_string(globalSwitch.size() + 1)), attributeName))
-		{
-			globalSwitch.emplace_back();
-			globalSwitch.back().ReadProperty(child);
-		}
-		else if (StrEquals("state", attributeName))
-		{
-			state = child.attribute("value").as_bool();
+			if (StrEquals("Base Event", attributeType))
+			{
+				common.ReadProperty(child);
+			}
+			// GlobalSwitch1, GlobalSwitch2... Way to add multiple global switches to a single lever.
+			else if (StrEquals("Global Switch", attributeType))
+			{
+				globalSwitch.emplace_back();
+				globalSwitch.back().ReadProperty(child);
+			}
 		}
 		else
 		{
-			LOG("Torch property %s not implemented.", attributeName);
+			if (StrEquals("state", child.attribute("name").as_string()))
+			{
+				state = child.attribute("value").as_bool();
+			}
+			else
+			{
+				LOG("Torch property %s not implemented.", child.attribute("name").as_string());
+			}
 		}
 	}
 }

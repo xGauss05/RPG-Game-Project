@@ -17,7 +17,6 @@ public:
 	void Create(pugi::xml_node const& node) override;
 
 	void UpdateSubscriber(int id, bool s) override;
-
 protected:
 	void AttachToGlobalSwitches() override;
 

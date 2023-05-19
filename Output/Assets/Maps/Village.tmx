@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="48" tileheight="48" infinite="0" nextlayerid="13" nextobjectid="181">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="48" tileheight="48" infinite="0" nextlayerid="13" nextobjectid="182">
  <properties>
+  <property name="PeriodicSFX" type="class" propertytype="Automatic SFX">
+   <properties>
+    <property name="SFX" type="file" value="../Audio/Fx/S_Dungeon-WaterDroplet.wav"/>
+   </properties>
+  </property>
   <property name="RandomEncounters" type="bool" value="false"/>
  </properties>
  <tileset firstgid="1" source="Village.tsx"/>
@@ -256,6 +261,11 @@
       <property name="ID" type="int" value="211"/>
      </properties>
     </property>
+    <property name="PeriodicSFX" type="class" propertytype="Automatic SFX">
+     <properties>
+      <property name="SFX" type="file" value="../Audio/Fx/S_Dungeon-Torch.wav"/>
+     </properties>
+    </property>
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
@@ -396,6 +406,28 @@
       <property name="Destination Y" type="int" value="11"/>
      </properties>
     </property>
+   </properties>
+  </object>
+  <object id="181" type="Event Torch" gid="321" x="624" y="2400" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="201"/>
+     </properties>
+    </property>
+    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="int" propertytype="Helper Switch Function" value="4"/>
+      <property name="ID" type="int" value="211"/>
+     </properties>
+    </property>
+    <property name="PeriodicSFX" type="class" propertytype="Automatic SFX">
+     <properties>
+      <property name="SFX" type="file" value="../Audio/Fx/S_Dungeon-Torch.wav"/>
+     </properties>
+    </property>
+    <property name="state" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

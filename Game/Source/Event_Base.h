@@ -40,7 +40,7 @@ namespace EventProperties
 			for (auto const& child : propertiesNode.children("property"))
 			{
 				auto attributeName = child.attribute("name").as_string();
-				if (StrEquals("SFX", attributeName))
+				if (StrEquals("SFX On trigger", attributeName))
 				{
 					sfxPath = child.attribute("value").as_string();
 				}
@@ -212,6 +212,7 @@ public:
 	std::string name = "";
 	std::string type = "";
 	EventProperties::CommonProperties common;
+
 	bool walkable = false;
 
 	bool state = false;

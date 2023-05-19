@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Render.h"
 #include "TextManager.h"
+#include "Audio.h"
 
 #include "Log.h"
 
@@ -75,7 +76,7 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 			if (StrEquals("Layer of Events", child.attribute("class").as_string()))
 			{
 				drawOrder.emplace_back(LayerType::EVENT_LAYER, eventManager.GetEventLayerSize());
-				eventManager.CreateEvent(publisher, child);
+				eventManager.CreateEvents(publisher, child);
 			}
 			else 
 			{
@@ -91,6 +92,25 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 				{
 					randomEncounters = property.attribute("value").as_bool();
 				}
+				else if (StrEquals(property.attribute("propertytype").as_string(), "Automatic SFX"))
+				{
+					auto const& SFXProperties = property.child("properties");
+
+					std::string_view pathNode = SFXProperties.find_child_by_attribute("name", "SFX").attribute("value").as_string();
+
+					bool sfxAlreadyInVector = std::ranges::any_of(
+						   periodicSFXs,
+						   [pathNode](AmbienceSFX const& sfx)
+						   {
+								   return StrEquals(pathNode, sfx.path);
+						   }
+					);
+
+					if (!sfxAlreadyInVector)
+					{
+						periodicSFXs.emplace_back(property);
+					}
+				}
 				else
 				{
 					LOG("Property [ %s ] for map not implemented.", child.attribute("name").as_string());
@@ -105,6 +125,29 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 	}
 
 	eventManager.Initialize();
+
+	auto const& eventsSFXs = eventManager.GetPeriodicSFXs();
+
+	for (auto const& sfxElem : eventsSFXs)
+	{
+		auto alreadyInSFX = std::ranges::any_of(
+			periodicSFXs,
+			[&sfxElem](AmbienceSFX const& sfx)
+			{
+		return StrEquals(sfx.path, sfxElem.path);
+			}
+		);
+
+		if (!alreadyInSFX)
+		{
+			periodicSFXs.emplace_back(sfxElem);
+		}
+	}
+
+	for (auto& elem : periodicSFXs)
+	{
+		elem.sfxID = app->audio->LoadFx(elem.path);
+	}
 
 	return true;
 }

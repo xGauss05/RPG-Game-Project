@@ -98,6 +98,8 @@ private:
 	iPoint size = { 0, 0 };
 	iPoint tileSize = { 0, 0 };
 
+	std::vector<AmbienceSFX> periodicSFXs;
+
 	bool randomEncounters = false;
 };
 
