@@ -93,6 +93,12 @@ private:
 	void PlaySFX(int id) const;
 	void DungeonSfx();
 
+	void StateNormal_HandlePlayerInteract();
+	bool StateNormal_HandlePlayerNewTile();
+	void StateNormal_HandleQuestUpdates();
+
+	void StartNewDialog(EventTrigger const &action);
+
 	TransitionScene TryRandomBattle();
 	
 
@@ -119,18 +125,12 @@ private:
 	TransitionScene transitionTo = TransitionScene::NONE;
 
 	const Window_Factory* windowFactory = nullptr;
-	LookUpXMLNodeFromString xmlNode; //Maybe remove that when fixed?
 
 	std::vector<std::unique_ptr<Window_Base>> pauseWindow;
 	std::unique_ptr<Map_Window_Menu> mainMenu;
 	std::unique_ptr<Map_Display_QuestLog> questLog;
 
 	std::unordered_map<AvailableSFXs, int> sfx;
-
-	//int doorOpenSfx = -1;
-	//int dootCloseSfx = -1;
-	//int leverOpenSfx = -1;
-	//int levelCloseSfx = -1;
 
 	iPoint spawnPlayerPosition = { 0, 0 };
 	

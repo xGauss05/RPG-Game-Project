@@ -309,6 +309,11 @@ void Map::RedrawnCompleted()
 	eventManager.RedrawnCompleted();
 }
 
+void Map::DrawLastLayer() const
+{
+	DrawTileLayer(tileLayers.back());
+}
+
 int Map::GetWidth() const { return size.x; }
 int Map::GetHeight() const { return size.y; }
 iPoint Map::GetSize() const { return size; }

@@ -83,6 +83,8 @@ public:
 	void RedrawBelowPlayer(iPoint position);
 	void RedrawnCompleted();
 
+	void DrawLastLayer() const;
+
 private:
 	std::vector<TileSet> tilesets;
 	std::vector<MapLayer> tileLayers;
