@@ -238,6 +238,8 @@ void Player::SmoothMovement()
 	if (distanceToNextTile == 0) [[unlikely]]
 	{
 		currentMovementVector.SetToZero();
+
+		bMovedToNewTile = true;
 	}
 	else if (distanceToNextTile < 0) [[unlikely]]
 	{
@@ -249,8 +251,6 @@ void Player::SmoothMovement()
 		distanceToNextTile -= abs(currentMovementVector.x + currentMovementVector.y);
 		position += currentMovementVector;
 		drawPosition += currentMovementVector;
-
-		bMovedToNewTile = true;
 	}
 }
 
