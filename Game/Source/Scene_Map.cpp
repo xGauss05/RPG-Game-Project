@@ -523,7 +523,7 @@ void Scene_Map::StateNormal_HandlePlayerInteract()
 
 TransitionScene Scene_Map::Update()
 {
-	DungeonSfx();
+	map.Update();
 
 	auto playerAction = player.HandleInput();
 	using PA = Player::PlayerAction;

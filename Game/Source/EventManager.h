@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include <unordered_set>
+#include <chrono>
 
 struct TileInfo;
 
@@ -20,10 +21,14 @@ struct AmbienceSFX
 	std::string path = "";
 	int sfxID = 0;
 
+	std::chrono::time_point<std::chrono::steady_clock> lastTimePlayed;
+	int cooldown = 10;
+
 	explicit AmbienceSFX(pugi::xml_node const& node);
 
 	void ReadProperty(pugi::xml_node const& node);
 	
+	void CalculateNewCooldown();
 };
 
 class EventManager

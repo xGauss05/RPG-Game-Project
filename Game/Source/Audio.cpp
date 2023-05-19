@@ -124,20 +124,38 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 }
 
 // Load WAV
-int Audio::LoadFx(std::string_view path)
+int Audio::LoadFx(std::string_view p)
 {
 	if (!active)
 		return 0;
 
-	if (auto result = m_PathToLoadedInfo.find(path);
-		result == m_PathToLoadedInfo.end())
+	if (auto result = m_PathToLoadedInfo.find(p);
+		result != m_PathToLoadedInfo.end())
 	{
-		LOG("SFX [ %s ] already loaded", path);
+		LOG("SFX [ %s ] already loaded", p);
 		result->second.references++;
 		return result->second.id;
 	}
 
-	auto sfxChunk = Mix_LoadWAV_RW(app->assets->Load(std::string(path).c_str()), 1);
+	auto path = std::string(p);
+
+	SDL_RWops* loadSuccess = app->assets->Load(path.c_str());
+	
+	Mix_Chunk* sfxChunk = nullptr;
+
+	if (loadSuccess)
+	{
+		sfxChunk = Mix_LoadWAV_RW(loadSuccess, 1);
+	}
+	else
+	{
+		if (p.starts_with(".."))
+		{
+			p.remove_prefix(2);
+			path = std::format("{}{}", "Assets", p);
+		}
+		sfxChunk = Mix_LoadWAV(path.c_str());
+	}
 
 	if (!sfxChunk)
 	{
@@ -152,7 +170,7 @@ int Audio::LoadFx(std::string_view path)
 
 	if (m_AvailableIndexes.empty())
 	{
-		m_AvailableIndexes.emplace(m_sfxMap.size());
+		m_AvailableIndexes.emplace(m_sfxMap.size() + 1);
 	}
 
 	m_PathToLoadedInfo.try_emplace(path, InfoLoadedSFX(availableID, 1));

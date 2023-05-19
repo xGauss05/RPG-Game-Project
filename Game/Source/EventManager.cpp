@@ -13,6 +13,8 @@
 
 #include "Log.h"
 
+#include <cstdlib>
+
 EventManager::EventManager() = default;
 
 // Destructor
@@ -22,6 +24,8 @@ void EventManager::Initialize()
 {
 	if (!events.empty())
 		drawIterator = events.begin();
+
+	periodicSFXs.clear();
 }
 
 bool EventManager::CreateEvents(Publisher& publisher, pugi::xml_node const& node)
@@ -309,4 +313,18 @@ void AmbienceSFX::ReadProperty(pugi::xml_node const& node)
 			path = child.attribute("value").as_string();
 		}
 	}
+}
+
+void AmbienceSFX::CalculateNewCooldown()
+{
+	srand(time(NULL));
+
+	float variance = 0;
+
+	if(cooldownVariance > 0)
+		variance = static_cast<float>((rand() % (cooldownVariance * 2)) - cooldownVariance) / 100.0f;
+
+	float varianceValue = static_cast<float>(baseCooldown) * variance;
+
+	cooldown = baseCooldown + static_cast<int>(ceil(varianceValue));
 }

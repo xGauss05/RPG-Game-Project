@@ -59,6 +59,8 @@ public:
 	bool DrawObjectLayer(int index);
 	void DrawTileLayer(const MapLayer& layer) const;
 	void DrawTile(int gid, iPoint pos) const;
+
+	void Update();
 	
 	int GetWidth() const;
 	int GetHeight() const;

@@ -3,6 +3,7 @@
  <properties>
   <property name="PeriodicSFX" type="class" propertytype="Automatic SFX">
    <properties>
+    <property name="Cooldown (seconds)" type="int" value="4"/>
     <property name="SFX" type="file" value="../Audio/Fx/S_Dungeon-WaterDroplet.wav"/>
    </properties>
   </property>

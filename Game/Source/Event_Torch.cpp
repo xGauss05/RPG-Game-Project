@@ -20,7 +20,6 @@ void Event_Torch::parseXMLProperties(pugi::xml_node const& node)
 			{
 				common.ReadProperty(child);
 			}
-			// GlobalSwitch1, GlobalSwitch2... Way to add multiple global switches to a single lever.
 			else if (StrEquals("Global Switch", attributeType))
 			{
 				globalSwitch.emplace_back();

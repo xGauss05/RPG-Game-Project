@@ -124,8 +124,6 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 		}
 	}
 
-	eventManager.Initialize();
-
 	auto const& eventsSFXs = eventManager.GetPeriodicSFXs();
 
 	for (auto const& sfxElem : eventsSFXs)
@@ -134,7 +132,7 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 			periodicSFXs,
 			[&sfxElem](AmbienceSFX const& sfx)
 			{
-		return StrEquals(sfx.path, sfxElem.path);
+				return StrEquals(sfx.path, sfxElem.path);
 			}
 		);
 
@@ -147,7 +145,11 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 	for (auto& elem : periodicSFXs)
 	{
 		elem.sfxID = app->audio->LoadFx(elem.path);
+		elem.lastTimePlayed = std::chrono::steady_clock::now();
+		elem.CalculateNewCooldown();
 	}
+
+	eventManager.Initialize();
 
 	return true;
 }
@@ -253,6 +255,23 @@ void Map::DrawTile(int gid, iPoint pos) const
 		DrawParameters((*result).GetTextureID(), pos)
 		.Section(&r)
 	);
+}
+
+void Map::Update()
+{
+	auto currentTime = std::chrono::steady_clock::now();
+
+	for (auto & elem : periodicSFXs)
+	{
+		auto timeElapsed = std::chrono::duration_cast<std::chrono::seconds>(currentTime - elem.lastTimePlayed);
+		if (timeElapsed.count() >= elem.cooldown)
+		{
+			LOG("PLAYING %i", elem.sfxID);
+			app->audio->PlayFx(elem.sfxID);
+			elem.CalculateNewCooldown();
+			elem.lastTimePlayed = currentTime;
+		}
+	}
 }
 
 // Translates x,y coordinates from map positions to world positions
