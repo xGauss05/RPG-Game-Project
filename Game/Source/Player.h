@@ -99,6 +99,10 @@ private:
 	void SelectDirectionTexture(Direction direction = NONE);
 	uint16_t GetMovementKeysPressed() const;
 
+	uint16_t GetKeyState(SDL_Scancode key, uint16_t action) const;
+
+	uint16_t GetActionKeysPressed() const;
+
 	PlayerMoveControlsToBind CastToEnum(uint16_t value) const;
 
 	std::unordered_map<Direction, iPoint> directionMeaning;

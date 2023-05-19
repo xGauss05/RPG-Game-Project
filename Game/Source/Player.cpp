@@ -85,7 +85,13 @@ Player::PlayerAction Player::HandleInput()
 	using enum KeyState;
 	using enum PlayerMoveControlsToBind;
 
-	PlayerAction returnAction = PlayerAction::NONE;
+	
+
+	if (uint16_t actionKeysFlags = GetActionKeysPressed();
+		actionKeysFlags & INTERACT_DOWN)
+	{
+		return PlayerAction::INTERACT;
+	}
 
 	auto IsNotZero = [](uint16_t num) -> bool { return ((num | (~num + 1)) >> (sizeof(num) * CHAR_BIT - 1)) & 1; };
 	auto IsZero = [IsNotZero](uint16_t num) { return !IsNotZero(num); };
@@ -131,10 +137,10 @@ Player::PlayerAction Player::HandleInput()
 	if(!directionQueue.empty() && currentMovementVector.IsZero())
 	{
 		lastDirection = directionQueue.top();
-		returnAction = PlayerAction::MOVE;
+		return PlayerAction::MOVE;
 	}
 
-	return returnAction;
+	return PlayerAction::NONE;
 }
 
 void Player::StartOrRotateMovement(bool walkable)
@@ -256,23 +262,42 @@ uint16_t Player::GetMovementKeysPressed() const
 
 	for (auto const &[key, action] : movementControls)
 	{
-		using enum KeyState;
-		switch (app->input->GetKey(key))
-		{
-		case KEY_IDLE:
-			actionsPressed |= (action << 3);
-			break;
-		case KEY_UP:
-			actionsPressed |= (action << 2);
-			break;
-		case KEY_DOWN:
-			actionsPressed |= (action << 1);
-			break;
-		case KEY_REPEAT:
-			actionsPressed |= action;
-			break;
-		}
+		actionsPressed |= GetKeyState(key, action);
 	}
 
 	return actionsPressed;
+}
+
+uint16_t Player::GetActionKeysPressed() const
+{
+	uint16_t actionsPressed{ 0 };
+
+	for(auto const &[key, action] : actionControls)
+	{
+		actionsPressed |= GetKeyState(key, action);
+	}
+
+	return actionsPressed;
+}
+
+uint16_t Player::GetKeyState(SDL_Scancode key, uint16_t action) const
+{
+	using enum KeyState;
+	switch (app->input->GetKey(key))
+	{
+	case KEY_IDLE:
+		return static_cast<uint16_t>(action << 3);
+		break;
+	case KEY_UP:
+		return static_cast<uint16_t>(action << 2);
+		break;
+	case KEY_DOWN:
+		return static_cast<uint16_t>(action << 1);
+		break;
+	case KEY_REPEAT:
+		return action;
+		break;
+	}
+
+	return 0;
 }
