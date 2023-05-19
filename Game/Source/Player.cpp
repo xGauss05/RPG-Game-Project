@@ -6,6 +6,11 @@
 #include "Input.h"
 #include "Render.h"
 
+#include "Log.h"
+
+#include <bitset>
+#include <cstddef>
+
 Player::Player() = default;
 
 Player::~Player() = default;
@@ -32,17 +37,7 @@ void Player::SetSpeed(int newSpeed)
 
 bool Player::IsStandingStill() const
 {
-	return moveVector.IsZero();
-}
-
-void Player::SetMovementStopped(bool b)
-{
-	movementStopped = b;
-}
-
-bool Player::GetMovementStopped() const
-{
-	return movementStopped;
+	return currentMovementVector.IsZero();
 }
 
 void Player::Draw() const
@@ -70,162 +65,158 @@ void Player::Create()
 		size.x,
 		size.y
 	};
+
+	actionControls.emplace(SDL_SCANCODE_E, INTERACT_REPEAT);
+	actionControls.emplace(SDL_SCANCODE_SPACE, INTERACT_REPEAT);
+
+	movementControls.emplace(SDL_SCANCODE_W, FORWARD_REPEAT);
+	movementControls.emplace(SDL_SCANCODE_S, BACKWARD_REPEAT);
+	movementControls.emplace(SDL_SCANCODE_A, LEFT_REPEAT);
+	movementControls.emplace(SDL_SCANCODE_D, RIGHT_REPEAT);
+
+	directionMeaning.try_emplace(UP, 0, -1);
+	directionMeaning.try_emplace(DOWN, 0, 1);
+	directionMeaning.try_emplace(LEFT, -1, 0);
+	directionMeaning.try_emplace(RIGHT, 1, 0);
 }
 
-Player::PlayerAction Player::HandleInput() const
+Player::PlayerAction Player::HandleInput()
 {
 	using enum KeyState;
-	using enum Player::PlayerAction::Action;
-	PlayerAction returnAction = { position, NONE };
+	using enum PlayerMoveControlsToBind;
 
-	if (!moveVector.IsZero())
-		return returnAction;
-
-	if (app->input->controllerCount > 0)
+	if (uint16_t actionKeysFlags = GetActionKeysPressed();
+		actionKeysFlags & INTERACT_DOWN)
 	{
-		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_REPEAT)
-		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.y -= tileSize;
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
-		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.x -= tileSize;
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_REPEAT)
-		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.y += tileSize;
-
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_REPEAT)
-		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.x += tileSize;
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
-		{
-			returnAction.action |= INTERACT;
-		}
+		return PlayerAction::INTERACT;
 	}
-	else
-	{
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.y -= tileSize;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.x -= tileSize;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.y += tileSize;
 
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	auto IsNotZero = [](uint16_t num) -> bool { return ((num | (~num + 1)) >> (sizeof(num) * CHAR_BIT - 1)) & 1; };
+	auto IsZero = [IsNotZero](uint16_t num) { return !IsNotZero(num); };
+
+	// Check keys pressed and add/remove them to the collection
+	// If it's a new input (aka Key_Down), put it on top of the direction stack
+	for (uint16_t movementKeysFlags = GetMovementKeysPressed(), repeatHelper = FORWARD_REPEAT;
+		!IsZero(movementKeysFlags) && !IsZero(repeatHelper);
+		movementKeysFlags ^= repeatHelper, repeatHelper <<= 1)
+	{
+		uint16_t pressedKeys = repeatHelper & movementKeysFlags;
+
+		if (IsZero(pressedKeys))
 		{
-			returnAction.action |= MOVE;
-			returnAction.destinationTile.x += tileSize;
+			continue;
 		}
-		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		if (pressedKeys & ANY_KEY_REPEAT)
 		{
-			returnAction.action |= INTERACT;
+			movementKeysPressed.insert(CastToEnum(ANY_KEY_REPEAT & repeatHelper));
+		}
+		else if (pressedKeys & ANY_KEY_DOWN)
+		{
+			directionQueue.push(static_cast<Direction>((ANY_KEY_DOWN & repeatHelper) >> 1));
+			movementKeysPressed.insert(CastToEnum((ANY_KEY_DOWN & repeatHelper) >> 1));
+		}
+		else if (pressedKeys & ANY_KEY_UP)
+		{
+			movementKeysPressed.erase(CastToEnum((ANY_KEY_UP & repeatHelper) >> 2));
+		}
+		else if (pressedKeys & ANY_KEY_IDLE)
+		{
+			movementKeysPressed.erase(CastToEnum((ANY_KEY_IDLE & repeatHelper) >> 3));
 		}
 	}
 
-	return returnAction;
+	// Check if top of the direction stack is still being pressed, if it isn't remove it and check again
+	while (!directionQueue.empty() && !movementKeysPressed.contains(CastToEnum(directionQueue.top())))
+	{
+		directionQueue.pop();
+	}
+
+	// If there's a movement key being pressed
+	if(!directionQueue.empty() && currentMovementVector.IsZero())
+	{
+		lastDirection = directionQueue.top();
+		return PlayerAction::MOVE;
+	}
+
+	return PlayerAction::NONE;
 }
 
 void Player::StartOrRotateMovement(bool walkable)
 {
-	// We start the movement no matter what, as it holds the input handler
-	StartMovement();
-
-	// Although, if the tile it's non-walkable, we stop the velocity so we get the rotated sprite without moving
-	if (!walkable)
-		moveVector.SetToZero();
+	SelectDirectionTexture();
 	
+	if (walkable)
+		StartMovement();
 }
 
 void Player::StartMovement()
 {
-	using enum KeyState;
-
-	if (app->input->controllerCount > 0)
-	{
-		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_REPEAT)
-		{
-			moveVector.y = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
-		{
-			moveVector.x = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_REPEAT)
-		{
-			moveVector.y = 1;
-			currentSpriteSlice.y = GetTextureIndex().y * size.y;
-
-		}
-		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_REPEAT)
-		{
-			moveVector.x = 1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
-		}
-	}
-	else
-	{
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		{
-			moveVector.y = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		{
-			moveVector.x = -1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		{
-			moveVector.y = 1;
-			currentSpriteSlice.y = GetTextureIndex().y * size.y;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		{
-			moveVector.x = 1;
-			currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
-		}
-	}
-
-	lastDir = moveVector;
+	lastDirection = directionQueue.top();
+	currentMovementVector = directionMeaning[directionQueue.top()] * speed;
+	distanceToNextTile = tileSize;
 }
 
-void Player::RotatePlayer()
+void Player::SelectDirectionTexture(Direction direction)
 {
-	StartMovement();
-	moveVector.SetToZero();
+	Direction directionToAnim = direction == NONE ? directionQueue.top() : direction;
+	switch (directionToAnim)
+	{
+	case Direction::UP:
+		currentSpriteSlice.y = (GetTextureIndex().y + 3) * size.y;
+		break;
+	case Direction::DOWN:
+		currentSpriteSlice.y = GetTextureIndex().y * size.y;
+		break;
+	case Direction::LEFT:
+		currentSpriteSlice.y = (GetTextureIndex().y + 1) * size.y;
+		break;
+	case Direction::RIGHT:
+		currentSpriteSlice.y = (GetTextureIndex().y + 2) * size.y;
+		break;
+	default:
+		break;
+	}
+}
+
+iPoint Player::GetTileInFront() const
+{
+	return position + (directionMeaning.at(lastDirection) * tileSize);
+}
+
+bool Player::MovedToNewTileThisFrame() const
+{
+	return bMovedToNewTile;
+}
+
+void Player::NewTileChecksDone()
+{
+	bMovedToNewTile = false;
+}
+
+Player::PlayerMoveControlsToBind Player::CastToEnum(uint16_t value) const
+{
+	return static_cast<PlayerMoveControlsToBind>(value);
 }
 
 void Player::Update()
 {
-	if (!moveVector.IsZero())
+	if (!currentMovementVector.IsZero())
 	{
-		AnimateMove();
-		SmoothMove();
+		AnimateMovement();
+		SmoothMovement();
 		app->render->AdjustCamera(position);
+	}
+	else
+	{
+		currentSpriteSlice.x = (GetTextureIndex().x + 1) * size.x;
+
+		SelectDirectionTexture(lastDirection);
 	}
 }
 
-void Player::AnimateMove()
+void Player::AnimateMovement()
 {
-	if (animTimer == 8)
+	if (animTimer == 0)
 	{
 		currentSpriteSlice.x += (size.x * animIncrease);
 
@@ -234,28 +225,77 @@ void Player::AnimateMove()
 			animIncrease *= -1;
 		}
 
-		animTimer = 0;
+		animTimer = tileSize / speed;
 	}
 	else
 	{
-		animTimer++;
+		animTimer--;
 	}
 }
 
-void Player::SmoothMove()
+void Player::SmoothMovement()
 {
-	if (moveTimer == timeForATile)
+	if (distanceToNextTile == 0) [[unlikely]]
 	{
-		moveTimer = 0;
-		position += (moveVector * speed);
-		drawPosition += (moveVector * speed);
-		if (position.x % tileSize == 0 && position.y % tileSize == 0)
-		{
-			moveVector.SetToZero();
-		}
+		currentMovementVector.SetToZero();
+
+		bMovedToNewTile = true;
 	}
-	else
+	else if (distanceToNextTile < 0) [[unlikely]]
 	{
-		moveTimer++;
+		position.FloorToNearest(tileSize);
+		distanceToNextTile = 0;
 	}
+	else [[likely]]
+	{
+		distanceToNextTile -= abs(currentMovementVector.x + currentMovementVector.y);
+		position += currentMovementVector;
+		drawPosition += currentMovementVector;
+	}
+}
+
+uint16_t Player::GetMovementKeysPressed() const
+{
+	uint16_t actionsPressed{ 0 };
+
+	for (auto const &[key, action] : movementControls)
+	{
+		actionsPressed |= GetKeyState(key, action);
+	}
+
+	return actionsPressed;
+}
+
+uint16_t Player::GetActionKeysPressed() const
+{
+	uint16_t actionsPressed{ 0 };
+
+	for(auto const &[key, action] : actionControls)
+	{
+		actionsPressed |= GetKeyState(key, action);
+	}
+
+	return actionsPressed;
+}
+
+uint16_t Player::GetKeyState(SDL_Scancode key, uint16_t action) const
+{
+	using enum KeyState;
+	switch (app->input->GetKey(key))
+	{
+	case KEY_IDLE:
+		return static_cast<uint16_t>(action << 3);
+		break;
+	case KEY_UP:
+		return static_cast<uint16_t>(action << 2);
+		break;
+	case KEY_DOWN:
+		return static_cast<uint16_t>(action << 1);
+		break;
+	case KEY_REPEAT:
+		return action;
+		break;
+	}
+
+	return 0;
 }

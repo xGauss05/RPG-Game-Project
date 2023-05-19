@@ -356,7 +356,7 @@ void Scene_Map::StateMenu_HandleInput()
 
 void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 {
-	using PA = Player::PlayerAction::Action;
+	using PA = Player::PlayerAction;
 
 	StateNormal_HandleInput();
 
@@ -370,129 +370,133 @@ void Scene_Map::UpdateNormalMapState(Player::PlayerAction playerAction)
 		}
 	}
 
-	if ((playerAction.action & PA::MOVE) == PA::MOVE)
+	if (player.MovedToNewTileThisFrame())
 	{
+		player.NewTileChecksDone();
+
+		EventTrigger action = map.TriggerPlayerTouchEvent(player.GetPosition());
+
+		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
+		{
+			tpInfo = action;
+			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
+			return;
+		}
+
 		if (CheckRandomBattle())
 		{
 			transitionTo = TransitionScene::START_BATTLE;
 			return;
 		}
-
-		player.StartOrRotateMovement(map.IsWalkable(playerAction.destinationTile));
 	}
-	else if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+
+	if (playerAction == PA::MOVE)
 	{
-		iPoint checktile = player.GetPosition() + (player.lastDir * (map.GetTileWidth()));
-		EventTrigger action = map.TriggerActionButtonEvent(checktile);
+		player.StartOrRotateMovement(map.IsWalkable(player.GetTileInFront()));
+	}
+	else if (playerAction == PA::INTERACT)
+	{
+		EventTrigger action = map.TriggerActionButtonEvent(player.GetTileInFront());
 
 		switch (action.eventFunction)
 		{
 			using enum EventTrigger::WhatToDo;
-		case LOOT:
-		{
-			if (!playerParty)
+			case LOOT:
+			{
+				if (!playerParty)
+				{
+					break;
+				}
+
+				for (auto const& [itemToAdd, amountToAdd] : action.values)
+				{
+					if (StrEquals(itemToAdd, "Coins")) [[unlikely]]
+					{
+						playerParty->AddGold(amountToAdd);
+
+						action.text = (amountToAdd == 1)
+							? AddSaveData(action.text, amountToAdd, "coin")
+							: AddSaveData(action.text, amountToAdd, "coins");
+					}
+					else [[likely]]
+					{
+						playerParty->AddItemToInventory(itemToAdd, amountToAdd);
+						action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
+					}
+				}
+				[[fallthrough]];
+			}
+			case SHOW_MESSAGE:
+			{
+				CreateMessageWindow(action.text);
+				break;
+			}
+			case DIALOG_PATH:
+			{
+				if (auto result = currentDialogDocument.load_file(action.text.c_str());
+					!result)
+				{
+					LOG("Could not load dialog xml file. Pugi error: %s", result.description());
+					break;
+				}
+
+				auto const& dialogNode = currentDialogDocument.child("dialog");
+
+				// Check if player has any quest of "TALK_TO" type, and if it does, update progress.
+				if (std::string npcName = dialogNode.attribute("name").as_string();
+					!npcName.empty())
+				{
+					std::vector<std::pair<std::string_view, int>> npcTalkedTo;
+					npcTalkedTo.emplace_back(npcName, 1);
+
+					playerParty->PossibleQuestProgress(QuestType::TALK_TO, npcTalkedTo, std::vector<std::pair<int, int>>());
+
+				}
+
+				currentDialogNode = dialogNode.child("message1");
+
+				// Create the window that will be used
+				CreateMessageWindow(currentDialogNode.attribute("text").as_string(), MapState::ON_DIALOG);
+
+				if (std::string sfxToPlay = dialogNode.attribute("voicetype").as_string();
+					!sfxToPlay.empty())
+				{
+					PlayDialogueSfx(sfxToPlay);
+				}
+				break;
+			}
+			case TELEPORT:
+			{
+				tpInfo = action;
+				transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
+			}
+			case GLOBAL_SWITCH:
+			{
+				for (auto& it = action.globalSwitchIteratorBegin; it != action.globalSwitchIteratorEnd; ++it)
+				{
+					using enum EventProperties::GlobalSwitchOnInteract;
+					if (it->functionOnInteract == SET)
+					{
+						playerParty->SetGlobalSwitchState(it->id, it->setTo);
+					}
+					else if (it->functionOnInteract == TOGGLE)
+					{
+						playerParty->ToggleGlobalSwitchState(it->id);
+					}
+				}
+				break;
+			}
+			case NO_EVENT:
 			{
 				break;
 			}
-
-			for (auto const& [itemToAdd, amountToAdd] : action.values)
-			{
-				if (StrEquals(itemToAdd, "Coins")) [[unlikely]]
-				{
-					playerParty->AddGold(amountToAdd);
-
-					action.text = (amountToAdd == 1)
-						? AddSaveData(action.text, amountToAdd, "coin")
-						: AddSaveData(action.text, amountToAdd, "coins");
-				}
-				else [[likely]]
-				{
-					playerParty->AddItemToInventory(itemToAdd, amountToAdd);
-					action.text = AddSaveData(action.text, amountToAdd, itemToAdd);
-				}
-			}
-			[[fallthrough]];
-		}
-		case SHOW_MESSAGE:
-		{
-			CreateMessageWindow(action.text);
-			break;
-		}
-		case DIALOG_PATH:
-		{
-			if (auto result = currentDialogDocument.load_file(action.text.c_str());
-				!result)
-			{
-				LOG("Could not load dialog xml file. Pugi error: %s", result.description());
-				break;
-			}
-
-			auto const& dialogNode = currentDialogDocument.child("dialog");
-
-			// Check if player has any quest of "TALK_TO" type, and if it does, update progress.
-			if (std::string npcName = dialogNode.attribute("name").as_string();
-				!npcName.empty())
-			{
-				std::vector<std::pair<std::string_view, int>> npcTalkedTo;
-				npcTalkedTo.emplace_back(npcName, 1);
-
-				playerParty->PossibleQuestProgress(QuestType::TALK_TO, npcTalkedTo, std::vector<std::pair<int, int>>());
-
-			}
-
-			currentDialogNode = dialogNode.child("message1");
-
-			// Create the window that will be used
-			CreateMessageWindow(currentDialogNode.attribute("text").as_string(), MapState::ON_DIALOG);
-
-			if (std::string sfxToPlay = dialogNode.attribute("voicetype").as_string();
-				!sfxToPlay.empty())
-			{
-				PlayDialogueSfx(sfxToPlay);
-			}
-			break;
-		}
-		case TELEPORT:
-		{
-			tpInfo = action;
-			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
-		}
-		case GLOBAL_SWITCH:
-		{
-			for (auto& it = action.globalSwitchIteratorBegin; it != action.globalSwitchIteratorEnd; ++it)
-			{
-				using enum EventProperties::GlobalSwitchOnInteract;
-				if (it->functionOnInteract == SET)
-				{
-					playerParty->SetGlobalSwitchState(it->id, it->setTo);
-				}
-				else if (it->functionOnInteract == TOGGLE)
-				{
-					playerParty->ToggleGlobalSwitchState(it->id);
-				}
-			}
-			break;
-		}
-		case NO_EVENT:
-		{
-			break;
-		}
 		}
 	}
 
 	player.Update();
 
 	// TODO: Change this to only check the frame the player has stopped movement
-	if (player.IsStandingStill())
-	{
-		EventTrigger action = map.TriggerPlayerTouchEvent(player.GetPosition());
-		
-		if (action.eventFunction == EventTrigger::WhatToDo::TELEPORT)
-		{
-			tpInfo = action;
-			transitionTo = TransitionScene::LOAD_MAP_FROM_MAP;
-		}
-	}
+	
 }
 
 TransitionScene Scene_Map::Update()
@@ -500,7 +504,7 @@ TransitionScene Scene_Map::Update()
 	DungeonSfx();
 
 	auto playerAction = player.HandleInput();
-	using PA = Player::PlayerAction::Action;
+	using PA = Player::PlayerAction;
 
 	switch (state)
 	{
@@ -545,7 +549,7 @@ TransitionScene Scene_Map::Update()
 		}
 		case ON_MESSAGE:
 		{
-			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+			if (playerAction == PA::INTERACT)
 			{
 				windows.pop_back();
 				state = MapState::NORMAL;
@@ -554,7 +558,7 @@ TransitionScene Scene_Map::Update()
 		}
 		case ON_DIALOG:
 		{
-			if ((playerAction.action & PA::INTERACT) == PA::INTERACT)
+			if (playerAction == PA::INTERACT)
 			{
 				auto const& dialogNode = currentDialogDocument.child("dialog");
 

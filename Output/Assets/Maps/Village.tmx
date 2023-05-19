@@ -5,8 +5,8 @@
  </properties>
  <tileset firstgid="1" source="Village.tsx"/>
  <tileset firstgid="257" source="NPCs.tsx"/>
- <tileset firstgid="293" source="Dungeon.tsx"/>
- <tileset firstgid="869" source="Balphogor.tsx"/>
+ <tileset firstgid="261" source="Dungeon.tsx"/>
+ <tileset firstgid="325" source="Balphogor.tsx"/>
  <layer id="11" name="Tile Layer 3" width="144" height="64">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -242,7 +242,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Market.xml"/>
    </properties>
   </object>
-  <object id="156" type="Event Torch" gid="353" x="720" y="2496" width="48" height="48">
+  <object id="156" type="Event Torch" gid="321" x="720" y="2496" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -259,7 +259,7 @@
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="157" name="Torch" type="Event Torch" gid="345" x="720" y="2448" width="48" height="48">
+  <object id="157" name="Torch" type="Event Torch" gid="313" x="720" y="2448" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -276,7 +276,7 @@
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="158" name="Lever" type="Event Lever" gid="337" x="816" y="2496" width="48" height="48">
+  <object id="158" name="Lever" type="Event Lever" gid="305" x="816" y="2496" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -298,7 +298,7 @@
     </property>
    </properties>
   </object>
-  <object id="159" name="Door" type="Event Door" gid="347" x="912" y="2448" width="48" height="48">
+  <object id="159" name="Door" type="Event Door" gid="315" x="912" y="2448" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -332,7 +332,7 @@
     </property>
    </properties>
   </object>
-  <object id="160" type="Event Door" gid="355" x="912" y="2496" width="48" height="48">
+  <object id="160" type="Event Door" gid="323" x="912" y="2496" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
