@@ -276,6 +276,11 @@ std::pair<int, iPoint> EventManager::GetRedrawEventGID(iPoint position)
 	return { 0, iPoint(0, 0) };
 }
 
+void EventManager::SetEventsTilesetPath(std::string_view path)
+{
+	eventsTileset = path;
+}
+
 AmbienceSFX::AmbienceSFX(pugi::xml_node const& node)
 {
 	ReadProperty(node);

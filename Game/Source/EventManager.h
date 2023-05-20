@@ -66,6 +66,8 @@ public:
 	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);
 	std::pair<int, iPoint> GetRedrawEventGID(iPoint position);
 
+	void SetEventsTilesetPath(std::string_view path);
+
 private:
 	const int tileSize = 48;
 	std::pair<EventTrigger, bool> TriggerEvent(iPoint position, Event_Base * const event) const;
@@ -77,6 +79,8 @@ private:
 	std::unordered_set<Event_Base*> alreadyRedrawnEvents;
 
 	std::vector<AmbienceSFX> periodicSFXs;
+
+	std::string_view eventsTileset = "";
 };
 
 

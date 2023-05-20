@@ -10,6 +10,23 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
+            "id": 26,
+            "members": [
+                {
+                    "name": "XML Path",
+                    "type": "file",
+                    "value": ""
+                }
+            ],
+            "name": "Animation",
+            "type": "class",
+            "useAs": [
+                "property"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
             "id": 24,
             "members": [
                 {
@@ -472,6 +489,18 @@
             "type": "class",
             "useAs": [
                 "layer"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 25,
+            "members": [
+            ],
+            "name": "Tileset of Events",
+            "type": "class",
+            "useAs": [
+                "tileset"
             ]
         }
     ]

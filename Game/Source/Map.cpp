@@ -62,7 +62,17 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 	{
 		if (StrEquals(child.name(), "tileset"))
 		{
-			tilesets.emplace_back(child, directory);
+			std::string_view checkIfEventTileset = child.attribute("source").as_string();
+
+			// Only tileset that starts with ../ should be the events one
+			if (!checkIfEventTileset.starts_with(".."))
+			{
+				tilesets.emplace_back(child, directory);
+			}
+			else
+			{
+				eventManager.SetEventsTilesetPath(checkIfEventTileset);
+			}
 		}
 		else if (StrEquals(child.name(), "layer"))
 		{

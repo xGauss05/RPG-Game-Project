@@ -123,6 +123,7 @@
     <ClCompile Include="Source\physfs_unicode.c">
       <Filter>PhysFS</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Event_Boss_Combat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -209,6 +210,9 @@
     <ClInclude Include="Source\physfs_platforms.h">
       <Filter>PhysFS</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Event_Boss_Combat.h" />
+    <ClInclude Include="Source\Sprite_Animated.h" />
+    <ClInclude Include="Source\JSON Parser.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

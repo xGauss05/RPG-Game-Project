@@ -180,6 +180,7 @@
     <ClInclude Include="Source\Event_Lever.h" />
     <ClInclude Include="Source\Event_Torch.h" />
     <ClInclude Include="Source\GuiMenuList.h" />
+    <ClInclude Include="Source\JSON Parser.h" />
     <ClInclude Include="Source\Map_Display_QuestLog.h" />
     <ClInclude Include="Source\Map_Menu_ComponentParty.h" />
     <ClInclude Include="Source\Map_Menu_GoldDisplay.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Source\physfs_lzmasdk.h" />
     <ClInclude Include="Source\physfs_miniz.h" />
     <ClInclude Include="Source\physfs_platforms.h" />
+    <ClInclude Include="Source\Sprite_Animated.h" />
     <ClInclude Include="Source\Transition_Blink.h" />
     <ClInclude Include="Source\Colour.h" />
     <ClInclude Include="Source\DB_Items.h" />
