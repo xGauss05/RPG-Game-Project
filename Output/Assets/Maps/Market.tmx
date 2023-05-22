@@ -1,112 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="31" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="19">
- <tileset firstgid="1" source="Market.tsx"/>
- <tileset firstgid="257" source="NPCs.tsx"/>
- <tileset firstgid="261" source="Village.tsx"/>
- <layer id="1" name="Ground" width="31" height="14">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="31" height="14" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="11">
+ <tileset firstgid="1" source="Tileset.tsx"/>
+ <tileset firstgid="257" source="../Textures/Events/Static/Events.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="31" height="14">
   <data encoding="csv">
 66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,
 66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,
 66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,
 66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,
-66,66,66,66,66,18,18,18,18,18,66,66,66,66,66,66,66,66,66,66,66,66,66,18,18,18,18,66,66,66,66,
-66,66,66,66,66,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,66,66,66,66,
+66,66,66,66,66,18,18,18,18,18,18,66,66,66,66,66,66,66,66,66,66,66,66,18,18,18,18,18,66,66,66,
+66,66,66,66,66,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,66,66,66,
 66,66,66,66,66,18,18,18,66,18,18,18,18,18,18,18,18,18,18,18,18,66,66,66,66,18,66,66,66,66,66,
-66,66,66,66,66,18,66,66,66,66,66,18,66,66,66,66,66,66,66,18,66,66,66,66,66,18,18,66,66,66,66,
-66,66,66,66,18,18,66,66,66,66,6,6,6,6,6,6,6,6,6,6,6,66,66,66,18,18,18,66,66,66,66,
-66,66,66,66,18,18,18,66,6,6,55,6,6,6,40,6,56,6,7,6,6,6,6,66,18,18,18,66,66,66,66,
-66,66,66,66,18,18,18,6,56,8,6,7,6,6,6,6,6,6,6,55,6,40,6,6,18,18,18,66,66,66,66,
-66,66,66,66,66,66,66,6,6,40,6,6,55,6,7,6,6,56,6,6,6,7,6,6,66,66,66,66,66,66,66,
-66,66,66,66,66,66,66,6,7,56,6,6,40,6,6,6,55,6,6,8,6,6,56,6,66,66,66,66,66,66,66,
-66,66,66,66,66,66,66,6,6,6,6,6,8,6,6,6,6,6,6,6,6,6,6,6,66,66,66,66,66,66,66
+66,66,66,66,66,18,66,66,66,9,82,34,82,82,82,82,82,82,82,34,82,10,66,66,66,18,18,66,66,66,66,
+66,66,66,66,18,18,66,9,82,83,90,55,89,55,55,73,55,55,55,55,55,81,82,10,18,18,18,66,66,66,66,
+66,66,66,66,18,18,18,83,55,55,55,55,74,90,55,89,55,55,55,55,89,55,74,81,18,18,18,66,66,66,66,
+66,66,66,66,18,18,18,89,55,90,55,55,55,55,55,55,55,90,55,73,55,55,55,55,18,18,18,66,66,66,66,
+66,66,66,66,66,66,66,55,55,90,89,90,55,55,73,55,90,55,55,55,55,55,90,55,66,66,66,66,66,66,66,
+66,66,66,66,66,66,66,55,55,55,55,55,73,55,55,89,55,55,73,55,55,74,55,89,66,66,66,66,66,66,66,
+66,66,66,66,66,66,66,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,66,66,66,66,66,66,66
 </data>
  </layer>
- <layer id="2" name="Top" width="31" height="14">
-  <data encoding="csv">
-97,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,99,
-113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,
-113,0,0,0,70,71,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,71,72,0,0,0,115,
-113,0,0,0,86,87,88,0,0,0,70,71,72,0,0,0,0,0,70,71,72,0,0,0,86,87,88,0,0,0,115,
-113,0,0,0,0,0,0,0,0,0,86,87,88,0,0,0,0,0,86,87,88,0,0,0,0,0,0,0,0,0,115,
-113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,
-113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,
-113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,
-113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,
-113,0,0,115,0,0,0,113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,0,0,0,113,0,0,115,
-113,0,0,115,0,0,0,113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,0,0,0,113,0,0,115,
-113,0,0,115,0,0,0,113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,0,0,0,113,0,0,115,
-113,0,0,115,0,0,0,113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,115,0,0,0,113,0,0,115,
-129,130,130,131,0,0,0,129,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,131,0,0,0,129,130,130,131
-</data>
- </layer>
- <objectgroup id="4" name="Interactables" class="Layer of Events">
-  <object id="2" name="Village Left" type="Event Teleport" x="64" y="192" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
-      <property name="Destination X" type="int" value="14"/>
-      <property name="Destination Y" type="int" value="45"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="4" name="Village Left" type="Event Teleport" x="80" y="192" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
-      <property name="Destination X" type="int" value="15"/>
-      <property name="Destination Y" type="int" value="45"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="5" name="Village Left" type="Event Teleport" x="96" y="192" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
-      <property name="Destination X" type="int" value="16"/>
-      <property name="Destination Y" type="int" value="45"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="6" name="Village Right" type="Event Teleport" x="384" y="192" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
-      <property name="Destination X" type="int" value="34"/>
-      <property name="Destination Y" type="int" value="45"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="7" name="Village Right" type="Event Teleport" x="400" y="192" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
-      <property name="Destination X" type="int" value="35"/>
-      <property name="Destination Y" type="int" value="45"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="8" name="Village Right" type="Event Teleport" x="416" y="192" width="16" height="16">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
-      <property name="Destination X" type="int" value="36"/>
-      <property name="Destination Y" type="int" value="45"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="9" name="Tycoon" type="Event NPC" gid="257" x="240" y="80" width="16" height="32">
+ <objectgroup id="4" name="Event Layer" class="Layer of Events">
+  <object id="1" name="Tycoon" type="Event NPC" gid="265" x="720" y="240" width="48" height="96">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -119,7 +34,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Tycoon01.xml"/>
    </properties>
   </object>
-  <object id="10" name="NPC_Generic_02" type="Event NPC" gid="258" x="176" y="16" width="16" height="32">
+  <object id="2" name="NPC_Generic_02" type="Event NPC" gid="263" x="528" y="96" width="48" height="96">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -132,7 +47,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
   </object>
-  <object id="11" name="NPC_Generic_01" type="Event NPC" gid="258" x="80" y="0" width="16" height="32">
+  <object id="3" name="NPC_Generic_01" type="Event NPC" gid="263" x="240" y="48" width="48" height="96">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -145,7 +60,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
-  <object id="14" name="NPC_Generic_01" type="Event NPC" gid="258" x="400" y="0" width="16" height="32">
+  <object id="4" name="NPC_Generic_01" type="Event NPC" gid="263" x="1200" y="48" width="48" height="96">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -158,7 +73,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
-  <object id="15" name="Chest1" type="Event Chest" gid="459" x="144" y="64" width="16" height="16">
+  <object id="5" name="Chest1" type="Event Chest" gid="261" x="432" y="192" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -173,7 +88,7 @@
     </property>
    </properties>
   </object>
-  <object id="16" name="Chest1" type="Event Chest" gid="459" x="48" y="48" width="16" height="16">
+  <object id="6" name="Chest1" type="Event Chest" gid="261" x="144" y="144" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -188,7 +103,7 @@
     </property>
    </properties>
   </object>
-  <object id="17" name="Chest1" type="Event Chest" gid="459" x="336" y="64" width="16" height="16">
+  <object id="7" name="Chest1" type="Event Chest" gid="261" x="1008" y="192" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -203,7 +118,7 @@
     </property>
    </properties>
   </object>
-  <object id="18" name="Chest1" type="Event Chest" gid="459" x="432" y="48" width="16" height="16">
+  <object id="8" name="Chest1" type="Event Chest" gid="261" x="1296" y="144" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -214,9 +129,77 @@
      <properties>
       <property name="Item" propertytype="Helper Items" value="Coins"/>
       <property name="Quantity" type="int" value="1"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="9" name="Village Right" type="Event Teleport" x="1152" y="432" width="144" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="35"/>
+      <property name="Destination Y" type="int" value="45"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="10" name="Village Left" type="Event Teleport" x="192" y="432" width="144" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="15"/>
+      <property name="Destination Y" type="int" value="45"/>
      </properties>
     </property>
    </properties>
   </object>
  </objectgroup>
+ <layer id="2" name="Tile Layer 2" width="31" height="14">
+  <data encoding="csv">
+164,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,165,166,
+180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,
+180,0,0,0,186,187,188,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,186,187,188,0,0,0,182,
+180,0,0,0,254,255,256,0,0,0,186,187,188,0,0,0,0,0,186,187,188,0,0,0,254,255,256,0,0,0,182,
+180,0,0,0,0,0,0,0,0,0,254,255,256,0,0,0,0,0,254,255,256,0,0,0,0,0,0,0,0,0,182,
+180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,
+180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,
+180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,
+180,0,0,182,0,0,0,180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,0,0,0,180,0,0,182,
+180,0,0,182,52,52,52,180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,52,52,52,180,0,0,182,
+180,0,0,182,52,52,52,180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,52,52,52,180,0,0,182,
+180,0,0,182,52,52,52,180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,52,52,52,180,0,0,182,
+180,0,0,182,52,52,52,180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,182,52,52,52,180,0,0,182,
+196,197,197,198,52,0,0,196,197,197,197,197,197,197,197,197,197,197,197,197,197,197,197,198,0,0,0,196,197,197,198
+</data>
+ </layer>
+ <layer id="3" name="Tile Layer 3" width="31" height="14">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
 </map>

@@ -80,7 +80,7 @@ private:
 
 	std::vector<AmbienceSFX> periodicSFXs;
 
-	std::string_view eventsTileset = "";
+	std::string eventsTileset = "";
 };
 
 

@@ -367,11 +367,11 @@ void Map::RedrawBelowPlayer(iPoint position)
 		{
 			iPoint positionToCheck = { i, j };
 			positionToCheck.CeilToNearest(GetTileSize());
-			if (auto const &[resultGID, eventPosition] = eventManager.GetRedrawEventGID(positionToCheck);
+		/*	if (auto const &[resultGID, eventPosition] = eventManager.GetRedrawEventGID(positionToCheck);
 				resultGID > 0)
 			{
 				DrawTile(resultGID, eventPosition);
-			}
+			}*/
 		}
 	}
 }

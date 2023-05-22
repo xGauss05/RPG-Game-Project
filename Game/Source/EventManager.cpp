@@ -204,6 +204,7 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 {
 	if (events.empty() || drawIterator == events.end())
 		return std::make_tuple(0, iPoint(0, 0), false);
+			return std::make_tuple(0, iPoint(0, 0), false);
 
 	auto sprite = dynamic_cast<Sprite*>(drawIterator->get());
 	
@@ -278,6 +279,7 @@ std::pair<int, iPoint> EventManager::GetRedrawEventGID(iPoint position)
 
 void EventManager::SetEventsTilesetPath(std::string_view path)
 {
+	path.remove_prefix(2);
 	eventsTileset = path;
 }
 
