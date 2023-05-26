@@ -137,6 +137,10 @@ void EventManager::RedrawnCompleted()
 	alreadyRedrawnEvents.clear();
 }
 
+void EventManager::DrawEvent(iPoint position) const
+{
+}
+
 EventTrigger EventManager::TriggerActionButtonEvent(iPoint position) const
 {
 	for (auto const& event : events)
@@ -204,7 +208,8 @@ std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] in
 {
 	if (events.empty() || drawIterator == events.end())
 		return std::make_tuple(0, iPoint(0, 0), false);
-			return std::make_tuple(0, iPoint(0, 0), false);
+
+	return std::make_tuple(0, iPoint(0, 0), false);
 
 	auto sprite = dynamic_cast<Sprite*>(drawIterator->get());
 	

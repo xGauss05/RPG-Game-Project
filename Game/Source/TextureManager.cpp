@@ -148,6 +148,20 @@ void TextureManager::GetSize(SDL_Texture* const texture, int &width, int &height
 	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 }
 
+iPoint TextureManager::GetSize(int textureID) const
+{
+	iPoint ret = { 0, 0 };
+	GetSize(GetTexture(textureID), ret.x, ret.y);
+	return ret;
+}
+
+SDL_Point TextureManager::GetSizeSDLPoint(int textureID) const
+{
+	SDL_Point ret = { 0, 0 };
+	GetSize(GetTexture(textureID), ret.x, ret.y);
+	return ret;
+}
+
 SDL_Texture *TextureManager::GetTexture(int textureID) const
 {
 	if (auto result = textures.find(textureID);

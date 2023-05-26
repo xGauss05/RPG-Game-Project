@@ -4,20 +4,20 @@
 #include "Log.h"
 #include "PugiXml/src/pugixml.hpp"
 
-void PartyCharacter::SetCurrentHP(int hp) {
+void Battler::SetCurrentHP(int hp) {
 	currentHP = hp;
 }
-void PartyCharacter::SetCurrentMana(int mp) {
+void Battler::SetCurrentMana(int mp) {
 	currentMana = mp;
 }
-void PartyCharacter::SetCurrentXP(int xp) {
+void Battler::SetCurrentXP(int xp) {
 	currentXP = xp;
 }
-void PartyCharacter::SetLevel(int lvl) {
+void Battler::SetLevel(int lvl) {
 	level = lvl;
 }
 
-bool PartyCharacter::UseItem(Item const& item)
+bool Battler::UseItem(Item const& item)
 {
 	switch (item.effect.functionToCall)
 	{
@@ -30,7 +30,7 @@ bool PartyCharacter::UseItem(Item const& item)
 	}
 }
 
-bool PartyCharacter::RestoreHP(float amount1, float amount2)
+bool Battler::RestoreHP(float amount1, float amount2)
 {
 	int maxHP = stats[static_cast<int>(BaseStats::MAX_HP)];
 
@@ -53,6 +53,28 @@ bool PartyCharacter::RestoreHP(float amount1, float amount2)
 	}
 
 	return true;
+}
+
+std::string Battler::GetStatDisplay(BaseStats stat) const
+{
+	using enum BaseStats;
+	switch (stat)
+	{
+		case MAX_HP:			return std::format("HP: {} / {}", currentHP, stats[0]);
+		case MAX_MANA:			return std::format("MP: {} / {}", currentMana, stats[1]);
+		case ATTACK:			return std::format("Atk: {}", stats[2]);
+		case DEFENSE:			return std::format("Def: {}", stats[3]);
+		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", stats[4]);
+		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", stats[5]);
+		case SPEED:				return std::format("Speed: {}", stats[6]);
+		case LEVEL:				return std::format("Lv. {}", level);
+		case XP:				return std::format("EXP: {}", currentXP);
+	}
+}
+
+bool Battler::IsDead() const
+{
+	return currentHP <= 0;
 }
 
 GameParty::GameParty() = default;
@@ -342,21 +364,4 @@ int GameParty::GetGold() const
 void GameParty::SetGold(int amount)
 {
 	currentGold = amount;
-}
-
-std::string PartyCharacter::GetStatDisplay(BaseStats stat) const
-{
-	using enum BaseStats;
-	switch (stat)
-	{
-		case MAX_HP:			return std::format("HP: {} / {}", currentHP, stats[0]);
-		case MAX_MANA:			return std::format("MP: {} / {}", currentMana, stats[1]);
-		case ATTACK:			return std::format("Atk: {}", stats[2]);
-		case DEFENSE:			return std::format("Def: {}", stats[3]);
-		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", stats[4]);
-		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", stats[5]);
-		case SPEED:				return std::format("Speed: {}", stats[6]);
-		case LEVEL:				return std::format("Lv. {}", level);
-		case XP:				return std::format("EXP: {}", currentXP);
-	}
 }

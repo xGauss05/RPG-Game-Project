@@ -29,7 +29,7 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 		enemyToAdd.level = enemy.attribute("level").as_int();
 
 		auto currentEnemy = enemiesFile.child(enemyToAdd.name.c_str());
-		enemyToAdd.textureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
+		enemyToAdd.battlerTextureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
 		enemyToAdd.deadSfx = app->audio->LoadFx(currentEnemy.child("deadaudio").attribute("path").as_string());
 		for (auto const& stat : currentEnemy.child("stats").children())
 		{
@@ -40,7 +40,7 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 
 		int w = 0;
 		int h = 0;
-		app->tex->GetSize(app->GetTexture(enemyToAdd.textureID), w, h);
+		app->tex->GetSize(app->GetTexture(enemyToAdd.battlerTextureID), w, h);
 
 		enemyToAdd.size.x = w * 2;
 		enemyToAdd.size.y = h * 2;

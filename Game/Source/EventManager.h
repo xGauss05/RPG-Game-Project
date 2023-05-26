@@ -57,6 +57,8 @@ public:
 
 	void RedrawnCompleted();
 
+	void DrawEvent(iPoint position) const;
+
 	EventTrigger TriggerActionButtonEvent(iPoint position) const;
 	EventTrigger TriggerPlayerTouchEvent(iPoint position) const;
 

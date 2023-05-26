@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __SCENE_BATTLE_H__
+#define __SCENE_BATTLE_H__
+
 #include "Scene_Base.h"
 #include "GameParty.h"
 #include "EnemyTroops.h"
@@ -6,15 +8,6 @@
 #include <random>
 
 #include <queue>
-
-enum class BattleState
-{
-    PLAYER_INPUT,
-    ENEMY_INPUT,
-    RESOLUTION,
-    BATTLE_WON,
-    BATTLE_LOSS
-};
 
 class Scene_Battle : public Scene_Base
 {
@@ -29,8 +22,6 @@ public:
     void Start() override;
     void Draw() override;
     TransitionScene Update() override;
-    bool CheckBattleWin() const;
-    bool CheckBattleLoss() const;
     int CheckNextScene() override;
     int OnPause() override;
     bool SaveScene(pugi::xml_node const&) override;
@@ -38,34 +29,82 @@ public:
     void DebugDraw() override;
 
 private:
-    void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
-    bool ChooseTarget();
+    enum class BattleState
+    {
+        PLAYER_INPUT,
+        ENEMY_INPUT,
+        RESOLUTION,
+        BATTLE_WON,
+        BATTLE_LOSS,
+        RUN_FROM_BATTLE
+    };
+
+    enum class ActionNames
+    {
+        NONE = -1,
+        ATTACK = 0,
+        SPECIAL_ATTACK = 1,
+        DEFEND = 2,
+        RUN = 3,
+        USE_ITEM = 4
+    };
+
+    struct BattleAction
+    {
+        ActionNames action;
+        int source;
+        int target;
+        bool friendly;
+        int speed;
+    };
+
     std::string_view GetRandomEncounter();
+
+    void UpdatePlayerTurn();
+    void ToggleRunButton();
+    bool ResolveMouseClick(); 
+    bool ChooseTarget();
+    bool CharacterChooseAction();
+
+    bool IsAdvanceTextButtonDown() const;
+
+    void ChooseEnemyActions();
+
+    void ResolveActionQueue();
+    std::string ResolveAction(BattleAction const& currentAction) [[no_discard];
+    std::string BattlerDefending(Battler &battler) [[no_discard]];
+    std::string BattlerAttacking(Battler const &source, Battler& receiver, BaseStats offensiveStat, BaseStats defensiveStat) [[no_discard]];
+    int CalculateDamage(std::mt19937 const& randomGen, int atk, int def, bool defending = false, float crit = 1.0f) const [[no_discard]];
+    void BattlerJustDied(Battler const& battler);
+
+    void CheckIfBattleWinThenChangeState();
+    void ResolveWinningBattle();
+
+    void CheckBattleLossThenChangeState();
+
+    void PlayBattlerSFX(Battler const &battler) const;
+    void PlayActionSFX(std::string_view sfxKey) const;
+
+    void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
     int backgroundTexture = 0;
 
-    GameParty* party;
+    GameParty* party = nullptr;
     EnemyTroops enemies;
+
+    bool checkBattleEnd = false;
+
     BattleState state = BattleState::PLAYER_INPUT;
     int currentPlayer = 0;
-    bool showNextText = true;
+    bool currentlyInTextMessage = false;
     int targetSelected = -1;
-    int actionSelected = -1;
+    ActionNames actionSelected = ActionNames::NONE;
 
     std::uniform_int_distribution<> random;
     std::uniform_int_distribution<> random40;
     std::uniform_int_distribution<> random100;
     
     std::random_device rd;
-
-    struct BattleAction
-    {
-        int action;
-        int source;
-        int target;
-        bool friendly;
-        int speed;
-    };
 
     struct CompareActionSpeed
     {
@@ -80,16 +119,7 @@ private:
 
     std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
 
-    // Sound indexes
-    int attackSfx = -1;
-    int criticalSfx = -1;
-    int blockSfx = -1;
-    int escapeSfx = -1;
-    int enemydeadSfx = -1;
-    int erYonaTurnSfx = -1;
-    int rocioTurnSfx = -1;
-    int antonioTurnSfx = -1;
-    int sayoriTurnSfx = -1;
+    std::unordered_map<std::string_view, int> sfx;
+ };
 
-    bool playedTurnSfx = false;
-};
+#endif //__SCENE_BATTLE_H__

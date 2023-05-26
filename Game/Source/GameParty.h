@@ -6,6 +6,8 @@
 
 #include "ObserverPattern.h"
 
+#include "EnemyTroops.h"
+
 #include "Log.h"
 
 #include <vector>
@@ -33,31 +35,9 @@ enum class EquipmentSlots
 	WEAPON
 };
 
-struct PartyCharacter
+struct PartyCharacter : public Battler
 {
-	std::string name = "";
-	int battlerTextureID = 0;
-	int currentHP = 0;
-	int currentMana = 0;
-	int currentXP = 0;
-
-	int level = 0;
-
-	std::vector<int> stats;
-	bool isDefending = false;
-	std::vector<int> equipment;
-	std::vector<int> skills;
-
-	void SetCurrentHP(int hp);
-	void SetCurrentMana(int mp);
-	void SetCurrentXP(int xp);
-	void SetLevel(int lvl);
-
-	bool UseItem(Item const &item);
-
-	std::string GetStatDisplay(BaseStats stat) const;
-
-	bool RestoreHP(float amount1, float amount2);
+	
 };
 
 class GameParty : public Publisher
@@ -120,7 +100,7 @@ public:
 	bool updateQuestLog = false;
 	Quest *lastQuestCompleted = nullptr;
 
-	std::vector<PartyCharacter> party;
+	std::vector<Battler> party;
 	std::vector<std::pair<int, int>> inventory;
 
 	int currentGold = 0;

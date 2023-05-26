@@ -7,21 +7,22 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
-struct Enemy
+struct Battler
 {
-	std::string name;
-	int textureID;
-	int deadSfx;
-	int currentHP;
-	int currentMana;
-	int currentXP;
+	std::string name = "";
+	int battlerTextureID = 0;
+	int deadSfx = 0;
+	int currentHP = 0;
+	int currentMana = 0;
+	int currentXP = 0;
 
-	int level;
+	int level = 0;
 
 	std::vector<int> stats;
 	std::vector<int> equipment;
-	bool isDefending = false;
 	std::vector<int> skills;
+
+	bool isDefending = false;
 
 	iPoint position{};
 	iPoint size{};
@@ -29,9 +30,22 @@ struct Enemy
 	int index;
 
 	Uint8 alpha = 255;
-	bool fadingIn = false;
+	int fadingIn = 1;
 
 	bool IsMouseHovering() const;
+
+	bool IsDead() const;
+
+	void SetCurrentHP(int hp);
+	void SetCurrentMana(int mp);
+	void SetCurrentXP(int xp);
+	void SetLevel(int lvl);
+
+	bool UseItem(Item const& item);
+
+	std::string GetStatDisplay(BaseStats stat) const;
+
+	bool RestoreHP(float amount1, float amount2);
 };
 
 class EnemyTroops
@@ -42,7 +56,7 @@ public:
 	void CreateFight(std::string_view nodeName);
 	
 
-	std::vector<Enemy> troop;
+	std::vector<Battler> troop;
 };
 
 #endif //__GAME_ENEMY_H__
