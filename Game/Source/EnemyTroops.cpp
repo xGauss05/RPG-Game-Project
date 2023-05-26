@@ -24,7 +24,7 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 	{
 		iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 
-		Enemy enemyToAdd;
+		Battler enemyToAdd;
 		enemyToAdd.name = enemy.name();
 		enemyToAdd.level = enemy.attribute("level").as_int();
 
@@ -54,7 +54,7 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 	}
 }
 
-bool Enemy::IsMouseHovering() const
+bool Battler::IsMouseHovering() const
 {
 	iPoint mousePos = app->input->GetMousePosition();
 	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };

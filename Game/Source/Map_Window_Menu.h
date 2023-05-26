@@ -37,8 +37,8 @@ public:
 
 private:
 	void DrawStatsMenu() const;
-	void DrawPlayerStats(PartyCharacter const& character, int i) const;
-	void DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const;
+	void DrawPlayerStats(Battler const& character, int i) const;
+	void DrawSingleStat(Battler const& character, BaseStats stat, int x, int y) const;
 	void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
 
 	void GoToNextPanel();

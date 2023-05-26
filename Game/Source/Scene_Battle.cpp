@@ -272,16 +272,16 @@ void Scene_Battle::UpdatePlayerTurn()
 {
 	int prevBattler = currentPlayer;
 
-	if (party->party[currentPlayer].IsDead() || ResolveMouseClick() || CharacterChooseAction())
+	if (currentPlayer < party->party.size()
+		&& (party->party[currentPlayer].IsDead() || ResolveMouseClick() || CharacterChooseAction()))
 	{
-		if (currentPlayer < party->party.size())
-		{
-			currentPlayer++;
-		}
+		currentPlayer++;
 	}
 
 	if (prevBattler != currentPlayer)
 	{
+		ToggleRunButton();
+
 		if (currentPlayer >= party->party.size())
 		{
 			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
@@ -291,7 +291,6 @@ void Scene_Battle::UpdatePlayerTurn()
 		}
 
 		PlayBattlerSFX(party->party[currentPlayer]);
-		ToggleRunButton();
 	}
 }
 
@@ -559,13 +558,13 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 
 	if (random100(gen) <= 10)
 	{
-		damage = CalculateDamage(gen, attack, defense, receiver.isDefending, 1.5f);
+		damage = CalculateDamage(attack, defense, receiver.isDefending, 1.5f);
 		damageMessage = "{} attacks {}! Criticals for {} damage!!!";
 		PlayActionSFX("Critical");
 	}
 	else
 	{
-		damage = CalculateDamage(gen, attack, defense, receiver.isDefending);
+		damage = CalculateDamage(attack, defense, receiver.isDefending);
 		damageMessage = "{} attacks {}! Deals {} damage.";
 		PlayActionSFX("Attack");
 	}
@@ -582,9 +581,11 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 
 }
 
-int Scene_Battle::CalculateDamage(std::mt19937 const& randomGen, int atk, int def, bool defending, float crit) const
+int Scene_Battle::CalculateDamage(int atk, int def, bool defending, float crit)
 {
-	int randomVariance = random40(randomGen);
+	std::mt19937 gen(rd());
+
+	int randomVariance = random40(gen);
 
 	if (defending)
 		def *= 2;

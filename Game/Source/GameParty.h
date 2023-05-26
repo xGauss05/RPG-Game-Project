@@ -15,19 +15,6 @@
 #include <unordered_map>
 
 
-enum class BaseStats
-{
-	MAX_HP = 0,
-	MAX_MANA,
-	ATTACK,
-	DEFENSE,
-	SPECIAL_ATTACK,
-	SPECIAL_DEFENSE,
-	SPEED,
-	LEVEL,
-	XP
-};
-
 enum class EquipmentSlots
 {
 	ARMOR,

@@ -60,13 +60,13 @@ std::string Battler::GetStatDisplay(BaseStats stat) const
 	using enum BaseStats;
 	switch (stat)
 	{
-		case MAX_HP:			return std::format("HP: {} / {}", currentHP, stats[0]);
-		case MAX_MANA:			return std::format("MP: {} / {}", currentMana, stats[1]);
-		case ATTACK:			return std::format("Atk: {}", stats[2]);
-		case DEFENSE:			return std::format("Def: {}", stats[3]);
-		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", stats[4]);
-		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", stats[5]);
-		case SPEED:				return std::format("Speed: {}", stats[6]);
+		case MAX_HP:			return std::format("HP: {} / {}", currentHP, stats[static_cast<int>(MAX_HP)]);
+		case MAX_MANA:			return std::format("MP: {} / {}", currentMana, stats[static_cast<int>(MAX_MANA)]);
+		case ATTACK:			return std::format("Atk: {}", stats[static_cast<int>(ATTACK)]);
+		case DEFENSE:			return std::format("Def: {}", stats[static_cast<int>(DEFENSE)]);
+		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", stats[static_cast<int>(SPECIAL_ATTACK)]);
+		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", stats[static_cast<int>(SPECIAL_DEFENSE)]);
+		case SPEED:				return std::format("Speed: {}", stats[static_cast<int>(SPEED)]);
 		case LEVEL:				return std::format("Lv. {}", level);
 		case XP:				return std::format("EXP: {}", currentXP);
 	}

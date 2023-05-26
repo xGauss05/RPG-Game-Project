@@ -7,6 +7,19 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
+enum class BaseStats
+{
+	MAX_HP = 0,
+	MAX_MANA,
+	ATTACK,
+	DEFENSE,
+	SPECIAL_ATTACK,
+	SPECIAL_DEFENSE,
+	SPEED,
+	LEVEL,
+	XP
+};
+
 struct Battler
 {
 	std::string name = "";
@@ -30,7 +43,7 @@ struct Battler
 	int index;
 
 	Uint8 alpha = 255;
-	int fadingIn = 1;
+	int fadingDirection = 1;
 
 	bool IsMouseHovering() const;
 

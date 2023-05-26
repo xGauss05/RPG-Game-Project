@@ -140,7 +140,7 @@ void Map_Window_Menu::DrawStatsMenu() const
 {
 	statsWindow->Draw();
 
-	std::ranges::for_each(playerParty->party, [this, positionX = 0](PartyCharacter const& c) mutable
+	std::ranges::for_each(playerParty->party, [this, positionX = 0](Battler const& c) mutable
 		{
 			DrawPlayerStats(c, positionX);
 			positionX += 140;
@@ -149,7 +149,7 @@ void Map_Window_Menu::DrawStatsMenu() const
 
 }
 
-void Map_Window_Menu::DrawPlayerStats(PartyCharacter const& character, int i) const
+void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 {
 	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 
@@ -200,7 +200,7 @@ void Map_Window_Menu::DrawPlayerStats(PartyCharacter const& character, int i) co
 	);
 }
 
-void Map_Window_Menu::DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const
+void Map_Window_Menu::DrawSingleStat(Battler const& character, BaseStats stat, int x, int y) const
 {
 	app->fonts->DrawText(
 		character.GetStatDisplay(stat),

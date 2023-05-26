@@ -71,10 +71,10 @@ private:
     void ChooseEnemyActions();
 
     void ResolveActionQueue();
-    std::string ResolveAction(BattleAction const& currentAction) [[no_discard];
-    std::string BattlerDefending(Battler &battler) [[no_discard]];
-    std::string BattlerAttacking(Battler const &source, Battler& receiver, BaseStats offensiveStat, BaseStats defensiveStat) [[no_discard]];
-    int CalculateDamage(std::mt19937 const& randomGen, int atk, int def, bool defending = false, float crit = 1.0f) const [[no_discard]];
+    std::string ResolveAction(BattleAction const& currentAction);
+    std::string BattlerDefending(Battler &battler);
+    std::string BattlerAttacking(Battler const &source, Battler& receiver, BaseStats offensiveStat, BaseStats defensiveStat);
+    int CalculateDamage(int atk, int def, bool defending = false, float crit = 1.0f);
     void BattlerJustDied(Battler const& battler);
 
     void CheckIfBattleWinThenChangeState();
