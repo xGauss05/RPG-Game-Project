@@ -47,7 +47,7 @@ void Map_Display_QuestLog::UpdateQuests()
 		if (displayInfo.empty())
 			continue;
 
-		CreateMenuItem(MenuItem(MenuItem::ItemText("", std::string(quest->GetQuestName()), ""), i));
+		CreateMenuItem(MenuItem(MenuItem::ItemText("", std::string(quest->GetQuestName()), "")));
 
 		for (auto const& elem : displayInfo)
 		{
@@ -63,7 +63,7 @@ void Map_Display_QuestLog::UpdateQuests()
 			}
 			auto const& progress = elem.amountToDisplay;
 
-			CreateMenuItem(MenuItem(MenuItem::ItemText(objective, "", progress), i));
+			CreateMenuItem(MenuItem(MenuItem::ItemText(objective, "", progress)));
 
 			i++;
 		}

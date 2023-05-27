@@ -10,8 +10,42 @@ Map_Menu_Inventory::Map_Menu_Inventory(pugi::xml_node const& node)
 
 void Map_Menu_Inventory::HandleLeftButtonClick(int result)
 {
-	// TODO: Implement item usage here
-	SetClickHandled(true);
+	if (result < 0 || result >= playerParty->inventory.size())
+	{
+		LOG("ITEM USED %i OUT OF RANGE", result);
+		return;
+	}
+
+	int usedItemID = playerParty->inventory[result].first;
+	const Item &item = playerParty->dbItems->GetItem(usedItemID);
+
+	using enum Item::GeneralProperties::Ocasion;
+	using enum Item::GeneralProperties::Scope;
+
+	if ((item.general.ocasion == MENU_SCREEN) || (item.general.ocasion == ALWAYS))
+	{
+		if (item.general.scope == ALL_ALLIES || item.general.scope == ALL_DEAD_ALLIES)
+		{
+			bool success = false;
+			for (auto& elem : playerParty->party)
+			{
+				if (!success)
+					success = elem.UseItem(item);
+				else
+					elem.UseItem(item);
+			}
+			if (success)
+				playerParty->RemoveItemFromInventory(usedItemID, 1);
+		}
+		else if (item.general.scope == ONE_ALLY || item.general.scope == ONE_DEAD_ALLY)
+		{
+			if (playerParty->party[0].UseItem(item))
+			{
+				playerParty->RemoveItemIndexFromInventory(result);
+				InitializeElements();
+			}
+		}
+	}
 }
 
 void Map_Menu_Inventory::HandleRightButtonClick()
@@ -31,7 +65,7 @@ void Map_Menu_Inventory::InitializeElements()
 		std::string amountToDisplay = std::format("x{}", amount);
 		int itemTextureID = playerParty->dbItems->GetItem(itemID).textureID;
 
-		CreateMenuItem(MenuItem(MenuItem::ItemText(itemName, "", amountToDisplay), i, itemTextureID));
+		CreateMenuItem(MenuItem(MenuItem::ItemText(itemName, "", amountToDisplay), itemTextureID));
 
 		i++;
 	}

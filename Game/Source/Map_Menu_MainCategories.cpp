@@ -29,7 +29,7 @@ void Map_Menu_MainCategories::InitializeElements()
 
 	std::ranges::for_each(elementNames, [this, index = 0](const char* elemName) mutable
 		{
-			CreateMenuItem(MenuItem(MenuItem::ItemText(elemName, "", ""), index));
+			CreateMenuItem(MenuItem(MenuItem::ItemText(elemName, "", "")));
 			++index;
 		}
 	);

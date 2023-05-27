@@ -124,6 +124,7 @@
       <Filter>PhysFS</Filter>
     </ClCompile>
     <ClCompile Include="Source\Event_Boss_Combat.cpp" />
+    <ClCompile Include="Source\Map_Menu_InteractParty.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Source\Event_Boss_Combat.h" />
     <ClInclude Include="Source\Sprite_Animated.h" />
     <ClInclude Include="Source\JSON Parser.h" />
+    <ClInclude Include="Source\Map_Menu_InteractParty.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

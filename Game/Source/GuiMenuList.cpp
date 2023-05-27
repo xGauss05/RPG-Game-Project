@@ -448,8 +448,8 @@ void GuiMenuList::SetLastClick(int i)
 	lastClick = i;
 }
 
-GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int i, int textureID)
-	: text(itemText), index(i), iconTexture(textureID)
+GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int textureID)
+	: text(itemText), iconTexture(textureID)
 {}
 
 void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int sizeIcon, bool currentlySelected) const

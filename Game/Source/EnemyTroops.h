@@ -24,6 +24,7 @@ struct Battler
 {
 	std::string name = "";
 	int battlerTextureID = 0;
+	int portraitTextureID = -1;
 	int deadSfx = 0;
 	int currentHP = 0;
 	int currentMana = 0;

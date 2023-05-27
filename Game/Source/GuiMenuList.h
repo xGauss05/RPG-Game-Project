@@ -26,9 +26,10 @@ public:
 		};
 
 		MenuItem() = default;
-		explicit MenuItem(ItemText const& itemText, int i, int textureID = -1);
+		explicit MenuItem(ItemText const& itemText, int textureID = -1);
+		virtual ~MenuItem() = default;
 
-		void Draw(
+		virtual void Draw(
 			iPoint originalPos,
 			iPoint rectSize,
 			iPoint innerMargin = iPoint(0, 0),
@@ -46,7 +47,6 @@ public:
 	private:
 
 		ItemText text;
-		int index = -1;
 		int iconTexture = -1;
 	};
 

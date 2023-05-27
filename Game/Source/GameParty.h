@@ -36,6 +36,8 @@ public:
 	void AddItemToInventory(std::string_view itemToAdd, int amountToAdd = 1);
 	void AddItemToInventory(int  itemToAdd, int amountToAdd = 1);
 
+	void RemoveItemIndexFromInventory(int itemIndex, int amountToRemove = 1);
+
 	void RemoveItemFromInventory(std::string_view itemToRemove, int amountToRemove = 1);
 	void RemoveItemFromInventory(int itemToRemove, int amountToRemove = 1);
 	void RemoveItemFromInventory(std::vector<std::pair<int, int>>::iterator it, int amountToRemove = 1);

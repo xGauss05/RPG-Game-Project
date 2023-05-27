@@ -7,8 +7,8 @@
         <itypeId>1</itypeId> <!-- 1 - Regular Item || 2 - Key Item || 3 - Hidden Item -->
         <price>100</price>
         <consumable>true</consumable>
-        <scope>7</scope> <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-        <occasion>0</occasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
+        <scope>7</scope> <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~5 - 1~3 Random enemies || 6 - The User || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) -->
+        <occasion>0</occasion> <!-- 0 - Never || 1 - Battle Screen || 2 - Menu Screen || 3 - Always -->
     </general>
     <invocation>
         <speed>0</speed> <!-- Speed modifier (think of quick attack in pokémon) -->
@@ -42,7 +42,7 @@
         <price>100</price>
         <consumable>true</consumable>
         <scope>7</scope> <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-        <occasion>0</occasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
+        <ocasion>3</ocasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
     </general>
     <invocation>
         <speed>0</speed> <!-- Speed modifier (think of quick attack in pokémon) -->
@@ -78,7 +78,7 @@
     <consumable>true</consumable>
     <scope>7</scope>
     <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-    <occasion>0</occasion>
+    <ocasion>0</ocasion>
     <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
   </general>
   <invocation>
@@ -126,7 +126,7 @@
     <consumable>true</consumable>
     <scope>8</scope>
     <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-    <occasion>1</occasion>
+    <ocasion>1</ocasion>
     <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
   </general>
   <invocation>
@@ -172,7 +172,7 @@
         <price>100</price>
         <consumable>true</consumable>
         <scope>7</scope> <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-        <occasion>0</occasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
+        <ocasion>0</ocasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
     </general>
     <invocation>
         <speed>0</speed> <!-- Speed modifier (think of quick attack in pokémon) -->
@@ -206,7 +206,7 @@
         <price>100</price>
         <consumable>true</consumable>
         <scope>7</scope> <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-        <occasion>0</occasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
+        <ocasion>0</ocasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
     </general>
     <invocation>
         <speed>0</speed> <!-- Speed modifier (think of quick attack in pokémon) -->
@@ -240,7 +240,7 @@
         <price>100</price>
         <consumable>true</consumable>
         <scope>2</scope> <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-        <occasion>0</occasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
+        <ocasion>0</ocasion> <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
     </general>
     <invocation>
         <speed>0</speed> <!-- Speed modifier (think of quick attack in pokémon) -->
@@ -276,7 +276,7 @@
     <consumable>true</consumable>
     <scope>2</scope>
     <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-    <occasion>0</occasion>
+    <ocasion>0</ocasion>
     <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
   </general>
   <invocation>
@@ -324,7 +324,7 @@
     <consumable>true</consumable>
     <scope>2</scope>
     <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-    <occasion>0</occasion>
+    <ocasion>0</ocasion>
     <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
   </general>
   <invocation>
@@ -372,7 +372,7 @@
     <consumable>true</consumable>
     <scope>2</scope>
     <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-    <occasion>0</occasion>
+    <ocasion>0</ocasion>
     <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
   </general>
   <invocation>

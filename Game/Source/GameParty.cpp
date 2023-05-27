@@ -92,6 +92,7 @@ void GameParty::CreateParty()
 		memberToAdd.name = character.child("general").attribute("name").as_string();
 		memberToAdd.level = character.child("general").attribute("level").as_int();
 		memberToAdd.battlerTextureID = app->tex->Load(character.child("texture").attribute("path").as_string());
+		memberToAdd.portraitTextureID = app->tex->Load(character.child("portraittexture").attribute("path").as_string());
 		for (auto const& stat : character.child("stats").children())
 		{
 			memberToAdd.stats.emplace_back(stat.attribute("value").as_int());
@@ -308,6 +309,11 @@ void GameParty::AddItemToInventory(int itemToAdd, int amountToAdd)
 	itemAddedToInventory.emplace_back(itemToAdd, amountToAdd);
 
 	PossibleQuestProgress(QuestType::COLLECT, std::vector<std::pair<std::string_view, int>>(), itemAddedToInventory);
+}
+
+void GameParty::RemoveItemIndexFromInventory(int itemIndex, int amountToRemove)
+{
+	RemoveItemFromInventory(inventory.begin() + itemIndex, amountToRemove);
 }
 
 void GameParty::RemoveItemFromInventory(std::string_view itemToRemove, int amountToRemove)

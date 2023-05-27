@@ -39,5 +39,5 @@ void Map_Menu_GoldDisplay::InitializeElements()
 
 	int iconID = playerParty->dbItems->GetItem(0).textureID;
 
-	CreateMenuItem(MenuItem(MenuItem::ItemText("", "", gold), 0, iconID));
+	CreateMenuItem(MenuItem(MenuItem::ItemText("", "", gold), iconID));
 }

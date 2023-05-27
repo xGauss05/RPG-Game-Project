@@ -15,6 +15,8 @@ private:
 	void HandleLeftButtonClick(int result) override;
 	void HandleRightButtonClick() override;
 	void InitializeElements() override;
+
+	std::unique_ptr<GuiMenuList> Menu_ChooseCharacter;
 };
 
 #endif //__MAP_MENU_INVENTORY_H__

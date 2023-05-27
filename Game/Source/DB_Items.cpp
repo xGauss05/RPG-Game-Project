@@ -12,8 +12,8 @@ Item::GeneralProperties::GeneralProperties(pugi::xml_node const& node)
 	iTypeID(node.child("itypeId").text().as_int()),
 	price(node.child("price").text().as_int()),
 	consumable(node.child("consumable").text().as_bool()),
-	scope(node.child("scope").text().as_int()),
-	ocasion(node.child("ocasion").text().as_int())
+	scope(static_cast<Scope>(node.child("scope").text().as_int())),
+	ocasion(static_cast<Ocasion>(node.child("ocasion").text().as_int()))
 {}
 
 Item::BattleProperties::BattleProperties(pugi::xml_node const& node)

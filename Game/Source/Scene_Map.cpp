@@ -517,6 +517,8 @@ bool Scene_Map::IsMenuInputPressed() const
 
 TransitionScene Scene_Map::Update()
 {
+	DebugItems();
+	DebugInventory();
 	map.Update();
 
 	auto playerAction = player.HandleInput();
