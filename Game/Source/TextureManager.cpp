@@ -51,7 +51,7 @@ int TextureManager::Load(std::string const &path)
 	if (auto result = pathToInfo.find(path);
 		result != pathToInfo.end())
 	{
-		LOG("Texture [ %s ] already loaded", path);
+		//LOG("Texture [ %s ] already loaded", path);
 		result->second.second++;
 		return result->second.first;
 	}
@@ -137,7 +137,7 @@ void TextureManager::Unload(int index)
 		}
 		else
 		{
-			LOG("Removed reference to texture [ %s ].", path->second);
+			//LOG("Removed reference to texture [ %s ].", path->second);
 		}
 	}
 }

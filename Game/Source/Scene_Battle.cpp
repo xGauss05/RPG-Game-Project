@@ -70,12 +70,8 @@ void Scene_Battle::Draw()
 
 	messages->Draw();
 	actions->Draw();
-	std::string text = "";
 
-	if (actionSelected == ActionNames::ATTACK && actionSelected == ActionNames::SPECIAL_ATTACK)
-	{
-		text = "Choose a target.";
-	}
+	std::string text = "";
 
 	for (int i = 0; auto const& elem : party->party)
 	{
@@ -108,8 +104,6 @@ void Scene_Battle::Draw()
 		i++;
 	}
 
-	bool enemyHovered = false;
-
 	for (auto& elem : enemies.troop)
 	{
 		DrawHPBar(
@@ -131,7 +125,7 @@ void Scene_Battle::Draw()
 			drawEnemy.Center(SDL_Point(elem.size.x / 2, elem.size.y));
 		}
 		// If it's alive and we are hovering it
-		else if (elem.IsMouseHovering())
+		else if (elem.IsMouseHovering() && (actionSelected == ActionNames::ATTACK || actionSelected == ActionNames::SPECIAL_ATTACK))
 		{
 			// Set the alpha value for the fade-in / fade-out
 			SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), elem.alpha);
@@ -141,15 +135,6 @@ void Scene_Battle::Draw()
 			{
 				elem.fadingDirection *= -1;
 			}
-
-			// Update text widget to show enemy name and stats
-			text = std::format(
-				"{} | HP: {} | Def: {} | Sp. Def: {}",
-				elem.name,
-				elem.currentHP,
-				elem.stats[static_cast<int>(BaseStats::DEFENSE)],
-				elem.stats[static_cast<int>(BaseStats::SPECIAL_DEFENSE)]
-			);
 		}
 		else
 		{
@@ -159,11 +144,6 @@ void Scene_Battle::Draw()
 		app->render->DrawTexture(drawEnemy);
 
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
-	}
-
-	if (!text.empty())
-	{
-		messages->ModifyLastWidgetText(text);
 	}
 }
 
@@ -284,8 +264,6 @@ void Scene_Battle::UpdatePlayerTurn()
 
 		if (currentPlayer >= party->party.size())
 		{
-			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-
 			state = BattleState::ENEMY_INPUT;
 			return;
 		}
@@ -304,7 +282,8 @@ void Scene_Battle::ToggleRunButton()
 
 bool Scene_Battle::ResolveMouseClick()
 {
-	if (actionSelected == ActionNames::ATTACK || actionSelected == ActionNames::SPECIAL_ATTACK)
+	using enum Scene_Battle::ActionNames;
+	if (actionSelected == ATTACK || actionSelected == SPECIAL_ATTACK)
 	{
 		if (ChooseTarget())
 		{
@@ -312,14 +291,19 @@ bool Scene_Battle::ResolveMouseClick()
 
 			actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
 
-			actionSelected = ActionNames::NONE;
+			actionSelected = NONE;
 			targetSelected = -1;
+
+			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+
 			return true;
 		}
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
 		{
-			actionSelected = ActionNames::NONE;
+			actionSelected = NONE;
 			targetSelected = -1;
+
+			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
 		}
 	}
 
@@ -332,7 +316,7 @@ bool Scene_Battle::ChooseTarget()
 	{
 		for (auto const& elem : enemies.troop)
 		{
-			if (elem.IsMouseHovering() && elem.currentHP > 0)
+			if (elem.IsMouseHovering() && !elem.IsDead())
 			{
 				targetSelected = elem.index;
 				return true;
@@ -345,43 +329,71 @@ bool Scene_Battle::ChooseTarget()
 
 bool Scene_Battle::CharacterChooseAction()
 {
-	std::string text = std::format("What will {} do?", party->party[currentPlayer].name);
+	std::string text = "";
+
+	for (auto& elem : enemies.troop)
+	{
+		if (elem.IsMouseHovering())
+		{
+			// Update text widget to show enemy name and stats
+			text = std::format(
+				"{} | HP: {} | Def: {} | Sp. Def: {}",
+				elem.name,
+				elem.currentHP,
+				elem.stats[static_cast<int>(BaseStats::DEFENSE)],
+				elem.stats[static_cast<int>(BaseStats::SPECIAL_DEFENSE)]
+			);
+			break;
+		}
+	}
+
+	if(text.empty())
+	{
+		if (actionSelected == ActionNames::ATTACK || actionSelected == ActionNames::SPECIAL_ATTACK)
+		{
+			text = "Choose a target.";
+		}
+		else
+		{
+			text = std::format("What will {} do?", party->party[currentPlayer].name);
+		}
+	}
 
 	messages->ModifyLastWidgetText(text);
 
 	switch (actions->Update())
 	{
-	case 100:
-	{
-		actionSelected = ActionNames::ATTACK;
-		dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-		break;
-	}
-	case 101:
-	{
-		actionSelected = ActionNames::SPECIAL_ATTACK;
-		dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-		break;
-	}
-	case 102:
-	{
-		actionQueue.emplace(ActionNames::DEFEND, currentPlayer, 0, true, INT_MAX);
-
-		return true;
-	}
-	case 103:
-	{
-		if (currentPlayer == 0)
+		case 100:
 		{
-			actionQueue.emplace(ActionNames::RUN, currentPlayer, 0, true, INT_MAX);
-			currentPlayer = party->party.size();
+			actionSelected = ActionNames::ATTACK;
+			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+			break;
 		}
-		break;
-	}
-	default:
-	{
-		break;
-	}
+		case 101:
+		{
+			actionSelected = ActionNames::SPECIAL_ATTACK;
+			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
+			break;
+		}
+		case 102:
+		{
+			actionQueue.emplace(ActionNames::DEFEND, currentPlayer, 0, true, INT_MAX);
+
+			return true;
+		}
+		case 103:
+		{
+			if (currentPlayer == 0)
+			{
+				actionQueue.emplace(ActionNames::RUN, currentPlayer, 0, true, INT_MAX);
+				currentPlayer = party->party.size();
+			}
+			break;
+		}
+		default:
+		{
+			break;
+		}
 	}
 
 	return false;
@@ -474,7 +486,7 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 	std::string text = "";
 
 	Battler& source = currentAction.friendly ? party->party[currentAction.source] : enemies.troop[currentAction.source];
-	std::vector<Battler>& receiver = currentAction.friendly ? party->party : enemies.troop;
+	std::vector<Battler>& receiver = currentAction.friendly ? enemies.troop :  party->party;
 
 	ActionNames action = currentAction.action;
 
@@ -491,53 +503,54 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 	switch (action)
 	{
 		using enum ActionNames;
-	case ATTACK:
-	{
-		text = BattlerAttacking(
-			source,
-			receiver[currentAction.target],
-			BaseStats::ATTACK,
-			BaseStats::DEFENSE
-		);
-		break;
-	}
-	case SPECIAL_ATTACK:
-		text = BattlerAttacking(
-			source,
-			receiver[currentAction.target],
-			BaseStats::SPECIAL_ATTACK,
-			BaseStats::SPECIAL_DEFENSE
-		);
+		case ATTACK:
+		{
+			text = BattlerAttacking(
+				source,
+				receiver[currentAction.target],
+				BaseStats::ATTACK,
+				BaseStats::DEFENSE
+			);
+			break;
+		}
+		case SPECIAL_ATTACK:
+		{
+			text = BattlerAttacking(
+				source,
+				receiver[currentAction.target],
+				BaseStats::SPECIAL_ATTACK,
+				BaseStats::SPECIAL_DEFENSE
+			);
+			break;
+		}
+		case DEFEND:
+		{
+			text = BattlerDefending(source);
+			break;
+		}
+		case RUN:
+		{
+			text = "You run from battle. Shame.";
+			PlayActionSFX("Run");
+			state = BattleState::RUN_FROM_BATTLE;
+
+			break;
+		}
+		case USE_ITEM:
 		{
 			break;
 		}
-	case DEFEND:
-	{
-		text = BattlerDefending(source);
-	}
-	case RUN:
-	{
-		text = "You run from battle. Shame.";
-		PlayActionSFX("Run");
-		state = BattleState::RUN_FROM_BATTLE;
-
-		break;
-	}
-	case USE_ITEM:
-	{
-		break;
-	}
-	case NONE:
-	{
-		state = BattleState::BATTLE_LOSS;
-		break;
-	}
+		case NONE:
+		{
+			state = BattleState::BATTLE_LOSS;
+			break;
+		}
 	}
 
 	return text;
 }
 
-std::string Scene_Battle::BattlerDefending(Battler& battler)
+std::string Scene_Battle::BattlerDefending(Battler& battler) const
 {
 	battler.isDefending = true;
 	PlayActionSFX("Block");

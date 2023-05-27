@@ -34,7 +34,7 @@ int GuiButton::Update()
 {
 	using enum ButtonState;
 
-	if (currentState == DISABLED || !IsEnabled())
+	if (currentState == DISABLED || !IsEnabled() || forceSelected)
 		return 0;
 
 	if (IsMouseHovering() && app->input->controllerCount <= 0)
@@ -141,9 +141,16 @@ void GuiButton::MouseLeaveHandler()
 void GuiButton::ToggleSelected()
 {
 	using enum ButtonState;
-	currentState = (currentState == SELECTED)
-		? NORMAL
-		: SELECTED;
+	if(currentState == SELECTED)
+	{
+		currentState = NORMAL;
+		forceSelected = false;
+	}
+	else
+	{
+		currentState = SELECTED;
+		forceSelected = true;
+	}
 }
 
 void GuiButton::DebugDraw() const

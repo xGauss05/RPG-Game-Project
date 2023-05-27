@@ -72,7 +72,7 @@ private:
 
     void ResolveActionQueue();
     std::string ResolveAction(BattleAction const& currentAction);
-    std::string BattlerDefending(Battler &battler);
+    std::string BattlerDefending(Battler &battler) const;
     std::string BattlerAttacking(Battler const &source, Battler& receiver, BaseStats offensiveStat, BaseStats defensiveStat);
     int CalculateDamage(int atk, int def, bool defending = false, float crit = 1.0f);
     void BattlerJustDied(Battler const& battler);

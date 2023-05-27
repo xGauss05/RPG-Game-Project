@@ -59,6 +59,8 @@ private:
 
 	ButtonState currentState = ButtonState::DISABLED;
 	ButtonState lastState = ButtonState::DISABLED;
+
+	bool forceSelected = false;
 };
 
-#endif __GUIBUTTON_H__
+#endif //__GUIBUTTON_H__
