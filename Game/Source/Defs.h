@@ -41,14 +41,21 @@ using uchar = unsigned char;
 using uint32 = unsigned int;
 using uint64 = unsigned long long;
 
-constexpr uint str2int(const char *str, int h = 0)
+constexpr uint HashStrToUint(std::string_view str)
 {
-	return !str[h] ? 5381 : (str2int(str, h+1) * 33) ^ str[h];
+	uint hash = 5381;
+
+	for (auto const& letter : str)
+	{
+		hash = (hash << 5) + hash + letter;
+	}
+
+	return hash;
 }
 
-template <class VALUE_TYPE> void SWAP(VALUE_TYPE &a, VALUE_TYPE &b)
+template <class T> void SWAP(T &a, T &b)
 {
-	VALUE_TYPE tmp = a;
+	T tmp = a;
 	a = b;
 	b = tmp;
 }
