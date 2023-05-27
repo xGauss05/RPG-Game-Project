@@ -102,6 +102,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	SubscribeEventsToGlobalSwitches();
 }
 
+//TODO: Move this to map properties
 std::string Scene_Map::PlayMapBgm(std::string_view name)
 {
 	std::string musicname = "";
@@ -248,10 +249,12 @@ void Scene_Map::Draw()
 
 void Scene_Map::DebugItems()
 {
-	LOG("player HP = %i", playerParty->party[0].currentHP);
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_DOWN)
 	{
-		playerParty->party[0].SetCurrentHP(10);
+		for (auto& elem : playerParty->party)
+		{
+			elem.SetCurrentHP(10);
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_K) == KeyState::KEY_DOWN)
 	{

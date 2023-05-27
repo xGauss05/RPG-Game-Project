@@ -78,7 +78,7 @@
     <consumable>true</consumable>
     <scope>7</scope>
     <!-- 0 - None || 1 - 1 enemy || 2 - All enemies || 3~6 - 1~4 Random enemies || 7 - 1 Ally || 8 - All allies || 9 - 1 Ally (Dead) || 10 - All allies (Dead) || 11 - The User -->
-    <ocasion>0</ocasion>
+    <ocasion>3</ocasion>
     <!-- 0 - Always || 1 - Battle Screen || 2 - Menu Screen || 3 - Never -->
   </general>
   <invocation>

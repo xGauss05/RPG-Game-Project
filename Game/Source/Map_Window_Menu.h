@@ -19,7 +19,8 @@ private:
 		MAIN,
 		INVENTORY,
 		STATS,
-		COINS
+		COINS,
+		CHOOSE_CHARACTER
 	};
 
 public:

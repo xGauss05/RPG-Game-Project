@@ -8,6 +8,30 @@ Map_Menu_Inventory::Map_Menu_Inventory(pugi::xml_node const& node)
 	: GuiMenuList(node)
 {}
 
+bool Map_Menu_Inventory::Update()
+{
+	if (WaitingForTarget)
+	{
+		SetDefaultBooleanValues();
+		WaitingForTarget = false;
+
+		int target = GetPreviousPanelLastClick();
+
+		if (target >= 0 && target < playerParty->party.size() && usedItemID != -1 &&
+			playerParty->party[target].UseItem(playerParty->dbItems->GetItem(usedItemID)))
+		{
+			playerParty->RemoveItemFromInventory(usedItemID);
+			InitializeElements();
+		}
+
+		usedItemID = -1;
+
+		return false;
+	}
+	
+	return GuiMenuList::Update();
+}
+
 void Map_Menu_Inventory::HandleLeftButtonClick(int result)
 {
 	if (result < 0 || result >= playerParty->inventory.size())
@@ -16,13 +40,13 @@ void Map_Menu_Inventory::HandleLeftButtonClick(int result)
 		return;
 	}
 
-	int usedItemID = playerParty->inventory[result].first;
+	usedItemID = playerParty->inventory[result].first;
 	const Item &item = playerParty->dbItems->GetItem(usedItemID);
 
 	using enum Item::GeneralProperties::Ocasion;
 	using enum Item::GeneralProperties::Scope;
 
-	if ((item.general.ocasion == MENU_SCREEN) || (item.general.ocasion == ALWAYS))
+	if (item.general.ocasion == MENU_SCREEN || item.general.ocasion == ALWAYS)
 	{
 		if (item.general.scope == ALL_ALLIES || item.general.scope == ALL_DEAD_ALLIES)
 		{
@@ -39,14 +63,12 @@ void Map_Menu_Inventory::HandleLeftButtonClick(int result)
 		}
 		else if (item.general.scope == ONE_ALLY || item.general.scope == ONE_DEAD_ALLY)
 		{
-			if (playerParty->party[0].UseItem(item))
-			{
-				playerParty->RemoveItemIndexFromInventory(result);
-				InitializeElements();
-			}
+			WaitingForTarget = true;
+			SetClickHandled(true);
 		}
 	}
 }
+
 
 void Map_Menu_Inventory::HandleRightButtonClick()
 {

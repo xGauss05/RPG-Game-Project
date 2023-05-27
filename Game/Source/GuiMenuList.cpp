@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "TextManager.h"
 #include "Log.h"
+#include "GameParty.h"
 
 GuiMenuList::GuiMenuList() = default;
 
@@ -120,10 +121,12 @@ void GuiMenuList::Initialize()
 
 void GuiMenuList::Start()
 {
-	if (!items.empty())
+	if (!items.empty() || !characters.empty())
 		SetCurrentItemSelected(0);
 	else
 		SetCurrentItemSelected(-1);
+
+	SetDefaultBooleanValues();
 }
 
 void GuiMenuList::SetDefaultBooleanValues()
@@ -173,40 +176,56 @@ bool GuiMenuList::Draw() const
 	if(background)
 		background->Draw(position, size);
 
-	if (!SDL_RectEmpty(&arrowRect))
-	{
-		iPoint arrowPos =
-		{
-			position.x + (size.x - arrowRect.w)/ 2,
-			position.y
-		};
-		if (currentScroll > 0)
-		{
-			app->render->DrawTexture(
-				DrawParameters(background->GetTextureID(), arrowPos)
-				.Section(&arrowRect)
-				.Flip(SDL_RendererFlip::SDL_FLIP_VERTICAL)
-			);
-		}
-		if (currentScroll + maxElements < items.size())
-		{
-			arrowPos.y += size.y - arrowRect.h;
 
-			app->render->DrawTexture(
-				DrawParameters(background->GetTextureID(), arrowPos)
-				.Section(&arrowRect)
+	if(!items.empty())
+	{
+		if (!SDL_RectEmpty(&arrowRect))
+		{
+			iPoint arrowPos =
+			{
+				position.x + (size.x - arrowRect.w) / 2,
+				position.y
+			};
+			if (currentScroll > 0)
+			{
+				app->render->DrawTexture(
+					DrawParameters(background->GetTextureID(), arrowPos)
+					.Section(&arrowRect)
+					.Flip(SDL_RendererFlip::SDL_FLIP_VERTICAL)
+				);
+			}
+			if (currentScroll + maxElements < items.size())
+			{
+				arrowPos.y += size.y - arrowRect.h;
+
+				app->render->DrawTexture(
+					DrawParameters(background->GetTextureID(), arrowPos)
+					.Section(&arrowRect)
+				);
+			}
+		}
+
+		for (int i = currentScroll; i < currentScroll + maxElements && i < items.size(); ++i)
+		{
+			iPoint drawPosition(
+				position.x + outterMargin.x,
+				position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
 			);
+
+			items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
 		}
 	}
-
-	for (int i = currentScroll; i < currentScroll + maxElements && i < items.size(); ++i)
+	else if (!characters.empty())
 	{
-		iPoint drawPosition(
-			position.x + outterMargin.x,
-			position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
-		);
+		for (int i = currentScroll; i < currentScroll + maxElements && i < characters.size(); ++i)
+		{
+			iPoint drawPosition(
+				position.x + outterMargin.x,
+				position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
+			);
 
-		items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
+			characters[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
+		}
 	}
 
 	return true;
@@ -244,6 +263,21 @@ int GuiMenuList::GetLastClick() const
 	return lastClick;
 }
 
+void GuiMenuList::SetPreviousPanelLastClick(int n)
+{
+	previousPanelLastClick = n;
+}
+
+int GuiMenuList::GetPreviousPanelLastClick() const
+{
+	return previousPanelLastClick;
+}
+
+void GuiMenuList::CreateMenuCharacter(Battler const& battler)
+{
+	characters.emplace_back(battler);
+}
+
 void GuiMenuList::SetGoToPreviousMenu(bool b)
 {
 	goToPreviousMenu = b;
@@ -267,6 +301,7 @@ void GuiMenuList::ResetCurrentItemSelected()
 void GuiMenuList::ClearMenuItems()
 {
 	items.clear();
+	characters.clear();
 }
 
 bool GuiMenuList::GetGoToPreviousMenu() const
@@ -279,6 +314,25 @@ bool GuiMenuList::GetAndDefaultCloseAllMenus()
 	bool ret = closeAllMenus;
 	closeAllMenus = false;
 	return ret;
+}
+
+void GuiMenuList::SetActive(bool n)
+{
+	active = n;
+	if (active)
+	{
+		SetDefaultBooleanValues();
+	}
+}
+
+void GuiMenuList::ToggleActive()
+{
+	active = !active;
+}
+
+bool GuiMenuList::IsActive() const
+{
+	return active;
 }
 
 std::size_t GuiMenuList::GetNumberOfItems() const
@@ -310,7 +364,7 @@ void GuiMenuList::HandleInput()
 
 void GuiMenuList::HandleLeftClick()
 {
-	if (items.empty())
+	if (items.empty() && characters.empty())
 		return;
 
 	iPoint mousePos = app->input->GetMousePosition();
@@ -335,10 +389,12 @@ void GuiMenuList::HandleLeftClick()
 
 		int elementClicked = currentScroll + relativeCoords.y / menuItemHeight;
 
+		int vectorToLookInto = items.empty() ? characters.size() : items.size();
+
 		int elementInRange = MIN(
 			elementClicked,
 			currentScroll + maxElements - 1,		// Max index of item that are shown in screen
-			{ static_cast<int>(items.size()) }	// Max number of available items
+			{ vectorToLookInto }	// Max number of available items
 		);
 
 		if (elementClicked == elementInRange)
@@ -399,14 +455,15 @@ void GuiMenuList::SelectAndScrollUpIfNeeded(int amount)
 
 void GuiMenuList::SelectAndScrollDownIfNeeded(int amount)
 {
-	if (currentItemSelected < items.size() - amount)
+	int vectorSize = items.empty() ? characters.size() : items.size();
+	if (currentItemSelected < vectorSize - amount)
 	{
 		lastTimeSinceScrolled = 0;
 		currentItemSelected += amount;
 	}
 	else
 	{
-		currentItemSelected = items.size() - 1;
+		currentItemSelected = vectorSize - 1;
 	}
 
 	if (currentItemSelected >= currentScroll + maxElements)
@@ -431,13 +488,15 @@ void GuiMenuList::ScrollListUp(int amount)
 
 void GuiMenuList::ScrollListDown(int amount)
 {
+	int vectorSize = items.empty() ? characters.size() : items.size();
 	// If it can still scroll down
-	if (currentScroll + maxElements < items.size())
+	if (currentScroll + maxElements < vectorSize)
 	{
 		lastTimeSinceScrolled = 0;
-		
+
+
 		if (currentScroll + amount >= maxElements)
-			currentScroll = items.size() - maxElements;
+			currentScroll = vectorSize - maxElements;
 		else
 			currentScroll += amount;
 	}
@@ -560,4 +619,40 @@ void GuiMenuList::MenuItem::SetText(int align, std::string_view newText)
 	default:
 		break;
 	}
+}
+
+
+GuiMenuList::MenuCharacter::MenuCharacter(Battler const& battler)
+	: character(battler)
+{
+}
+
+void GuiMenuList::MenuCharacter::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int iconSize, bool currentlySelected) const
+{
+	iPoint drawPosition = originalPos + innerMargin;
+
+	if (currentlySelected)
+	{
+		iPoint cam = { app->render->GetCamera().x, app->render->GetCamera().y };
+		SDL_Rect selectedRect = {
+			(-1 * cam.x) + originalPos.x,
+			(-1 * cam.y) + originalPos.y,
+			rectSize.x - (outMargin.x * 2),
+			rectSize.y - innerMargin.y
+		};
+		app->render->DrawShape(selectedRect, true, SDL_Color(255, 255, 255, animationAlpha));
+	}
+
+	if (iconSize > 0 && character.portraitTextureID != -1)
+	{
+		iPoint cam = { -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
+
+		drawPosition += cam;
+		drawPosition.y += 2;
+		app->render->DrawTexture(DrawParameters(character.portraitTextureID, drawPosition));
+		drawPosition.y -= 2;
+		drawPosition -= cam;
+	}
+
+	drawPosition.x += character.portraitTextureID + innerMargin.x;
 }

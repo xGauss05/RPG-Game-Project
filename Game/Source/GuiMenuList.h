@@ -12,6 +12,8 @@
 constexpr uint8_t g_guiItemMinAlpha = 5;
 constexpr uint8_t g_guiItemMaxAlpha = 200;
 
+struct Battler;
+
 class GuiMenuList
 {
 public:
@@ -29,7 +31,7 @@ public:
 		explicit MenuItem(ItemText const& itemText, int textureID = -1);
 		virtual ~MenuItem() = default;
 
-		virtual void Draw(
+		void Draw(
 			iPoint originalPos,
 			iPoint rectSize,
 			iPoint innerMargin = iPoint(0, 0),
@@ -50,6 +52,25 @@ public:
 		int iconTexture = -1;
 	};
 
+	class MenuCharacter
+	{
+	public:
+		MenuCharacter() = default;
+		explicit MenuCharacter(Battler const& battler);
+		void Draw(
+			iPoint originalPos,
+			iPoint rectSize,
+			iPoint innerMargin = iPoint(0, 0),
+			iPoint outMargin = iPoint(0, 0),
+			Uint8 animationAlpha = 0,
+			int iconSize = 0,
+			bool currentlySelected = false
+		) const;
+
+	private:
+		const Battler& character;
+	};
+
 	GuiMenuList();
 	explicit GuiMenuList(pugi::xml_node const& node);
 	virtual ~GuiMenuList();
@@ -58,7 +79,7 @@ public:
 
 	virtual void Start();
 
-	bool Update();
+	virtual bool Update();
 
 	void CreateMenuItem(MenuItem const& item);
 	void DeleteMenuItem(int index);
@@ -69,8 +90,14 @@ public:
 	bool GoToPreviousMenu() const;
 	bool GetClickHandled() const;
 	int GetLastClick() const;
+	void SetPreviousPanelLastClick(int n);
 	bool GetGoToPreviousMenu() const;
 	bool GetAndDefaultCloseAllMenus();
+
+	void SetActive(bool n);
+
+	void ToggleActive();
+	bool IsActive() const;
 
 	std::size_t GetNumberOfItems() const;
 
@@ -89,7 +116,10 @@ protected:
 	void ResetCurrentItemSelected();
 
 	void ClearMenuItems();
+	int GetPreviousPanelLastClick() const;
+	void SetDefaultBooleanValues();
 
+	void CreateMenuCharacter(Battler const& battler);
 private:
 	void HandleInput();
 	void HandleLeftClick();
@@ -103,7 +133,6 @@ private:
 
 	void UpdateAlpha();
 
-	void SetDefaultBooleanValues();
 
 	std::unique_ptr<GuiPanelSegmented> background;
 	SDL_Rect arrowRect{ 0 };
@@ -125,6 +154,8 @@ private:
 
 	int fontID = 0;
 
+	bool active = true;
+
 	uint8_t currentAlpha = 0;
 	int alphaDirection = 1;
 
@@ -134,10 +165,23 @@ private:
 
 	bool clickHandled = false;
 	int lastClick = -1;
+	int previousPanelLastClick = -1;
 
 	std::vector<MenuItem> items;
 
-	
+
+	// HACK HACK HACK HACK.
+	// I'm creating an additional vector to show the graphical side of the character
+	// choice window. MenuCharacter should inherit from MenuItem in the class that will use it, 
+	// this way previous vector could store pointers to base class and draw everything by itself.
+	// 
+	// BUT.
+	// 
+	// I'm way too scared to touch that code and force myself into a +10 hours debugging session, so...
+	std::vector<MenuCharacter> characters;
+
+	// IM SO SORRY.
+	// friend class Map_Menu_InteractParty;
 };
 
 #endif //__WINDOW_MENU_LIST_H__

@@ -16,6 +16,8 @@ Map_Window_Menu::Map_Window_Menu(Window_Factory const& windowFac)
 	menuLogic.AddVertex(INVENTORY);
 	panels.emplace_back(windowFac.CreateGoldDisplay());
 	menuLogic.AddVertex(COINS);
+	panels.emplace_back(windowFac.CreateMenuList("MenuListBigImages"));
+	menuLogic.AddVertex(CHOOSE_CHARACTER);
 
 	menuLogic.AddVertex(STATS);
 }
@@ -25,6 +27,7 @@ void Map_Window_Menu::InitializeLogicGraph()
 	using enum Map_Window_Menu::MenuWindows;
 	menuLogic.AddEdge(MAIN, INVENTORY);
 	menuLogic.AddEdge(MAIN, STATS);
+	menuLogic.AddEdge(INVENTORY, CHOOSE_CHARACTER);
 }
 
 void Map_Window_Menu::Start()
@@ -66,8 +69,10 @@ bool Map_Window_Menu::Update()
 		{
 			if (panelHistory.empty())
 				return false;
-
+			
+			int lastPanelClick = panels[currentActivePanel]->GetLastClick();
 			GoToPreviousPanel();
+			panels[currentActivePanel]->SetPreviousPanelLastClick(lastPanelClick);
 		}
 		else
 		{
@@ -88,7 +93,8 @@ void Map_Window_Menu::Draw() const
 	{
 		for (auto const& elem : panels)
 		{
-			elem->Draw();
+			if(elem->IsActive())
+				elem->Draw();
 		}
 	}
 }
@@ -102,6 +108,7 @@ void Map_Window_Menu::SetPlayerParty(GameParty* party)
 		switch (menuLogic.At(i).value)
 		{
 			using enum Map_Window_Menu::MenuWindows;
+			case CHOOSE_CHARACTER:
 			case INVENTORY:
 			case COINS:
 			{
@@ -118,10 +125,17 @@ void Map_Window_Menu::SetPlayerParty(GameParty* party)
 
 void Map_Window_Menu::GoToNextPanel()
 {
-	int buttonClicked = panels[currentActivePanel]->GetLastClick();
-	int nextPanelID = menuLogic.At(currentActivePanel).edges[buttonClicked].destination;
+	if (menuLogic.At(currentActivePanel).edges.empty())
+		return;
 
-	if (nextPanelID >= panels.size())
+	int buttonClicked = panels[currentActivePanel]->GetLastClick();
+	int nextPanelID = menuLogic.At(currentActivePanel).value == MenuWindows::INVENTORY ?
+		menuLogic.At(currentActivePanel).edges[0].destination :
+		menuLogic.At(currentActivePanel).edges[buttonClicked].destination;
+
+	MenuWindows nextPanel = menuLogic.At(nextPanelID).value;
+
+	if (nextPanel == MenuWindows::STATS)
 	{
 		bInStatsMenu = true;
 	}
@@ -130,6 +144,10 @@ void Map_Window_Menu::GoToNextPanel()
 		panelHistory.push(currentActivePanel);
 		currentActivePanel = nextPanelID;
 		panels[currentActivePanel]->Start();
+		if (nextPanel == MenuWindows::CHOOSE_CHARACTER)
+		{
+			panels[currentActivePanel]->SetActive(true);
+		}
 		bInStatsMenu = false;
 	}
 }
