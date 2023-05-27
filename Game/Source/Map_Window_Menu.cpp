@@ -57,17 +57,21 @@ bool Map_Window_Menu::Update()
 
 	if(!panels.empty() && panels[currentActivePanel]->Update())
 	{
-		if (!panels[currentActivePanel]->GoToPreviousMenu())
+		if (panels[currentActivePanel]->GetAndDefaultCloseAllMenus())
 		{
-			GoToNextPanel();
+			return false;
 		}
-		else if(!panelHistory.empty())
+
+		if (panels[currentActivePanel]->GoToPreviousMenu())
 		{
+			if (panelHistory.empty())
+				return false;
+
 			GoToPreviousPanel();
 		}
 		else
 		{
-			return false;
+			GoToNextPanel();
 		}
 	}
 
@@ -114,7 +118,6 @@ void Map_Window_Menu::SetPlayerParty(GameParty* party)
 
 void Map_Window_Menu::GoToNextPanel()
 {
-	panelHistory.push(currentActivePanel);
 	int buttonClicked = panels[currentActivePanel]->GetLastClick();
 	int nextPanelID = menuLogic.At(currentActivePanel).edges[buttonClicked].destination;
 
@@ -124,6 +127,7 @@ void Map_Window_Menu::GoToNextPanel()
 	}
 	else
 	{
+		panelHistory.push(currentActivePanel);
 		currentActivePanel = nextPanelID;
 		panels[currentActivePanel]->Start();
 		bInStatsMenu = false;
@@ -140,7 +144,8 @@ void Map_Window_Menu::DrawStatsMenu() const
 {
 	statsWindow->Draw();
 
-	std::ranges::for_each(playerParty->party, [this, positionX = 0](Battler const& c) mutable
+	std::ranges::for_each(playerParty->party,
+		[this, positionX = 0](Battler const& c) mutable
 		{
 			DrawPlayerStats(c, positionX);
 			positionX += 140;

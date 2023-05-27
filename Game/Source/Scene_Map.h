@@ -77,12 +77,13 @@ private:
 	void DebugInventory();
 	void DebugAddALLItemsWithRandomAmounts();
 
+	bool IsMenuInputPressed() const;
+
 	void UpdateNormalMapState(Player::PlayerAction playerAction);
 	
 	void CreateMessageWindow(std::string_view message, MapState newState = MapState::ON_MESSAGE);
 	void ModifyLastWidgetMessage(std::string_view message);
 	void StateNormal_HandleInput();
-	void StateMenu_HandleInput();
 
 	bool CheckRandomBattle();
 
@@ -117,7 +118,6 @@ private:
 	GameParty* playerParty = nullptr;
 
 	MapState state = MapState::NORMAL;
-	MapState lastState = MapState::NORMAL;
 
 	pugi::xml_document currentDialogDocument;
 	pugi::xml_node currentDialogNode;

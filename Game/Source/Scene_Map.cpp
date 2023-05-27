@@ -329,9 +329,8 @@ void Scene_Map::StateNormal_HandleInput()
 	}
 
 	// Open character menu if C is pressed
-	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
+	if (IsMenuInputPressed())
 	{
-		lastState = state;
 		state = MapState::ON_MENU;
 		mainMenu->Start();
 	}
@@ -340,17 +339,6 @@ void Scene_Map::StateNormal_HandleInput()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 	{
 		app->PauseGame();
-	}
-}
-
-void Scene_Map::StateMenu_HandleInput()
-{
-	// Close character window if 
-	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN
-		|| app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
-	{
-		state = lastState;
-		state = MapState::NORMAL;
 	}
 }
 
@@ -521,6 +509,12 @@ void Scene_Map::StateNormal_HandlePlayerInteract()
 	}
 }
 
+bool Scene_Map::IsMenuInputPressed() const
+{
+	return (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN
+		|| app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN);
+}
+
 TransitionScene Scene_Map::Update()
 {
 	map.Update();
@@ -538,6 +532,10 @@ TransitionScene Scene_Map::Update()
 		}
 		case ON_MENU:
 		{
+			if (!mainMenu->Update())
+			{
+				state = MapState::NORMAL;
+			}
 			break;
 		}
 		case ON_MENU_SELECTION:

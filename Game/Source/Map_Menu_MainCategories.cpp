@@ -13,7 +13,6 @@ void Map_Menu_MainCategories::HandleLeftButtonClick(int result)
 void Map_Menu_MainCategories::HandleRightButtonClick()
 {
 	ResetCurrentItemSelected();
-	SetCurrentAlpha(0);
 	SetDeleteMenu(true);
 	SetClickHandled(true);
 }

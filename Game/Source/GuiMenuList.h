@@ -9,6 +9,9 @@
 #include <memory>
 #include <string>
 
+constexpr uint8_t g_guiItemMinAlpha = 5;
+constexpr uint8_t g_guiItemMaxAlpha = 200;
+
 class GuiMenuList
 {
 public:
@@ -67,6 +70,9 @@ public:
 	bool GetClickHandled() const;
 	int GetLastClick() const;
 	bool GetGoToPreviousMenu() const;
+	bool GetAndDefaultCloseAllMenus();
+
+	std::size_t GetNumberOfItems() const;
 
 protected:
 	virtual void HandleLeftButtonClick(int result) = 0;
@@ -77,7 +83,7 @@ protected:
 	void SetClickHandled(bool b);
 	void SetGoToPreviousMenu(bool b);
 
-	void SetCurrentAlpha(Uint8 value);
+	void SetCurrentAlpha(uint8_t value);
 	void SetCurrentItemSelected(int value);
 
 	void ResetCurrentItemSelected();
@@ -119,9 +125,10 @@ private:
 
 	int fontID = 0;
 
-	Uint8 currentAlpha = 0;
-	bool alphaIncreasing = true;
+	uint8_t currentAlpha = 0;
+	int alphaDirection = 1;
 
+	bool closeAllMenus = false;
 	bool deleteMenu = false;
 	bool goToPreviousMenu = false;
 
@@ -130,6 +137,7 @@ private:
 
 	std::vector<MenuItem> items;
 
+	
 };
 
 #endif //__WINDOW_MENU_LIST_H__

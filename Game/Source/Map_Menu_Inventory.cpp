@@ -10,13 +10,13 @@ Map_Menu_Inventory::Map_Menu_Inventory(pugi::xml_node const& node)
 
 void Map_Menu_Inventory::HandleLeftButtonClick(int result)
 {
+	// TODO: Implement item usage here
 	SetClickHandled(true);
 }
 
 void Map_Menu_Inventory::HandleRightButtonClick()
 {
 	ResetCurrentItemSelected();
-	SetCurrentAlpha(0);
 	SetDeleteMenu(true);
 	SetClickHandled(true);
 }

@@ -27,7 +27,6 @@ void Map_Display_QuestLog::HandleLeftButtonClick(int result)
 void Map_Display_QuestLog::HandleRightButtonClick()
 {
 	ResetCurrentItemSelected();
-	SetCurrentAlpha(0);
 	SetDeleteMenu(true);
 	SetClickHandled(true);
 }

@@ -131,7 +131,7 @@ void GuiMenuList::SetDefaultBooleanValues()
 	deleteMenu = false;
 	goToPreviousMenu = false;
 	clickHandled = false;
-	alphaIncreasing = false;
+	alphaDirection = 1;
 }
 
 bool GuiMenuList::Update()
@@ -139,7 +139,7 @@ bool GuiMenuList::Update()
 	HandleInput();
 	UpdateAlpha();
 
-	if (clickHandled)
+	if (clickHandled || closeAllMenus)
 	{
 		clickHandled = false;
 		return true;
@@ -150,23 +150,11 @@ bool GuiMenuList::Update()
 
 void GuiMenuList::UpdateAlpha()
 {
-	if (alphaIncreasing)
+	currentAlpha += (5 * alphaDirection);
+	if (currentAlpha <= g_guiItemMinAlpha || currentAlpha >= g_guiItemMaxAlpha)
 	{
-		currentAlpha += 5;
-		if (currentAlpha > 200)
-		{
-			alphaIncreasing = false;
-			currentAlpha = 205;
-		}
-	}
-	else
-	{
-		currentAlpha -= 5;
-		if (currentAlpha < 5)
-		{
-			alphaIncreasing = true;
-			currentAlpha = 0;
-		}
+		currentAlpha = std::ranges::clamp(currentAlpha, g_guiItemMinAlpha, g_guiItemMaxAlpha);
+		alphaDirection *= -1;
 	}
 }
 
@@ -261,7 +249,7 @@ void GuiMenuList::SetGoToPreviousMenu(bool b)
 	goToPreviousMenu = b;
 }
 
-void GuiMenuList::SetCurrentAlpha(Uint8 value)
+void GuiMenuList::SetCurrentAlpha(uint8_t value)
 {
 	currentAlpha = value;
 }
@@ -286,17 +274,32 @@ bool GuiMenuList::GetGoToPreviousMenu() const
 	return goToPreviousMenu;
 }
 
+bool GuiMenuList::GetAndDefaultCloseAllMenus()
+{
+	bool ret = closeAllMenus;
+	closeAllMenus = false;
+	return ret;
+}
+
+std::size_t GuiMenuList::GetNumberOfItems() const
+{
+	return items.size();
+}
+
 void GuiMenuList::HandleInput()
 {
 	using enum KeyState;
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN
-		|| app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		HandleLeftClick();
 	}
 	else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		HandleRightButtonClick();
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		closeAllMenus = true;
 	}
 
 	lastTimeSinceScrolled++;
@@ -344,6 +347,8 @@ void GuiMenuList::HandleLeftClick()
 				&& currentItemSelected == elementClicked)
 			{
 				SetLastClick(elementClicked);
+				currentAlpha = 195;
+				alphaDirection = -1;
 				HandleLeftButtonClick(elementClicked);
 			}
 			else
