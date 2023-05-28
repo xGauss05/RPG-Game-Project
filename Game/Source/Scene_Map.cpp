@@ -522,6 +522,14 @@ TransitionScene Scene_Map::Update()
 {
 	DebugItems();
 	DebugInventory();
+	if (app->input->GetKey(SDL_SCANCODE_1) == KeyState::KEY_DOWN)
+	{
+		for (auto &elem : playerParty->party)
+		{
+			if(!elem.IsDead())
+				elem.SetCurrentHP(elem.currentHP - 1);
+		}
+	}
 	map.Update();
 
 	auto playerAction = player.HandleInput();

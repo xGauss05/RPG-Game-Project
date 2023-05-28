@@ -87,6 +87,11 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 
 		menuItemHeight = app->fonts->GetLineHeight(fontID) + (itemMargin.y * 2);
 
+		if (iconSize > menuItemHeight)
+		{
+			menuItemHeight = iconSize + (itemMargin.y * 5);
+		}
+
 		maxElements = itemNode.attribute("maxElements").as_int();
 
 		if (maxElements == -1)
@@ -625,6 +630,13 @@ void GuiMenuList::MenuItem::SetText(int align, std::string_view newText)
 GuiMenuList::MenuCharacter::MenuCharacter(Battler const& battler)
 	: character(battler)
 {
+	if(hpBarTexture == -1)
+		hpBarTexture = app->tex->Load("Assets/UI/HP_Bar.png");
+}
+
+GuiMenuList::MenuCharacter::~MenuCharacter()
+{
+	app->tex->Unload(hpBarTexture);
 }
 
 void GuiMenuList::MenuCharacter::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int iconSize, bool currentlySelected) const
@@ -652,7 +664,95 @@ void GuiMenuList::MenuCharacter::Draw(iPoint originalPos, iPoint rectSize, iPoin
 		app->render->DrawTexture(DrawParameters(character.portraitTextureID, drawPosition));
 		drawPosition.y -= 2;
 		drawPosition -= cam;
+		drawPosition.x += iconSize;
 	}
 
-	drawPosition.x += character.portraitTextureID + innerMargin.x;
+	drawPosition.x += innerMargin.x;
+
+	app->fonts->DrawText(character.name, drawPosition);
+
+	drawPosition.y += app->fonts->GetLineHeight(0) + innerMargin.y;
+
+	app->fonts->DrawText(character.GetStatDisplay(BaseStats::LEVEL), drawPosition);
+
+	drawPosition.x = originalPos.x + rectSize.x - innerMargin.x;
+	drawPosition.x -= 32 - (drawPosition.x % 32);
+
+	auto camera = app->render->GetCamera();
+
+	drawPosition.x -= camera.x;
+	drawPosition.y = originalPos.y + innerMargin.y - camera.y;
+
+	DrawHPBar(character.currentHP, character.stats[static_cast<int>(BaseStats::MAX_HP)], drawPosition);
+
+	/*if (!text.rightText.empty())
+	{
+
+		
+		app->fonts->DrawText(
+			text.rightText,
+			TextParameters(
+				0,
+				DrawParameters(0, drawPosition)
+			).Align(AlignTo::ALIGN_TOP_RIGHT)
+		);
+	}*/
+}
+
+int GuiMenuList::MenuCharacter::GetHPBarTexture() const
+{
+	return hpBarTexture;
+}
+
+
+// I'm fucking canibalizing the code.
+// I'm sad.
+
+void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos) const
+{
+	SDL_Rect hpBar{};		
+	hpBar.h = 32;
+
+	hpBar.w = 192;
+
+	hpBar.x = pos.x - hpBar.w;
+	hpBar.y = pos.y + 42;
+
+	hpBar.x-= 2;
+	hpBar.y-= 2;
+	hpBar.w+= 4;
+	hpBar.h+= 4;
+
+	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
+
+	hpBar.x+= 2;
+	hpBar.y+= 2;
+	hpBar.w-= 4;
+	hpBar.h-= 4;
+
+	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
+	hpBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(hpBar.w)) : 0;
+
+	if(hpBarTexture == -1)
+	{
+		auto red = static_cast<uint8_t>(250.0f - (250.0f * hp));
+		auto green = static_cast<uint8_t>(250.0f * hp);
+
+		app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
+	}
+	else if(hp > 0)
+	{
+		auto camera = app->render->GetCamera();
+
+		hpBar.x = camera.x + hpBar.x;
+		hpBar.y =camera.y + hpBar.y;
+			
+		app->render->DrawGradientBar(
+			hpBar,
+			{ 255, 0, 0, 255 },
+			{ 0, 255, 0, 255 },
+			hpBar.w > 255 ? 255 : static_cast<uint8_t>(hpBar.w)
+		);
+
+	}
 }

@@ -57,6 +57,8 @@ public:
 	public:
 		MenuCharacter() = default;
 		explicit MenuCharacter(Battler const& battler);
+		~MenuCharacter();
+
 		void Draw(
 			iPoint originalPos,
 			iPoint rectSize,
@@ -66,8 +68,13 @@ public:
 			int iconSize = 0,
 			bool currentlySelected = false
 		) const;
+		int GetHPBarTexture() const;
+
 
 	private:
+		void DrawHPBar(int currentHP, int maxHP, iPoint pos) const;
+
+		int hpBarTexture = -1;
 		const Battler& character;
 	};
 

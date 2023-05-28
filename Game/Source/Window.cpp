@@ -47,6 +47,11 @@ bool Window::Awake(pugi::xml_node & config)
 	if (resizable) flags |= SDL_WINDOW_RESIZABLE;
 	if (fullscreen_window) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
+	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+		LOG("Couldn't set render scale quality to linear interpolation");
+	else
+		LOG("SDL_RENDER_SCALE_QUALITY is now linear interpolation");
+
 	// Create Window
 	std::unique_ptr<SDL_Window, std::function<void(SDL_Window*)>>windowPtr(
 		SDL_CreateWindow(
