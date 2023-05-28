@@ -733,15 +733,29 @@ void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos)
 	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
 	hpBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(hpBar.w)) : 0;
 
+	auto red = static_cast<uint8_t>(250.0f - (250.0f * hp));
+	auto green = static_cast<uint8_t>(250.0f * hp);
+
 	if(hpBarTexture == -1)
 	{
-		auto red = static_cast<uint8_t>(250.0f - (250.0f * hp));
-		auto green = static_cast<uint8_t>(250.0f * hp);
-
 		app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
 	}
 	else if(hp > 0)
 	{
+		if(hpBar.w > 1)
+		{
+			hpBar.w /= 2;
+		}
+
+		app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
+		
+		if (hpBar.w <= 0)
+		{
+			return;
+		}
+
+		hpBar.x += hpBar.w;
+
 		auto camera = app->render->GetCamera();
 
 		hpBar.x = camera.x + hpBar.x;
@@ -749,8 +763,8 @@ void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos)
 			
 		app->render->DrawGradientBar(
 			hpBar,
-			{ 255, 0, 0, 255 },
-			{ 0, 255, 0, 255 },
+			SDL_Color(red, green, 0, 255),
+			SDL_Color(red, green, 122, 255),
 			hpBar.w > 255 ? 255 : static_cast<uint8_t>(hpBar.w)
 		);
 
