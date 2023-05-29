@@ -141,13 +141,14 @@ void Map_Window_Menu::GoToNextPanel()
 	}
 	else
 	{
+		if (nextPanel == MenuWindows::CHOOSE_CHARACTER)
+		{
+			panels[currentActivePanel]->SetActive(false);
+			panels[nextPanelID]->SetActive(true);
+		}
 		panelHistory.push(currentActivePanel);
 		currentActivePanel = nextPanelID;
 		panels[currentActivePanel]->Start();
-		if (nextPanel == MenuWindows::CHOOSE_CHARACTER)
-		{
-			panels[currentActivePanel]->SetActive(true);
-		}
 		bInStatsMenu = false;
 	}
 }
@@ -155,6 +156,7 @@ void Map_Window_Menu::GoToNextPanel()
 void Map_Window_Menu::GoToPreviousPanel()
 {
 	currentActivePanel = panelHistory.top();
+	panels[currentActivePanel]->SetActive(true);
 	panelHistory.pop();
 }
 

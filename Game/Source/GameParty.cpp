@@ -55,9 +55,19 @@ bool Battler::RestoreHP(float amount1, float amount2)
 	return true;
 }
 
-std::string Battler::GetStatDisplay(BaseStats stat) const
+std::string Battler::GetStatDisplay(BaseStats stat, bool choosingChar) const
 {
 	using enum BaseStats;
+	if (choosingChar)
+	{
+		if (stat == LEVEL)
+			return std::format("Lvl. {}", level);
+		else if(stat == MAX_HP)
+			return std::format("{} / {}", currentHP, stats[static_cast<int>(MAX_HP)]);
+		else if(stat == BaseStats::MAX_MANA)
+			return std::format("{} / {}", currentMana, stats[static_cast<int>(MAX_MANA)]);
+	}
+
 	switch (stat)
 	{
 		case MAX_HP:			return std::format("HP: {} / {}", currentHP, stats[static_cast<int>(MAX_HP)]);
@@ -67,7 +77,7 @@ std::string Battler::GetStatDisplay(BaseStats stat) const
 		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", stats[static_cast<int>(SPECIAL_ATTACK)]);
 		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", stats[static_cast<int>(SPECIAL_DEFENSE)]);
 		case SPEED:				return std::format("Speed: {}", stats[static_cast<int>(SPEED)]);
-		case LEVEL:				return std::format("Lv. {}", level);
+		case LEVEL:				return std::format("Lvl. {}", level);
 		case XP:				return std::format("EXP: {}", currentXP);
 	}
 }

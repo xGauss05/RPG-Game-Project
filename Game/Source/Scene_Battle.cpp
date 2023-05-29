@@ -63,6 +63,14 @@ void Scene_Battle::Draw()
 
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(-camera.x, -camera.y)));
 
+
+	app->fonts->DrawText(
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elementum mollis elit et consectetur. Morbi vitae ipsum et nulla tempor finibus.",
+		true,
+		TextParameters(0, DrawParameters(0,iPoint(0, 0)))
+	);
+
+
 	for (auto const& elem : windows)
 	{
 		elem->Draw();

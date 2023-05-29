@@ -72,7 +72,7 @@ public:
 
 
 	private:
-		void DrawHPBar(int currentHP, int maxHP, iPoint pos) const;
+		void DrawHPBar(int currentHP, int maxHP, iPoint pos, int hpBarWidth, int barHeight = 32) const;
 
 		int hpBarTexture = -1;
 		const Battler& character;

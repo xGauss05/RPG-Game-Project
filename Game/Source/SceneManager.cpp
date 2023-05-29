@@ -10,6 +10,8 @@
 #include "Scene_Boot.h"
 #include "Scene_GameOver.h"
 
+// FIXME: Why is colour included here?
+
 #include "Colour.h"
 #include "Render.h"
 #include "Defs.h"

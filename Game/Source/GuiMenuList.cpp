@@ -680,23 +680,20 @@ void GuiMenuList::MenuCharacter::Draw(iPoint originalPos, iPoint rectSize, iPoin
 
 	auto camera = app->render->GetCamera();
 
-	drawPosition.x -= camera.x;
-	drawPosition.y = originalPos.y + innerMargin.y - camera.y;
+	int hpBarWidth = 220;
+	int hpBarHeight = 32;
+	int hpBarYOffset = 42;
 
-	DrawHPBar(character.currentHP, character.stats[static_cast<int>(BaseStats::MAX_HP)], drawPosition);
+	drawPosition.x -= (camera.x + hpBarWidth);
+	drawPosition.y = originalPos.y + innerMargin.y - camera.y + hpBarYOffset;
 
-	/*if (!text.rightText.empty())
-	{
+	DrawHPBar(character.currentHP, character.stats[static_cast<int>(BaseStats::MAX_HP)], drawPosition, hpBarWidth, hpBarHeight);
 
-		
-		app->fonts->DrawText(
-			text.rightText,
-			TextParameters(
-				0,
-				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_TOP_RIGHT)
-		);
-	}*/
+	drawPosition.x += camera.x;
+	drawPosition.y = originalPos.y + innerMargin.y + app->fonts->GetLineHeight(0)/2;
+
+	app->fonts->DrawText("HP", TextParameters(1, DrawParameters(0, drawPosition)));
+	//app->fonts->DrawText(character.GetStatDisplay(BaseStats::MAX_HP, true), drawPosition);
 }
 
 int GuiMenuList::MenuCharacter::GetHPBarTexture() const
@@ -708,15 +705,14 @@ int GuiMenuList::MenuCharacter::GetHPBarTexture() const
 // I'm fucking canibalizing the code.
 // I'm sad.
 
-void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos) const
+void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos, int hpBarWidth, int barHeight) const
 {
-	SDL_Rect hpBar{};		
-	hpBar.h = 32;
+	SDL_Rect hpBar{};	
 
-	hpBar.w = 192;
-
-	hpBar.x = pos.x - hpBar.w;
-	hpBar.y = pos.y + 42;
+	hpBar.x = pos.x;
+	hpBar.y = pos.y;
+	hpBar.w = hpBarWidth;
+	hpBar.h = barHeight;
 
 	hpBar.x-= 2;
 	hpBar.y-= 2;
@@ -729,6 +725,8 @@ void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos)
 	hpBar.y+= 2;
 	hpBar.w-= 4;
 	hpBar.h-= 4;
+
+	app->render->DrawShape(hpBar, true, SDL_Color(5, 8, 38, 255));
 
 	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
 	hpBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(hpBar.w)) : 0;

@@ -57,7 +57,7 @@ struct Battler
 
 	bool UseItem(Item const& item);
 
-	std::string GetStatDisplay(BaseStats stat) const;
+	std::string GetStatDisplay(BaseStats stat, bool choosingChar = false) const;
 
 	bool RestoreHP(float amount1, float amount2);
 };

@@ -8,7 +8,7 @@
 class Scene_Title : public Scene_Base
 {
 public:
-    ~Scene_Title();
+    ~Scene_Title() override;
 
     bool isReady() override;
     void Load(
@@ -25,6 +25,7 @@ public:
     bool LoadScene(pugi::xml_node const&) override;
     void DebugDraw() override;
 
+    // TODO: Can this be private?
     void DoImagesEasing();
     void DoButtonsEasing();
 
@@ -38,6 +39,7 @@ private:
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point current;
 
+    // Why is it a vector if there's one, and only one, optionsWindow
     std::vector<std::unique_ptr<Window_Base>> optionsWindow;
 };
 

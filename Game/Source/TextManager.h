@@ -73,10 +73,20 @@ private:
 		std::unordered_map<char, CharInfo> charMap;
 		int textureID = -1;
 		std::string name = "";
+		int size = 0;
 		int lineHeight = 0;
+		int maxHeight = 0;
 		fPoint scale = { 1,1 };
 		iPoint spacing = { 0,0 };
 		void Unload() const;
+	};
+
+	struct TextRun
+	{
+		std::queue<std::reference_wrapper<TextManager::Font::CharInfo>> letters;
+		std::string_view text;
+		int length = 0;
+		iPoint startingPosition;
 	};
 
 public:
@@ -93,12 +103,20 @@ public:
 
 	void DrawText(
 		std::string_view text,
+		bool wrap,
+		TextParameters const &originalParams
+	);
+
+	void DrawText(
+		std::string_view text,
 		TextParameters const &originalParams
 	) const;
+
 	void DrawText(
 		std::string_view text,
 		DrawParameters const &originalParams
 	) const;
+
 	void DrawText(
 		std::string_view text,
 		iPoint position
@@ -106,7 +124,11 @@ public:
 
 	int GetLineHeight(int fontID) const;
 
+
 private:
+
+	void CreateTextRuns(SDL_Rect const * dstrect, int fontId, std::string_view text);
+
 	iPoint GetAnchorPosition(iPoint position, AnchorTo anchor) const;
 	iPoint GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const& font) const;
 	int GetDistanceToNextDrawingPositon(int advance, int spacing, int offset, float scale = 1.0f) const;
@@ -114,6 +136,8 @@ private:
 	std::string path;
 	std::vector<Font> fonts;
 	std::priority_queue<int, std::vector<int>, std::greater<int>> freeVectorElements;
+
+	std::queue<TextRun> textRuns;
 };
 
 
