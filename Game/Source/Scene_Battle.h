@@ -120,6 +120,8 @@ private:
     std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
 
     std::unordered_map<std::string_view, int> sfx;
+
+    int DebugAmount = 0;
  };
 
 #endif //__SCENE_BATTLE_H__

@@ -61,96 +61,90 @@ void Scene_Battle::Draw()
 {
 	SDL_Rect camera = app->render->GetCamera();
 
-	app->fonts->DrawText(
-		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu metus in est gravida eleifend ultricies ac nulla.Vivamus scelerisque a mauris nec egestas.In hac habitasse platea dictumst.Donec sed nisi ac ex cursus vestibulum.Phasellus rutrum erat congue ex porttitor, nec elementum libero fringilla.Nam ultricies lacus id orci vestibulum elementum. Vivamus sodales eu turpis in ultrices.Duis tincidunt ex ligula, sed faucibus lectus placerat id. Nulla in metus nulla.Praesent fermentum urna id ligula pulvinar finibus.Mauris id rhoncus tortor, non lacinia diam.Aliquam semper, urna tincidunt tempus accumsan, dui nibh condimentum tortor, vitae facilisis quam velit sit amet metus.Nullam dapibus quam sed nibh fringilla pretium.Cras consequat, metus sed facilisis ultrices, sem dui mattis nunc, faucibus euismod justo orci ut sem.Donec aliquet quam quis neque venenatis, sit amet ornare mi rutrum.Curabitur auctor leo vel ullamcorper facilisis.Integer turpis diam, aliquet vel egestas ac, facilisis sed risus.Maecenas nec facilisis massa.Vivamus pulvinar non metus vitae volutpat.Proin arcu nisi, faucibus lacinia fringilla non, facilisis non ipsum.Proin risus odio, pharetra eget bibendum sed, luctus vel purus.Cras efficitur orci nec urna imperdiet, nec blandit purus porttitor.Nam augue erat, posuere quis rutrum ac, porta et sem.Vestibulum eget venenatis ex. Nam risus nibh, auctor auctor mollis sit amet, scelerisque et quam.Pellentesque est erat, luctus vel magna non, fermentum aliquam leo.Etiam vestibulum dui mi, eget elementum lacus malesuada ornare.Nulla nec laoreet massa.Phasellus aliquam congue erat porttitor tristique.Nam laoreet aliquam tempor.Vivamus tincidunt purus nec molestie ullamcorper.Cras a vulputate urna.Integer elementum aliquet viverra.Pellentesque aliquet neque sagittis sem feugiat, ut viverra lectus euismod.Donec eleifend sapien ante, ac pharetra leo varius eget.Vestibulum leo felis, lobortis sit amet condimentum a, tincidunt vel ipsum.Curabitur arcu magna, sagittis vel feugiat vel, congue id odio.Donec augue felis, aliquet vel tempus vel, laoreet non neque. Aliquam consequat lorem sed consequat cursus.Cras ut condimentum justo, vitae scelerisque tortor.",
-		true,
-		TextParameters(0, DrawParameters(0, iPoint(0, 0)).Section(&camera))
-	);
+	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(-camera.x, -camera.y)));
+	
+	for (auto const& elem : windows)
+	{
+		elem->Draw();
+	}
 
-	//app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(-camera.x, -camera.y)));
-	//
-	//for (auto const& elem : windows)
-	//{
-	//	elem->Draw();
-	//}
+	messages->Draw();
+	actions->Draw();
 
-	//messages->Draw();
-	//actions->Draw();
+	std::string text = "";
 
-	//std::string text = "";
+	for (int i = 0; auto const& elem : party->party)
+	{
+		iPoint allyPosition(300 - camera.x, (120 * i) - camera.y + 55);
+		iPoint hpBarPosition(270 - camera.x, (120 * i) - camera.y + 80);
 
-	//for (int i = 0; auto const& elem : party->party)
-	//{
-	//	iPoint allyPosition(300 - camera.x, (120 * i) - camera.y + 55);
-	//	iPoint hpBarPosition(270 - camera.x, (120 * i) - camera.y + 80);
+		DrawHPBar(
+			elem.battlerTextureID,
+			elem.currentHP,
+			elem.stats[static_cast<int>(BaseStats::MAX_HP)],
+			hpBarPosition
+		);
 
-	//	DrawHPBar(
-	//		elem.battlerTextureID,
-	//		elem.currentHP,
-	//		elem.stats[static_cast<int>(BaseStats::MAX_HP)],
-	//		hpBarPosition
-	//	);
+		DrawParameters drawAlly(elem.battlerTextureID, allyPosition);
 
-	//	DrawParameters drawAlly(elem.battlerTextureID, allyPosition);
+		if (elem.IsDead())
+		{
+			drawAlly.RotationAngle(90);
 
-	//	if (elem.IsDead())
-	//	{
-	//		drawAlly.RotationAngle(90);
+			SDL_Point center = app->tex->GetSizeSDLPoint(elem.battlerTextureID);
+			center.x /= 2;
 
-	//		SDL_Point center = app->tex->GetSizeSDLPoint(elem.battlerTextureID);
-	//		center.x /= 2;
+			drawAlly.Center(center);
+		}
 
-	//		drawAlly.Center(center);
-	//	}
+		drawAlly.Scale(fPoint(3, 3));
 
-	//	drawAlly.Scale(fPoint(3, 3));
+		app->render->DrawTexture(drawAlly);
 
-	//	app->render->DrawTexture(drawAlly);
+		i++;
+	}
 
-	//	i++;
-	//}
+	for (auto& elem : enemies.troop)
+	{
+		DrawHPBar(
+			elem.battlerTextureID,
+			elem.currentHP,
+			elem.stats[static_cast<int>(BaseStats::MAX_HP)],
+			elem.position
+		);
 
-	//for (auto& elem : enemies.troop)
-	//{
-	//	DrawHPBar(
-	//		elem.battlerTextureID,
-	//		elem.currentHP,
-	//		elem.stats[static_cast<int>(BaseStats::MAX_HP)],
-	//		elem.position
-	//	);
+		DrawParameters drawEnemy(elem.battlerTextureID, elem.position);
+		drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
+		drawEnemy.Scale(fPoint(2, 2));
 
-	//	DrawParameters drawEnemy(elem.battlerTextureID, elem.position);
-	//	drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
-	//	drawEnemy.Scale(fPoint(2, 2));
+		// Rotate texture if enemy is dead
+		if (elem.IsDead())
+		{
+			drawEnemy.RotationAngle(270);
 
-	//	// Rotate texture if enemy is dead
-	//	if (elem.IsDead())
-	//	{
-	//		drawEnemy.RotationAngle(270);
+			drawEnemy.Center(SDL_Point(elem.size.x / 2, elem.size.y));
+		}
+		// If it's alive and we are hovering it
+		else if (elem.IsMouseHovering() && (actionSelected == ActionNames::ATTACK || actionSelected == ActionNames::SPECIAL_ATTACK))
+		{
+			// Set the alpha value for the fade-in / fade-out
+			SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), elem.alpha);
 
-	//		drawEnemy.Center(SDL_Point(elem.size.x / 2, elem.size.y));
-	//	}
-	//	// If it's alive and we are hovering it
-	//	else if (elem.IsMouseHovering() && (actionSelected == ActionNames::ATTACK || actionSelected == ActionNames::SPECIAL_ATTACK))
-	//	{
-	//		// Set the alpha value for the fade-in / fade-out
-	//		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), elem.alpha);
+			elem.alpha += (5 * elem.fadingDirection);
+			if (elem.alpha >= 255 || elem.alpha <= 0)
+			{
+				elem.fadingDirection *= -1;
+			}
+		}
+		else
+		{
+			elem.alpha = 255;
+		}
 
-	//		elem.alpha += (5 * elem.fadingDirection);
-	//		if (elem.alpha >= 255 || elem.alpha <= 0)
-	//		{
-	//			elem.fadingDirection *= -1;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		elem.alpha = 255;
-	//	}
+		app->render->DrawTexture(drawEnemy);
 
-	//	app->render->DrawTexture(drawEnemy);
-
-	//	SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
-	//}
+		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
+	}
 }
 
 TransitionScene Scene_Battle::Update()

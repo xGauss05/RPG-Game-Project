@@ -35,10 +35,19 @@ enum class AnchorTo
 
 struct TextParameters
 {
+	enum class WrapMode
+	{
+		NONE,
+		CHARACTER,
+		SPACE,
+		ANYWHERE
+	};
+
 	int fontId;
 	DrawParameters const &params;
 
-	AnchorTo anchor= AnchorTo::SCREEN;
+	WrapMode wrap = WrapMode::SPACE;
+	AnchorTo anchor = AnchorTo::SCREEN;
 	AlignTo align = AlignTo::ALIGN_TOP_LEFT;
 
 	TextParameters(int id, DrawParameters const& originalParameters)
@@ -52,6 +61,11 @@ struct TextParameters
 	TextParameters& Anchor(AnchorTo a)
 	{
 		anchor = a;
+		return *this;
+	}
+	TextParameters& Wrap(WrapMode a)
+	{
+		wrap = a;
 		return *this;
 	}
 };
@@ -83,8 +97,8 @@ private:
 
 	struct TextRun
 	{
-		std::queue<DrawParameters> letter;
-		std::queue<SDL_Rect> letterRect;
+		std::deque<DrawParameters> letter;
+		std::deque<SDL_Rect> letterRect;
 		std::string_view text;
 	};
 
@@ -136,7 +150,7 @@ private:
 	std::vector<Font> fonts;
 	std::priority_queue<int, std::vector<int>, std::greater<int>> freeVectorElements;
 
-	std::queue<TextRun> textRuns;
+	std::deque<TextRun> textRuns;
 };
 
 

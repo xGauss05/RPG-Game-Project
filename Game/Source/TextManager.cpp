@@ -213,10 +213,10 @@ void TextManager::DrawText(std::string_view text, bool wrap, TextParameters cons
 			DrawParameters &currentLetter = currentRun.letter.front();
 			currentLetter.section = &currentRun.letterRect.front();
 			app->render->DrawTexture(currentLetter);
-			currentRun.letter.pop();
-			currentRun.letterRect.pop();
+			currentRun.letter.pop_front();
+			currentRun.letterRect.pop_front();
 		}
-		textRuns.pop();
+		textRuns.pop_front();
 	}
 }
 
@@ -353,22 +353,54 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 		};
 
-		if (params.position.x > maxPositon.x)
+		newRun.letter.emplace_back(params);
+		newRun.letterRect.push_back(newSection);
+		
+		if (params.position.x + charInfo.rect.w > maxPositon.x)
 		{
-			newRun.text = text.substr(0, newRun.letter.size() - 1);
-			text.remove_prefix(newRun.letter.size() - 1);
-			textRuns.push(newRun);
-			params.position.x = textRuns.front().letter.front().position.x;
+			std::deque<DrawParameters> nextLineParameters;
+			std::deque<SDL_Rect> nextLineRects;
+
+			newRun.text = text.substr(0, newRun.letter.size());
+
+			if (textParams.wrap == TextParameters::WrapMode::SPACE)
+			{
+				auto lastSpace = newRun.text.size() - newRun.text.find_last_of(' ');
+				text.remove_prefix(newRun.text.find_last_of(' ') + 1);
+				newRun.text.remove_suffix(lastSpace);
+
+				auto lastSpaceIt = newRun.letter.end() - lastSpace + 1;
+				auto lastSpaceIt2 = newRun.letterRect.end() - lastSpace + 1;
+
+				nextLineParameters.assign(lastSpaceIt, newRun.letter.end());
+				nextLineRects.assign(lastSpaceIt2, newRun.letterRect.end());
+
+				newRun.letter.erase(lastSpaceIt - 1, newRun.letter.end());
+				newRun.letterRect.erase(lastSpaceIt2 - 1, newRun.letterRect.end());
+
+				int firstXcoordinateBeforeFix = nextLineParameters.front().position.x;
+
+				for (auto& item : nextLineParameters)
+				{
+					item.position.x += newRun.letter.front().position.x - firstXcoordinateBeforeFix;
+					item.position.y += fontInUse.lineHeight;
+				}
+
+				params.position.x = nextLineParameters.back().position.x;
+			}
+			else if(textParams.wrap == TextParameters::WrapMode::ANYWHERE)
+			{
+				text.remove_prefix(newRun.letter.size() - 1);
+				params.position.x = textRuns.front().letter.front().position.x;
+			}
+
+			textRuns.push_back(newRun);
+			
 			params.position.y += fontInUse.lineHeight;
-			std::queue<DrawParameters> empty;
-			std::queue<SDL_Rect> empty2;
-			std::swap(newRun.letter, empty);
-			std::swap(newRun.letterRect, empty2);
+			std::swap(newRun.letter, nextLineParameters);
+			std::swap(newRun.letterRect, nextLineRects);
 		}
 
-		newRun.letter.emplace(params);
-		newRun.letterRect.push(newSection);
-		
 		//// Draw the character on screen
 		//app->render->DrawTexture(params);
 
@@ -383,7 +415,7 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 		params.position.y -= charInfo.offset.y;
 	}
 
-	textRuns.push(newRun);
+	textRuns.push_back(newRun);
 }
 
 inline iPoint TextManager::GetAnchorPosition(iPoint position, AnchorTo anchor) const
