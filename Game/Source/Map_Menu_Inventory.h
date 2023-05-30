@@ -11,6 +11,8 @@ public:
 	explicit Map_Menu_Inventory(pugi::xml_node const& node);
 	~Map_Menu_Inventory() override = default;
 
+	bool UseItem();
+
 	bool Update() override;
 
 private:

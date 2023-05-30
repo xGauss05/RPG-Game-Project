@@ -321,6 +321,11 @@ void GameParty::AddItemToInventory(int itemToAdd, int amountToAdd)
 	PossibleQuestProgress(QuestType::COLLECT, std::vector<std::pair<std::string_view, int>>(), itemAddedToInventory);
 }
 
+bool GameParty::HasItemInInventory(int itemID) const
+{
+	return std::ranges::any_of(inventory, [itemID](std::pair<int, int> i) {return i.first == itemID; });
+}
+
 void GameParty::RemoveItemIndexFromInventory(int itemIndex, int amountToRemove)
 {
 	RemoveItemFromInventory(inventory.begin() + itemIndex, amountToRemove);

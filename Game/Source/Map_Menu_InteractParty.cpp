@@ -12,7 +12,6 @@ Map_Menu_InteractParty::Map_Menu_InteractParty(pugi::xml_node const& node)
 
 void Map_Menu_InteractParty::HandleLeftButtonClick(int result)
 {
-	SetActive(false);
 	SetDeleteMenu(true);
 	SetClickHandled(true);
 }

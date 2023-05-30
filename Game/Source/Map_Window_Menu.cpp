@@ -70,9 +70,7 @@ bool Map_Window_Menu::Update()
 			if (panelHistory.empty())
 				return false;
 			
-			int lastPanelClick = panels[currentActivePanel]->GetLastClick();
 			GoToPreviousPanel();
-			panels[currentActivePanel]->SetPreviousPanelLastClick(lastPanelClick);
 		}
 		else
 		{
@@ -155,9 +153,24 @@ void Map_Window_Menu::GoToNextPanel()
 
 void Map_Window_Menu::GoToPreviousPanel()
 {
+	int lastPanelClick = panels[currentActivePanel]->GetLastClick();
+
+	if (menuLogic.At(currentActivePanel).value == MenuWindows::CHOOSE_CHARACTER
+		&& menuLogic.At(panelHistory.top()).value == MenuWindows::INVENTORY)
+	{
+		auto inventoryPanel = dynamic_cast<Map_Menu_Inventory*>(panels[panelHistory.top()].get());
+		inventoryPanel->SetPreviousPanelLastClick(lastPanelClick);
+		if (inventoryPanel->UseItem())
+		{
+			return;
+		}
+		panels[currentActivePanel]->SetActive(false);
+	}
+
 	currentActivePanel = panelHistory.top();
 	panels[currentActivePanel]->SetActive(true);
 	panelHistory.pop();
+	panels[currentActivePanel]->SetPreviousPanelLastClick(lastPanelClick);
 }
 
 void Map_Window_Menu::DrawStatsMenu() const

@@ -8,12 +8,11 @@ Map_Menu_Inventory::Map_Menu_Inventory(pugi::xml_node const& node)
 	: GuiMenuList(node)
 {}
 
-bool Map_Menu_Inventory::Update()
+bool Map_Menu_Inventory::UseItem()
 {
 	if (WaitingForTarget)
 	{
 		SetDefaultBooleanValues();
-		WaitingForTarget = false;
 
 		int target = GetPreviousPanelLastClick();
 
@@ -22,12 +21,24 @@ bool Map_Menu_Inventory::Update()
 		{
 			playerParty->RemoveItemFromInventory(usedItemID);
 			InitializeElements();
+			if (playerParty->HasItemInInventory(usedItemID))
+			{
+				WaitingForTarget = true;
+				return true;
+			}
 		}
+
+		WaitingForTarget = false;
 
 		usedItemID = -1;
 
 		return false;
 	}
+}
+
+bool Map_Menu_Inventory::Update()
+{
+	UseItem();
 	
 	return GuiMenuList::Update();
 }

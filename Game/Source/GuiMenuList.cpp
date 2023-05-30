@@ -689,11 +689,27 @@ void GuiMenuList::MenuCharacter::Draw(iPoint originalPos, iPoint rectSize, iPoin
 
 	DrawHPBar(character.currentHP, character.stats[static_cast<int>(BaseStats::MAX_HP)], drawPosition, hpBarWidth, hpBarHeight);
 
+	drawPosition.y += hpBarYOffset;
+
+	DrawManaBar(character.currentMana, character.stats[static_cast<int>(BaseStats::MAX_MANA)], drawPosition, hpBarWidth, hpBarHeight);
+
 	drawPosition.x += camera.x;
-	drawPosition.y = originalPos.y + innerMargin.y + app->fonts->GetLineHeight(0)/2;
+	drawPosition.y = originalPos.y + innerMargin.y + hpBarYOffset - app->fonts->GetLineHeight(0)/2;
 
 	app->fonts->DrawText("HP", TextParameters(1, DrawParameters(0, drawPosition)));
-	//app->fonts->DrawText(character.GetStatDisplay(BaseStats::MAX_HP, true), drawPosition);
+
+	drawPosition.y += hpBarYOffset;
+
+	app->fonts->DrawText("MP", TextParameters(1, DrawParameters(0, drawPosition)));
+
+	drawPosition.x += hpBarWidth - 6;
+	drawPosition.y -= (hpBarYOffset + 2);
+
+	app->fonts->DrawText(character.GetStatDisplay(BaseStats::MAX_HP, true), TextParameters(0, DrawParameters(0, drawPosition)).Align(AlignTo::ALIGN_TOP_RIGHT));
+
+	drawPosition.y += hpBarYOffset;
+
+	app->fonts->DrawText(character.GetStatDisplay(BaseStats::MAX_MANA, true), TextParameters(0, DrawParameters(0, drawPosition)).Align(AlignTo::ALIGN_TOP_RIGHT));
 }
 
 int GuiMenuList::MenuCharacter::GetHPBarTexture() const
@@ -764,6 +780,66 @@ void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos,
 			SDL_Color(red, green, 0, 255),
 			SDL_Color(red, green, 122, 255),
 			hpBar.w > 255 ? 255 : static_cast<uint8_t>(hpBar.w)
+		);
+
+	}
+}
+
+void GuiMenuList::MenuCharacter::DrawManaBar(int currentMana, int maxMana, iPoint pos, int manaBarWidth, int manaBarHeight) const
+{
+	SDL_Rect manaBar{};	
+
+	manaBar.x = pos.x;
+	manaBar.y = pos.y;
+	manaBar.w = manaBarWidth;
+	manaBar.h = manaBarHeight;
+
+	manaBar.x-= 2;
+	manaBar.y-= 2;
+	manaBar.w+= 4;
+	manaBar.h+= 4;
+
+	app->render->DrawShape(manaBar, true, SDL_Color(0, 0, 0, 255));
+
+	manaBar.x+= 2;
+	manaBar.y+= 2;
+	manaBar.w-= 4;
+	manaBar.h-= 4;
+
+	app->render->DrawShape(manaBar, true, SDL_Color(5, 8, 38, 255));
+
+	float hp = static_cast<float>(currentMana) / static_cast<float>(maxMana);
+	manaBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(manaBar.w)) : 0;
+
+	SDL_Color startColor = { 0, 0, 184, 255 };
+	SDL_Color endColor = { 24, 75, 184, 255 };
+
+	if(hp > 0)
+	{
+		if(manaBar.w > 1)
+		{
+			manaBar.w /= 2;
+		}
+
+		app->render->DrawShape(manaBar, true, startColor);
+		
+		if (manaBar.w <= 0)
+		{
+			return;
+		}
+
+		manaBar.x += manaBar.w;
+
+		auto camera = app->render->GetCamera();
+
+		manaBar.x = camera.x + manaBar.x;
+		manaBar.y =camera.y + manaBar.y;
+			
+		app->render->DrawGradientBar(
+			manaBar,
+			startColor,
+			endColor,
+			manaBar.w > 255 ? 255 : static_cast<uint8_t>(manaBar.w)
 		);
 
 	}
