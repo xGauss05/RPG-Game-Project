@@ -390,11 +390,6 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 		newRun.letter.emplace_back(params);
 		newRun.letterRect.push_back(newSection);
-		if (params.position.y > maxPositon.y)
-		{
-			return;
-		}
-
 		if (params.position.x + charInfo.rect.w > maxPositon.x)
 		{
 			std::deque<DrawParameters> nextLineParameters;
@@ -447,6 +442,7 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 			std::swap(newRun.letter, nextLineParameters);
 			std::swap(newRun.letterRect, nextLineRects);
 		}
+
 		// Update X position
 		if(!newRun.letter.empty())
 		{
