@@ -15,6 +15,32 @@ void TextManager::Font::Unload() const
 	app->tex->Unload(textureID);
 }
 
+void TextManager::Font::SetScale(float XY)
+{
+	if (XY == 0)
+	{
+		return;
+	}
+
+	fPoint scaleFactor = { XY / scale.x, XY / scale.y };
+
+	
+	lineHeight *= scaleFactor.y;
+	maxHeight *= scaleFactor.y;
+	spacing.x = spacing.x * scaleFactor.x;
+	spacing.y = spacing.y * scaleFactor.y;
+
+	for (auto& [character, elem] : charMap)
+	{
+		elem.xAdvance *= scaleFactor.x;
+		elem.offset.x *= scaleFactor.x;
+		elem.offset.y *= scaleFactor.y;
+	}
+
+	scale.x = XY;
+	scale.y = XY;
+}
+
 // Constructor
 TextManager::TextManager() : Module()
 {
@@ -128,10 +154,10 @@ int TextManager::Load(std::string const &fontName)
 
 	newFont.lineHeight = propertiesNode.child("common").attribute("lineHeight").as_int();
 
-	newFont.scale = {
-		propertiesNode.child("common").attribute("scaleW").as_float() / 100.f,
-		propertiesNode.child("common").attribute("scaleH").as_float() / 100.f
-	};
+	//newFont.scale = {
+	//	propertiesNode.child("common").attribute("scaleW").as_float() / 100.f,
+	//	propertiesNode.child("common").attribute("scaleH").as_float() / 100.f
+	//};
 
 	for (auto const& elem : fontNode.child("chars"))
 	{
@@ -186,6 +212,14 @@ int TextManager::Load(std::string const &fontName)
 	return fonts.size() - 1;
 }
 
+void TextManager::SetScale(int font, float XY)
+{
+	if (in_range(font, 0, static_cast<int>(fonts.size())))
+	{
+		fonts[font].SetScale(XY);
+	}
+}
+
 void TextManager::UnLoad(int font_id)
 {
 	if(fonts.size() < INT_MAX && in_range(font_id, 0, static_cast<int>(fonts.size())))
@@ -212,6 +246,7 @@ void TextManager::DrawText(std::string_view text, bool wrap, TextParameters cons
 		{
 			DrawParameters &currentLetter = currentRun.letter.front();
 			currentLetter.section = &currentRun.letterRect.front();
+			currentLetter.scale = fonts[originalParams.fontId].scale;
 			app->render->DrawTexture(currentLetter);
 			currentRun.letter.pop_front();
 			currentRun.letterRect.pop_front();
@@ -355,7 +390,11 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 		newRun.letter.emplace_back(params);
 		newRun.letterRect.push_back(newSection);
-		
+		if (params.position.y > maxPositon.y)
+		{
+			return;
+		}
+
 		if (params.position.x + charInfo.rect.w > maxPositon.x)
 		{
 			std::deque<DrawParameters> nextLineParameters;
@@ -378,15 +417,22 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 				newRun.letter.erase(lastSpaceIt - 1, newRun.letter.end());
 				newRun.letterRect.erase(lastSpaceIt2 - 1, newRun.letterRect.end());
 
-				int firstXcoordinateBeforeFix = nextLineParameters.front().position.x;
-
-				for (auto& item : nextLineParameters)
+				if(!nextLineParameters.empty())
 				{
-					item.position.x += newRun.letter.front().position.x - firstXcoordinateBeforeFix;
-					item.position.y += fontInUse.lineHeight;
-				}
+					int firstXcoordinateBeforeFix = nextLineParameters.front().position.x;
 
-				params.position.x = nextLineParameters.back().position.x;
+					for (auto& item : nextLineParameters)
+					{
+						item.position.x += newRun.letter.front().position.x - firstXcoordinateBeforeFix;
+						item.position.y += fontInUse.lineHeight;
+					}
+
+					params.position.x = nextLineParameters.back().position.x;
+				}
+				else
+				{
+					params.position.x = newRun.letter.front().position.x;
+				}
 			}
 			else if(textParams.wrap == TextParameters::WrapMode::ANYWHERE)
 			{
@@ -396,20 +442,20 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 			textRuns.push_back(newRun);
 			
+
 			params.position.y += fontInUse.lineHeight;
 			std::swap(newRun.letter, nextLineParameters);
 			std::swap(newRun.letterRect, nextLineRects);
 		}
-
-		//// Draw the character on screen
-		//app->render->DrawTexture(params);
-
 		// Update X position
-		params.position.x += GetDistanceToNextDrawingPositon(
-								charInfo.xAdvance,
-								fontInUse.spacing.x,
-								charInfo.offset.x
-		);
+		if(!newRun.letter.empty())
+		{
+			params.position.x += GetDistanceToNextDrawingPositon(
+									charInfo.xAdvance,
+									fontInUse.spacing.x,
+									charInfo.offset.x
+			);
+		}
 
 		// Set Y to original position
 		params.position.y -= charInfo.offset.y;

@@ -93,6 +93,7 @@ private:
 		fPoint scale = { 1,1 };
 		iPoint spacing = { 0,0 };
 		void Unload() const;
+		void SetScale(float XY);
 	};
 
 	struct TextRun
@@ -137,6 +138,7 @@ public:
 
 	int GetLineHeight(int fontID) const;
 
+	void SetScale(int font, float XY);
 
 private:
 
