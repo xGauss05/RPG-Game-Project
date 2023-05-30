@@ -267,7 +267,7 @@
 				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png">
 					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
 				</background>
-				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="6" maxElements="-1" />
 			</window>
 			<window name="MenuListBigImages" class="MenuList" x="300" y="50" width="600" height="660">
 				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png" />

@@ -539,9 +539,9 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 			iPoint cam ={ -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
 			
 			drawPosition += cam;
-			drawPosition.y += 2;
+			drawPosition.y += 1 - innerMargin.y;
 			app->render->DrawTexture(DrawParameters(iconTexture, drawPosition));
-			drawPosition.y -= 2;
+			drawPosition.y += innerMargin.y - 1;
 			drawPosition -= cam;
 		}
 

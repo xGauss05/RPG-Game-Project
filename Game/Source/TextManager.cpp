@@ -64,11 +64,12 @@ bool TextManager::Awake(pugi::xml_node &config)
 
 bool TextManager::Start()
 {
-	app->fonts->Load("raccoon-bold-metal");
-	app->fonts->Load("raccoon-cyan-outline");
-	app->fonts->Load("raccoon-gold");
-	app->fonts->Load("raccoon-indigo-outline");
+	app->fonts->Load("CleanPlate");
+	app->fonts->SetScale(0, 1.5);
 	app->fonts->Load("RaccoonSerif-Bold");
+	app->fonts->Load("raccoon-cyan-outline");
+	app->fonts->Load("raccoon-bold-metal");
+	app->fonts->Load("raccoon-gold");
 	return true;
 }
 
@@ -298,6 +299,7 @@ void TextManager::DrawText(std::string_view text, TextParameters const &textPara
 		params.position.y += charInfo.offset.y;
 
 		params.textureID = fontInUse.textureID;
+		params.scale = fontInUse.scale;
 
 		// Draw the character on screen
 		app->render->DrawTexture(params);
