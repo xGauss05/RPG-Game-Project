@@ -203,9 +203,21 @@ void TextManager::UnLoad(int font_id)
 void TextManager::DrawText(std::string_view text, bool wrap, TextParameters const& originalParams)
 {
 	if(wrap)
-		CreateTextRuns(originalParams.params.section, originalParams.fontId, text);
+		CreateTextRuns(originalParams, originalParams.fontId, text);
 
-	DrawText(text, originalParams);
+	while (!textRuns.empty())
+	{
+		TextRun &currentRun = textRuns.front();
+		while (!currentRun.letter.empty())
+		{
+			DrawParameters &currentLetter = currentRun.letter.front();
+			currentLetter.section = &currentRun.letterRect.front();
+			app->render->DrawTexture(currentLetter);
+			currentRun.letter.pop();
+			currentRun.letterRect.pop();
+		}
+		textRuns.pop();
+	}
 }
 
 void TextManager::DrawText(std::string_view text, TextParameters const &textParams) const
@@ -285,7 +297,7 @@ int TextManager::GetLineHeight(int fontID) const
 	return 0;
 }
 
-void TextManager::CreateTextRuns(SDL_Rect const *dstrect, int fontId, std::string_view text)
+void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, std::string_view text)
 {
 	if (fonts.empty() || !in_range(fontId, 0, static_cast<int>(fonts.size())))
 	{
@@ -293,8 +305,20 @@ void TextManager::CreateTextRuns(SDL_Rect const *dstrect, int fontId, std::strin
 		return;
 	}
 
+
 	Font const& fontInUse = fonts[fontId];
 	TextRun newRun = {};
+	DrawParameters params = textParams.params;
+
+	// Get starting drawing position
+	params.position = GetAlignPosition(text, params.position, textParams.align, fontInUse);
+	params.position = GetAnchorPosition(params.position, textParams.anchor);
+
+	iPoint maxPositon =
+	{
+		params.section->w - params.section->x,
+		params.section->y + params.section->h
+	};
 
 	for (auto const& elem : text)
 	{
@@ -308,33 +332,58 @@ void TextManager::CreateTextRuns(SDL_Rect const *dstrect, int fontId, std::strin
 			continue;
 		}
 
-		newRun.letters.emplace(charIter->second);
+		// Get the information of the character
+		auto charInfo = charIter->second;
 
+		// Offset position to align character
+		if(&elem != &text.front()) [[unlikely]]
+		{
+			params.position.x += charInfo.offset.x;
+		}
+		params.position.y += charInfo.offset.y;
 
+		params.section = &charInfo.rect;
 
-		//// Get the information of the character
-		//letters.push_back(charIter->second);
+		SDL_Rect newSection =
+		{
+			charInfo.rect.x,
+			charInfo.rect.y,
+			charInfo.rect.w,
+			charInfo.rect.h
 
-		//// Set the rectangle that holds the character
-		//params.section = &charInfo.rect;
+		};
 
-		//// Offset position to align character
-		//params.position.x += charInfo.offset.x;
-		//params.position.y += charInfo.offset.y;
+		if (params.position.x > maxPositon.x)
+		{
+			newRun.text = text.substr(0, newRun.letter.size() - 1);
+			text.remove_prefix(newRun.letter.size() - 1);
+			textRuns.push(newRun);
+			params.position.x = textRuns.front().letter.front().position.x;
+			params.position.y += fontInUse.lineHeight;
+			std::queue<DrawParameters> empty;
+			std::queue<SDL_Rect> empty2;
+			std::swap(newRun.letter, empty);
+			std::swap(newRun.letterRect, empty2);
+		}
 
+		newRun.letter.emplace(params);
+		newRun.letterRect.push(newSection);
+		
 		//// Draw the character on screen
 		//app->render->DrawTexture(params);
 
-		//// Update X position
-		//params.position.x += GetDistanceToNextDrawingPositon(
-		//						charInfo.xAdvance,
-		//						fontInUse.spacing.x,
-		//						charInfo.offset.x
-		//);
+		// Update X position
+		params.position.x += GetDistanceToNextDrawingPositon(
+								charInfo.xAdvance,
+								fontInUse.spacing.x,
+								charInfo.offset.x
+		);
 
-		//// Set Y to original position
-		//params.position.y -= charInfo.offset.y;
+		// Set Y to original position
+		params.position.y -= charInfo.offset.y;
 	}
+
+	textRuns.push(newRun);
 }
 
 inline iPoint TextManager::GetAnchorPosition(iPoint position, AnchorTo anchor) const

@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+#include "Render.h"
+
 #include "Defs.h"
 #include "Point.h"
 
@@ -12,8 +14,6 @@
 
 #include "SDL/include/SDL.h"
 #include "SDL/include/SDL_pixels.h"
-
-struct DrawParameters;
 
 constexpr auto MAX_FONTS = 10;
 constexpr auto MAX_FONT_CHARS = 256;
@@ -83,10 +83,9 @@ private:
 
 	struct TextRun
 	{
-		std::queue<std::reference_wrapper<TextManager::Font::CharInfo>> letters;
+		std::queue<DrawParameters> letter;
+		std::queue<SDL_Rect> letterRect;
 		std::string_view text;
-		int length = 0;
-		iPoint startingPosition;
 	};
 
 public:
@@ -127,7 +126,7 @@ public:
 
 private:
 
-	void CreateTextRuns(SDL_Rect const * dstrect, int fontId, std::string_view text);
+	void CreateTextRuns(TextParameters const& textParams, int fontId, std::string_view text);
 
 	iPoint GetAnchorPosition(iPoint position, AnchorTo anchor) const;
 	iPoint GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const& font) const;
