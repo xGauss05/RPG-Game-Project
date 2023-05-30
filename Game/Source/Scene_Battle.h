@@ -117,10 +117,13 @@ private:
     std::unique_ptr<Window_List> actions;
     std::unique_ptr<Window_Panel> messages;
 
+    std::queue<std::string> messageQueue;
+
     std::priority_queue<BattleAction, std::vector<BattleAction>, CompareActionSpeed> actionQueue;
 
     std::unordered_map<std::string_view, int> sfx;
 
+    bool bBattleResolved = false;
     int DebugAmount = 0;
  };
 

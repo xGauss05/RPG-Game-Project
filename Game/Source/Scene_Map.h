@@ -72,6 +72,7 @@ public:
 
 private:
 	void DrawDebugTextLine(std::string_view text, iPoint& pos) const;
+	void DebugLevels();
 	void DebugItems();
 	void DebugQuests();
 	void DebugInventory();

@@ -245,8 +245,25 @@ void Scene_Map::Draw()
 	{
 		elem->Draw();
 	}
-	SDL_Rect camera = app->render->GetCamera();
+}
 
+void Scene_Map::DebugLevels()
+{
+	if (app->input->GetKey(SDL_SCANCODE_2) == KeyState::KEY_DOWN)
+	{
+		for (auto& elem : playerParty->party)
+		{
+			elem.SetLevel(elem.level + 1);
+		}
+	}
+	if (app->input->GetKey(SDL_SCANCODE_3) == KeyState::KEY_DOWN)
+	{
+		for (auto& elem : playerParty->party)
+		{
+			elem.AddXP(20);
+			LOG("XP To next level = %i", elem.GetXPToNextLevel());
+		}
+	}
 }
 
 void Scene_Map::DebugItems()
@@ -522,6 +539,7 @@ bool Scene_Map::IsMenuInputPressed() const
 
 TransitionScene Scene_Map::Update()
 {
+	DebugLevels();
 	DebugItems();
 	DebugInventory();
 	if (app->input->GetKey(SDL_SCANCODE_1) == KeyState::KEY_DOWN)

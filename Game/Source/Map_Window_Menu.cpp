@@ -194,7 +194,7 @@ void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 	iPoint allyPosition(170 - camera.x, i - camera.y + 55);
 	iPoint hpBarPosition(140 - camera.x, i - camera.y + 80);
 
-	DrawHPBar(character.battlerTextureID, character.currentHP, character.stats[0], hpBarPosition);
+	DrawHPBar(character.battlerTextureID, character.currentHP, character.GetStat(BaseStats::MAX_HP), hpBarPosition);
 
 	DrawParameters drawAlly(character.battlerTextureID, allyPosition);
 

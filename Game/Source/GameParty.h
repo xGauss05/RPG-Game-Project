@@ -22,11 +22,6 @@ enum class EquipmentSlots
 	WEAPON
 };
 
-struct PartyCharacter : public Battler
-{
-	
-};
-
 class GameParty : public Publisher
 {
 public:

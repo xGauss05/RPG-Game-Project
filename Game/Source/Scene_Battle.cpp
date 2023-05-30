@@ -81,7 +81,7 @@ void Scene_Battle::Draw()
 		DrawHPBar(
 			elem.battlerTextureID,
 			elem.currentHP,
-			elem.stats[static_cast<int>(BaseStats::MAX_HP)],
+			elem.GetStat(BaseStats::MAX_HP),
 			hpBarPosition
 		);
 
@@ -109,7 +109,7 @@ void Scene_Battle::Draw()
 		DrawHPBar(
 			elem.battlerTextureID,
 			elem.currentHP,
-			elem.stats[static_cast<int>(BaseStats::MAX_HP)],
+			elem.GetStat(BaseStats::MAX_HP),
 			elem.position
 		);
 
@@ -169,10 +169,16 @@ TransitionScene Scene_Battle::Update()
 	}
 	case BATTLE_WON:
 	{
+		if(!bBattleResolved)
+			ResolveWinningBattle();
+
 		if (IsAdvanceTextButtonDown())
 		{
-			ResolveWinningBattle();
-			return TransitionScene::WIN_BATTLE;
+			if (messageQueue.empty())
+				return TransitionScene::WIN_BATTLE;
+			
+			messages->ModifyLastWidgetText(messageQueue.front());
+			messageQueue.pop();
 		}
 
 		break;
@@ -287,7 +293,7 @@ bool Scene_Battle::ResolveMouseClick()
 	{
 		if (ChooseTarget())
 		{
-			auto actionSpeed = party->party[currentPlayer].stats[static_cast<int>(BaseStats::SPEED)];
+			auto actionSpeed = party->party[currentPlayer].GetStat(BaseStats::SPEED);
 
 			actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
 
@@ -340,8 +346,8 @@ bool Scene_Battle::CharacterChooseAction()
 				"{} | HP: {} | Def: {} | Sp. Def: {}",
 				elem.name,
 				elem.currentHP,
-				elem.stats[static_cast<int>(BaseStats::DEFENSE)],
-				elem.stats[static_cast<int>(BaseStats::SPECIAL_DEFENSE)]
+				elem.GetStat(BaseStats::DEFENSE),
+				elem.GetStat(BaseStats::SPECIAL_DEFENSE)
 			);
 			break;
 		}
@@ -411,7 +417,7 @@ void Scene_Battle::ChooseEnemyActions()
 
 	for (int i = 0; auto const& elem : enemies.troop)
 	{
-		auto actionSpeed = elem.stats[static_cast<int>(BaseStats::SPEED)];
+		auto actionSpeed = elem.GetStat(BaseStats::SPEED);
 
 		int target = 0;
 
@@ -451,6 +457,9 @@ void Scene_Battle::ResolveActionQueue()
 			CheckBattleLossThenChangeState();
 
 			checkBattleEnd = false;
+
+			if (state != BattleState::RESOLUTION)
+				return;
 		}
 
 		currentlyInTextMessage = false;
@@ -562,8 +571,8 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 {
 	std::mt19937 gen(rd());
 
-	int attack = source.stats[static_cast<int>(offensiveStat)];
-	int defense = receiver.stats[static_cast<int>(defensiveStat)];
+	int attack = source.GetStat(offensiveStat);
+	int defense = receiver.GetStat(defensiveStat);
 
 	int damage = 1;
 
@@ -626,10 +635,10 @@ void Scene_Battle::BattlerJustDied(Battler const& battler)
 
 void Scene_Battle::CheckIfBattleWinThenChangeState()
 {
-	if (bool result = std::ranges::any_of(enemies.troop, [](Battler const& e) { return e.currentHP > 0; });
-		!result)
+	if (std::ranges::none_of(enemies.troop, [](Battler const& e) { return e.currentHP > 0; }))
 	{
 		LOG("Battle won.");
+
 		messages->ModifyLastWidgetText("You won the battle!");
 		state = BattleState::BATTLE_WON;
 		app->audio->PlayMusic("Music/M_Battle-Win.ogg");
@@ -639,10 +648,14 @@ void Scene_Battle::CheckIfBattleWinThenChangeState()
 void Scene_Battle::ResolveWinningBattle()
 {
 	std::vector<std::pair<std::string_view, int>> enemiesDefeated;
+	int xpWon = 0;
 
 	for (auto const& enemy : enemies.troop)
 	{
 		std::string_view enemyName = enemy.name;
+
+		xpWon += enemy.GetStat(BaseStats::XP);
+
 		bool enemyFound = false;
 		for (auto& [name, amount] : enemiesDefeated)
 		{
@@ -658,7 +671,25 @@ void Scene_Battle::ResolveWinningBattle()
 		}
 	}
 
+	if (xpWon > 0)
+	{
+		messageQueue.emplace(std::format("Party receives {} experience.", xpWon));
+		for (auto& character : party->party)
+		{
+			if (!character.IsDead())
+			{
+				if (int newLevel = character.AddXP(xpWon);
+					newLevel != -1)
+				{
+					messageQueue.emplace(std::format("{} is now level {}!", character.name, newLevel));
+				}
+			}
+		}
+	}
+
 	party->PossibleQuestProgress(QuestType::HUNT, enemiesDefeated, std::vector<std::pair<int, int>>());
+
+	bBattleResolved = true;
 }
 
 void Scene_Battle::CheckBattleLossThenChangeState()

@@ -687,11 +687,11 @@ void GuiMenuList::MenuCharacter::Draw(iPoint originalPos, iPoint rectSize, iPoin
 	drawPosition.x -= (camera.x + hpBarWidth);
 	drawPosition.y = originalPos.y + innerMargin.y - camera.y + hpBarYOffset;
 
-	DrawHPBar(character.currentHP, character.stats[static_cast<int>(BaseStats::MAX_HP)], drawPosition, hpBarWidth, hpBarHeight);
+	DrawHPBar(character.currentHP, character.GetStat(BaseStats::MAX_HP), drawPosition, hpBarWidth, hpBarHeight);
 
 	drawPosition.y += hpBarYOffset;
 
-	DrawManaBar(character.currentMana, character.stats[static_cast<int>(BaseStats::MAX_MANA)], drawPosition, hpBarWidth, hpBarHeight);
+	DrawManaBar(character.currentMana, character.GetStat(BaseStats::MAX_MANA), drawPosition, hpBarWidth, hpBarHeight);
 
 	drawPosition.x += camera.x;
 	drawPosition.y = originalPos.y + innerMargin.y + hpBarYOffset - app->fonts->GetLineHeight(0)/2;

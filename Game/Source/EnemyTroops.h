@@ -32,9 +32,6 @@ struct Battler
 
 	int level = 0;
 
-	std::vector<int> stats;
-	std::vector<int> equipment;
-	std::vector<int> skills;
 
 	bool isDefending = false;
 
@@ -50,16 +47,31 @@ struct Battler
 
 	bool IsDead() const;
 
+	int GetStat(BaseStats stat) const;
+
 	void SetCurrentHP(int hp);
 	void SetCurrentMana(int mp);
 	void SetCurrentXP(int xp);
 	void SetLevel(int lvl);
 
+	// Returns new Level if level up. -1 if not.
+	int AddXP(int amount);
+
 	bool UseItem(Item const& item);
+
+	int GetXPToNextLevel() const;
 
 	std::string GetStatDisplay(BaseStats stat, bool choosingChar = false) const;
 
 	bool RestoreHP(float amount1, float amount2);
+	
+	void AddStat(int value);
+
+private:
+
+	std::vector<int> stats;
+	std::vector<int> equipment;
+	std::vector<int> skills;
 };
 
 class EnemyTroops
