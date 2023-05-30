@@ -28,10 +28,7 @@ struct Battler
 	int deadSfx = 0;
 	int currentHP = 0;
 	int currentMana = 0;
-	int currentXP = 0;
-
 	int level = 0;
-
 
 	bool isDefending = false;
 
@@ -59,6 +56,7 @@ struct Battler
 
 	bool UseItem(Item const& item);
 
+	int GetCurrentXP() const;
 	int GetXPToNextLevel() const;
 
 	std::string GetStatDisplay(BaseStats stat, bool choosingChar = false) const;
@@ -68,7 +66,7 @@ struct Battler
 	void AddStat(int value);
 
 private:
-
+	int currentXP = 0;
 	std::vector<int> stats;
 	std::vector<int> equipment;
 	std::vector<int> skills;

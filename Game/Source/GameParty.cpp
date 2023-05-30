@@ -45,6 +45,11 @@ bool Battler::UseItem(Item const& item)
 	}
 }
 
+int Battler::GetCurrentXP() const
+{
+	return currentXP;
+}
+
 int Battler::GetXPToNextLevel() const
 {
 	return static_cast<int>(std::round(100 + (0.75f * std::pow(level, 3))));
@@ -52,7 +57,7 @@ int Battler::GetXPToNextLevel() const
 
 bool Battler::RestoreHP(float amount1, float amount2)
 {
-	int maxHP = stats[static_cast<int>(BaseStats::MAX_HP)];
+	int maxHP = GetStat(BaseStats::MAX_HP);
 
 	if (currentHP <= 0 || currentHP >= maxHP)
 		return false;
@@ -88,9 +93,9 @@ std::string Battler::GetStatDisplay(BaseStats stat, bool choosingChar) const
 		if (stat == LEVEL)
 			return std::format("Lvl. {}", level);
 		else if(stat == MAX_HP)
-			return std::format("{} / {}", currentHP, stats[static_cast<int>(MAX_HP)]);
+			return std::format("{} / {}", currentHP, GetStat(MAX_HP));
 		else if(stat == BaseStats::MAX_MANA)
-			return std::format("{} / {}", currentMana, stats[static_cast<int>(MAX_MANA)]);
+			return std::format("{} / {}", currentMana, GetStat(MAX_MANA));
 	}
 
 	switch (stat)

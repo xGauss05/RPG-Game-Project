@@ -297,7 +297,7 @@ pugi::xml_node SceneManager::SaveState(pugi::xml_node const& data) const
 		currentNode.append_attribute("level").set_value(character.level);
 		currentNode.append_attribute("currentHP").set_value(character.currentHP);
 		currentNode.append_attribute("currentMP").set_value(character.currentMana);
-		currentNode.append_attribute("currentXP").set_value(character.currentXP);
+		currentNode.append_attribute("currentXP").set_value(character.GetCurrentXP());
 		
 	}
 
