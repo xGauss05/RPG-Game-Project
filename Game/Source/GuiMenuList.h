@@ -152,7 +152,7 @@ private:
 	int menuItemHeight = 96;
 	int maxColumns = 1;
 	int maxElements = -1;	//Max number of elements that will be shown. -1 for fit to size
-	iPoint itemMargin{ 2, 2 };
+	iPoint innerMargin{ 2, 2 };
 
 	int currentItemSelected = 0;
 	int currentScroll = 0;

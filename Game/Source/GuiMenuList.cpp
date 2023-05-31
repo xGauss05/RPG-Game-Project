@@ -11,8 +11,7 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 	position(iPoint(node.attribute("x").as_int(), node.attribute("y").as_int())),
 	size(iPoint(node.attribute("width").as_int(), node.attribute("height").as_int()))
 {
-	if (auto backgroundNode = node.child("background");
-		backgroundNode)
+	if (node.attribute("hasbackground").as_bool())
 	{
 		SDL_Rect rect(
 			position.x,
@@ -22,49 +21,58 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 		);
 
 		background.SetPanelArea(rect);
-
-		if (auto scrollArrowNode = backgroundNode.child("scrollarrow");
-			scrollArrowNode)
-		{
-			arrowRect = {
-				scrollArrowNode.attribute("rectX").as_int(),
-				scrollArrowNode.attribute("rectY").as_int(),
-				scrollArrowNode.attribute("rectW").as_int(),
-				scrollArrowNode.attribute("rectH").as_int()
-			};
-		}
 	}
 
 	if (auto itemNode = node.child("itemlist");
 		itemNode)
 	{
 		iconSize = itemNode.attribute("iconSize").as_int();
-		fontID = itemNode.attribute("font").as_int();
-		maxColumns = itemNode.attribute("maxColumns").as_int();
 
-		itemMargin = iPoint(itemNode.attribute("itemMarginX").as_int(), itemNode.attribute("itemMarginY").as_int());
-		outterMargin = iPoint(itemNode.attribute("outterMarginX").as_int(), itemNode.attribute("outterMarginY").as_int());
+		fontID = itemNode.attribute("font") ? itemNode.attribute("font").as_int() : 0;
+		maxColumns = itemNode.attribute("maxColumns") ? itemNode.attribute("maxColumns").as_int() : 1;
 
-		menuItemHeight = app->fonts->GetLineHeight(fontID) + (itemMargin.y * 2);
-
-		if (iconSize > menuItemHeight)
+		auto GetMarginValues = [itemNode](std::string const& str)
 		{
-			menuItemHeight = iconSize + (itemMargin.y * 5);
+			if (auto strNode = itemNode.attribute(str.c_str());
+				strNode)
+			{
+				std::string_view value = strNode.as_string();
+				int xVal;
+				std::string_view firstVal = value.substr(0, value.find_first_of(','));
+				auto result = std::from_chars(firstVal.data(), firstVal.data() + firstVal.size(), xVal);
+				int yVal;
+				value.remove_prefix(value.find_first_of(',') + 1);
+				auto result2 = std::from_chars(value.data(), value.data() + value.size(), yVal);
+
+				if (result.ec == std::errc() && result2.ec == std::errc())
+				{
+					return iPoint(xVal, yVal);
+				}
+
+			}
+
+			return iPoint(2, 2);
+		};
+
+		innerMargin = GetMarginValues("innerMargin");
+		outterMargin = GetMarginValues("outterMargin") + background.segmentSize;
+
+		menuItemHeight = app->fonts->GetLineHeight(fontID) + (innerMargin.y * 2);
+
+		if (iconSize + (innerMargin.y * 2) > menuItemHeight)
+		{
+			menuItemHeight = iconSize + (innerMargin.y * 2);
 		}
 
-		maxElements = itemNode.attribute("maxElements").as_int();
-
-		if (maxElements == -1)
+		if (auto maxElementsAttr = itemNode.attribute("maxElements");
+			maxElementsAttr)
+		{
+			maxElements = maxElementsAttr.as_int();
+		}
+		else
 		{
 			maxElements = size.y / menuItemHeight;
 		}
-
-		outterMargin.y += (arrowRect.h / 2);
-
-		int correctedYSize = outterMargin.y * 2 + (menuItemHeight * maxElements);
-
-		size.y = correctedYSize;
-
 	}
 }
 
@@ -170,7 +178,7 @@ bool GuiMenuList::Draw() const
 				position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
 			);
 
-			items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
+			items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
 		}
 	}
 	else if (!characters.empty())
@@ -182,7 +190,7 @@ bool GuiMenuList::Draw() const
 				position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
 			);
 
-			characters[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
+			characters[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
 		}
 	}
 
@@ -469,9 +477,9 @@ GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int textureID)
 	: text(itemText), iconTexture(textureID)
 {}
 
-void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int sizeIcon, bool currentlySelected) const
+void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inMargin, iPoint outMargin, Uint8 animationAlpha, int sizeIcon, bool currentlySelected) const
 {
-	iPoint drawPosition = originalPos + innerMargin;
+	iPoint drawPosition = originalPos + inMargin;
 
 	if (currentlySelected)
 	{
@@ -479,8 +487,8 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 		SDL_Rect selectedRect = {
 			(-1 * cam.x) + originalPos.x,
 			(-1 * cam.y) + originalPos.y,
-			rectSize.x - (outMargin.x * 2), 
-			rectSize.y - innerMargin.y
+			rectSize.x, 
+			rectSize.y
 		};
 		app->render->DrawShape(selectedRect, true, SDL_Color(255, 255, 255, animationAlpha));
 	}
@@ -492,14 +500,13 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 			iPoint cam ={ -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
 			
 			drawPosition += cam;
-			drawPosition.y += 1 - innerMargin.y;
 			app->render->DrawTexture(DrawParameters(iconTexture, drawPosition));
-			drawPosition.y += innerMargin.y - 1;
 			drawPosition -= cam;
 		}
 
-		drawPosition.x += sizeIcon + innerMargin.x;
+		drawPosition.x += sizeIcon + inMargin.x;
 	}
+	drawPosition.y = originalPos.y + (rectSize.y / 2);
 
 	if (!text.leftText.empty())
 	{
@@ -508,7 +515,7 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 			TextParameters(
 				0,
 				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_TOP_LEFT)
+			).Align(AlignTo::ALIGN_CENTER_LEFT)
 		);
 	}
 
@@ -516,7 +523,6 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 	{
 		// Center the draw position
 		drawPosition.x = originalPos.x + (rectSize.x / 2);
-		drawPosition.y = originalPos.y + (rectSize.y / 2);
 
 		app->fonts->DrawText(
 			text.centerText,
@@ -529,17 +535,14 @@ void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inn
 
 	if (!text.rightText.empty())
 	{
-		drawPosition.x = originalPos.x + rectSize.x - innerMargin.x;
-		drawPosition.x -= 32 - (drawPosition.x % 32);
-
-		drawPosition.y = originalPos.y + innerMargin.y;
+		drawPosition.x = originalPos.x + rectSize.x - inMargin.x;
 		
 		app->fonts->DrawText(
 			text.rightText,
 			TextParameters(
 				0,
 				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_TOP_RIGHT)
+			).Align(AlignTo::ALIGN_CENTER_RIGHT)
 		);
 	}
 }

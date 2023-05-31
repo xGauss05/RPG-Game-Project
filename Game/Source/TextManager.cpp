@@ -480,6 +480,12 @@ iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, Ali
 	if (align == AlignTo::ALIGN_TOP_LEFT)
 		return position;
 
+	if (align == AlignTo::ALIGN_CENTER_LEFT)
+	{
+		return iPoint(position.x, position.y - (font.lineHeight / 2));
+	}
+
+
 	iPoint totalSize{ 0 };
 
 
@@ -499,7 +505,7 @@ iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, Ali
 		return iPoint(position.x - (totalSize.x / 4), position.y - (font.lineHeight / 2));
 	}
 
-	if (align == AlignTo::ALIGN_TOP_RIGHT)
+	if (align == AlignTo::ALIGN_TOP_RIGHT || align == AlignTo::ALIGN_CENTER_RIGHT)
 	{
 		// Get length of text in pixels, including whitespaces and spacing between letters
 		for (auto const& elem : text)
@@ -513,6 +519,12 @@ iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, Ali
 									it->second.offset.x
 				);
 			}
+		}
+
+
+		if (align == AlignTo::ALIGN_CENTER_RIGHT)
+		{
+			return iPoint(position.x - totalSize.x, position.y - (font.lineHeight / 2));
 		}
 
 		return iPoint(position.x - totalSize.x, position.y);
