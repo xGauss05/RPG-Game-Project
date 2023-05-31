@@ -1,84 +1,18 @@
 #ifndef __WINDOW_MENU_LIST_H__
 #define __WINDOW_MENU_LIST_H__
 
-#include "GuiElement.h"
-#include "GuiSegmentedPanel.h"
 #include "TextureManager.h"
 #include "TextManager.h"
+
+#include "GuiSegmentedPanel.h"
+#include "GuiMenuListItem.h"
 
 #include <memory>
 #include <string>
 
-constexpr uint8_t g_guiItemMinAlpha = 5;
-constexpr uint8_t g_guiItemMaxAlpha = 200;
-
-struct Battler;
-
 class GuiMenuList
 {
 public:
-	class MenuItem
-	{
-	public:
-		struct ItemText
-		{
-			std::string leftText = "";
-			std::string centerText = "";
-			std::string rightText = "";
-		};
-
-		MenuItem() = default;
-		explicit MenuItem(ItemText const& itemText, int textureID = -1);
-		virtual ~MenuItem() = default;
-
-		void Draw(
-			iPoint originalPos,
-			iPoint rectSize,
-			iPoint innerMargin = iPoint(0, 0),
-			iPoint outMargin = iPoint(0, 0),
-			Uint8 animationAlpha = 0,
-			int iconSize = 0,
-			bool currentlySelected = false
-		) const;
-
-		void DebugDraw(iPoint pos, iPoint s, int outterMarginY, int itemHeight, int index, int scroll) const;
-
-		void SetText(ItemText const &newText);
-		void SetText(int align, std::string_view newText);
-
-	private:
-
-		ItemText text;
-		int iconTexture = -1;
-	};
-
-	class MenuCharacter
-	{
-	public:
-		MenuCharacter() = default;
-		explicit MenuCharacter(Battler const& battler);
-		~MenuCharacter();
-
-		void Draw(
-			iPoint originalPos,
-			iPoint rectSize,
-			iPoint innerMargin = iPoint(0, 0),
-			iPoint outMargin = iPoint(0, 0),
-			Uint8 animationAlpha = 0,
-			int iconSize = 0,
-			bool currentlySelected = false
-		) const;
-		int GetHPBarTexture() const;
-
-
-	private:
-		void DrawHPBar(int currentHP, int maxHP, iPoint pos, int hpBarWidth, int barHeight = 32) const;
-		void DrawManaBar(int currentMana, int maxMana, iPoint pos, int manaBarWidth, int manaBarHeight = 32) const;
-
-		int hpBarTexture = -1;
-		const Battler& character;
-	};
-
 	GuiMenuList();
 	explicit GuiMenuList(pugi::xml_node const& node);
 	virtual ~GuiMenuList();
@@ -89,11 +23,7 @@ public:
 
 	virtual bool Update();
 
-	void CreateMenuItem(MenuItem const& item);
-	void DeleteMenuItem(int index);
-
 	bool Draw() const;
-	void DebugDraw() const;
 
 	bool GoToPreviousMenu() const;
 	bool GetClickHandled() const;
@@ -128,6 +58,9 @@ protected:
 	void SetDefaultBooleanValues();
 
 	void CreateMenuCharacter(Battler const& battler);
+	void CreateMenuItem(std::string_view left, std::string_view center, std::string_view right, int textureID = -1);
+	void DeleteMenuItem(int index);
+
 private:
 	void HandleInput();
 	void HandleLeftClick();
@@ -141,7 +74,6 @@ private:
 
 	void UpdateAlpha();
 
-
 	GuiSegmentedPanel background;
 	SDL_Rect arrowRect{ 0 };
 
@@ -149,7 +81,7 @@ private:
 	iPoint size{ 0 };
 	iPoint outterMargin{ 16, 16 };
 
-	int menuItemHeight = 96;
+	iPoint m_itemSize = { 96, 48 };
 	int maxColumns = 1;
 	int maxElements = -1;	//Max number of elements that will be shown. -1 for fit to size
 	iPoint innerMargin{ 2, 2 };
@@ -175,21 +107,7 @@ private:
 	int lastClick = -1;
 	int previousPanelLastClick = -1;
 
-	std::vector<MenuItem> items;
-
-
-	// HACK HACK HACK HACK.
-	// I'm creating an additional vector to show the graphical side of the character
-	// choice window. MenuCharacter should inherit from MenuItem in the class that will use it, 
-	// this way previous vector could store pointers to base class and draw everything by itself.
-	// 
-	// BUT.
-	// 
-	// I'm way too scared to touch that code and force myself into a +10 hours debugging session, so...
-	std::vector<MenuCharacter> characters;
-
-	// IM SO SORRY.
-	// friend class Map_Menu_InteractParty;
+	std::vector<std::unique_ptr<MenuItem>> items;
 };
 
 #endif //__WINDOW_MENU_LIST_H__

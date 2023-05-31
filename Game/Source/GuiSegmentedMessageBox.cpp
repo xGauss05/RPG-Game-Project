@@ -14,9 +14,6 @@ void GuiSegmentedMessageBox::Draw() const
 		return;
 	}
 
-	SDL_Rect camera = app->render->GetCamera();
-	iPoint drawPosition = { dstRect.x - camera.x, dstRect.y - camera.y };
-	
 	if (!messageQueue.empty())
 	{
 		app->fonts->DrawText(
@@ -32,16 +29,7 @@ void GuiSegmentedMessageBox::Draw() const
 
 	if (lockInput || messageQueue.size() > 1)
 	{
-		drawPosition =
-		{
-			((dstRect.x + dstRect.w) / 2) - (arrow.w / 2),
-			dstRect.y + dstRect.h - arrow.y
-		};
-
-		SDL_Rect srcRect = arrow;
-		srcRect.x = (segmentSize * numberOfSegments) * (currentArrowFrame % 4);
-
-		app->render->DrawTexture(DrawParameters(textureID, drawPosition).Section(&srcRect));
+		DrawArrow();
 	}
 }
 

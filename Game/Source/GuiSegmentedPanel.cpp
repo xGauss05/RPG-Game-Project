@@ -106,6 +106,38 @@ void GuiSegmentedPanel::Draw() const
 
 }
 
+void GuiSegmentedPanel::DrawArrow() const
+{
+	iPoint drawPosition =
+	{
+		dstRect.x + ((dstRect.w - arrow.w) / 2) - app->render->GetCamera().x ,
+		dstRect.y + dstRect.h - arrow.h - app->render->GetCamera().y
+	};
+
+	SDL_Rect srcRect = arrow;
+	srcRect.x = (segmentSize * numberOfSegments) * (currentArrowFrame % 4);
+
+	app->render->DrawTexture(DrawParameters(textureID, drawPosition).Section(&srcRect));
+}
+
+void GuiSegmentedPanel::DrawTopArrow() const
+{
+	iPoint drawPosition =
+	{
+		dstRect.x + ((dstRect.w - arrow.w) / 2) - app->render->GetCamera().x ,
+		dstRect.y  - app->render->GetCamera().y
+	};
+
+	SDL_Rect srcRect = arrow;
+	srcRect.x = (segmentSize * numberOfSegments) * (currentArrowFrame % 4);
+
+	app->render->DrawTexture(
+		DrawParameters(textureID, drawPosition)
+			.Section(&srcRect)
+			.Flip(SDL_FLIP_VERTICAL)
+	);
+}
+
 void GuiSegmentedPanel::UpdateAnimations()
 {
 	auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - arrowAnimTimer);

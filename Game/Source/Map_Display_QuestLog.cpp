@@ -26,8 +26,6 @@ void Map_Display_QuestLog::HandleLeftButtonClick(int result)
 
 void Map_Display_QuestLog::HandleRightButtonClick()
 {
-	ResetCurrentItemSelected();
-	SetDeleteMenu(true);
 	SetClickHandled(true);
 }
 
@@ -47,7 +45,7 @@ void Map_Display_QuestLog::UpdateQuests()
 		if (displayInfo.empty())
 			continue;
 
-		CreateMenuItem(MenuItem(MenuItem::ItemText("", std::string(quest->GetQuestName()), "")));
+		CreateMenuItem("", quest->GetQuestName(), "");
 
 		for (auto const& elem : displayInfo)
 		{
@@ -63,10 +61,9 @@ void Map_Display_QuestLog::UpdateQuests()
 			}
 			auto const& progress = elem.amountToDisplay;
 
-			CreateMenuItem(MenuItem(MenuItem::ItemText(objective, "", progress)));
+			CreateMenuItem(objective, "", progress);
 
 			i++;
 		}
-		CreateMenuItem(MenuItem());
 	}
 }

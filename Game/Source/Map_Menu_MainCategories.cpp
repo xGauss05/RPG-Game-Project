@@ -1,5 +1,6 @@
 #include "Map_Menu_MainCategories.h"
 #include "Log.h"
+#include <array>
 
 Map_Menu_MainCategories::Map_Menu_MainCategories(pugi::xml_node const& node)
 	: GuiMenuList(node)
@@ -21,15 +22,11 @@ void Map_Menu_MainCategories::InitializeElements()
 {
 	ClearMenuItems();
 	
-	std::array elementNames
-	{
-		"Items",
-		"Stats"
-	};
+	std::array<std::string_view, 2> elementNames = {"Items","Stats"};
 
-	std::ranges::for_each(elementNames, [this, index = 0](const char* elemName) mutable
+	std::ranges::for_each(elementNames, [this, index = 0](std::string_view elemName) mutable
 		{
-			CreateMenuItem(MenuItem(MenuItem::ItemText(elemName, "", "")));
+			CreateMenuItem(elemName, "", "");
 			++index;
 		}
 	);

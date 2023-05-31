@@ -98,7 +98,7 @@ void Map_Menu_Inventory::InitializeElements()
 		std::string amountToDisplay = std::format("x{}", amount);
 		int itemTextureID = playerParty->dbItems->GetItem(itemID).textureID;
 
-		CreateMenuItem(MenuItem(MenuItem::ItemText(itemName, "", amountToDisplay), itemTextureID));
+		CreateMenuItem(itemName, "", amountToDisplay, itemTextureID);
 
 		i++;
 	}

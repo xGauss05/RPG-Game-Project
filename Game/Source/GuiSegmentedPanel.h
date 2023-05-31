@@ -16,7 +16,8 @@ public:
 
 	void SetPanelArea(SDL_Rect const& destination);
 	virtual void Draw() const;
-
+	void DrawArrow() const;
+	void DrawTopArrow() const;
 	void UpdateAnimations();
 
 	const int segmentSize = 8;

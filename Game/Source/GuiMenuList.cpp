@@ -1,9 +1,11 @@
 #include "GuiMenuList.h"
 #include "App.h"
+
 #include "Render.h"
+#include "Input.h"
 #include "TextManager.h"
+
 #include "Log.h"
-#include "GameParty.h"
 
 GuiMenuList::GuiMenuList() = default;
 
@@ -57,11 +59,11 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 		innerMargin = GetMarginValues("innerMargin");
 		outterMargin = GetMarginValues("outterMargin") + background.segmentSize;
 
-		menuItemHeight = app->fonts->GetLineHeight(fontID) + (innerMargin.y * 2);
+		m_itemSize.y = app->fonts->GetLineHeight(fontID) + (innerMargin.y * 2);
 
-		if (iconSize + (innerMargin.y * 2) > menuItemHeight)
+		if (iconSize + (innerMargin.y * 2) > m_itemSize.y)
 		{
-			menuItemHeight = iconSize + (innerMargin.y * 2);
+			m_itemSize.y = iconSize + (innerMargin.y * 2);
 		}
 
 		if (auto maxElementsAttr = itemNode.attribute("maxElements");
@@ -71,14 +73,12 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 		}
 		else
 		{
-			maxElements = size.y / menuItemHeight;
+			maxElements = size.y / m_itemSize.y;
 		}
 	}
 }
 
-GuiMenuList::~GuiMenuList()
-{
-}
+GuiMenuList::~GuiMenuList() = default;
 
 void GuiMenuList::Initialize()
 {
@@ -88,7 +88,7 @@ void GuiMenuList::Initialize()
 
 void GuiMenuList::Start()
 {
-	if (!items.empty() || !characters.empty())
+	if (!items.empty())
 		SetCurrentItemSelected(0);
 	else
 		SetCurrentItemSelected(-1);
@@ -128,9 +128,9 @@ void GuiMenuList::UpdateAlpha()
 	}
 }
 
-void GuiMenuList::CreateMenuItem(MenuItem const& item)
+void GuiMenuList::CreateMenuItem(std::string_view left, std::string_view center, std::string_view right, int textureID)
 {
-	items.push_back(item);
+	items.emplace_back(std::make_unique<MenuItemBase>(left.data(), center.data(), right.data(), textureID));
 }
 
 void GuiMenuList::DeleteMenuItem(int index)
@@ -145,52 +145,23 @@ bool GuiMenuList::Draw() const
 
 	if(!items.empty())
 	{
-		if (!SDL_RectEmpty(&arrowRect))
+		if (currentScroll > 0)
 		{
-			iPoint arrowPos =
-			{
-				position.x + (size.x - arrowRect.w) / 2,
-				position.y
-			};
-			if (currentScroll > 0)
-			{/*
-				app->render->DrawTexture(
-					DrawParameters(background->GetTextureID(), arrowPos)
-					.Section(&arrowRect)
-					.Flip(SDL_RendererFlip::SDL_FLIP_VERTICAL)
-				);*/
-			}
-			if (currentScroll + maxElements < items.size())
-			{
-				arrowPos.y += size.y - arrowRect.h;
-
-				//app->render->DrawTexture(
-				//	DrawParameters(background->GetTextureID(), arrowPos)
-				//	.Section(&arrowRect)
-				//);
-			}
+			background.DrawTopArrow();
+		}
+		if (currentScroll + maxElements < items.size())
+		{
+			background.DrawArrow();
 		}
 
 		for (int i = currentScroll; i < currentScroll + maxElements && i < items.size(); ++i)
 		{
 			iPoint drawPosition(
 				position.x + outterMargin.x,
-				position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
+				position.y + outterMargin.y + (m_itemSize.y * (i - currentScroll))
 			);
 
-			items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
-		}
-	}
-	else if (!characters.empty())
-	{
-		for (int i = currentScroll; i < currentScroll + maxElements && i < characters.size(); ++i)
-		{
-			iPoint drawPosition(
-				position.x + outterMargin.x,
-				position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
-			);
-
-			characters[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
+			items[i]->Draw(drawPosition, iPoint(size.x, m_itemSize.y), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
 		}
 	}
 
@@ -241,7 +212,7 @@ int GuiMenuList::GetPreviousPanelLastClick() const
 
 void GuiMenuList::CreateMenuCharacter(Battler const& battler)
 {
-	characters.emplace_back(battler);
+	items.emplace_back(std::make_unique<MenuCharacter>(battler));
 }
 
 void GuiMenuList::SetGoToPreviousMenu(bool b)
@@ -267,7 +238,6 @@ void GuiMenuList::ResetCurrentItemSelected()
 void GuiMenuList::ClearMenuItems()
 {
 	items.clear();
-	characters.clear();
 }
 
 bool GuiMenuList::GetGoToPreviousMenu() const
@@ -330,7 +300,7 @@ void GuiMenuList::HandleInput()
 
 void GuiMenuList::HandleLeftClick()
 {
-	if (items.empty() && characters.empty())
+	if (items.empty())
 		return;
 
 	iPoint mousePos = app->input->GetMousePosition();
@@ -353,14 +323,14 @@ void GuiMenuList::HandleLeftClick()
 			return;
 		}
 
-		int elementClicked = currentScroll + relativeCoords.y / menuItemHeight;
+		int elementClicked = currentScroll + relativeCoords.y / m_itemSize.y;
 
-		int vectorToLookInto = items.empty() ? characters.size() : items.size();
+		int numOfItems = items.size();
 
 		int elementInRange = MIN(
 			elementClicked,
 			currentScroll + maxElements - 1,		// Max index of item that are shown in screen
-			{ vectorToLookInto }	// Max number of available items
+			{ numOfItems }					// Max number of available items
 		);
 
 		if (elementClicked == elementInRange)
@@ -421,15 +391,15 @@ void GuiMenuList::SelectAndScrollUpIfNeeded(int amount)
 
 void GuiMenuList::SelectAndScrollDownIfNeeded(int amount)
 {
-	int vectorSize = items.empty() ? characters.size() : items.size();
-	if (currentItemSelected < vectorSize - amount)
+	int numOfItems = items.size();
+	if (currentItemSelected < numOfItems - amount)
 	{
 		lastTimeSinceScrolled = 0;
 		currentItemSelected += amount;
 	}
 	else
 	{
-		currentItemSelected = vectorSize - 1;
+		currentItemSelected = numOfItems - 1;
 	}
 
 	if (currentItemSelected >= currentScroll + maxElements)
@@ -454,15 +424,15 @@ void GuiMenuList::ScrollListUp(int amount)
 
 void GuiMenuList::ScrollListDown(int amount)
 {
-	int vectorSize = items.empty() ? characters.size() : items.size();
+	int numOfItems = items.size();
 	// If it can still scroll down
-	if (currentScroll + maxElements < vectorSize)
+	if (currentScroll + maxElements < numOfItems)
 	{
 		lastTimeSinceScrolled = 0;
 
 
 		if (currentScroll + amount >= maxElements)
-			currentScroll = vectorSize - maxElements;
+			currentScroll = numOfItems - maxElements;
 		else
 			currentScroll += amount;
 	}
@@ -471,332 +441,4 @@ void GuiMenuList::ScrollListDown(int amount)
 void GuiMenuList::SetLastClick(int i)
 {
 	lastClick = i;
-}
-
-GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int textureID)
-	: text(itemText), iconTexture(textureID)
-{}
-
-void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint inMargin, iPoint outMargin, Uint8 animationAlpha, int sizeIcon, bool currentlySelected) const
-{
-	iPoint drawPosition = originalPos + inMargin;
-
-	if (currentlySelected)
-	{
-		iPoint cam = { app->render->GetCamera().x, app->render->GetCamera().y };
-		SDL_Rect selectedRect = {
-			(-1 * cam.x) + originalPos.x,
-			(-1 * cam.y) + originalPos.y,
-			rectSize.x, 
-			rectSize.y
-		};
-		app->render->DrawShape(selectedRect, true, SDL_Color(255, 255, 255, animationAlpha));
-	}
-
-	if (sizeIcon > 0)
-	{
-		if (iconTexture != -1)
-		{
-			iPoint cam ={ -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
-			
-			drawPosition += cam;
-			app->render->DrawTexture(DrawParameters(iconTexture, drawPosition));
-			drawPosition -= cam;
-		}
-
-		drawPosition.x += sizeIcon + inMargin.x;
-	}
-	drawPosition.y = originalPos.y + (rectSize.y / 2);
-
-	if (!text.leftText.empty())
-	{
-		app->fonts->DrawText(
-			text.leftText,
-			TextParameters(
-				0,
-				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_CENTER_LEFT)
-		);
-	}
-
-	if (!text.centerText.empty())
-	{
-		// Center the draw position
-		drawPosition.x = originalPos.x + (rectSize.x / 2);
-
-		app->fonts->DrawText(
-			text.centerText,
-			TextParameters(
-				0,
-				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_CENTER)
-		);
-	}
-
-	if (!text.rightText.empty())
-	{
-		drawPosition.x = originalPos.x + rectSize.x - inMargin.x;
-		
-		app->fonts->DrawText(
-			text.rightText,
-			TextParameters(
-				0,
-				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_CENTER_RIGHT)
-		);
-	}
-}
-
-void GuiMenuList::MenuItem::DebugDraw(iPoint pos, iPoint s, int outterMarginY, int itemHeight, int index, int scroll) const
-{
-	iPoint debugDrawPos(
-			pos.x,
-			pos.y + outterMarginY + (itemHeight * (index - scroll))
-	);
-
-	SDL_Rect debugRect(pos.x, pos.y, s.x, s.y);
-
-	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
-}
-
-void GuiMenuList::MenuItem::SetText(ItemText const& newText)
-{
-	text = newText;
-}
-
-void GuiMenuList::MenuItem::SetText(int align, std::string_view newText)
-{
-	switch (align)
-	{
-	case 1:
-		text.leftText = newText;
-		return;
-	case 2:
-		text.centerText = newText;
-		return;
-	case 3:
-		text.rightText = newText;
-		return;
-	default:
-		break;
-	}
-}
-
-
-GuiMenuList::MenuCharacter::MenuCharacter(Battler const& battler)
-	: character(battler)
-{
-	if(hpBarTexture == -1)
-		hpBarTexture = app->tex->Load("Assets/UI/HP_Bar.png");
-}
-
-GuiMenuList::MenuCharacter::~MenuCharacter()
-{
-	app->tex->Unload(hpBarTexture);
-}
-
-void GuiMenuList::MenuCharacter::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int iconSize, bool currentlySelected) const
-{
-	iPoint drawPosition = originalPos + innerMargin;
-
-	if (currentlySelected)
-	{
-		iPoint cam = { app->render->GetCamera().x, app->render->GetCamera().y };
-		SDL_Rect selectedRect = {
-			(-1 * cam.x) + originalPos.x,
-			(-1 * cam.y) + originalPos.y,
-			rectSize.x - (outMargin.x * 2),
-			rectSize.y - innerMargin.y
-		};
-		app->render->DrawShape(selectedRect, true, SDL_Color(255, 255, 255, animationAlpha));
-	}
-
-	if (iconSize > 0 && character.portraitTextureID != -1)
-	{
-		iPoint cam = { -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
-
-		drawPosition += cam;
-		drawPosition.y += 2;
-		app->render->DrawTexture(DrawParameters(character.portraitTextureID, drawPosition));
-		drawPosition.y -= 2;
-		drawPosition -= cam;
-		drawPosition.x += iconSize;
-	}
-
-	drawPosition.x += innerMargin.x;
-
-	app->fonts->DrawText(character.name, drawPosition);
-
-	drawPosition.y += app->fonts->GetLineHeight(0) + innerMargin.y;
-
-	app->fonts->DrawText(character.GetStatDisplay(BaseStats::LEVEL), drawPosition);
-
-	drawPosition.x = originalPos.x + rectSize.x - innerMargin.x;
-	drawPosition.x -= 32 - (drawPosition.x % 32);
-
-	auto camera = app->render->GetCamera();
-
-	int hpBarWidth = 220;
-	int hpBarHeight = 32;
-	int hpBarYOffset = 42;
-
-	drawPosition.x -= (camera.x + hpBarWidth);
-	drawPosition.y = originalPos.y + innerMargin.y - camera.y + hpBarYOffset;
-
-	DrawHPBar(character.currentHP, character.GetStat(BaseStats::MAX_HP), drawPosition, hpBarWidth, hpBarHeight);
-
-	drawPosition.y += hpBarYOffset;
-
-	DrawManaBar(character.currentMana, character.GetStat(BaseStats::MAX_MANA), drawPosition, hpBarWidth, hpBarHeight);
-
-	drawPosition.x += camera.x;
-	drawPosition.y = originalPos.y + innerMargin.y + hpBarYOffset - app->fonts->GetLineHeight(0)/2;
-
-	app->fonts->DrawText("HP", TextParameters(1, DrawParameters(0, drawPosition)));
-
-	drawPosition.y += hpBarYOffset;
-
-	app->fonts->DrawText("MP", TextParameters(1, DrawParameters(0, drawPosition)));
-
-	drawPosition.x += hpBarWidth - 6;
-	drawPosition.y -= (hpBarYOffset + 2);
-
-	app->fonts->DrawText(character.GetStatDisplay(BaseStats::MAX_HP, true), TextParameters(0, DrawParameters(0, drawPosition)).Align(AlignTo::ALIGN_TOP_RIGHT));
-
-	drawPosition.y += hpBarYOffset;
-
-	app->fonts->DrawText(character.GetStatDisplay(BaseStats::MAX_MANA, true), TextParameters(0, DrawParameters(0, drawPosition)).Align(AlignTo::ALIGN_TOP_RIGHT));
-}
-
-int GuiMenuList::MenuCharacter::GetHPBarTexture() const
-{
-	return hpBarTexture;
-}
-
-
-// I'm fucking canibalizing the code.
-// I'm sad.
-
-void GuiMenuList::MenuCharacter::DrawHPBar(int currentHP, int maxHP, iPoint pos, int hpBarWidth, int barHeight) const
-{
-	SDL_Rect hpBar{};	
-
-	hpBar.x = pos.x;
-	hpBar.y = pos.y;
-	hpBar.w = hpBarWidth;
-	hpBar.h = barHeight;
-
-	hpBar.x-= 2;
-	hpBar.y-= 2;
-	hpBar.w+= 4;
-	hpBar.h+= 4;
-
-	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
-
-	hpBar.x+= 2;
-	hpBar.y+= 2;
-	hpBar.w-= 4;
-	hpBar.h-= 4;
-
-	app->render->DrawShape(hpBar, true, SDL_Color(5, 8, 38, 255));
-
-	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
-	hpBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(hpBar.w)) : 0;
-
-	auto red = static_cast<uint8_t>(250.0f - (250.0f * hp));
-	auto green = static_cast<uint8_t>(250.0f * hp);
-
-	if(hpBarTexture == -1)
-	{
-		app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
-	}
-	else if(hp > 0)
-	{
-		if(hpBar.w > 1)
-		{
-			hpBar.w /= 2;
-		}
-
-		app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
-		
-		if (hpBar.w <= 0)
-		{
-			return;
-		}
-
-		hpBar.x += hpBar.w;
-
-		auto camera = app->render->GetCamera();
-
-		hpBar.x = camera.x + hpBar.x;
-		hpBar.y =camera.y + hpBar.y;
-			
-		app->render->DrawGradientBar(
-			hpBar,
-			SDL_Color(red, green, 0, 255),
-			SDL_Color(red, green, 122, 255),
-			hpBar.w > 255 ? 255 : static_cast<uint8_t>(hpBar.w)
-		);
-
-	}
-}
-
-void GuiMenuList::MenuCharacter::DrawManaBar(int currentMana, int maxMana, iPoint pos, int manaBarWidth, int manaBarHeight) const
-{
-	SDL_Rect manaBar{};	
-
-	manaBar.x = pos.x;
-	manaBar.y = pos.y;
-	manaBar.w = manaBarWidth;
-	manaBar.h = manaBarHeight;
-
-	manaBar.x-= 2;
-	manaBar.y-= 2;
-	manaBar.w+= 4;
-	manaBar.h+= 4;
-
-	app->render->DrawShape(manaBar, true, SDL_Color(0, 0, 0, 255));
-
-	manaBar.x+= 2;
-	manaBar.y+= 2;
-	manaBar.w-= 4;
-	manaBar.h-= 4;
-
-	app->render->DrawShape(manaBar, true, SDL_Color(5, 8, 38, 255));
-
-	float hp = static_cast<float>(currentMana) / static_cast<float>(maxMana);
-	manaBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(manaBar.w)) : 0;
-
-	SDL_Color startColor = { 0, 0, 184, 255 };
-	SDL_Color endColor = { 24, 75, 184, 255 };
-
-	if(hp > 0)
-	{
-		if(manaBar.w > 1)
-		{
-			manaBar.w /= 2;
-		}
-
-		app->render->DrawShape(manaBar, true, startColor);
-		
-		if (manaBar.w <= 0)
-		{
-			return;
-		}
-
-		manaBar.x += manaBar.w;
-
-		auto camera = app->render->GetCamera();
-
-		manaBar.x = camera.x + manaBar.x;
-		manaBar.y =camera.y + manaBar.y;
-			
-		app->render->DrawGradientBar(
-			manaBar,
-			startColor,
-			endColor,
-			manaBar.w > 255 ? 255 : static_cast<uint8_t>(manaBar.w)
-		);
-
-	}
 }

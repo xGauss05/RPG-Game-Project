@@ -263,10 +263,10 @@
 					<texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
 				</panel>
 			</window>
-			<window name="MenuListFallback" class="MenuList" x="300" y="50" width="500" height="400" hasbackground="true">
+			<window name="MenuListFallback" class="MenuList" x="300" y="50" width="500" height="225" hasbackground="true">
 				<itemlist iconSize="32" outterMargin="2,2" innerMargin="2,4" />
 			</window>
-			<window name="MenuListBigImages" class="MenuList" x="300" y="50" width="600" height="660" hasbackground="true">
+			<window name="MenuListBigImages" class="MenuList" x="300" y="50" width="600" height="553" hasbackground="true">
 				<itemlist iconSize="128" outterMargin="2,2" innerMargin="2,2" />
 			</window>
 			<window name="Menu_MainCategories_NoIcons" class="MenuList" x="100" y="50" width="180" height="400" hasbackground="true">
