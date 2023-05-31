@@ -58,7 +58,7 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 		enemyToAdd.index = troop.size();
 
 		enemyToAdd.position.x = 800 - camera.x;
-		enemyToAdd.position.y = 50 + (125 * enemyToAdd.index) - camera.y;
+		enemyToAdd.position.y = 50 + (enemyToAdd.size.y * enemyToAdd.index) - camera.y;
 
 		troop.emplace_back(enemyToAdd);
 	}

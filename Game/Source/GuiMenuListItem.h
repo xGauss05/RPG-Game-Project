@@ -86,4 +86,27 @@ private:
 	const Battler& character;
 };
 
+
+class MenuImage : public MenuItem
+{
+public:
+	MenuImage() = default;
+	explicit MenuImage(int texId, SDL_Rect const& srcRect);
+	~MenuImage() override = default;
+
+	void Draw(
+		iPoint originalPos,
+		iPoint rectSize,
+		iPoint innerMargin = iPoint(0, 0),
+		iPoint outMargin = iPoint(0, 0),
+		Uint8 animationAlpha = 0,
+		int iconSize = 0,
+		bool currentlySelected = false
+	) const override;
+
+private:
+	int textureId = -1;
+	SDL_Rect rect = { 0, 0, 0, 0 };
+};
+
 #endif //__WINDOW_MENU_LIST_ITEM_H__

@@ -267,3 +267,26 @@ void MenuCharacter::DrawManaBar(int currentMana, int maxMana, iPoint pos, int ma
 
 	}
 }
+
+MenuImage::MenuImage(int texId, SDL_Rect const &srcRect)
+	: textureId(texId), rect(srcRect)
+{}
+
+void MenuImage::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int iconSize, bool currentlySelected) const
+{
+	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
+	iPoint drawPosition = originalPos - camera;
+
+	app->render->DrawTexture(DrawParameters(textureId, drawPosition).Section(&rect));
+
+	if (currentlySelected)
+	{
+		SDL_Rect selectedRect = {
+			drawPosition.x,
+			drawPosition.y,
+			rectSize.x,
+			rectSize.y
+		};
+		app->render->DrawShape(selectedRect, true, SDL_Color(255, 255, 255, animationAlpha));
+	}
+}

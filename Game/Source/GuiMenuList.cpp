@@ -13,23 +13,10 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 	position(iPoint(node.attribute("x").as_int(), node.attribute("y").as_int())),
 	size(iPoint(node.attribute("width").as_int(), node.attribute("height").as_int()))
 {
-	if (node.attribute("hasbackground").as_bool())
-	{
-		SDL_Rect rect(
-			position.x,
-			position.y,
-			size.x,
-			size.y
-		);
-
-		background.SetPanelArea(rect);
-	}
-
 	if (auto itemNode = node.child("itemlist");
 		itemNode)
 	{
-		iconSize = itemNode.attribute("iconSize").as_int();
-
+		
 		fontID = itemNode.attribute("font") ? itemNode.attribute("font").as_int() : 0;
 		maxColumns = itemNode.attribute("maxColumns") ? itemNode.attribute("maxColumns").as_int() : 1;
 
@@ -59,23 +46,64 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 		innerMargin = GetMarginValues("innerMargin");
 		outterMargin = GetMarginValues("outterMargin") + background.segmentSize;
 
-		m_itemSize.y = app->fonts->GetLineHeight(fontID) + (innerMargin.y * 2);
+		iconSize = itemNode.attribute("iconSize").as_int();
 
-		if (iconSize + (innerMargin.y * 2) > m_itemSize.y)
+		if (node.attribute("isonlyicons").as_bool())
 		{
-			m_itemSize.y = iconSize + (innerMargin.y * 2);
-		}
+			m_itemSize = { iconSize , iconSize };
+			size = m_itemSize;
+			if (auto maxElementsAttr = node.attribute("maxelements");
+				maxElementsAttr)
+			{
+				maxElements = maxElementsAttr.as_int();
+				if (node.attribute("ishorizontal").as_bool())
+				{
+					size.x *= maxElements;
+				}
+				else
+				{
+					size.y *= maxElements;
+				}
+			}
 
-		if (auto maxElementsAttr = itemNode.attribute("maxElements");
-			maxElementsAttr)
-		{
-			maxElements = maxElementsAttr.as_int();
+			else
+			{
+				maxElements = size.y / m_itemSize.y;
+			}
 		}
 		else
 		{
-			maxElements = size.y / m_itemSize.y;
+			m_itemSize.x = size.x;
+			m_itemSize.y = app->fonts->GetLineHeight(fontID) + (innerMargin.y * 2);
+
+			if (iconSize + (innerMargin.y * 2) > m_itemSize.y)
+			{
+				m_itemSize.y = iconSize + (innerMargin.y * 2);
+			}
+
+			if (auto maxElementsAttr = itemNode.attribute("maxElements");
+				maxElementsAttr)
+			{
+				maxElements = maxElementsAttr.as_int();
+			}
+			else
+			{
+				maxElements = size.y / m_itemSize.y;
+			}
 		}
 	}
+	if (node.attribute("hasbackground").as_bool())
+	{
+		SDL_Rect rect(
+			position.x,
+			position.y,
+			size.x,
+			size.y
+		);
+
+		background.SetPanelArea(rect);
+	}
+
 }
 
 GuiMenuList::~GuiMenuList() = default;
@@ -133,6 +161,11 @@ void GuiMenuList::CreateMenuItem(std::string_view left, std::string_view center,
 	items.emplace_back(std::make_unique<MenuItemBase>(left.data(), center.data(), right.data(), textureID));
 }
 
+void GuiMenuList::CreateMenuImage(int textureId, SDL_Rect const& srcRect)
+{
+	items.emplace_back(std::make_unique<MenuImage>(textureId, srcRect));
+}
+
 void GuiMenuList::DeleteMenuItem(int index)
 {
 	items.erase(items.begin() + index);
@@ -158,10 +191,18 @@ bool GuiMenuList::Draw() const
 		{
 			iPoint drawPosition(
 				position.x + outterMargin.x,
-				position.y + outterMargin.y + (m_itemSize.y * (i - currentScroll))
+				position.y + outterMargin.y
 			);
+			if (m_itemSize.x != size.x)
+			{
+				drawPosition.x += (m_itemSize.x * (i - currentScroll));
+			}
+			else
+			{
+				drawPosition.x += (m_itemSize.y * (i - currentScroll));
+			}
 
-			items[i]->Draw(drawPosition, iPoint(size.x, m_itemSize.y), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
+			items[i]->Draw(drawPosition, iPoint(m_itemSize.x, m_itemSize.y), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
 		}
 	}
 
@@ -316,7 +357,9 @@ void GuiMenuList::HandleLeftClick()
 			return;
 		}
 
-		int elementClicked = currentScroll + relativeCoords.y / m_itemSize.y;
+		int elementClicked = m_itemSize.x != size.x ? 
+			currentScroll + relativeCoords.x / m_itemSize.x : 
+			currentScroll + relativeCoords.y / m_itemSize.y;
 
 		int numOfItems = items.size();
 

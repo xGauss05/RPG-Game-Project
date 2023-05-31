@@ -59,6 +59,7 @@ protected:
 
 	void CreateMenuCharacter(Battler const& battler);
 	void CreateMenuItem(std::string_view left, std::string_view center, std::string_view right, int textureID = -1);
+	void CreateMenuImage(int textureId, SDL_Rect const& srcRect);
 	void DeleteMenuItem(int index);
 
 private:

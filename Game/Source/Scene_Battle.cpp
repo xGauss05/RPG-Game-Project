@@ -13,10 +13,11 @@
 Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 	: party(gameParty)
 {
+	enemies = std::make_unique<EnemyTroops>();
 	if (fightName.empty())
-		enemies.CreateFight(GetRandomEncounter());
+		enemies->CreateFight(GetRandomEncounter());
 	else
-		enemies.CreateFight(fightName);
+		enemies->CreateFight(fightName);
 
 	CheckBattleLossThenChangeState();
 }
@@ -30,7 +31,11 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 {
 	windows.clear();
 
-	actions = windowFactory.CreateWindowList("BattleActions");
+	menu = std::make_unique<Battle_Window_Menu>(windowFactory);
+	menu->SetPlayerParty(party);
+	menu->SetEnemyTroop(enemies.get());
+	menu->Start();
+
 	messages.SetPanelArea(SDL_Rect(20, 532, 1000, 150));
 
 
@@ -57,9 +62,7 @@ Scene_Battle::~Scene_Battle()
 	LOG("Destroying Scene");
 }
 
-void Scene_Battle::Start()
-{
-}
+void Scene_Battle::Start(){}
 
 void Scene_Battle::Draw()
 {
@@ -73,7 +76,6 @@ void Scene_Battle::Draw()
 	}
 
 	messages.Draw();
-	actions->Draw();
 
 	std::string text = "";
 
@@ -108,14 +110,8 @@ void Scene_Battle::Draw()
 		i++;
 	}
 
-	for (auto& elem : enemies.troop)
+	for (auto& elem : enemies->troop)
 	{
-		DrawHPBar(
-			elem.battlerTextureID,
-			elem.currentHP,
-			elem.GetStat(BaseStats::MAX_HP),
-			elem.position
-		);
 
 		DrawParameters drawEnemy(elem.battlerTextureID, elem.position);
 		drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
@@ -149,6 +145,9 @@ void Scene_Battle::Draw()
 
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
 	}
+
+	menu->Draw();
+
 }
 
 TransitionScene Scene_Battle::Update()
@@ -258,88 +257,39 @@ std::string_view Scene_Battle::GetRandomEncounter()
 
 void Scene_Battle::UpdatePlayerTurn()
 {
-	int prevBattler = currentPlayer;
+	auto const& [success, action] = menu->Update();
 
-	if (currentPlayer < party->party.size()
-		&& (party->party[currentPlayer].IsDead() || ResolveMouseClick() || CharacterChooseAction()))
+	if (success)
 	{
-		currentPlayer++;
-	}
-
-	if (prevBattler != currentPlayer)
-	{
-		ToggleRunButton();
-
-		if (currentPlayer >= party->party.size())
+		if (menu->GetCompletedStatus())
 		{
+			std::deque<BattleAction> provisionalQueue = menu->GetActionQueue();
+			while (!provisionalQueue.empty())
+			{
+				actionQueue.emplace(provisionalQueue.front());
+				provisionalQueue.pop_front();
+			}
+
 			state = BattleState::ENEMY_INPUT;
 			return;
 		}
-
+		currentPlayer++;
 		PlayBattlerSFX(party->party[currentPlayer]);
 	}
-}
-
-void Scene_Battle::ToggleRunButton()
-{
-	if (currentPlayer != 0)
-		actions->widgets.back()->Disable();
 	else
-		actions->widgets.back()->Enable();
-}
-
-bool Scene_Battle::ResolveMouseClick()
-{
-	using enum Scene_Battle::ActionNames;
-	if (actionSelected == ATTACK || actionSelected == SPECIAL_ATTACK)
 	{
-		if (ChooseTarget())
-		{
-			auto actionSpeed = party->party[currentPlayer].GetStat(BaseStats::SPEED);
+		currentPlayer = action.source;
+		actionSelected = action.action;
 
-			actionQueue.emplace(actionSelected, currentPlayer, targetSelected, true, actionSpeed);
-
-			actionSelected = NONE;
-			targetSelected = -1;
-
-			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-
-			return true;
-		}
-		else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
-		{
-			actionSelected = NONE;
-			targetSelected = -1;
-
-			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-		}
+		UpdatePlayerInputText();
 	}
-
-	return false;
 }
 
-bool Scene_Battle::ChooseTarget()
-{
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
-	{
-		for (auto const& elem : enemies.troop)
-		{
-			if (elem.IsMouseHovering() && !elem.IsDead())
-			{
-				targetSelected = elem.index;
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-bool Scene_Battle::CharacterChooseAction()
+void Scene_Battle::UpdatePlayerInputText()
 {
 	std::string text = "";
 
-	for (auto& elem : enemies.troop)
+	for (auto& elem : enemies->troop)
 	{
 		if (elem.IsMouseHovering())
 		{
@@ -361,6 +311,10 @@ bool Scene_Battle::CharacterChooseAction()
 		{
 			text = "Choose a target.";
 		}
+		else if (currentPlayer == -1)
+		{
+			text = "Fight or flee?";
+		}
 		else
 		{
 			text = std::format("What will {} do?", party->party[currentPlayer].name);
@@ -368,43 +322,6 @@ bool Scene_Battle::CharacterChooseAction()
 	}
 
 	messages.ReplaceCurrentMessage(text);
-
-	switch (actions->Update())
-	{
-		case 100:
-		{
-			actionSelected = ActionNames::ATTACK;
-			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-			break;
-		}
-		case 101:
-		{
-			actionSelected = ActionNames::SPECIAL_ATTACK;
-			dynamic_cast<GuiButton*>(actions->widgets[actions->lastWidgetInteractedIndex].get())->ToggleSelected();
-			break;
-		}
-		case 102:
-		{
-			actionQueue.emplace(ActionNames::DEFEND, currentPlayer, 0, true, INT_MAX);
-
-			return true;
-		}
-		case 103:
-		{
-			if (currentPlayer == 0)
-			{
-				actionQueue.emplace(ActionNames::RUN, currentPlayer, 0, true, INT_MAX);
-				currentPlayer = party->party.size();
-			}
-			break;
-		}
-		default:
-		{
-			break;
-		}
-	}
-
-	return false;
 }
 
 bool Scene_Battle::IsAdvanceTextButtonDown() const
@@ -417,8 +334,14 @@ void Scene_Battle::ChooseEnemyActions()
 	std::mt19937 gen(rd());
 	random.param(std::uniform_int_distribution<>::param_type(0, party->party.size() - 1));
 
-	for (int i = 0; auto const& elem : enemies.troop)
+	for (int i = 0; auto const& elem : enemies->troop)
 	{
+		if (elem.IsDead())
+		{
+			i++;
+			continue;
+		}
+
 		auto actionSpeed = elem.GetStat(BaseStats::SPEED);
 
 		int target = 0;
@@ -432,15 +355,15 @@ void Scene_Battle::ChooseEnemyActions()
 		if (int action = random100(gen);
 			action <= 40)		// 40% chance
 		{
-			actionQueue.emplace(ActionNames::ATTACK, i, target, false, actionSpeed);
+			actionQueue.emplace(ActionNames::ATTACK, i, target, false, true, actionSpeed);
 		}
 		else if (action <= 80)	// 40% chance
 		{
-			actionQueue.emplace(ActionNames::SPECIAL_ATTACK, i, target, false, actionSpeed);
+			actionQueue.emplace(ActionNames::SPECIAL_ATTACK, i, target, false, true, actionSpeed);
 		}
 		else					//20% chance
 		{
-			actionQueue.emplace(ActionNames::DEFEND, i, target, false, INT_MAX);
+			actionQueue.emplace(ActionNames::DEFEND, i, target, false, false, INT_MAX - 1);
 		}
 
 		i++;
@@ -463,9 +386,6 @@ void Scene_Battle::ResolveActionQueue()
 				CheckBattleLossThenChangeState();
 
 				checkBattleEnd = false;
-
-				if (state != BattleState::RESOLUTION)
-					return;
 			}
 		}
 	}
@@ -488,9 +408,8 @@ void Scene_Battle::ResolveActionQueue()
 
 		}
 
-
 		currentPlayer = 0;
-		ToggleRunButton();
+		menu->StartNewTurn();
 		state = BattleState::PLAYER_INPUT;
 	}
 }
@@ -499,10 +418,19 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 {
 	std::string text = "";
 
-	Battler& source = currentAction.friendly ? party->party[currentAction.source] : enemies.troop[currentAction.source];
-	std::vector<Battler>& receiver = currentAction.friendly ? enemies.troop :  party->party;
+	if (currentAction.source == -1)
+	{
+		text = "You run from battle. Shame.";
+		PlayActionSFX("Run");
+		state = BattleState::RUN_FROM_BATTLE;
+
+		return text;
+	}
+	Battler& source = currentAction.friendlySource ? party->party[currentAction.source] : enemies->troop[currentAction.source];
+	std::vector<Battler>& receiver = currentAction.friendlyTarget ? party->party : enemies->troop;
 
 	ActionNames action = currentAction.action;
+
 
 	if (source.IsDead())
 	{
@@ -640,7 +568,7 @@ void Scene_Battle::BattlerJustDied(Battler const& battler)
 
 void Scene_Battle::CheckIfBattleWinThenChangeState()
 {
-	if (std::ranges::none_of(enemies.troop, [](Battler const& e) { return e.currentHP > 0; }))
+	if (std::ranges::none_of(enemies->troop, [](Battler const& e) { return e.currentHP > 0; }))
 	{
 		LOG("Battle won.");
 
@@ -655,7 +583,7 @@ void Scene_Battle::ResolveWinningBattle()
 	std::vector<std::pair<std::string_view, int>> enemiesDefeated;
 	int xpWon = 0;
 
-	for (auto const& enemy : enemies.troop)
+	for (auto const& enemy : enemies->troop)
 	{
 		std::string_view enemyName = enemy.name;
 

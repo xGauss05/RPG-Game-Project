@@ -128,6 +128,8 @@
     <ClCompile Include="Source\GuiSegmentedPanel.cpp" />
     <ClCompile Include="Source\GuiSegmentedMessageBox.cpp" />
     <ClCompile Include="Source\GuiMenuListItem.cpp" />
+    <ClCompile Include="Source\Battle_Window_Menu.cpp" />
+    <ClCompile Include="Source\Battle_Menu_Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -221,6 +223,8 @@
     <ClInclude Include="Source\GuiSegmentedPanel.h" />
     <ClInclude Include="Source\GuiSegmentedMessageBox.h" />
     <ClInclude Include="Source\GuiMenuListItem.h" />
+    <ClInclude Include="Source\Battle_Window_Menu.h" />
+    <ClInclude Include="Source\Battle_Menu_Main.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

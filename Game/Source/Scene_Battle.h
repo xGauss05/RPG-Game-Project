@@ -5,6 +5,7 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 
+#include "Battle_Window_Menu.h"
 #include "GuiSegmentedMessageBox.h"
 
 #include <random>
@@ -15,7 +16,7 @@ class Scene_Battle : public Scene_Base
 {
 public:
     explicit Scene_Battle(GameParty *gameParty, std::string_view fightName = "");
-    ~Scene_Battle();
+    ~Scene_Battle() override;
     bool isReady() override;
     void Load(
         std::string const& path,
@@ -42,32 +43,10 @@ private:
         RUN_FROM_BATTLE
     };
 
-    enum class ActionNames
-    {
-        NONE = -1,
-        ATTACK = 0,
-        SPECIAL_ATTACK = 1,
-        DEFEND = 2,
-        RUN = 3,
-        USE_ITEM = 4
-    };
-
-    struct BattleAction
-    {
-        ActionNames action;
-        int source;
-        int target;
-        bool friendly;
-        int speed;
-    };
-
     std::string_view GetRandomEncounter();
 
     void UpdatePlayerTurn();
-    void ToggleRunButton();
-    bool ResolveMouseClick(); 
-    bool ChooseTarget();
-    bool CharacterChooseAction();
+    void UpdatePlayerInputText();
 
     bool IsAdvanceTextButtonDown() const;
 
@@ -93,13 +72,12 @@ private:
     int backgroundTexture = 0;
 
     GameParty* party = nullptr;
-    EnemyTroops enemies;
+    std::unique_ptr<EnemyTroops> enemies;
 
     bool checkBattleEnd = false;
 
     BattleState state = BattleState::PLAYER_INPUT;
     int currentPlayer = 0;
-    bool currentlyInTextMessage = false;
     int targetSelected = -1;
     ActionNames actionSelected = ActionNames::NONE;
 
@@ -117,7 +95,7 @@ private:
         }
     };
 
-    std::unique_ptr<Window_List> actions;
+    std::unique_ptr<Battle_Window_Menu> menu;
     GuiSegmentedMessageBox messages;
 
     std::queue<std::string> messageQueue;

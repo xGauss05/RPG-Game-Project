@@ -10,14 +10,14 @@ Map_Window_Menu::Map_Window_Menu(Window_Factory const& windowFac)
 	: statsWindow(windowFac.CreateWindow("StatsMenu"))
 {
 	using enum Map_Window_Menu::MenuWindows;
-	panels.emplace_back(windowFac.CreateMenuList("Menu_MainCategories_NoIcons"));
 	menuLogic.AddVertex(MAIN);
-	panels.emplace_back(windowFac.CreateMenuList("Menu_MainCategories"));
+	panels.emplace_back(windowFac.CreateMenuList("MenuCategories"));
 	menuLogic.AddVertex(INVENTORY);
-	panels.emplace_back(windowFac.CreateGoldDisplay());
+	panels.emplace_back(windowFac.CreateMenuList("MenuInventory"));
 	menuLogic.AddVertex(COINS);
-	panels.emplace_back(windowFac.CreateMenuList("MenuListBigImages"));
+	panels.emplace_back(windowFac.CreateGoldDisplay());
 	menuLogic.AddVertex(CHOOSE_CHARACTER);
+	panels.emplace_back(windowFac.CreateMenuList("MenuCharacters"));
 
 	menuLogic.AddVertex(STATS);
 }

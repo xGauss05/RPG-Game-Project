@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AssetManager.cpp" />
+    <ClCompile Include="Source\Battle_Menu_Main.cpp" />
+    <ClCompile Include="Source\Battle_Window_Menu.cpp" />
     <ClCompile Include="Source\DB_Quests.cpp" />
     <ClCompile Include="Source\Event_Boss_Combat.cpp" />
     <ClCompile Include="Source\Event_Door.cpp" />
@@ -178,6 +180,8 @@
     <ClCompile Include="Source\Window_List.cpp" />
     <ClInclude Include="Source\AdjacencyGraph.h" />
     <ClInclude Include="Source\AssetManager.h" />
+    <ClInclude Include="Source\Battle_Menu_Main.h" />
+    <ClInclude Include="Source\Battle_Window_Menu.h" />
     <ClInclude Include="Source\DB_Quests.h" />
     <ClInclude Include="Source\Event_Boss_Combat.h" />
     <ClInclude Include="Source\Event_Door.h" />

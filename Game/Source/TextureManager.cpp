@@ -145,7 +145,8 @@ void TextureManager::Unload(int index)
 // Retrieve size of a texture
 void TextureManager::GetSize(SDL_Texture* const texture, int &width, int &height) const
 {
-	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+	if(texture)
+		SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 }
 
 iPoint TextureManager::GetSize(int textureID) const
