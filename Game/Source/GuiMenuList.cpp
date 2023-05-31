@@ -168,13 +168,6 @@ bool GuiMenuList::Draw() const
 	return true;
 }
 
-void GuiMenuList::DebugDraw() const
-{
-	SDL_Rect debugRect(position.x, size.y, size.x, size.y);
-
-	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
-}
-
 void GuiMenuList::SetClickHandled(bool b)
 {
 	clickHandled = b;
