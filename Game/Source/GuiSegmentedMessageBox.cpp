@@ -1,25 +1,14 @@
-#include "GuiSegmentedPanel.h"
+#include "GuiSegmentedMessageBox.h"
 #include "App.h"
 
 #include "Render.h"
 
 #include "TextManager.h"
 
-GuiSegmentedPanel::~GuiSegmentedPanel()
+void GuiSegmentedMessageBox::Draw() const
 {
-	app->tex->Unload(textureID);
-}
+	GuiSegmentedPanel::Draw();
 
-void GuiSegmentedPanel::SetMessageArea(SDL_Rect const& destination)
-{
-	textureID = app->tex->Load("Assets/UI/WindowSkins.png");
-	dstRect = destination;
-	arrowAnimTimer = std::chrono::steady_clock::now();
-	SDL_SetTextureColorMod(app->GetTexture(textureID), windowColor.r, windowColor.g, windowColor.b);
-}
-
-void GuiSegmentedPanel::Draw() const
-{
 	if (SDL_RectEmpty(&dstRect))
 	{
 		return;
@@ -27,83 +16,7 @@ void GuiSegmentedPanel::Draw() const
 
 	SDL_Rect camera = app->render->GetCamera();
 	iPoint drawPosition = { dstRect.x - camera.x, dstRect.y - camera.y };
-	DrawParameters params = { textureID, drawPosition };
-	SDL_Rect bgSegment =
-	{
-		background.x,
-		background.y,
-		segmentSize,
-		segmentSize
-	};
-	SDL_Rect borderSegment = 
-	{
-		border.x,
-		border.y,
-		segmentSize,
-		segmentSize
-	};
-
-	iPoint repeats =
-	{
-		dstRect.w / segmentSize,
-		dstRect.h / segmentSize
-	};
-
-	iPoint orphanPixels =
-	{
-		 dstRect.w - (repeats.x * segmentSize),
-		 dstRect.h - (repeats.y * segmentSize)
-	};
-
-	for (int j = 0; j < repeats.y; j++)
-	{
-		if (j == 1 || j == repeats.y - 1)
-		{
-			bgSegment.y += segmentSize;
-			borderSegment.y += segmentSize;
-		}
-
-		app->render->DrawTexture(params.Section(&bgSegment));
-		app->render->DrawTexture(params.Section(&borderSegment));
-
-		params.position.x += segmentSize;
-		bgSegment.x += segmentSize;
-		borderSegment.x += segmentSize;
-
-		for (int i = 0; i < repeats.x; i++)
-		{
-			app->render->DrawTexture(params.Section(&bgSegment));
-			app->render->DrawTexture(params.Section(&borderSegment));
-			params.position.x += segmentSize;
-		}
-
-		bgSegment.x += segmentSize - 1;
-		borderSegment.x += segmentSize - 1;
-
-		for (int i = 0; i < orphanPixels.x; i++)
-		{
-			bgSegment.w = 1;
-			borderSegment.w = 1;
-			app->render->DrawTexture(params.Section(&bgSegment));
-			app->render->DrawTexture(params.Section(&borderSegment));
-			bgSegment.w = segmentSize;
-			borderSegment.w = segmentSize;
-			params.position.x += 1;
-		}
-
-		bgSegment.x += 1;
-		borderSegment.x += 1;
-
-		app->render->DrawTexture(params.Section(&bgSegment));
-		app->render->DrawTexture(params.Section(&borderSegment));
-
-		borderSegment.x = border.x;
-		bgSegment.x = background.x;
-		params.position.x = dstRect.x - camera.x;
-		params.position.y += segmentSize;
-	}
-
-
+	
 	if (!messageQueue.empty())
 	{
 		app->fonts->DrawText(
@@ -117,7 +30,7 @@ void GuiSegmentedPanel::Draw() const
 		);
 	}
 
-	if (lockInput)
+	if (lockInput || messageQueue.size() > 1)
 	{
 		drawPosition =
 		{
@@ -132,13 +45,13 @@ void GuiSegmentedPanel::Draw() const
 	}
 }
 
-void GuiSegmentedPanel::AddMessageToQueue(std::string_view message)
+void GuiSegmentedMessageBox::AddMessageToQueue(std::string_view message)
 {
 	if(!message.empty())
 		messageQueue.emplace_back(message);
 }
 
-std::string_view GuiSegmentedPanel::GetNextMessage() const
+std::string_view GuiSegmentedMessageBox::GetNextMessage() const
 {
 	if (messageQueue.empty())
 	{
@@ -148,7 +61,7 @@ std::string_view GuiSegmentedPanel::GetNextMessage() const
 	return messageQueue.front();
 }
 
-bool GuiSegmentedPanel::RemoveCurrentMessage()
+bool GuiSegmentedMessageBox::RemoveCurrentMessage()
 {
 	if (!messageQueue.empty())
 	{
@@ -164,7 +77,7 @@ bool GuiSegmentedPanel::RemoveCurrentMessage()
 	return true;
 }
 
-void GuiSegmentedPanel::ReplaceCurrentMessage(std::string_view str)
+void GuiSegmentedMessageBox::ReplaceCurrentMessage(std::string_view str)
 {
 	if (!messageQueue.empty())
 	{
@@ -175,26 +88,12 @@ void GuiSegmentedPanel::ReplaceCurrentMessage(std::string_view str)
 		messageQueue.emplace_front(str);
 }
 
-bool GuiSegmentedPanel::IsInputLocked() const
+bool GuiSegmentedMessageBox::IsInputLocked() const
 {
 	return lockInput;
 }
 
-void GuiSegmentedPanel::LockInput()
+void GuiSegmentedMessageBox::LockInput()
 {
 	lockInput = true;
 }
-
-void GuiSegmentedPanel::UpdateAnimations()
-{
-	if (lockInput)
-	{
-		auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - arrowAnimTimer);
-		if (timeElapsed.count() >= 200)
-		{
-			arrowAnimTimer = std::chrono::steady_clock::now();
-			currentArrowFrame++;
-		}
-	}
-}
-

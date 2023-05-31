@@ -31,7 +31,7 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	windows.clear();
 
 	actions = windowFactory.CreateWindowList("BattleActions");
-	messages.SetMessageArea(SDL_Rect(20, 532, 1000, 150));
+	messages.SetPanelArea(SDL_Rect(20, 532, 1000, 150));
 
 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
@@ -50,6 +50,11 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	sfx["Run"] = app->audio->LoadFx("Fx/S_Battle-Escape.wav");
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
+}
+
+Scene_Battle::~Scene_Battle()
+{
+	LOG("Destroying Scene");
 }
 
 void Scene_Battle::Start()

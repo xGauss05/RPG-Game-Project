@@ -126,6 +126,7 @@
     <ClCompile Include="Source\Event_Boss_Combat.cpp" />
     <ClCompile Include="Source\Map_Menu_InteractParty.cpp" />
     <ClCompile Include="Source\GuiSegmentedPanel.cpp" />
+    <ClCompile Include="Source\GuiSegmentedMessageBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Source\JSON Parser.h" />
     <ClInclude Include="Source\Map_Menu_InteractParty.h" />
     <ClInclude Include="Source\GuiSegmentedPanel.h" />
+    <ClInclude Include="Source\GuiSegmentedMessageBox.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

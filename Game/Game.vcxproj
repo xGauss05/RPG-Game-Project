@@ -105,6 +105,7 @@
     <ClCompile Include="Source\Event_Lever.cpp" />
     <ClCompile Include="Source\Event_Torch.cpp" />
     <ClCompile Include="Source\GuiMenuList.cpp" />
+    <ClCompile Include="Source\GuiSegmentedMessageBox.cpp" />
     <ClCompile Include="Source\GuiSegmentedPanel.cpp" />
     <ClCompile Include="Source\Map_Display_QuestLog.cpp" />
     <ClCompile Include="Source\Map_Menu_GoldDisplay.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Source\Event_Lever.h" />
     <ClInclude Include="Source\Event_Torch.h" />
     <ClInclude Include="Source\GuiMenuList.h" />
+    <ClInclude Include="Source\GuiSegmentedMessageBox.h" />
     <ClInclude Include="Source\GuiSegmentedPanel.h" />
     <ClInclude Include="Source\JSON Parser.h" />
     <ClInclude Include="Source\Map_Display_QuestLog.h" />

@@ -21,7 +21,7 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 			size.y
 		);
 
-		background.SetMessageArea(rect);
+		background.SetPanelArea(rect);
 
 		if (auto scrollArrowNode = backgroundNode.child("scrollarrow");
 			scrollArrowNode)

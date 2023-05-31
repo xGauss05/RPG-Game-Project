@@ -10,7 +10,7 @@ GuiSegmentedPanel::~GuiSegmentedPanel()
 	app->tex->Unload(textureID);
 }
 
-void GuiSegmentedPanel::SetMessageArea(SDL_Rect const& destination)
+void GuiSegmentedPanel::SetPanelArea(SDL_Rect const& destination)
 {
 	textureID = app->tex->Load("Assets/UI/WindowSkins.png");
 	dstRect = destination;
@@ -104,97 +104,15 @@ void GuiSegmentedPanel::Draw() const
 	}
 
 
-	if (!messageQueue.empty())
-	{
-		app->fonts->DrawText(
-			messageQueue.front(),
-			true,
-			TextParameters(
-				0,
-				DrawParameters(0, iPoint(dstRect.x, dstRect.y))
-					.Section(&dstRect)
-			)
-		);
-	}
-
-	if (lockInput)
-	{
-		drawPosition =
-		{
-			((dstRect.x + dstRect.w) / 2) - (arrow.w / 2),
-			dstRect.y + dstRect.h - arrow.y
-		};
-
-		SDL_Rect srcRect = arrow;
-		srcRect.x = (segmentSize * numberOfSegments) * (currentArrowFrame % 4);
-
-		app->render->DrawTexture(DrawParameters(textureID, drawPosition).Section(&srcRect));
-	}
-}
-
-void GuiSegmentedPanel::AddMessageToQueue(std::string_view message)
-{
-	if(!message.empty())
-		messageQueue.emplace_back(message);
-}
-
-std::string_view GuiSegmentedPanel::GetNextMessage() const
-{
-	if (messageQueue.empty())
-	{
-		return std::string_view();
-	}
-
-	return messageQueue.front();
-}
-
-bool GuiSegmentedPanel::RemoveCurrentMessage()
-{
-	if (!messageQueue.empty())
-	{
-		messageQueue.pop_front();
-	}
-
-	if (messageQueue.empty())
-	{
-		lockInput = false;
-		return false;
-	}
-
-	return true;
-}
-
-void GuiSegmentedPanel::ReplaceCurrentMessage(std::string_view str)
-{
-	if (!messageQueue.empty())
-	{
-		messageQueue.pop_front();
-	}
-
-	if (!str.empty())
-		messageQueue.emplace_front(str);
-}
-
-bool GuiSegmentedPanel::IsInputLocked() const
-{
-	return lockInput;
-}
-
-void GuiSegmentedPanel::LockInput()
-{
-	lockInput = true;
 }
 
 void GuiSegmentedPanel::UpdateAnimations()
 {
-	if (lockInput)
+	auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - arrowAnimTimer);
+	if (timeElapsed.count() >= 200)
 	{
-		auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - arrowAnimTimer);
-		if (timeElapsed.count() >= 200)
-		{
-			arrowAnimTimer = std::chrono::steady_clock::now();
-			currentArrowFrame++;
-		}
+		arrowAnimTimer = std::chrono::steady_clock::now();
+		currentArrowFrame++;
 	}
 }
 

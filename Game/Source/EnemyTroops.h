@@ -76,6 +76,7 @@ class EnemyTroops
 {
 public:
 	EnemyTroops() = default;
+	~EnemyTroops();
 
 	void CreateFight(std::string_view nodeName);
 	

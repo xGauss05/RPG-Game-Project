@@ -5,7 +5,7 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 
-#include "GuiSegmentedPanel.h"
+#include "GuiSegmentedMessageBox.h"
 
 #include <random>
 
@@ -15,6 +15,7 @@ class Scene_Battle : public Scene_Base
 {
 public:
     explicit Scene_Battle(GameParty *gameParty, std::string_view fightName = "");
+    ~Scene_Battle();
     bool isReady() override;
     void Load(
         std::string const& path,
@@ -117,7 +118,7 @@ private:
     };
 
     std::unique_ptr<Window_List> actions;
-    GuiSegmentedPanel messages;
+    GuiSegmentedMessageBox messages;
 
     std::queue<std::string> messageQueue;
 

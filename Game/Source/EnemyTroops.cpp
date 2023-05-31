@@ -7,6 +7,15 @@
 #include "Render.h"
 #include "Log.h"
 
+EnemyTroops::~EnemyTroops()
+{
+	for (auto const& elem : troop)
+	{
+		app->tex->Unload(elem.battlerTextureID);
+		app->tex->Unload(elem.portraitTextureID);
+	}
+}
+
 void EnemyTroops::CreateFight(std::string_view nodeName)
 {
 	pugi::xml_document troopsFile;

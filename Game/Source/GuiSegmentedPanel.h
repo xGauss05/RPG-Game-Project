@@ -12,33 +12,15 @@ class GuiSegmentedPanel
 {
 public:
 	GuiSegmentedPanel() = default;
-	~GuiSegmentedPanel();
+	virtual ~GuiSegmentedPanel();
 
-	void SetMessageArea(SDL_Rect const& destination);
-	void Draw() const;
-
-	void AddMessageToQueue(std::string_view message);
-
-	// Returns empty string if there are no messages
-	std::string_view GetNextMessage() const;
-
-	// Removes front message in queue
-	// Returns true if there are more messages pending
-	bool RemoveCurrentMessage();
-
-	void ReplaceCurrentMessage(std::string_view str);
-
-	bool IsInputLocked() const;
-	void LockInput();
+	void SetPanelArea(SDL_Rect const& destination);
+	virtual void Draw() const;
 
 	void UpdateAnimations();
 
-private:
+protected:
 	std::chrono::time_point<std::chrono::steady_clock> arrowAnimTimer;
-
-	std::deque<std::string> messageQueue;
-
-	bool lockInput = false;
 
 	int textureID = -1;
 	SDL_Rect dstRect = { 0, 0, 0, 0 };

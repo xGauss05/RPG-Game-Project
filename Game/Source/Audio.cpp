@@ -132,7 +132,7 @@ int Audio::LoadFx(std::string_view p)
 	if (auto result = m_PathToLoadedInfo.find(p);
 		result != m_PathToLoadedInfo.end())
 	{
-		LOG("SFX [ %s ] already loaded", p);
+		//LOG("SFX [ %s ] already loaded", p);
 		result->second.references++;
 		return result->second.id;
 	}
