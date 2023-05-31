@@ -5,6 +5,8 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 
+#include "GuiSegmentedPanel.h"
+
 #include <random>
 
 #include <queue>
@@ -115,7 +117,7 @@ private:
     };
 
     std::unique_ptr<Window_List> actions;
-    std::unique_ptr<Window_Panel> messages;
+    GuiSegmentedPanel messages;
 
     std::queue<std::string> messageQueue;
 

@@ -2,7 +2,7 @@
 #define __WINDOW_MENU_LIST_H__
 
 #include "GuiElement.h"
-#include "GuiPanelSegmented.h"
+#include "GuiSegmentedPanel.h"
 #include "TextureManager.h"
 #include "TextManager.h"
 
@@ -142,7 +142,7 @@ private:
 	void UpdateAlpha();
 
 
-	std::unique_ptr<GuiPanelSegmented> background;
+	GuiSegmentedPanel background;
 	SDL_Rect arrowRect{ 0 };
 
 	iPoint position{ 0 };

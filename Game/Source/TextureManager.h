@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+#include "Defs.h"
+
 #include <map>
 #include <memory>
 #include <set>

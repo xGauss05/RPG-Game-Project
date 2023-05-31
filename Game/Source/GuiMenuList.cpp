@@ -15,53 +15,13 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 		backgroundNode)
 	{
 		SDL_Rect rect(
-			backgroundNode.attribute("segmentX").as_int(),
-			backgroundNode.attribute("segmentY").as_int(),
-			backgroundNode.attribute("segmentWidth").as_int(),
-			backgroundNode.attribute("segmentHeight").as_int()
+			position.x,
+			position.y,
+			size.x,
+			size.y
 		);
 
-		int advance = backgroundNode.attribute("advance").as_int();
-
-		int textureID = app->tex->Load(backgroundNode.attribute("path").as_string());
-
-		iPoint tSegments(0, 0);
-
-		if (auto boxSegments = backgroundNode.attribute("segments").as_int();
-			boxSegments != 0)
-		{
-			tSegments = { boxSegments, boxSegments };
-		}
-		else
-		{
-			tSegments = {
-				backgroundNode.attribute("numOfSegmentsX").as_int(),
-				backgroundNode.attribute("numOfSegmentsY").as_int()
-			};
-		}
-
-		GuiPanel_Border missingPanel = GuiPanel_Border::NONE;
-
-		// Something something about accessing nullpointers?
-		// How in the hell does this work and why
-		for (auto const& elem : backgroundNode.children("border"))
-		{
-			missingPanel = static_cast<GuiPanel_Border>(
-				static_cast<uint>(missingPanel) +
-				static_cast<uint>(
-					background->MapStringToGuiPanelBorder(
-						elem.attribute("missing").as_string()
-					)
-				)
-			);
-		}
-
-		auto hasPanels =
-			static_cast<GuiPanel_Border>(
-				static_cast<uint>(GuiPanel_Border::ALL) - static_cast<uint>(missingPanel)
-			);
-
-		background = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments, hasPanels);
+		background.SetMessageArea(rect);
 
 		if (auto scrollArrowNode = backgroundNode.child("scrollarrow");
 			scrollArrowNode)
@@ -105,17 +65,11 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 
 		size.y = correctedYSize;
 
-		if (background)
-		{
-			size.CeilToNearest(background->GetSegmentSize().h);
-		}
 	}
 }
 
 GuiMenuList::~GuiMenuList()
 {
-	if(background)
-		background->Unload();
 }
 
 void GuiMenuList::Initialize()
@@ -178,8 +132,7 @@ void GuiMenuList::DeleteMenuItem(int index)
 
 bool GuiMenuList::Draw() const
 {
-	if(background)
-		background->Draw(position, size);
+	background.Draw();
 
 
 	if(!items.empty())
@@ -192,21 +145,21 @@ bool GuiMenuList::Draw() const
 				position.y
 			};
 			if (currentScroll > 0)
-			{
+			{/*
 				app->render->DrawTexture(
 					DrawParameters(background->GetTextureID(), arrowPos)
 					.Section(&arrowRect)
 					.Flip(SDL_RendererFlip::SDL_FLIP_VERTICAL)
-				);
+				);*/
 			}
 			if (currentScroll + maxElements < items.size())
 			{
 				arrowPos.y += size.y - arrowRect.h;
 
-				app->render->DrawTexture(
-					DrawParameters(background->GetTextureID(), arrowPos)
-					.Section(&arrowRect)
-				);
+				//app->render->DrawTexture(
+				//	DrawParameters(background->GetTextureID(), arrowPos)
+				//	.Section(&arrowRect)
+				//);
 			}
 		}
 

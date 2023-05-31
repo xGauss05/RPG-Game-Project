@@ -31,9 +31,8 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	windows.clear();
 
 	actions = windowFactory.CreateWindowList("BattleActions");
-	messages = windowFactory.CreateWindowPanel("BattleMessage");
+	messages.SetMessageArea(SDL_Rect(20, 532, 1000, 150));
 
-	messages->ModifyLastWidgetText("");
 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
@@ -68,7 +67,7 @@ void Scene_Battle::Draw()
 		elem->Draw();
 	}
 
-	messages->Draw();
+	messages.Draw();
 	actions->Draw();
 
 	std::string text = "";
@@ -172,13 +171,9 @@ TransitionScene Scene_Battle::Update()
 		if(!bBattleResolved)
 			ResolveWinningBattle();
 
-		if (IsAdvanceTextButtonDown())
+		if (IsAdvanceTextButtonDown() && !messages.RemoveCurrentMessage())
 		{
-			if (messageQueue.empty())
-				return TransitionScene::WIN_BATTLE;
-			
-			messages->ModifyLastWidgetText(messageQueue.front());
-			messageQueue.pop();
+			return TransitionScene::WIN_BATTLE;
 		}
 
 		break;
@@ -200,6 +195,8 @@ TransitionScene Scene_Battle::Update()
 		break;
 	}
 	}
+
+	messages.UpdateAnimations();
 
 	return TransitionScene::NONE;
 }
@@ -365,7 +362,7 @@ bool Scene_Battle::CharacterChooseAction()
 		}
 	}
 
-	messages->ModifyLastWidgetText(text);
+	messages.ReplaceCurrentMessage(text);
 
 	switch (actions->Update())
 	{
@@ -449,44 +446,47 @@ void Scene_Battle::ChooseEnemyActions()
 
 void Scene_Battle::ResolveActionQueue()
 {
-	if (currentlyInTextMessage && IsAdvanceTextButtonDown())
+	if (messages.IsInputLocked())
 	{
-		if (checkBattleEnd)
+		if(IsAdvanceTextButtonDown())
 		{
-			CheckIfBattleWinThenChangeState();
-			CheckBattleLossThenChangeState();
+			messages.RemoveCurrentMessage();
 
-			checkBattleEnd = false;
+			if (checkBattleEnd)
+			{
+				CheckIfBattleWinThenChangeState();
+				CheckBattleLossThenChangeState();
 
-			if (state != BattleState::RESOLUTION)
-				return;
+				checkBattleEnd = false;
+
+				if (state != BattleState::RESOLUTION)
+					return;
+			}
 		}
-
-		currentlyInTextMessage = false;
 	}
-
-	if (!currentlyInTextMessage)
+	else
 	{
-		if (actionQueue.empty())
+		while (!actionQueue.empty())
 		{
-			messages->ModifyLastWidgetText("");
-			currentPlayer = 0;
-			ToggleRunButton();
-			state = BattleState::PLAYER_INPUT;
+			BattleAction currentAction = actionQueue.top();
 
-			return;
+			std::string resolveText = ResolveAction(currentAction);
+
+			actionQueue.pop();
+
+			if (!resolveText.empty())
+			{
+				messages.ReplaceCurrentMessage(resolveText);
+				messages.LockInput();
+				return;
+			}
+
 		}
 
-		BattleAction currentAction = actionQueue.top();
 
-		if (std::string text = ResolveAction(currentAction);
-			!text.empty())
-		{
-			messages->ModifyLastWidgetText(text);
-			currentlyInTextMessage = true;
-		}
-
-		actionQueue.pop();
+		currentPlayer = 0;
+		ToggleRunButton();
+		state = BattleState::PLAYER_INPUT;
 	}
 }
 
@@ -639,7 +639,7 @@ void Scene_Battle::CheckIfBattleWinThenChangeState()
 	{
 		LOG("Battle won.");
 
-		messages->ModifyLastWidgetText("You won the battle!");
+		messages.ReplaceCurrentMessage("You won the battle!");
 		state = BattleState::BATTLE_WON;
 		app->audio->PlayMusic("Music/M_Battle-Win.ogg");
 	}
@@ -673,7 +673,7 @@ void Scene_Battle::ResolveWinningBattle()
 
 	if (xpWon > 0)
 	{
-		messageQueue.emplace(std::format("Party receives {} experience.", xpWon));
+		messages.AddMessageToQueue(std::format("Party receives {} experience.", xpWon));
 		for (auto& character : party->party)
 		{
 			if (!character.IsDead())
@@ -681,7 +681,7 @@ void Scene_Battle::ResolveWinningBattle()
 				if (int newLevel = character.AddXP(xpWon);
 					newLevel != -1)
 				{
-					messageQueue.emplace(std::format("{} is now level {}!", character.name, newLevel));
+					messages.AddMessageToQueue(std::format("{} is now level {}!", character.name, newLevel));
 				}
 			}
 		}
@@ -698,7 +698,7 @@ void Scene_Battle::CheckBattleLossThenChangeState()
 		!result)
 	{
 		LOG("Battle loss.");
-		messages->ModifyLastWidgetText("You lost the battle...");
+		messages.ReplaceCurrentMessage("You lost the battle...");
 		state = BattleState::BATTLE_LOSS;
 	}
 }
