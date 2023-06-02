@@ -11,10 +11,18 @@ public:
 	explicit Map_Menu_Inventory(pugi::xml_node const& node);
 	~Map_Menu_Inventory() override = default;
 
+	bool UseItem();
+
+	bool Update() override;
+
 private:
 	void HandleLeftButtonClick(int result) override;
 	void HandleRightButtonClick() override;
 	void InitializeElements() override;
+
+	bool WaitingForTarget = false;
+
+	int usedItemID = -1;
 };
 
 #endif //__MAP_MENU_INVENTORY_H__

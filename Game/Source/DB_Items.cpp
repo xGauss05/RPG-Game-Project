@@ -7,13 +7,14 @@
 Item::GeneralProperties::GeneralProperties(pugi::xml_node const& node)
 	:
 	name(node.child("name").text().as_string()),
+	article(node.child("article").text().as_string()),
 	iconIndex(node.child("iconIndex").text().as_string()),
 	description(node.child("description").text().as_string()),
 	iTypeID(node.child("itypeId").text().as_int()),
 	price(node.child("price").text().as_int()),
 	consumable(node.child("consumable").text().as_bool()),
-	scope(node.child("scope").text().as_int()),
-	ocasion(node.child("ocasion").text().as_int())
+	scope(static_cast<Scope>(node.child("scope").text().as_int())),
+	ocasion(static_cast<Ocasion>(node.child("ocasion").text().as_int()))
 {}
 
 Item::BattleProperties::BattleProperties(pugi::xml_node const& node)
@@ -40,7 +41,12 @@ Item::EffectProperties::EffectProperties(pugi::xml_node const& node)
 	dataID(node.child("dataId").text().as_int()),
 	param1(node.child("value1").text().as_float()),
 	param2(node.child("value2").text().as_float())
-{}
+{
+	for (auto const& elem : node.children("effecttext"))
+	{
+		text.emplace_back(elem.text().as_string());
+	}
+}
 
 Item::Item(pugi::xml_node const& itemNode)
 	:

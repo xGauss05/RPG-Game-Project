@@ -6,9 +6,15 @@
 #include "TextManager.h"
 #include "Easing.h"
 
+// FIXME: Remove #include "SceneManager.h".
+// No reason for the managed class to have access to the manager itself.
+
 Scene_Title::~Scene_Title()
 {
 	app->tex->Unload(backgroundTexture);
+	app->tex->Unload(titleTexture);
+	app->tex->Unload(studioTexture);
+	app->audio->RemoveFx(logoFx);
 }
 
 bool Scene_Title::isReady()
@@ -43,11 +49,6 @@ void Scene_Title::Load(std::string const& path, LookUpXMLNodeFromString const& i
 		}
 	}
 
-	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
-	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
-	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
-	app->audio->PlayMusic("Music/M_Menu-Music.ogg");
-	logoFx = app->audio->LoadFx("Fx/S_Menu-Title.wav");
 	playedLogo = false;
 	
 	app->render->ResetCamera();
@@ -71,9 +72,23 @@ void Scene_Title::Start()
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/title_bg.png");
 	titleTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_return.png");
 	studioTexture = app->tex->Load("Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png");
+	// WTF? WHY ARE WE LOADING DATA WITHOUT STORING ANY REFERENCE SO WE CAN CLEAN UP LATER.
+	// THIS IS A TICKING BOMB.
+	// WHY? BECAUSE WE JUST LOAD EVERYTHING EVERYWHERE NON-STOP 
+	// DUE TO THE TECHNICAL DEBT FROM THE FIRST DELIVERY
+	// SO WE CANT MAKE SURE THIS WILL FREE.
+	// TODO: FIX THIS MEMORY LEAK.
+	// 
+	// --- But on the positive side, it's not leaking right now due to the lines someone comented on
+	// audio.cpp. Soooooooooooooo, we can leave it as it is and never look at it again.
+	// 
+	// Wait a fucking second.
+	// Now that I'm looking at the rest of the file.
+	// We are not unloading jackshit.
+	// and doing two loads of everything for no reason whatsoever.
+	// what.
 	app->audio->PlayMusic("Music/M_Menu-Music.ogg");
 	logoFx = app->audio->LoadFx("Fx/S_Menu-Title.wav");
-	app->tex->Load("Assets/UI/GUI_4x_sliced.png");
 }
 
 void Scene_Title::Draw()
@@ -83,17 +98,33 @@ void Scene_Title::Draw()
 	DoImagesEasing();
 	DoButtonsEasing();
 
+	// App has an SceneManager object.
+	// SceneManager **manages scenes**.
+	// Scene can access scene manager through app.
+	// This is how spaghetti code starts.
+	// 
+	// Not only that, but the name "options" is not good.
+	// It doesn't indicate anywhere that it's a boolean that
+	// is turned on when options are open in scene **TITLE**.
+	// 
+	// This should be a member variable of this Scene_Title.
+	// Options window is not an scene, there's no business to do with the manager.
+	//
+	// Also, in case this variable should be of SceneManager.
+	// Put it in private and create a getter. After all, the one that is currently
+	// opening and closing options window is the scene manager. Noone else should
+	// be able to modify it.
 	if (app->scene->options) {
 
 		for (auto const& elem : optionsWindow)
 		{
 			elem->Draw();
 		}
-		app->fonts->DrawText("Options", TextParameters(0, DrawParameters(0, iPoint{ 555,190 })));
-		app->fonts->DrawText("Fullscreen", TextParameters(0, DrawParameters(0, iPoint{ 425,255 })));
-		app->fonts->DrawText("VSync", TextParameters(0, DrawParameters(0, iPoint{ 425,305 })));
-		app->fonts->DrawText("SFX " + std::to_string(app->audio->GetSFXVolume()), TextParameters(0, DrawParameters(0, iPoint{570,385})));
-		app->fonts->DrawText("BGM " + std::to_string(app->audio->GetBGMVolume()), TextParameters(0, DrawParameters(0, iPoint{565,475})));
+		app->fonts->DrawText("Options", iPoint(555, 190));
+		app->fonts->DrawText("Fullscreen", iPoint(425, 255));
+		app->fonts->DrawText("VSync", iPoint(425, 305));
+		app->fonts->DrawText(std::format("SFX {}", app->audio->GetSFXVolume()), iPoint(570, 385));
+		app->fonts->DrawText(std::format("BGM {}", app->audio->GetBGMVolume()), iPoint(565, 475));
 		
 
 	}
@@ -110,6 +141,8 @@ TransitionScene Scene_Title::Update()
 {
 	if (!playedLogo)
 	{
+		// Move this to the Start() function so we don't need the check every frame?
+		// Not sure if this is used anywhere else
 		app->audio->PlayFx(logoFx);
 		playedLogo = true;
 	}
@@ -176,7 +209,7 @@ void Scene_Title::DoButtonsEasing()
 
 	for (auto const& elem : windows)
 	{
-		for (int timeForStart = 1000; auto &widget : elem->widgets)
+		for (int timeForStart = 1000; auto const &widget : elem->widgets)
 		{
 			// If it doesn't have easing, we do nothing
 			if (!widget->HasEasing())

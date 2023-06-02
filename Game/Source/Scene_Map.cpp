@@ -102,6 +102,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 	SubscribeEventsToGlobalSwitches();
 }
 
+//TODO: Move this to map properties
 std::string Scene_Map::PlayMapBgm(std::string_view name)
 {
 	std::string musicname = "";
@@ -246,12 +247,33 @@ void Scene_Map::Draw()
 	}
 }
 
+void Scene_Map::DebugLevels()
+{
+	if (app->input->GetKey(SDL_SCANCODE_2) == KeyState::KEY_DOWN)
+	{
+		for (auto& elem : playerParty->party)
+		{
+			elem.SetLevel(elem.level + 1);
+		}
+	}
+	if (app->input->GetKey(SDL_SCANCODE_3) == KeyState::KEY_DOWN)
+	{
+		for (auto& elem : playerParty->party)
+		{
+			elem.AddXP(20);
+			LOG("XP To next level = %i", elem.GetXPToNextLevel());
+		}
+	}
+}
+
 void Scene_Map::DebugItems()
 {
-	LOG("player HP = %i", playerParty->party[0].currentHP);
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_DOWN)
 	{
-		playerParty->party[0].SetCurrentHP(10);
+		for (auto& elem : playerParty->party)
+		{
+			elem.SetCurrentHP(10);
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_K) == KeyState::KEY_DOWN)
 	{
@@ -329,9 +351,8 @@ void Scene_Map::StateNormal_HandleInput()
 	}
 
 	// Open character menu if C is pressed
-	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
+	if (IsMenuInputPressed())
 	{
-		lastState = state;
 		state = MapState::ON_MENU;
 		mainMenu->Start();
 	}
@@ -340,17 +361,6 @@ void Scene_Map::StateNormal_HandleInput()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 	{
 		app->PauseGame();
-	}
-}
-
-void Scene_Map::StateMenu_HandleInput()
-{
-	// Close character window if 
-	if (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN
-		|| app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
-	{
-		state = lastState;
-		state = MapState::NORMAL;
 	}
 }
 
@@ -521,8 +531,25 @@ void Scene_Map::StateNormal_HandlePlayerInteract()
 	}
 }
 
+bool Scene_Map::IsMenuInputPressed() const
+{
+	return (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN
+		|| app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN);
+}
+
 TransitionScene Scene_Map::Update()
 {
+	DebugLevels();
+	DebugItems();
+	DebugInventory();
+	if (app->input->GetKey(SDL_SCANCODE_1) == KeyState::KEY_DOWN)
+	{
+		for (auto &elem : playerParty->party)
+		{
+			if(!elem.IsDead())
+				elem.SetCurrentHP(elem.currentHP - 1);
+		}
+	}
 	map.Update();
 
 	auto playerAction = player.HandleInput();
@@ -538,6 +565,10 @@ TransitionScene Scene_Map::Update()
 		}
 		case ON_MENU:
 		{
+			if (!mainMenu->Update())
+			{
+				state = MapState::NORMAL;
+			}
 			break;
 		}
 		case ON_MENU_SELECTION:

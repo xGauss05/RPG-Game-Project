@@ -22,6 +22,7 @@ struct DrawParameters
 	iPoint rectOffset = iPoint(INT_MAX, INT_MAX);
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	fPoint scale = { 0.0f, 0.0f };
+	bool gradient = false;
 
 	DrawParameters(int tex, iPoint pos)
 		: textureID(tex), position(pos) {}
@@ -59,6 +60,11 @@ struct DrawParameters
 	DrawParameters& Scale(fPoint s)
 	{
 		scale = s;
+		return *this;
+	}
+	DrawParameters& Gradient(bool b)
+	{
+		gradient = b;
 		return *this;
 	}
 };
@@ -114,6 +120,13 @@ public:
 		SDL_BlendMode blendMode = SDL_BlendMode::SDL_BLENDMODE_BLEND
 	) const;
 
+	void DrawGradientBar(
+		SDL_Rect const& rect,
+		SDL_Color start,
+		SDL_Color end,
+		uint8_t numberOfColors = 5
+	) const;
+
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
@@ -138,7 +151,7 @@ public:
 	void InitEasings(pugi::xml_node const& node);
 
 private:
-
+	
 	void SetViewPort(const SDL_Rect &rect) const;
 	void ResetViewPort() const;
 

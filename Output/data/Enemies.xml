@@ -9,6 +9,8 @@
     <specialattack value="12"/>
     <specialdefense value="2"/>
     <speed value="1"/>
+    <level value = "1"/>
+    <xp value = "10"/>
   </stats>
 </Slime_R>
 <Slime_G>
@@ -22,6 +24,8 @@
     <specialattack value="13"/>
     <specialdefense value="1"/>
     <speed value="1"/>
+    <level value = "1"/>
+    <xp value = "10"/>
   </stats>
 </Slime_G>
 <Slime_B>
@@ -35,6 +39,8 @@
     <specialattack value="11"/>
     <specialdefense value="3"/>
     <speed value="1"/>
+    <level value = "1"/>
+    <xp value = "10"/>
   </stats>
 </Slime_B>
 <Bat_R>
@@ -48,6 +54,8 @@
     <specialattack value="20"/>
     <specialdefense value="4"/>
     <speed value="4"/>
+    <level value = "1"/>
+    <xp value = "15"/>
   </stats>
 </Bat_R>
 <Bat_G>
@@ -61,19 +69,23 @@
 		<specialattack value="20"/>
 		<specialdefense value="3"/>
 		<speed value="4"/>
+    <level value = "1"/>
+    <xp value = "15"/>
 	</stats>
 </Bat_G>
 <Bat_B>
   <texture path="Assets/Textures/Battlers/Bat_B.png"/>
   <deadaudio path="Fx/S_Battle-Flyer-Death.wav"/>
   <stats>
-    <maxhp value="40"/>
+    <maxhp value="1"/>
     <maxmana value="100"/>
     <attack value="14"/>
     <defense value="2"/>
     <specialattack value="20"/>
     <specialdefense value="1"/>
     <speed value="4"/>
+    <level value = "1"/>
+    <xp value = "40"/>
   </stats>
 </Bat_B>
 <Skeleton_R>
@@ -87,6 +99,8 @@
     <specialattack value="7"/>
     <specialdefense value="2"/>
     <speed value="2"/>
+    <level value = "1"/>
+    <xp value = "30"/>
   </stats>
 </Skeleton_R>
 <Skeleton_B>
@@ -100,6 +114,8 @@
     <specialattack value="11"/>
     <specialdefense value="3"/>
     <speed value="2"/>
+    <level value = "1"/>
+    <xp value = "30"/>
   </stats>
 </Skeleton_B>
 <Skeleton_G>
@@ -113,6 +129,8 @@
     <specialattack value="5"/>
     <specialdefense value="1"/>
     <speed value="2"/>
+    <level value = "1"/>
+    <xp value = "30"/>
   </stats>
 </Skeleton_G>
 <Balphogor>
@@ -126,5 +144,7 @@
     <specialattack value="10"/>
     <specialdefense value="2"/>
     <speed value="2"/>
+    <level value = "1"/>
+    <xp value = "200"/>
   </stats>
 </Balphogor>

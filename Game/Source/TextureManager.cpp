@@ -51,7 +51,7 @@ int TextureManager::Load(std::string const &path)
 	if (auto result = pathToInfo.find(path);
 		result != pathToInfo.end())
 	{
-		LOG("Texture [ %s ] already loaded", path);
+		//LOG("Texture [ %s ] already loaded", path);
 		result->second.second++;
 		return result->second.first;
 	}
@@ -137,7 +137,7 @@ void TextureManager::Unload(int index)
 		}
 		else
 		{
-			LOG("Removed reference to texture [ %s ].", path->second);
+			//LOG("Removed reference to texture [ %s ].", path->second);
 		}
 	}
 }
@@ -145,7 +145,22 @@ void TextureManager::Unload(int index)
 // Retrieve size of a texture
 void TextureManager::GetSize(SDL_Texture* const texture, int &width, int &height) const
 {
-	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+	if(texture)
+		SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+}
+
+iPoint TextureManager::GetSize(int textureID) const
+{
+	iPoint ret = { 0, 0 };
+	GetSize(GetTexture(textureID), ret.x, ret.y);
+	return ret;
+}
+
+SDL_Point TextureManager::GetSizeSDLPoint(int textureID) const
+{
+	SDL_Point ret = { 0, 0 };
+	GetSize(GetTexture(textureID), ret.x, ret.y);
+	return ret;
 }
 
 SDL_Texture *TextureManager::GetTexture(int textureID) const

@@ -4,38 +4,81 @@
 #include "Log.h"
 #include "PugiXml/src/pugixml.hpp"
 
-void PartyCharacter::SetCurrentHP(int hp) {
+void Battler::SetCurrentHP(int hp) {
 	currentHP = hp;
 }
-void PartyCharacter::SetCurrentMana(int mp) {
+void Battler::SetCurrentMana(int mp) {
 	currentMana = mp;
 }
-void PartyCharacter::SetCurrentXP(int xp) {
+void Battler::SetCurrentXP(int xp) {
 	currentXP = xp;
 }
-void PartyCharacter::SetLevel(int lvl) {
+void Battler::SetLevel(int lvl) {
 	level = lvl;
 }
 
-bool PartyCharacter::UseItem(Item const& item)
+int Battler::AddXP(int amount)
+{
+	currentXP += amount;
+	if (int xp_needed = GetXPToNextLevel();
+		currentXP >= xp_needed && level <= 99)
+	{
+		currentXP -= xp_needed;
+		currentHP += 3;
+		currentMana += 3;
+		level++;
+		return level;
+	}
+	return -1;
+}
+
+bool Battler::UseItem(Item const& item)
 {
 	switch (item.effect.functionToCall)
 	{
-	case 11:
-		return RestoreHP(item.effect.param1, item.effect.param2);
-		break;
-	default:
-		LOG("Function effect %i not added", item.effect.functionToCall);
-		return false;
+		case 11:
+		{
+			int restoredHP = RestoreHP(item.effect.param1, item.effect.param2);
+
+			if(item.effect.text.size() >= 2)
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					AddSaveData(item.effect.text[0], name, restoredHP) :
+					AddSaveData(item.effect.text[1], name);
+			}
+			else
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					std::format("{} recovers {} HP!", name, restoredHP) :
+					std::format("{}'s HP is fully recovered!", name);
+			}
+
+			return to_bool(restoredHP);
+			break;
+		}
+		default:
+			LOG("Function effect %i not added", item.effect.functionToCall);
+			return false;
 	}
 }
 
-bool PartyCharacter::RestoreHP(float amount1, float amount2)
+int Battler::GetCurrentXP() const
 {
-	int maxHP = stats[static_cast<int>(BaseStats::MAX_HP)];
+	return currentXP;
+}
+
+int Battler::GetXPToNextLevel() const
+{
+	return static_cast<int>(std::round(100 + (0.75f * std::pow(level, 3))));
+}
+
+int Battler::RestoreHP(float amount1, float amount2)
+{
+	int maxHP = GetStat(BaseStats::MAX_HP);
+	int HPBeforeHealing = currentHP;
 
 	if (currentHP <= 0 || currentHP >= maxHP)
-		return false;
+		return 0;
 
 	auto GetAmountToAdd = [maxHP](float n)
 		{
@@ -52,7 +95,56 @@ bool PartyCharacter::RestoreHP(float amount1, float amount2)
 		currentHP = maxHP;
 	}
 
-	return true;
+	int HPHealed = currentHP - HPBeforeHealing;
+
+	return HPHealed;
+}
+
+void Battler::AddStat(int value)
+{
+	stats.emplace_back(value);
+}
+
+std::string Battler::GetStatDisplay(BaseStats stat, bool choosingChar) const
+{
+	using enum BaseStats;
+	if (choosingChar)
+	{
+		if (stat == LEVEL)
+			return std::format("Lvl. {}", level);
+		else if(stat == MAX_HP)
+			return std::format("{} / {}", currentHP, GetStat(MAX_HP));
+		else if(stat == BaseStats::MAX_MANA)
+			return std::format("{} / {}", currentMana, GetStat(MAX_MANA));
+	}
+
+	switch (stat)
+	{
+		case MAX_HP:			return std::format("HP: {} / {}", currentHP, GetStat(MAX_HP));
+		case MAX_MANA:			return std::format("MP: {} / {}", currentMana, GetStat(MAX_MANA));
+		case ATTACK:			return std::format("Atk: {}", GetStat(ATTACK));
+		case DEFENSE:			return std::format("Def: {}", GetStat(DEFENSE));
+		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", GetStat(SPECIAL_ATTACK));
+		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", GetStat(SPECIAL_DEFENSE));
+		case SPEED:				return std::format("Speed: {}", GetStat(SPEED));
+		case LEVEL:				return std::format("Lvl. {}", level);
+		case XP:				return std::format("EXP: {}", currentXP);
+	}
+}
+
+std::string Battler::GetTextToDisplay() const
+{
+	return itemTextToDisplay;
+}
+
+bool Battler::IsDead() const
+{
+	return currentHP <= 0;
+}
+
+int Battler::GetStat(BaseStats stat) const
+{
+	return stats[static_cast<int>(stat)] + (3 * level);
 }
 
 GameParty::GameParty() = default;
@@ -66,16 +158,17 @@ void GameParty::CreateParty()
 	}
 	for (auto const& character : battlersFile.children("character"))
 	{
-		PartyCharacter memberToAdd;
+		Battler memberToAdd;
 		memberToAdd.name = character.child("general").attribute("name").as_string();
 		memberToAdd.level = character.child("general").attribute("level").as_int();
 		memberToAdd.battlerTextureID = app->tex->Load(character.child("texture").attribute("path").as_string());
+		memberToAdd.portraitTextureID = app->tex->Load(character.child("portraittexture").attribute("path").as_string());
 		for (auto const& stat : character.child("stats").children())
 		{
-			memberToAdd.stats.emplace_back(stat.attribute("value").as_int());
+			memberToAdd.AddStat(stat.attribute("value").as_int());
 		}
-		memberToAdd.currentHP = memberToAdd.stats[0];
-		memberToAdd.currentMana = memberToAdd.stats[1];
+		memberToAdd.currentHP = memberToAdd.GetStat(BaseStats::MAX_HP);
+		memberToAdd.currentMana = memberToAdd.GetStat(BaseStats::MAX_HP);
 		party.emplace_back(memberToAdd);
 	}
 
@@ -288,6 +381,16 @@ void GameParty::AddItemToInventory(int itemToAdd, int amountToAdd)
 	PossibleQuestProgress(QuestType::COLLECT, std::vector<std::pair<std::string_view, int>>(), itemAddedToInventory);
 }
 
+bool GameParty::HasItemInInventory(int itemID) const
+{
+	return std::ranges::any_of(inventory, [itemID](std::pair<int, int> i) {return i.first == itemID; });
+}
+
+void GameParty::RemoveItemIndexFromInventory(int itemIndex, int amountToRemove)
+{
+	RemoveItemFromInventory(inventory.begin() + itemIndex, amountToRemove);
+}
+
 void GameParty::RemoveItemFromInventory(std::string_view itemToRemove, int amountToRemove)
 {
 	int itemToRemoveID = dbItems->GetItemID(itemToRemove);
@@ -342,21 +445,4 @@ int GameParty::GetGold() const
 void GameParty::SetGold(int amount)
 {
 	currentGold = amount;
-}
-
-std::string PartyCharacter::GetStatDisplay(BaseStats stat) const
-{
-	using enum BaseStats;
-	switch (stat)
-	{
-		case MAX_HP:			return std::format("HP: {} / {}", currentHP, stats[0]);
-		case MAX_MANA:			return std::format("MP: {} / {}", currentMana, stats[1]);
-		case ATTACK:			return std::format("Atk: {}", stats[2]);
-		case DEFENSE:			return std::format("Def: {}", stats[3]);
-		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", stats[4]);
-		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", stats[5]);
-		case SPEED:				return std::format("Speed: {}", stats[6]);
-		case LEVEL:				return std::format("Lv. {}", level);
-		case XP:				return std::format("EXP: {}", currentXP);
-	}
 }

@@ -263,24 +263,35 @@
 					<texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
 				</panel>
 			</window>
-			<window name="MenuListFallback" class="MenuList" x="300" y="50" width="500" height="400">
-				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png">
-					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
-				</background>
-				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+			<window name="MenuListFallback" class="MenuList" x="0" y="0" width="0" y="0" ishorizontal="false" isonlyicons="false" maxelements="-1" hasbackground="false">
+				<itemlist iconSize="0" outterMargin="0,0" innerMargin="0,0" />
 			</window>
-			<window name="Menu_MainCategories_NoIcons" class="MenuList" x="100" y="50" width="180" height="400">
-				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png">
-					<scrollarrow rectX="145" rectY="116" rectW="34" rectH="32" />
-				</background>
-				<itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+			<window name="MenuBattleFightOrFlee" class="MenuList" x="448" y="592" ishorizontal="true" isonlyicons="true" maxelements="3">
+				<itemlist iconSize="128" outterMargin="0,0" innerMargin="0,0" />
+				<texture path="Assets/UI/BattleMenuIcons.png" />
 			</window>
-			<window name="Display_Gold" class="MenuList" x="100" y="480" width="180" height="48">
-				<itemlist font="0" iconSize="32" maxColumns="1" outterMarginX="6" outterMarginY="6" itemMarginX="0" itemMarginY="0" maxElements="-1" />
-				<background segmentX="0" segmentY="0" segmentWidth="8" segmentHeight="8" numOfSegmentsX="3" numOfSegmentsY="3" advance="1" path="Assets/UI/GUI_1x_sliced.png" />
+			<window name="MenuBattleActions" class="MenuList" x="384" y="592" ishorizontal="true" isonlyicons="true" maxelements="4">
+				<itemlist iconSize="128" outterMargin="0,0" innerMargin="0,0" />
+				<texture path="Assets/UI/BattleActions.png" />
 			</window>
-			<window name="Display_Base" class="MenuList" x="800" y="110" width="450" height="460">
-				<itemlist font="0" maxColumns="1" outterMarginX="6" outterMarginY="14" itemMarginX="2" itemMarginY="2" maxElements="-1" />
+			<window name="MenuInventory" class="MenuList" x="300" y="50" width="500" height="225" hasbackground="true">
+				<itemlist iconSize="32" outterMargin="2,2" innerMargin="2,4" />
+			</window>
+			<window name="MenuCharacters" class="MenuList" x="300" y="50" width="600" height="553" hasbackground="true">
+				<itemlist iconSize="128" outterMargin="2,2" innerMargin="2,2" />
+			</window>
+			<window name="MenuCategories" class="MenuList" x="100" y="50" width="180" height="400" hasbackground="true">
+				<itemlist outterMargin="2,2" innerMargin="2,2" />
+			</window>
+			<window name="DisplayGold" class="MenuList" x="100" y="480" width="180" height="48" hasbackground="true">
+				<itemlist iconSize="32" outterMargin="2,2" innerMargin="2,2" />
+			</window>
+			<window name="DisplayQuestTracker" class="MenuList" x="800" y="110" width="450" height="460">
+				<itemlist outterMargin="2,2" innerMargin="2,2" />
+			</window>
+			<window name="MenuSelectBattler" class="MenuList" isonlyicons="true">
+				<itemlist iconSize="0" outterMargin="0,0" innerMargin="0,0" />
+				<texture path="Assets/UI/BattleMenuIcons.png" />
 			</window>
 		</window_info>
 	</scene>

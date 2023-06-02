@@ -222,7 +222,7 @@ double Easing::EasingAnimation(int start, int end, double time, EasingType easin
 		case EASE_IN_BOUNCE:        return EaseInBounce(t);
 		case EASE_OUT_BOUNCE:       return EaseOutBounce(t);
 		case EASE_INOUT_BOUNCE:     return EaseInOutBounce(t);
-		default:                                return EaseInSin(t);
+		default:                    return EaseInSin(t);
 		}
 	};
 

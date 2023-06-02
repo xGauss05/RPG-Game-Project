@@ -1,7 +1,10 @@
 #include "GuiMenuList.h"
 #include "App.h"
+
 #include "Render.h"
+#include "Input.h"
 #include "TextManager.h"
+
 #include "Log.h"
 
 GuiMenuList::GuiMenuList() = default;
@@ -10,107 +13,100 @@ GuiMenuList::GuiMenuList(pugi::xml_node const& node) :
 	position(iPoint(node.attribute("x").as_int(), node.attribute("y").as_int())),
 	size(iPoint(node.attribute("width").as_int(), node.attribute("height").as_int()))
 {
-	if (auto backgroundNode = node.child("background");
-		backgroundNode)
-	{
-		SDL_Rect rect(
-			backgroundNode.attribute("segmentX").as_int(),
-			backgroundNode.attribute("segmentY").as_int(),
-			backgroundNode.attribute("segmentWidth").as_int(),
-			backgroundNode.attribute("segmentHeight").as_int()
-		);
-
-		int advance = backgroundNode.attribute("advance").as_int();
-
-		int textureID = app->tex->Load(backgroundNode.attribute("path").as_string());
-
-		iPoint tSegments(0, 0);
-
-		if (auto boxSegments = backgroundNode.attribute("segments").as_int();
-			boxSegments != 0)
-		{
-			tSegments = { boxSegments, boxSegments };
-		}
-		else
-		{
-			tSegments = {
-				backgroundNode.attribute("numOfSegmentsX").as_int(),
-				backgroundNode.attribute("numOfSegmentsY").as_int()
-			};
-		}
-
-		GuiPanel_Border missingPanel = GuiPanel_Border::NONE;
-
-		// Something something about accessing nullpointers?
-		// How in the hell does this work and why
-		for (auto const& elem : backgroundNode.children("border"))
-		{
-			missingPanel = static_cast<GuiPanel_Border>(
-				static_cast<uint>(missingPanel) +
-				static_cast<uint>(
-					background->MapStringToGuiPanelBorder(
-						elem.attribute("missing").as_string()
-					)
-				)
-			);
-		}
-
-		auto hasPanels =
-			static_cast<GuiPanel_Border>(
-				static_cast<uint>(GuiPanel_Border::ALL) - static_cast<uint>(missingPanel)
-			);
-
-		background = std::make_unique<GuiPanelSegmented>(rect, advance, textureID, tSegments, hasPanels);
-
-		if (auto scrollArrowNode = backgroundNode.child("scrollarrow");
-			scrollArrowNode)
-		{
-			arrowRect = {
-				scrollArrowNode.attribute("rectX").as_int(),
-				scrollArrowNode.attribute("rectY").as_int(),
-				scrollArrowNode.attribute("rectW").as_int(),
-				scrollArrowNode.attribute("rectH").as_int()
-			};
-		}
-	}
-
 	if (auto itemNode = node.child("itemlist");
 		itemNode)
 	{
+		
+		fontID = itemNode.attribute("font") ? itemNode.attribute("font").as_int() : 0;
+		maxColumns = itemNode.attribute("maxColumns") ? itemNode.attribute("maxColumns").as_int() : 1;
+
+		auto GetMarginValues = [itemNode](std::string const& str)
+		{
+			if (auto strNode = itemNode.attribute(str.c_str());
+				strNode)
+			{
+				std::string_view value = strNode.as_string();
+				int xVal;
+				std::string_view firstVal = value.substr(0, value.find_first_of(','));
+				auto result = std::from_chars(firstVal.data(), firstVal.data() + firstVal.size(), xVal);
+				int yVal;
+				value.remove_prefix(value.find_first_of(',') + 1);
+				auto result2 = std::from_chars(value.data(), value.data() + value.size(), yVal);
+
+				if (result.ec == std::errc() && result2.ec == std::errc())
+				{
+					return iPoint(xVal, yVal);
+				}
+
+			}
+
+			return iPoint(2, 2);
+		};
+
+		innerMargin = GetMarginValues("innerMargin");
+		outterMargin = GetMarginValues("outterMargin") + background.segmentSize;
+
 		iconSize = itemNode.attribute("iconSize").as_int();
-		fontID = itemNode.attribute("font").as_int();
-		maxColumns = itemNode.attribute("maxColumns").as_int();
 
-		itemMargin = iPoint(itemNode.attribute("itemMarginX").as_int(), itemNode.attribute("itemMarginY").as_int());
-		outterMargin = iPoint(itemNode.attribute("outterMarginX").as_int(), itemNode.attribute("outterMarginY").as_int());
-
-		menuItemHeight = app->fonts->GetLineHeight(fontID) + (itemMargin.y * 2);
-
-		maxElements = itemNode.attribute("maxElements").as_int();
-
-		if (maxElements == -1)
+		if (node.attribute("isonlyicons").as_bool())
 		{
-			maxElements = size.y / menuItemHeight;
+			m_itemSize = { iconSize , iconSize };
+			size = m_itemSize;
+			if (auto maxElementsAttr = node.attribute("maxelements");
+				maxElementsAttr)
+			{
+				maxElements = maxElementsAttr.as_int();
+				if (node.attribute("ishorizontal").as_bool())
+				{
+					size.x *= maxElements;
+				}
+				else
+				{
+					size.y *= maxElements;
+				}
+			}
+
+			else
+			{
+				maxElements = size.y / m_itemSize.y;
+			}
 		}
-
-		outterMargin.y += (arrowRect.h / 2);
-
-		int correctedYSize = outterMargin.y * 2 + (menuItemHeight * maxElements);
-
-		size.y = correctedYSize;
-
-		if (background)
+		else
 		{
-			size.CeilToNearest(background->GetSegmentSize().h);
+			m_itemSize.x = size.x;
+			m_itemSize.y = app->fonts->GetLineHeight(fontID) + (innerMargin.y * 2);
+
+			if (iconSize + (innerMargin.y * 2) > m_itemSize.y)
+			{
+				m_itemSize.y = iconSize + (innerMargin.y * 2);
+			}
+
+			if (auto maxElementsAttr = itemNode.attribute("maxElements");
+				maxElementsAttr)
+			{
+				maxElements = maxElementsAttr.as_int();
+			}
+			else
+			{
+				maxElements = size.y / m_itemSize.y;
+			}
 		}
 	}
+	if (node.attribute("hasbackground").as_bool())
+	{
+		SDL_Rect rect(
+			position.x,
+			position.y,
+			size.x,
+			size.y
+		);
+
+		background.SetPanelArea(rect);
+	}
+
 }
 
-GuiMenuList::~GuiMenuList()
-{
-	if(background)
-		background->Unload();
-}
+GuiMenuList::~GuiMenuList() = default;
 
 void GuiMenuList::Initialize()
 {
@@ -124,6 +120,8 @@ void GuiMenuList::Start()
 		SetCurrentItemSelected(0);
 	else
 		SetCurrentItemSelected(-1);
+
+	SetDefaultBooleanValues();
 }
 
 void GuiMenuList::SetDefaultBooleanValues()
@@ -131,7 +129,7 @@ void GuiMenuList::SetDefaultBooleanValues()
 	deleteMenu = false;
 	goToPreviousMenu = false;
 	clickHandled = false;
-	alphaIncreasing = false;
+	alphaDirection = 1;
 }
 
 bool GuiMenuList::Update()
@@ -139,7 +137,7 @@ bool GuiMenuList::Update()
 	HandleInput();
 	UpdateAlpha();
 
-	if (clickHandled)
+	if (clickHandled || closeAllMenus)
 	{
 		clickHandled = false;
 		return true;
@@ -150,29 +148,22 @@ bool GuiMenuList::Update()
 
 void GuiMenuList::UpdateAlpha()
 {
-	if (alphaIncreasing)
+	currentAlpha += (5 * alphaDirection);
+	if (currentAlpha <= g_guiItemMinAlpha || currentAlpha >= g_guiItemMaxAlpha)
 	{
-		currentAlpha += 5;
-		if (currentAlpha > 200)
-		{
-			alphaIncreasing = false;
-			currentAlpha = 205;
-		}
-	}
-	else
-	{
-		currentAlpha -= 5;
-		if (currentAlpha < 5)
-		{
-			alphaIncreasing = true;
-			currentAlpha = 0;
-		}
+		currentAlpha = std::ranges::clamp(currentAlpha, g_guiItemMinAlpha, g_guiItemMaxAlpha);
+		alphaDirection *= -1;
 	}
 }
 
-void GuiMenuList::CreateMenuItem(MenuItem const& item)
+void GuiMenuList::CreateMenuItem(std::string_view left, std::string_view center, std::string_view right, int textureID)
 {
-	items.push_back(item);
+	items.emplace_back(std::make_unique<MenuItemBase>(left.data(), center.data(), right.data(), textureID));
+}
+
+void GuiMenuList::CreateMenuImage(int textureId, SDL_Rect const& srcRect)
+{
+	items.emplace_back(std::make_unique<MenuImage>(textureId, srcRect));
 }
 
 void GuiMenuList::DeleteMenuItem(int index)
@@ -182,53 +173,40 @@ void GuiMenuList::DeleteMenuItem(int index)
 
 bool GuiMenuList::Draw() const
 {
-	if(background)
-		background->Draw(position, size);
+	background.Draw();
 
-	if (!SDL_RectEmpty(&arrowRect))
+
+	if(!items.empty())
 	{
-		iPoint arrowPos =
-		{
-			position.x + (size.x - arrowRect.w)/ 2,
-			position.y
-		};
 		if (currentScroll > 0)
 		{
-			app->render->DrawTexture(
-				DrawParameters(background->GetTextureID(), arrowPos)
-				.Section(&arrowRect)
-				.Flip(SDL_RendererFlip::SDL_FLIP_VERTICAL)
-			);
+			background.DrawTopArrow();
 		}
 		if (currentScroll + maxElements < items.size())
 		{
-			arrowPos.y += size.y - arrowRect.h;
+			background.DrawArrow();
+		}
 
-			app->render->DrawTexture(
-				DrawParameters(background->GetTextureID(), arrowPos)
-				.Section(&arrowRect)
+		for (int i = currentScroll; i < currentScroll + maxElements && i < items.size(); ++i)
+		{
+			iPoint drawPosition(
+				position.x + outterMargin.x,
+				position.y + outterMargin.y
 			);
+			if (m_itemSize.x != size.x)
+			{
+				drawPosition.x += (m_itemSize.x * (i - currentScroll));
+			}
+			else
+			{
+				drawPosition.y += (m_itemSize.y * (i - currentScroll));
+			}
+
+			items[i]->Draw(drawPosition, iPoint(m_itemSize.x, m_itemSize.y), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
 		}
 	}
 
-	for (int i = currentScroll; i < currentScroll + maxElements && i < items.size(); ++i)
-	{
-		iPoint drawPosition(
-			position.x + outterMargin.x,
-			position.y + outterMargin.y + (menuItemHeight * (i - currentScroll))
-		);
-
-		items[i].Draw(drawPosition, iPoint(size.x, menuItemHeight), itemMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));
-	}
-
 	return true;
-}
-
-void GuiMenuList::DebugDraw() const
-{
-	SDL_Rect debugRect(position.x, size.y, size.x, size.y);
-
-	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
 }
 
 void GuiMenuList::SetClickHandled(bool b)
@@ -256,12 +234,27 @@ int GuiMenuList::GetLastClick() const
 	return lastClick;
 }
 
+void GuiMenuList::SetPreviousPanelLastClick(int n)
+{
+	previousPanelLastClick = n;
+}
+
+int GuiMenuList::GetPreviousPanelLastClick() const
+{
+	return previousPanelLastClick;
+}
+
+void GuiMenuList::CreateMenuCharacter(Battler const& battler)
+{
+	items.emplace_back(std::make_unique<MenuCharacter>(battler));
+}
+
 void GuiMenuList::SetGoToPreviousMenu(bool b)
 {
 	goToPreviousMenu = b;
 }
 
-void GuiMenuList::SetCurrentAlpha(Uint8 value)
+void GuiMenuList::SetCurrentAlpha(uint8_t value)
 {
 	currentAlpha = value;
 }
@@ -286,17 +279,51 @@ bool GuiMenuList::GetGoToPreviousMenu() const
 	return goToPreviousMenu;
 }
 
+bool GuiMenuList::GetAndDefaultCloseAllMenus()
+{
+	bool ret = closeAllMenus;
+	closeAllMenus = false;
+	return ret;
+}
+
+void GuiMenuList::SetActive(bool n)
+{
+	active = n;
+	if (active)
+	{
+		SetDefaultBooleanValues();
+	}
+}
+
+void GuiMenuList::ToggleActive()
+{
+	active = !active;
+}
+
+bool GuiMenuList::IsActive() const
+{
+	return active;
+}
+
+std::size_t GuiMenuList::GetNumberOfItems() const
+{
+	return items.size();
+}
+
 void GuiMenuList::HandleInput()
 {
 	using enum KeyState;
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN
-		|| app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		HandleLeftClick();
 	}
 	else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		HandleRightButtonClick();
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		closeAllMenus = true;
 	}
 
 	lastTimeSinceScrolled++;
@@ -330,12 +357,16 @@ void GuiMenuList::HandleLeftClick()
 			return;
 		}
 
-		int elementClicked = currentScroll + relativeCoords.y / menuItemHeight;
+		int elementClicked = m_itemSize.x != size.x ? 
+			currentScroll + relativeCoords.x / m_itemSize.x : 
+			currentScroll + relativeCoords.y / m_itemSize.y;
+
+		int numOfItems = items.size();
 
 		int elementInRange = MIN(
 			elementClicked,
 			currentScroll + maxElements - 1,		// Max index of item that are shown in screen
-			{ static_cast<int>(items.size()) }	// Max number of available items
+			{ numOfItems }					// Max number of available items
 		);
 
 		if (elementClicked == elementInRange)
@@ -344,6 +375,8 @@ void GuiMenuList::HandleLeftClick()
 				&& currentItemSelected == elementClicked)
 			{
 				SetLastClick(elementClicked);
+				currentAlpha = 195;
+				alphaDirection = -1;
 				HandleLeftButtonClick(elementClicked);
 			}
 			else
@@ -394,14 +427,15 @@ void GuiMenuList::SelectAndScrollUpIfNeeded(int amount)
 
 void GuiMenuList::SelectAndScrollDownIfNeeded(int amount)
 {
-	if (currentItemSelected < items.size() - amount)
+	int numOfItems = items.size();
+	if (currentItemSelected < numOfItems - amount)
 	{
 		lastTimeSinceScrolled = 0;
 		currentItemSelected += amount;
 	}
 	else
 	{
-		currentItemSelected = items.size() - 1;
+		currentItemSelected = numOfItems - 1;
 	}
 
 	if (currentItemSelected >= currentScroll + maxElements)
@@ -426,13 +460,15 @@ void GuiMenuList::ScrollListUp(int amount)
 
 void GuiMenuList::ScrollListDown(int amount)
 {
+	int numOfItems = items.size();
 	// If it can still scroll down
-	if (currentScroll + maxElements < items.size())
+	if (currentScroll + maxElements < numOfItems)
 	{
 		lastTimeSinceScrolled = 0;
-		
+
+
 		if (currentScroll + amount >= maxElements)
-			currentScroll = items.size() - maxElements;
+			currentScroll = numOfItems - maxElements;
 		else
 			currentScroll += amount;
 	}
@@ -441,118 +477,4 @@ void GuiMenuList::ScrollListDown(int amount)
 void GuiMenuList::SetLastClick(int i)
 {
 	lastClick = i;
-}
-
-GuiMenuList::MenuItem::MenuItem(ItemText const& itemText, int i, int textureID)
-	: text(itemText), index(i), iconTexture(textureID)
-{}
-
-void GuiMenuList::MenuItem::Draw(iPoint originalPos, iPoint rectSize, iPoint innerMargin, iPoint outMargin, Uint8 animationAlpha, int sizeIcon, bool currentlySelected) const
-{
-	iPoint drawPosition = originalPos + innerMargin;
-
-	if (currentlySelected)
-	{
-		iPoint cam = { app->render->GetCamera().x, app->render->GetCamera().y };
-		SDL_Rect selectedRect = {
-			(-1 * cam.x) + originalPos.x,
-			(-1 * cam.y) + originalPos.y,
-			rectSize.x - (outMargin.x * 2), 
-			rectSize.y - innerMargin.y
-		};
-		app->render->DrawShape(selectedRect, true, SDL_Color(255, 255, 255, animationAlpha));
-	}
-
-	if (sizeIcon > 0)
-	{
-		if (iconTexture != -1)
-		{
-			iPoint cam ={ -1 * app->render->GetCamera().x, -1 * app->render->GetCamera().y };
-			
-			drawPosition += cam;
-			drawPosition.y += 2;
-			app->render->DrawTexture(DrawParameters(iconTexture, drawPosition));
-			drawPosition.y -= 2;
-			drawPosition -= cam;
-		}
-
-		drawPosition.x += sizeIcon + innerMargin.x;
-	}
-
-	if (!text.leftText.empty())
-	{
-		app->fonts->DrawText(
-			text.leftText,
-			TextParameters(
-				0,
-				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_TOP_LEFT)
-		);
-	}
-
-	if (!text.centerText.empty())
-	{
-		// Center the draw position
-		drawPosition.x = originalPos.x + (rectSize.x / 2);
-		drawPosition.y = originalPos.y + (rectSize.y / 2);
-
-		app->fonts->DrawText(
-			text.centerText,
-			TextParameters(
-				0,
-				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_CENTER)
-		);
-	}
-
-	if (!text.rightText.empty())
-	{
-		drawPosition.x = originalPos.x + rectSize.x - innerMargin.x;
-		drawPosition.x -= 32 - (drawPosition.x % 32);
-
-		drawPosition.y = originalPos.y + innerMargin.y;
-		
-		app->fonts->DrawText(
-			text.rightText,
-			TextParameters(
-				0,
-				DrawParameters(0, drawPosition)
-			).Align(AlignTo::ALIGN_TOP_RIGHT)
-		);
-	}
-}
-
-void GuiMenuList::MenuItem::DebugDraw(iPoint pos, iPoint s, int outterMarginY, int itemHeight, int index, int scroll) const
-{
-	iPoint debugDrawPos(
-			pos.x,
-			pos.y + outterMarginY + (itemHeight * (index - scroll))
-	);
-
-	SDL_Rect debugRect(pos.x, pos.y, s.x, s.y);
-
-	app->render->DrawShape(debugRect, false, SDL_Color(255, 0, 0, 255));
-}
-
-void GuiMenuList::MenuItem::SetText(ItemText const& newText)
-{
-	text = newText;
-}
-
-void GuiMenuList::MenuItem::SetText(int align, std::string_view newText)
-{
-	switch (align)
-	{
-	case 1:
-		text.leftText = newText;
-		return;
-	case 2:
-		text.centerText = newText;
-		return;
-	case 3:
-		text.rightText = newText;
-		return;
-	default:
-		break;
-	}
 }

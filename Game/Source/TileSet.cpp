@@ -13,7 +13,7 @@ TileSet::TileSet(const pugi::xml_node& node, const std::string& directory) :
 	if (pugi::xml_parse_result parseResult = tileSetFile.load_file((directory + source).c_str());
 		!parseResult)
 	{
-		LOG("TileSet file for %s parsing error: %s", source, parseResult.description());
+		//LOG("TileSet file for %s parsing error: %s", source, parseResult.description());
 		return;
 	}
 	
@@ -84,5 +84,9 @@ int TileSet::GetTextureID() const
 
 bool TileSet::IsWalkable(uint gid) const
 {
+	if (tileWalkability.empty())
+	{
+		return false;
+	}
 	return tileWalkability[gid - firstGid];
 }

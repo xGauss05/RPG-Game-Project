@@ -10,12 +10,14 @@ Map_Window_Menu::Map_Window_Menu(Window_Factory const& windowFac)
 	: statsWindow(windowFac.CreateWindow("StatsMenu"))
 {
 	using enum Map_Window_Menu::MenuWindows;
-	panels.emplace_back(windowFac.CreateMenuList("Menu_MainCategories_NoIcons"));
 	menuLogic.AddVertex(MAIN);
-	panels.emplace_back(windowFac.CreateMenuList("Menu_MainCategories"));
+	panels.emplace_back(windowFac.CreateMenuList("MenuCategories"));
 	menuLogic.AddVertex(INVENTORY);
-	panels.emplace_back(windowFac.CreateGoldDisplay());
+	panels.emplace_back(windowFac.CreateMenuList("MenuInventory"));
 	menuLogic.AddVertex(COINS);
+	panels.emplace_back(windowFac.CreateGoldDisplay());
+	menuLogic.AddVertex(CHOOSE_CHARACTER);
+	panels.emplace_back(windowFac.CreateMenuList("MenuCharacters"));
 
 	menuLogic.AddVertex(STATS);
 }
@@ -25,6 +27,7 @@ void Map_Window_Menu::InitializeLogicGraph()
 	using enum Map_Window_Menu::MenuWindows;
 	menuLogic.AddEdge(MAIN, INVENTORY);
 	menuLogic.AddEdge(MAIN, STATS);
+	menuLogic.AddEdge(INVENTORY, CHOOSE_CHARACTER);
 }
 
 void Map_Window_Menu::Start()
@@ -57,17 +60,21 @@ bool Map_Window_Menu::Update()
 
 	if(!panels.empty() && panels[currentActivePanel]->Update())
 	{
-		if (!panels[currentActivePanel]->GoToPreviousMenu())
+		if (panels[currentActivePanel]->GetAndDefaultCloseAllMenus())
 		{
-			GoToNextPanel();
+			return false;
 		}
-		else if(!panelHistory.empty())
+
+		if (panels[currentActivePanel]->GoToPreviousMenu())
 		{
+			if (panelHistory.empty())
+				return false;
+			
 			GoToPreviousPanel();
 		}
 		else
 		{
-			return false;
+			GoToNextPanel();
 		}
 	}
 
@@ -84,7 +91,8 @@ void Map_Window_Menu::Draw() const
 	{
 		for (auto const& elem : panels)
 		{
-			elem->Draw();
+			if(elem->IsActive())
+				elem->Draw();
 		}
 	}
 }
@@ -98,6 +106,7 @@ void Map_Window_Menu::SetPlayerParty(GameParty* party)
 		switch (menuLogic.At(i).value)
 		{
 			using enum Map_Window_Menu::MenuWindows;
+			case CHOOSE_CHARACTER:
 			case INVENTORY:
 			case COINS:
 			{
@@ -114,16 +123,28 @@ void Map_Window_Menu::SetPlayerParty(GameParty* party)
 
 void Map_Window_Menu::GoToNextPanel()
 {
-	panelHistory.push(currentActivePanel);
-	int buttonClicked = panels[currentActivePanel]->GetLastClick();
-	int nextPanelID = menuLogic.At(currentActivePanel).edges[buttonClicked].destination;
+	if (menuLogic.At(currentActivePanel).edges.empty())
+		return;
 
-	if (nextPanelID >= panels.size())
+	int buttonClicked = panels[currentActivePanel]->GetLastClick();
+	int nextPanelID = menuLogic.At(currentActivePanel).value == MenuWindows::INVENTORY ?
+		menuLogic.At(currentActivePanel).edges[0].destination :
+		menuLogic.At(currentActivePanel).edges[buttonClicked].destination;
+
+	MenuWindows nextPanel = menuLogic.At(nextPanelID).value;
+
+	if (nextPanel == MenuWindows::STATS)
 	{
 		bInStatsMenu = true;
 	}
 	else
 	{
+		if (nextPanel == MenuWindows::CHOOSE_CHARACTER)
+		{
+			panels[currentActivePanel]->SetActive(false);
+			panels[nextPanelID]->SetActive(true);
+		}
+		panelHistory.push(currentActivePanel);
 		currentActivePanel = nextPanelID;
 		panels[currentActivePanel]->Start();
 		bInStatsMenu = false;
@@ -132,15 +153,32 @@ void Map_Window_Menu::GoToNextPanel()
 
 void Map_Window_Menu::GoToPreviousPanel()
 {
+	int lastPanelClick = panels[currentActivePanel]->GetLastClick();
+
+	if (menuLogic.At(currentActivePanel).value == MenuWindows::CHOOSE_CHARACTER
+		&& menuLogic.At(panelHistory.top()).value == MenuWindows::INVENTORY)
+	{
+		auto inventoryPanel = dynamic_cast<Map_Menu_Inventory*>(panels[panelHistory.top()].get());
+		inventoryPanel->SetPreviousPanelLastClick(lastPanelClick);
+		if (inventoryPanel->UseItem())
+		{
+			return;
+		}
+		panels[currentActivePanel]->SetActive(false);
+	}
+
 	currentActivePanel = panelHistory.top();
+	panels[currentActivePanel]->SetActive(true);
 	panelHistory.pop();
+	panels[currentActivePanel]->SetPreviousPanelLastClick(lastPanelClick);
 }
 
 void Map_Window_Menu::DrawStatsMenu() const
 {
 	statsWindow->Draw();
 
-	std::ranges::for_each(playerParty->party, [this, positionX = 0](PartyCharacter const& c) mutable
+	std::ranges::for_each(playerParty->party,
+		[this, positionX = 0](Battler const& c) mutable
 		{
 			DrawPlayerStats(c, positionX);
 			positionX += 140;
@@ -149,14 +187,14 @@ void Map_Window_Menu::DrawStatsMenu() const
 
 }
 
-void Map_Window_Menu::DrawPlayerStats(PartyCharacter const& character, int i) const
+void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 {
 	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 
 	iPoint allyPosition(170 - camera.x, i - camera.y + 55);
 	iPoint hpBarPosition(140 - camera.x, i - camera.y + 80);
 
-	DrawHPBar(character.battlerTextureID, character.currentHP, character.stats[0], hpBarPosition);
+	DrawHPBar(character.battlerTextureID, character.currentHP, character.GetStat(BaseStats::MAX_HP), hpBarPosition);
 
 	DrawParameters drawAlly(character.battlerTextureID, allyPosition);
 
@@ -200,7 +238,7 @@ void Map_Window_Menu::DrawPlayerStats(PartyCharacter const& character, int i) co
 	);
 }
 
-void Map_Window_Menu::DrawSingleStat(PartyCharacter const& character, BaseStats stat, int x, int y) const
+void Map_Window_Menu::DrawSingleStat(Battler const& character, BaseStats stat, int x, int y) const
 {
 	app->fonts->DrawText(
 		character.GetStatDisplay(stat),

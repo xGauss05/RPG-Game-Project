@@ -7,6 +7,15 @@
 #include "Render.h"
 #include "Log.h"
 
+EnemyTroops::~EnemyTroops()
+{
+	for (auto const& elem : troop)
+	{
+		app->tex->Unload(elem.battlerTextureID);
+		app->tex->Unload(elem.portraitTextureID);
+	}
+}
+
 void EnemyTroops::CreateFight(std::string_view nodeName)
 {
 	pugi::xml_document troopsFile;
@@ -24,23 +33,24 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 	{
 		iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 
-		Enemy enemyToAdd;
-		enemyToAdd.name = enemy.name();
+		Battler enemyToAdd;
+		enemyToAdd.name = enemy.attribute("name").as_string();
 		enemyToAdd.level = enemy.attribute("level").as_int();
 
-		auto currentEnemy = enemiesFile.child(enemyToAdd.name.c_str());
-		enemyToAdd.textureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
+		auto currentEnemy = enemiesFile.child(enemy.name());
+		enemyToAdd.battlerTextureID = app->tex->Load(currentEnemy.child("texture").attribute("path").as_string());
 		enemyToAdd.deadSfx = app->audio->LoadFx(currentEnemy.child("deadaudio").attribute("path").as_string());
 		for (auto const& stat : currentEnemy.child("stats").children())
 		{
-			enemyToAdd.stats.emplace_back(stat.attribute("value").as_int());
+			enemyToAdd.AddStat(stat.attribute("value").as_int());
 		}
-		enemyToAdd.currentHP = enemyToAdd.stats[0];
-		enemyToAdd.currentMana = enemyToAdd.stats[1];
+		
+		enemyToAdd.currentHP = enemyToAdd.GetStat(BaseStats::MAX_HP);
+		enemyToAdd.currentMana = enemyToAdd.GetStat(BaseStats::MAX_MANA);
 
 		int w = 0;
 		int h = 0;
-		app->tex->GetSize(app->GetTexture(enemyToAdd.textureID), w, h);
+		app->tex->GetSize(app->GetTexture(enemyToAdd.battlerTextureID), w, h);
 
 		enemyToAdd.size.x = w * 2;
 		enemyToAdd.size.y = h * 2;
@@ -48,13 +58,13 @@ void EnemyTroops::CreateFight(std::string_view nodeName)
 		enemyToAdd.index = troop.size();
 
 		enemyToAdd.position.x = 800 - camera.x;
-		enemyToAdd.position.y = 50 + (125 * enemyToAdd.index) - camera.y;
+		enemyToAdd.position.y = 50 + (enemyToAdd.size.y * enemyToAdd.index) - camera.y;
 
 		troop.emplace_back(enemyToAdd);
 	}
 }
 
-bool Enemy::IsMouseHovering() const
+bool Battler::IsMouseHovering() const
 {
 	iPoint mousePos = app->input->GetMousePosition();
 	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };

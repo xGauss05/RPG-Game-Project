@@ -99,14 +99,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AssetManager.cpp" />
+    <ClCompile Include="Source\Battle_Menu_Inventory.cpp" />
+    <ClCompile Include="Source\Battle_Menu_Main.cpp" />
+    <ClCompile Include="Source\Battle_Window_Menu.cpp" />
     <ClCompile Include="Source\DB_Quests.cpp" />
     <ClCompile Include="Source\Event_Boss_Combat.cpp" />
     <ClCompile Include="Source\Event_Door.cpp" />
     <ClCompile Include="Source\Event_Lever.cpp" />
     <ClCompile Include="Source\Event_Torch.cpp" />
     <ClCompile Include="Source\GuiMenuList.cpp" />
+    <ClCompile Include="Source\GuiMenuListItem.cpp" />
+    <ClCompile Include="Source\GuiSegmentedMessageBox.cpp" />
+    <ClCompile Include="Source\GuiSegmentedPanel.cpp" />
     <ClCompile Include="Source\Map_Display_QuestLog.cpp" />
     <ClCompile Include="Source\Map_Menu_GoldDisplay.cpp" />
+    <ClCompile Include="Source\Map_Menu_InteractParty.cpp" />
     <ClCompile Include="Source\Map_Menu_Inventory.cpp" />
     <ClCompile Include="Source\Map_Menu_MainCategories.cpp" />
     <ClCompile Include="Source\Map_Window_Menu.cpp" />
@@ -174,16 +181,23 @@
     <ClCompile Include="Source\Window_List.cpp" />
     <ClInclude Include="Source\AdjacencyGraph.h" />
     <ClInclude Include="Source\AssetManager.h" />
+    <ClInclude Include="Source\Battle_Menu_Inventory.h" />
+    <ClInclude Include="Source\Battle_Menu_Main.h" />
+    <ClInclude Include="Source\Battle_Window_Menu.h" />
     <ClInclude Include="Source\DB_Quests.h" />
     <ClInclude Include="Source\Event_Boss_Combat.h" />
     <ClInclude Include="Source\Event_Door.h" />
     <ClInclude Include="Source\Event_Lever.h" />
     <ClInclude Include="Source\Event_Torch.h" />
     <ClInclude Include="Source\GuiMenuList.h" />
+    <ClInclude Include="Source\GuiMenuListItem.h" />
+    <ClInclude Include="Source\GuiSegmentedMessageBox.h" />
+    <ClInclude Include="Source\GuiSegmentedPanel.h" />
     <ClInclude Include="Source\JSON Parser.h" />
     <ClInclude Include="Source\Map_Display_QuestLog.h" />
     <ClInclude Include="Source\Map_Menu_ComponentParty.h" />
     <ClInclude Include="Source\Map_Menu_GoldDisplay.h" />
+    <ClInclude Include="Source\Map_Menu_InteractParty.h" />
     <ClInclude Include="Source\Map_Menu_Inventory.h" />
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />

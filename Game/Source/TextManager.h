@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+#include "Render.h"
+
 #include "Defs.h"
 #include "Point.h"
 
@@ -13,8 +15,6 @@
 #include "SDL/include/SDL.h"
 #include "SDL/include/SDL_pixels.h"
 
-struct DrawParameters;
-
 constexpr auto MAX_FONTS = 10;
 constexpr auto MAX_FONT_CHARS = 256;
 
@@ -22,9 +22,9 @@ enum class AlignTo
 {
 	ALIGN_TOP_LEFT,
 	ALIGN_TOP_RIGHT,
-	ALIGN_BOTTOM_LEFT,
-	ALIGN_BOTTOM_RIGHT,
-	ALIGN_CENTER
+	ALIGN_CENTER,
+	ALIGN_CENTER_LEFT,
+	ALIGN_CENTER_RIGHT
 };
 
 enum class AnchorTo
@@ -35,10 +35,19 @@ enum class AnchorTo
 
 struct TextParameters
 {
+	enum class WrapMode
+	{
+		NONE,
+		CHARACTER,
+		SPACE,
+		ANYWHERE
+	};
+
 	int fontId;
 	DrawParameters const &params;
 
-	AnchorTo anchor= AnchorTo::SCREEN;
+	WrapMode wrap = WrapMode::SPACE;
+	AnchorTo anchor = AnchorTo::SCREEN;
 	AlignTo align = AlignTo::ALIGN_TOP_LEFT;
 
 	TextParameters(int id, DrawParameters const& originalParameters)
@@ -52,6 +61,11 @@ struct TextParameters
 	TextParameters& Anchor(AnchorTo a)
 	{
 		anchor = a;
+		return *this;
+	}
+	TextParameters& Wrap(WrapMode a)
+	{
+		wrap = a;
 		return *this;
 	}
 };
@@ -73,10 +87,20 @@ private:
 		std::unordered_map<char, CharInfo> charMap;
 		int textureID = -1;
 		std::string name = "";
+		int size = 0;
 		int lineHeight = 0;
+		int maxHeight = 0;
 		fPoint scale = { 1,1 };
 		iPoint spacing = { 0,0 };
 		void Unload() const;
+		void SetScale(float XY);
+	};
+
+	struct TextRun
+	{
+		std::deque<DrawParameters> letter;
+		std::deque<SDL_Rect> letterRect;
+		std::string_view text;
 	};
 
 public:
@@ -93,12 +117,20 @@ public:
 
 	void DrawText(
 		std::string_view text,
+		bool wrap,
+		TextParameters const &originalParams
+	);
+
+	void DrawText(
+		std::string_view text,
 		TextParameters const &originalParams
 	) const;
+
 	void DrawText(
 		std::string_view text,
 		DrawParameters const &originalParams
 	) const;
+
 	void DrawText(
 		std::string_view text,
 		iPoint position
@@ -106,7 +138,12 @@ public:
 
 	int GetLineHeight(int fontID) const;
 
+	void SetScale(int font, float XY);
+
 private:
+
+	void CreateTextRuns(TextParameters const& textParams, int fontId, std::string_view text);
+
 	iPoint GetAnchorPosition(iPoint position, AnchorTo anchor) const;
 	iPoint GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const& font) const;
 	int GetDistanceToNextDrawingPositon(int advance, int spacing, int offset, float scale = 1.0f) const;
@@ -114,6 +151,8 @@ private:
 	std::string path;
 	std::vector<Font> fonts;
 	std::priority_queue<int, std::vector<int>, std::greater<int>> freeVectorElements;
+
+	std::deque<TextRun> textRuns;
 };
 
 

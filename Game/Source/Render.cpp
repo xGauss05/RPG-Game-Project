@@ -71,6 +71,7 @@ bool Render::Awake(pugi::xml_node& config)
 bool Render::Start()
 {
 	LOG("render start");
+
 	// Background
 	SDL_RenderGetViewport(renderer.get(), &viewport);
 	return true;
@@ -212,6 +213,7 @@ bool Render::DrawTexture(DrawParameters const &params) const
 
 	auto texture = app->GetTexture(params.textureID);
 
+
 	fPoint scale = (params.scale.IsZero())
 		? fPoint(app->win->GetScale(), app->win->GetScale())
 		: params.scale;
@@ -260,9 +262,22 @@ bool Render::DrawTexture(DrawParameters const &params) const
 		center = &pivot;
 	}
 
+	if (params.gradient)
+	{
+		//SDL_Rect origin = { 0, 0, 2, 1 }; // Magic numbeeeeeeeeeeers
+		//if (SDL_RenderCopy(renderer.get(), texture, &origin, &rect))
+		//{
+
+		//	LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		//	return false;
+		//}
+
+		//return true;
+	}
+
 	if (SDL_RenderCopyEx(renderer.get(), texture, params.section, &rect, params.rotationAngle, center, params.flip))
 	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		LOG("Cannot blit to screen. SDL_RenderCopyEX error: %s", SDL_GetError());
 		return false;
 	}
 
@@ -478,4 +493,39 @@ bool Render::EasingHasFinished(std::string_view name)
 		}
 	}
 	return false;
+}
+
+void Render::DrawGradientBar(SDL_Rect const &rect, SDL_Color start, SDL_Color end, uint8_t numberOfColors) const
+{
+	SDL_Color currentColor = start;
+
+	SDL_Color modifyColorBy =
+	{
+	.r = static_cast<uint8_t>((end.r - start.r) / numberOfColors),
+	.g = static_cast<uint8_t>((end.g - start.g) / numberOfColors),
+	.b = static_cast<uint8_t>((end.b - start.b) / numberOfColors),
+	.a = static_cast<uint8_t>((end.a - start.a) / numberOfColors)
+	};
+
+	SDL_Rect areaToDraw = rect;
+	areaToDraw.w /= numberOfColors;
+	for (int i = 0; i < numberOfColors; i++)
+	{
+		SDL_SetRenderDrawColor(renderer.get(), currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+
+		SDL_RenderFillRect(renderer.get(), &areaToDraw);
+
+		currentColor.r += modifyColorBy.r;
+		currentColor.g += modifyColorBy.g;
+		currentColor.b += modifyColorBy.b;
+		currentColor.a += modifyColorBy.a;
+		areaToDraw.x += areaToDraw.w;
+	}
+
+	if (areaToDraw.x < rect.x + rect.w)
+	{
+		areaToDraw.w = rect.x + rect.w - areaToDraw.x;
+		SDL_RenderFillRect(renderer.get(), &areaToDraw);
+
+	}
 }

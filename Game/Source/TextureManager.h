@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+#include "Defs.h"
+
 #include <map>
 #include <memory>
 #include <set>
@@ -32,6 +34,8 @@ public:
 	int GetTextureID(std::string const &path);
 	void Unload(int index);
 	void GetSize(SDL_Texture* const texture, int& width, int& height) const;
+	iPoint GetSize(int textureID) const;
+	SDL_Point GetSizeSDLPoint(int textureID) const;
 	SDL_Texture* GetTexture(int textureID) const;
 
 	// Path to pair<Index, references> look up table

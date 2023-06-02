@@ -80,13 +80,29 @@ std::unique_ptr<GuiMenuList> Window_Factory::CreateMenuList(std::string_view con
 {
 	std::unique_ptr<GuiMenuList> returnPtr = nullptr;
 
-	if (StrEquals(windowName, "Menu_MainCategories"))
+	if (StrEquals(windowName, "MenuInventory"))
 	{
-		returnPtr = std::make_unique<Map_Menu_Inventory>(info.find("MenuListFallback")->second);
+		returnPtr = std::make_unique<Map_Menu_Inventory>(info.find("MenuInventory")->second);
 	}
-	if (StrEquals(windowName, "Menu_MainCategories_NoIcons"))
+	else if (StrEquals(windowName, "BattleInventory"))
 	{
-		returnPtr = std::make_unique<Map_Menu_MainCategories>(info.find("Menu_MainCategories_NoIcons")->second);
+		returnPtr = std::make_unique<Battle_Menu_Inventory>(info.find("MenuInventory")->second);
+	}
+	else if (StrEquals(windowName, "MenuCategories"))
+	{
+		returnPtr = std::make_unique<Map_Menu_MainCategories>(info.find("MenuCategories")->second);
+	}
+	else if (StrEquals(windowName, "MenuCharacters"))
+	{
+		returnPtr = std::make_unique<Map_Menu_InteractParty>(info.find("MenuCharacters")->second);
+	}
+	else if (StrEquals(windowName, "MenuBattleFightOrFlee"))
+	{
+		returnPtr = std::make_unique<Battle_Menu_Main>(info.find("MenuBattleFightOrFlee")->second);
+	}
+	else if (StrEquals(windowName, "MenuBattleActions"))
+	{
+		returnPtr = std::make_unique<Battle_Menu_Main>(info.find("MenuBattleActions")->second);
 	}
 
 	return returnPtr;
@@ -94,9 +110,9 @@ std::unique_ptr<GuiMenuList> Window_Factory::CreateMenuList(std::string_view con
 
 std::unique_ptr<Map_Display_QuestLog> Window_Factory::CreateQuestLog() const
 {
-	return std::make_unique<Map_Display_QuestLog>(info.find("Display_Base")->second);
+	return std::make_unique<Map_Display_QuestLog>(info.find("DisplayQuestTracker")->second);
 }
 std::unique_ptr<Map_Menu_GoldDisplay> Window_Factory::CreateGoldDisplay() const
 {
-	return std::make_unique<Map_Menu_GoldDisplay>(info.find("Display_Gold")->second);
+	return std::make_unique<Map_Menu_GoldDisplay>(info.find("DisplayGold")->second);
 }

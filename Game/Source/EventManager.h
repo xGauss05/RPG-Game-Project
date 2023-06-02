@@ -57,6 +57,8 @@ public:
 
 	void RedrawnCompleted();
 
+	void DrawEvent(iPoint position) const;
+
 	EventTrigger TriggerActionButtonEvent(iPoint position) const;
 	EventTrigger TriggerPlayerTouchEvent(iPoint position) const;
 
@@ -80,7 +82,7 @@ private:
 
 	std::vector<AmbienceSFX> periodicSFXs;
 
-	std::string_view eventsTileset = "";
+	std::string eventsTileset = "";
 };
 
 

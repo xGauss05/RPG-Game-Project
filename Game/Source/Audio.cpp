@@ -132,12 +132,18 @@ int Audio::LoadFx(std::string_view p)
 	if (auto result = m_PathToLoadedInfo.find(p);
 		result != m_PathToLoadedInfo.end())
 	{
-		LOG("SFX [ %s ] already loaded", p);
+		//LOG("SFX [ %s ] already loaded", p);
 		result->second.references++;
 		return result->second.id;
 	}
 
+	if (p.starts_with("../Audio/"))
+	{
+		p.remove_prefix(9);
+	}
+
 	auto path = std::string(p);
+
 
 	SDL_RWops* loadSuccess = app->assets->Load(path.c_str());
 	
@@ -164,7 +170,18 @@ int Audio::LoadFx(std::string_view p)
 	}
 
 	int availableID = m_AvailableIndexes.top();
-	m_AvailableIndexes.pop();
+	while (m_sfxMap.contains(availableID))
+	{
+		m_AvailableIndexes.pop();
+		if (m_AvailableIndexes.empty())
+		{
+			availableID = m_IndexToPath.size() + 1;
+		}
+		else
+		{
+			availableID = m_AvailableIndexes.top();
+		}
+	}
 
 	m_sfxMap[availableID] = sfxChunk;
 
@@ -210,6 +227,7 @@ bool Audio::RemoveFx(int id)
 			int removedElementID = loadedInfo.id;
 
 			Mix_FreeChunk(m_sfxMap[removedElementID]);
+			m_sfxMap.erase(removedElementID);
 
 			LOG("SFX Chunk [ %s ] removed.", result->second);
 

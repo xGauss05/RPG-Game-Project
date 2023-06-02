@@ -1,42 +1,8 @@
-<fallback>
-	<Bat_B name="Bat" level="1"/>
-	<Slime_G name="Slime" level="2"/>
-	<Bat_R name="Bat" level="1"/>
-</fallback>
 <random1>
-	<Bat_B name="Bat" level="1"/>
+  <Bat_B name="Bat12" level="1"/>
+  <Bat_B name="Batsafs" level="1"/>
+  <Bat_B name="Bat42" level="1"/>
 </random1>
-<random2>
-	<Bat_B name="Bat" level="1"/>
-	<Slime_G name="Slime" level="2"/>
-</random2>
-<random3>
-	<Slime_G name="Slime" level="2"/>
-	<Bat_R name="Bat" level="1"/>
-</random3>
-<random4>
-	<Slime_G name="Slime" level="2"/>
-</random4>
-<random5>
-  <Slime_R name="Slime" level="2"/>
-  <Slime_G name="Slime" level="2"/>
-  <Slime_B name="Slime" level="2"/>
-</random5>
-<random6>
-  <Bat_R name="Bat" level="1"/>
-  <Bat_G name="Bat" level="1"/>
-  <Bat_B name="Bat" level="1"/>
-</random6>
-<random7>
-  <Skeleton_R name="Skeleton" level="3"/>
-  <Skeleton_G name="Skeleton" level="3"/>
-  <Skeleton_B name="Skeleton" level="3"/>
-</random7>
-<random8>
-  <Slime_R name="Slime" level="2"/>
-  <Bat_G name="Bat" level="1"/>
-  <Skeleton_R name="Skeleton" level="3"/>
-</random8>
 <boss>
   <Balphogor name="Balphogor" level="3"/>
 </boss>
