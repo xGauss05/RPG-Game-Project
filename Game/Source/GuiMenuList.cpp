@@ -199,7 +199,7 @@ bool GuiMenuList::Draw() const
 			}
 			else
 			{
-				drawPosition.x += (m_itemSize.y * (i - currentScroll));
+				drawPosition.y += (m_itemSize.y * (i - currentScroll));
 			}
 
 			items[i]->Draw(drawPosition, iPoint(m_itemSize.x, m_itemSize.y), innerMargin, outterMargin, currentAlpha, iconSize, (currentItemSelected == i));

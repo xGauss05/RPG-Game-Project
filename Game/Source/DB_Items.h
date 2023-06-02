@@ -33,6 +33,7 @@ struct Item
 		explicit GeneralProperties(pugi::xml_node const& node);
 
 		std::string name = "";
+		std::string article = "a";
 		std::string iconIndex = "";
 		std::string description = "";
 		int iTypeID = 1;
@@ -72,6 +73,7 @@ struct Item
 		int dataID = 0;
 		float param1 = 0;
 		float param2 = 0;
+		std::vector<std::string> text;
 	};
 
 	Item() = default;

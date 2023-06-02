@@ -84,6 +84,10 @@ std::unique_ptr<GuiMenuList> Window_Factory::CreateMenuList(std::string_view con
 	{
 		returnPtr = std::make_unique<Map_Menu_Inventory>(info.find("MenuInventory")->second);
 	}
+	else if (StrEquals(windowName, "BattleInventory"))
+	{
+		returnPtr = std::make_unique<Battle_Menu_Inventory>(info.find("MenuInventory")->second);
+	}
 	else if (StrEquals(windowName, "MenuCategories"))
 	{
 		returnPtr = std::make_unique<Map_Menu_MainCategories>(info.find("MenuCategories")->second);

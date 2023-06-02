@@ -34,6 +34,8 @@ struct Battler
 
 	iPoint position{};
 	iPoint size{};
+	SDL_Rect currentAnimation;
+	std::chrono::time_point<std::chrono::steady_clock> animTimer;
 
 	int index;
 
@@ -60,16 +62,19 @@ struct Battler
 	int GetXPToNextLevel() const;
 
 	std::string GetStatDisplay(BaseStats stat, bool choosingChar = false) const;
-
-	bool RestoreHP(float amount1, float amount2);
+	std::string GetTextToDisplay() const;
 	
 	void AddStat(int value);
 
 private:
+	int RestoreHP(float amount1, float amount2);
+
 	int currentXP = 0;
 	std::vector<int> stats;
 	std::vector<int> equipment;
 	std::vector<int> skills;
+
+	std::string itemTextToDisplay;
 };
 
 class EnemyTroops

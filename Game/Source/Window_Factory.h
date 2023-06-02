@@ -7,6 +7,7 @@
 #include "GuiMenuList.h"
 #include "Map_Menu_MainCategories.h"
 #include "Map_Menu_Inventory.h"
+#include "Battle_Menu_Inventory.h"
 #include "Map_Menu_InteractParty.h"
 #include "Battle_Menu_Main.h"
 #include "Map_Display_QuestLog.h"

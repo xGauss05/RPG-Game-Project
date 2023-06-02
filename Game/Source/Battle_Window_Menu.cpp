@@ -16,13 +16,18 @@ Battle_Window_Menu::Battle_Window_Menu(Window_Factory const& windowFac)
 	menuLogic.AddVertex(FIGHT);
 	panels.emplace_back(windowFac.CreateMenuList("MenuBattleActions"));
 	panels.back()->SetActive(false);
+	mainMenuTexture = dynamic_cast<Battle_Menu_Main*>(panels.back().get())->GetTextureID();
+
+	menuLogic.AddVertex(INVENTORY);
+	panels.emplace_back(windowFac.CreateMenuList("BattleInventory"));
+	panels.back()->SetActive(false);
 
 	menuLogic.AddVertex(FLEE);
 	menuLogic.AddVertex(STATS);
 	menuLogic.AddVertex(ATTACK);
 	menuLogic.AddVertex(SPECIAL);
-	menuLogic.AddVertex(INVENTORY);
 	menuLogic.AddVertex(DEFEND);
+	menuLogic.AddVertex(SELECT_TARGET);
 
 	cursor.textureID = app->tex->Load("Assets/UI/Cursor.png");
 	cursor.srcRect =
@@ -41,8 +46,11 @@ void Battle_Window_Menu::InitializeLogicGraph()
 	menuLogic.AddEdge(MAIN, FLEE);
 	menuLogic.AddEdge(MAIN, STATS);
 	menuLogic.AddEdge(FIGHT, ATTACK);
+	menuLogic.AddEdge(ATTACK, SELECT_TARGET);
 	menuLogic.AddEdge(FIGHT, SPECIAL);
+	menuLogic.AddEdge(SPECIAL, SELECT_TARGET);
 	menuLogic.AddEdge(FIGHT, INVENTORY);
+	menuLogic.AddEdge(INVENTORY, SELECT_TARGET);
 	menuLogic.AddEdge(FIGHT, DEFEND);
 }
 
@@ -64,6 +72,14 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 {
 	if (bInputCompleted)
 	{
+		while (!panelHistory.empty() && menuLogic.At(currentActivePanel).value != MenuWindows::FIGHT)
+		{
+			currentActivePanel = panelHistory.top();
+			panelHistory.pop();
+		}
+		panels[currentActivePanel]->SetActive(true);
+		panels[currentActivePanel]->Start();
+
 		return { true, actionQueue.back() };
 	}
 
@@ -87,6 +103,17 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 					{
 						bInputCompleted = true;
 					}
+					else
+					{
+						while (menuLogic.At(currentActivePanel).value != MenuWindows::FIGHT)
+						{
+							currentActivePanel = panelHistory.top();
+							panelHistory.pop();
+						}
+
+						panels[currentActivePanel]->SetActive(true);
+						panels[currentActivePanel]->Start();
+					}
 
 					return { true, actionQueue.back() };
 				}
@@ -96,6 +123,59 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 		{
 			cursor.enabled = false;
 		}
+
+		SDL_Rect camera = app->render->GetCamera();
+		iPoint drawPosition = { camera.x * -1, camera.y * -1 };
+
+		drawPosition =
+		{
+			drawPosition.x + (camera.w / 2) - (app->tex->GetSize(mainMenuTexture).y * 3) + 8,
+			drawPosition.y + camera.h - app->tex->GetSize(mainMenuTexture).y
+		};
+
+		app->render->DrawTexture(
+			DrawParameters(
+				cursor.battlerTexture,
+				drawPosition
+			)
+		);
+
+		drawPosition.x += app->tex->GetSize(mainMenuTexture).y;
+
+		SDL_Rect dstRect =
+		{
+			drawPosition.x + camera.x,
+			drawPosition.y + camera.y,
+			app->tex->GetSize(mainMenuTexture).x - 16,
+			app->tex->GetSize(mainMenuTexture).y
+		};
+
+		drawPosition.x += (app->tex->GetSize(mainMenuTexture).y * 4);
+
+		app->render->DrawTexture(
+			DrawParameters(
+				mainMenuTexture,
+				drawPosition
+			).Section(&cursor.actionSection)
+		);
+
+		cursor.actionMessage.SetPanelArea(dstRect);
+
+		cursor.actionMessage.Draw();
+
+		iPoint textPosition =
+		{
+			(camera.w / 2),
+			camera.h - (app->tex->GetSize(mainMenuTexture).y / 2)
+		};
+
+		TextParameters aux =
+		{
+			0,
+			{ 0, textPosition}
+		};
+
+		app->fonts->DrawText(cursor.actionName, TextParameters(0, { 0, textPosition }).Align(AlignTo::ALIGN_CENTER));
 
 		return { false, currentAction };
 	}
@@ -132,12 +212,6 @@ void Battle_Window_Menu::Draw() const
 		return;
 	}
 
-	for (auto const& elem : panels)
-	{
-		if (elem->IsActive())
-			elem->Draw();
-	}
-
 	if (cursor.enabled)
 	{
 		for (auto const& elem : *currentTargetParty)
@@ -148,6 +222,35 @@ void Battle_Window_Menu::Draw() const
 				drawPosition.x += (elem.size.x / 2);
 				app->render->DrawTexture(DrawParameters(cursor.textureID, drawPosition).Section(&cursor.srcRect));
 			}
+		}
+
+
+	}
+	else
+	{
+		for (auto const& elem : panels)
+		{
+			if (elem->IsActive())
+				elem->Draw();
+		}
+
+		if (currentSource != -1)
+		{
+			SDL_Rect camera = app->render->GetCamera();
+			iPoint drawPosition = { camera.x * -1, camera.y * -1 };
+
+			drawPosition =
+			{
+				drawPosition.x + (camera.w / 2) - (app->tex->GetSize(mainMenuTexture).y * 3) + 8,
+				drawPosition.y + camera.h - app->tex->GetSize(mainMenuTexture).y
+			};
+
+			app->render->DrawTexture(
+				DrawParameters(
+					playerParty->party[currentSource].portraitTextureID,
+					drawPosition
+				)
+			);
 		}
 	}
 }
@@ -162,6 +265,7 @@ void Battle_Window_Menu::SetPlayerParty(GameParty* party)
 		{
 			using enum Battle_Window_Menu::MenuWindows;
 			case FIGHT:
+			case INVENTORY:
 			{
 				dynamic_cast<Map_Menu_ComponentParty*>(panels[i].get())->SetGameParty(party);
 				break;
@@ -179,17 +283,14 @@ void Battle_Window_Menu::SetEnemyTroop(EnemyTroops* enemytroop)
 	enemies = enemytroop;
 }
 
-Battle_Window_Menu::MenuWindows Battle_Window_Menu::GetCurrentState() const
-{
-	using enum Battle_Window_Menu::MenuWindows;
-	if (cursor.enabled)		return BATTLE_CURSOR;
-	else if (bInStatsMenu)	return STATS;
-	else					return static_cast<Battle_Window_Menu::MenuWindows>(currentActivePanel);
-}
-
 bool Battle_Window_Menu::GetCompletedStatus() const
 {
 	return bInputCompleted;
+}
+
+bool Battle_Window_Menu::GetInStatsMenu() const
+{
+	return bInStatsMenu;
 }
 
 void Battle_Window_Menu::StartNewTurn()
@@ -209,8 +310,16 @@ void Battle_Window_Menu::StartNewTurn()
 
 	panels[currentActivePanel]->SetActive(true);
 	panels[currentActivePanel]->Start();
+	
+	for (auto const& elem : playerParty->party)
+	{
+		if (!elem.IsDead())
+		{
+			currentSource = elem.index;
+			break;
+		}
+	}
 
-	currentSource = 0;
 	currentTargetParty = nullptr;
 
 	actionQueue.clear();
@@ -225,7 +334,9 @@ void Battle_Window_Menu::GoToNextPanel()
 		return;
 
 	int buttonClicked = panels[currentActivePanel]->GetLastClick();
-	int nextPanelID = menuLogic.At(currentActivePanel).edges[buttonClicked].destination;
+	int nextPanelID = buttonClicked < menuLogic.At(currentActivePanel).edges.size() ? 
+		menuLogic.At(currentActivePanel).edges[buttonClicked].destination :
+		menuLogic.At(currentActivePanel).edges[0].destination;
 
 	if (MenuWindows nextPanel = menuLogic.At(nextPanelID).value;
 		nextPanel == MenuWindows::STATS)
@@ -241,8 +352,59 @@ void Battle_Window_Menu::GoToNextPanel()
 		currentAction.friendlyTarget = false;
 		currentAction.source = currentSource;
 		currentAction.speed = actionSpeed;
+		
+		SDL_Point textureSize = app->tex->GetSizeSDLPoint(mainMenuTexture);
+
+		cursor.battlerTexture = playerParty->party[currentSource].portraitTextureID;
+		cursor.actionSection =
+		{
+			textureSize.y * panels[currentActivePanel]->GetLastClick(),
+			0,
+			textureSize.y,
+			textureSize.y
+		};
+		cursor.actionName = nextPanel == MenuWindows::ATTACK ? "Attack" : "Special";
 
 		currentTargetParty = &enemies->troop;
+		cursor.enabled = true;
+	}
+	else if (menuLogic.At(currentActivePanel).value == MenuWindows::INVENTORY)
+	{
+		panels[currentActivePanel]->SetActive(false);
+		currentAction.action = ActionNames::ITEM;
+		currentAction.friendlySource = true;
+		currentAction.source = currentSource;
+		currentAction.actionID = dynamic_cast<Battle_Menu_Inventory*>(panels[currentActivePanel].get())->GetUsedItemID();
+		const Item& item = playerParty->dbItems->GetItem(currentAction.actionID);
+		currentAction.actionScope = item.general.scope;
+		currentAction.speed = item.invocation.speed + playerParty->party[currentSource].GetStat(BaseStats::SPEED);
+
+		switch (currentAction.actionScope)
+		{
+			using enum Item::GeneralProperties::Scope;
+			case ONE_ENEMY:
+			case ALL_ENEMIES:
+			case ONE_RANDOM_ENEMY:
+			case TWO_RANDOM_ENEMIES:
+			case THREE_RANDOM_ENEMIES:
+				currentTargetParty = &enemies->troop;
+				currentAction.friendlyTarget = false;
+				break;
+			case USER:
+			case ONE_ALLY:
+			case ALL_ALLIES:
+			case ONE_DEAD_ALLY:
+			case ALL_DEAD_ALLIES:
+				currentTargetParty = &playerParty->party;
+				currentAction.friendlyTarget = true;
+				break;
+			case NONE:
+				LOG("SOMETHING WENT WRONG AND ACTION HAS NO SCOPE");
+				currentTargetParty = &enemies->troop;
+				currentAction.friendlyTarget = false;
+				break;
+		}
+
 		cursor.enabled = true;
 	}
 	else if (nextPanel == MenuWindows::FLEE)
@@ -312,6 +474,7 @@ void Battle_Window_Menu::GoToPreviousPanel()
 	panels[currentActivePanel]->SetActive(false);
 	currentActivePanel = panelHistory.top();
 	panels[currentActivePanel]->SetActive(true);
+	panels[currentActivePanel]->Start();
 	panelHistory.pop();
 }
 

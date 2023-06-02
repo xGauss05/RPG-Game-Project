@@ -36,12 +36,29 @@ bool Battler::UseItem(Item const& item)
 {
 	switch (item.effect.functionToCall)
 	{
-	case 11:
-		return RestoreHP(item.effect.param1, item.effect.param2);
-		break;
-	default:
-		LOG("Function effect %i not added", item.effect.functionToCall);
-		return false;
+		case 11:
+		{
+			int restoredHP = RestoreHP(item.effect.param1, item.effect.param2);
+
+			if(item.effect.text.size() >= 2)
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					AddSaveData(item.effect.text[0], name, restoredHP) :
+					AddSaveData(item.effect.text[1], name);
+			}
+			else
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					std::format("{} recovers {} HP!", name, restoredHP) :
+					std::format("{}'s HP is fully recovered!", name);
+			}
+
+			return to_bool(restoredHP);
+			break;
+		}
+		default:
+			LOG("Function effect %i not added", item.effect.functionToCall);
+			return false;
 	}
 }
 
@@ -55,12 +72,13 @@ int Battler::GetXPToNextLevel() const
 	return static_cast<int>(std::round(100 + (0.75f * std::pow(level, 3))));
 }
 
-bool Battler::RestoreHP(float amount1, float amount2)
+int Battler::RestoreHP(float amount1, float amount2)
 {
 	int maxHP = GetStat(BaseStats::MAX_HP);
+	int HPBeforeHealing = currentHP;
 
 	if (currentHP <= 0 || currentHP >= maxHP)
-		return false;
+		return 0;
 
 	auto GetAmountToAdd = [maxHP](float n)
 		{
@@ -77,7 +95,9 @@ bool Battler::RestoreHP(float amount1, float amount2)
 		currentHP = maxHP;
 	}
 
-	return true;
+	int HPHealed = currentHP - HPBeforeHealing;
+
+	return HPHealed;
 }
 
 void Battler::AddStat(int value)
@@ -110,6 +130,11 @@ std::string Battler::GetStatDisplay(BaseStats stat, bool choosingChar) const
 		case LEVEL:				return std::format("Lvl. {}", level);
 		case XP:				return std::format("EXP: {}", currentXP);
 	}
+}
+
+std::string Battler::GetTextToDisplay() const
+{
+	return itemTextToDisplay;
 }
 
 bool Battler::IsDead() const

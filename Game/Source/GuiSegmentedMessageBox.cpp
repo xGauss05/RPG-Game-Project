@@ -21,9 +21,9 @@ void GuiSegmentedMessageBox::Draw() const
 			true,
 			TextParameters(
 				0,
-				DrawParameters(0, iPoint(dstRect.x, dstRect.y))
+				DrawParameters(0, iPoint(dstRect.x + (dstRect.w/2), dstRect.y + (dstRect.h / 2)))
 					.Section(&dstRect)
-			)
+			).Align(AlignTo::ALIGN_CENTER)
 		);
 	}
 

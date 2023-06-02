@@ -20,6 +20,21 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 		enemies->CreateFight(fightName);
 
 	CheckBattleLossThenChangeState();
+
+	SDL_Rect camera = app->render->GetCamera();
+	int startingX = camera.w / 8;
+	int startingY = camera.h / party->party.size();
+
+	for (int i = 0; auto &elem : party->party)
+	{
+		elem.size = app->tex->GetSize(elem.battlerTextureID);
+		elem.size.x /= 4;
+		elem.position = {startingX - camera.x, startingY + (elem.size.y * i) - camera.y};
+		elem.currentAnimation = { 0, 0, elem.size.x, elem.size.y };
+		elem.animTimer = std::chrono::steady_clock::now();
+		elem.index = i;
+		i++;
+	}
 }
 
 bool Scene_Battle::isReady()
@@ -36,8 +51,8 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	menu->SetEnemyTroop(enemies.get());
 	menu->Start();
 
-	messages.SetPanelArea(SDL_Rect(20, 532, 1000, 150));
-
+	messages.SetPanelArea(SDL_Rect(384, 592, 512, 128));
+	messages.SetActive(false);
 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
@@ -69,29 +84,27 @@ void Scene_Battle::Draw()
 	SDL_Rect camera = app->render->GetCamera();
 
 	app->render->DrawTexture(DrawParameters(backgroundTexture, iPoint(-camera.x, -camera.y)));
-	
-	for (auto const& elem : windows)
+
+	if (messages.IsActive())
 	{
-		elem->Draw();
+		messages.Draw();
+	}
+	else if (state == BattleState::PLAYER_INPUT)
+	{
+		menu->Draw();
+		if (menu->GetInStatsMenu())
+		{
+			return;
+		}
 	}
 
-	messages.Draw();
 
 	std::string text = "";
+	auto now = std::chrono::steady_clock::now();
 
-	for (int i = 0; auto const& elem : party->party)
+	for (auto & elem : party->party)
 	{
-		iPoint allyPosition(300 - camera.x, (120 * i) - camera.y + 55);
-		iPoint hpBarPosition(270 - camera.x, (120 * i) - camera.y + 80);
-
-		DrawHPBar(
-			elem.battlerTextureID,
-			elem.currentHP,
-			elem.GetStat(BaseStats::MAX_HP),
-			hpBarPosition
-		);
-
-		DrawParameters drawAlly(elem.battlerTextureID, allyPosition);
+		DrawParameters drawAlly(elem.battlerTextureID, elem.position);
 
 		if (elem.IsDead())
 		{
@@ -103,11 +116,22 @@ void Scene_Battle::Draw()
 			drawAlly.Center(center);
 		}
 
-		drawAlly.Scale(fPoint(3, 3));
+		drawAlly
+			.Flip(SDL_FLIP_HORIZONTAL)
+			.Section(&elem.currentAnimation);
 
 		app->render->DrawTexture(drawAlly);
 
-		i++;
+		auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - elem.animTimer);
+		if (timeElapsed.count() >= 150)
+		{
+			elem.currentAnimation.x += elem.size.x;
+			elem.animTimer = now;
+			if (elem.currentAnimation.x >= elem.size.x * 4)
+			{
+				elem.currentAnimation.x = 0;
+			}
+		}
 	}
 
 	for (auto& elem : enemies->troop)
@@ -146,7 +170,6 @@ void Scene_Battle::Draw()
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
 	}
 
-	menu->Draw();
 
 }
 
@@ -271,6 +294,9 @@ void Scene_Battle::UpdatePlayerTurn()
 			}
 
 			state = BattleState::ENEMY_INPUT;
+
+			messages.RemoveCurrentMessage();
+
 			return;
 		}
 		currentPlayer++;
@@ -369,6 +395,7 @@ void Scene_Battle::ChooseEnemyActions()
 		i++;
 	}
 
+	messages.SetActive(true);
 	state = BattleState::RESOLUTION;
 }
 
@@ -401,7 +428,7 @@ void Scene_Battle::ResolveActionQueue()
 
 			if (!resolveText.empty())
 			{
-				messages.ReplaceCurrentMessage(resolveText);
+				messages.AddMessageToQueue(resolveText);
 				messages.LockInput();
 				return;
 			}
@@ -410,6 +437,7 @@ void Scene_Battle::ResolveActionQueue()
 
 		currentPlayer = 0;
 		menu->StartNewTurn();
+		messages.SetActive(false);
 		state = BattleState::PLAYER_INPUT;
 	}
 }
@@ -418,7 +446,7 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 {
 	std::string text = "";
 
-	if (currentAction.source == -1)
+	if (currentAction.action == ActionNames::RUN || currentAction.source == -1)
 	{
 		text = "You run from battle. Shame.";
 		PlayActionSFX("Run");
@@ -478,8 +506,27 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 
 			break;
 		}
-		case USE_ITEM:
+		case ITEM:
 		{
+			Item const& itemUsed = party->dbItems->GetItem(currentAction.actionID);
+			switch (currentAction.actionScope)
+			{
+				using enum Item::GeneralProperties::Scope;
+			case ONE_ENEMY:
+			case ONE_ALLY:
+			{
+				if (receiver[currentAction.target].UseItem(itemUsed))
+				{
+					party->RemoveItemFromInventory(currentAction.actionID);
+				}
+				messages.AddMessageToQueue(std::format("{} uses {} {}!", source.name, itemUsed.general.article, itemUsed.general.name));
+
+				text = receiver[currentAction.target].GetTextToDisplay();
+				break;
+			}
+			default:
+				break;
+			}
 			break;
 		}
 		case NONE:

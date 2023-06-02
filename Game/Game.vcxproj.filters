@@ -130,6 +130,7 @@
     <ClCompile Include="Source\GuiMenuListItem.cpp" />
     <ClCompile Include="Source\Battle_Window_Menu.cpp" />
     <ClCompile Include="Source\Battle_Menu_Main.cpp" />
+    <ClCompile Include="Source\Battle_Menu_Inventory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Source\GuiMenuListItem.h" />
     <ClInclude Include="Source\Battle_Window_Menu.h" />
     <ClInclude Include="Source\Battle_Menu_Main.h" />
+    <ClInclude Include="Source\Battle_Menu_Inventory.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />

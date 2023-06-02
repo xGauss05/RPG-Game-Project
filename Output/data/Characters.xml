@@ -1,6 +1,6 @@
 <character>
 	<general name="Antonio" level="1"/>
-	<texture path="Assets/Textures/Battlers/Antonio_Right.PNG"/>
+	<texture path="Assets/Textures/Battlers/Battler_Antonio.PNG"/>
 	<portraittexture path="Assets/Textures/Battlers/Antonio_Portrait.PNG"/>
 	<stats>
 		<maxhp value="100"/>
@@ -14,7 +14,7 @@
 </character>
 <character>
 	<general name="Sayori" level="1"/>
-	<texture path="Assets/Textures/Battlers/Sayori_Right.png"/>
+	<texture path="Assets/Textures/Battlers/Battler_Sayori.png"/>
 	<portraittexture path="Assets/Textures/Battlers/Sayori_Portrait.PNG"/>
 	<stats>
 		<maxhp value="100"/>
@@ -28,7 +28,7 @@
 </character>
 <character>
 	<general name="Er Yona" level="1"/>
-	<texture path="Assets/Textures/Battlers/Yona_Right.PNG"/>
+	<texture path="Assets/Textures/Battlers/Battler_Yona.PNG"/>
 	<portraittexture path="Assets/Textures/Battlers/Yona_Portrait.PNG"/>
 	<stats>
 		<maxhp value="100"/>
@@ -42,7 +42,7 @@
 </character>
 <character>
 	<general name="Rocio" level="1"/>
-	<texture path="Assets/Textures/Battlers/Rocio_Right.png"/>
+	<texture path="Assets/Textures/Battlers/Battler_Rocio.png"/>
 	<portraittexture path="Assets/Textures/Battlers/Rocio_Portrait.PNG"/>
 	<stats>
 		<maxhp value="100"/>

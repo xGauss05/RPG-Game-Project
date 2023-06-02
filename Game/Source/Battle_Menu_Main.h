@@ -11,6 +11,8 @@ public:
 	explicit Battle_Menu_Main(pugi::xml_node const& node);
 	~Battle_Menu_Main() override;
 
+	int GetTextureID() const;
+
 private:
 	void HandleLeftButtonClick(int result) override;
 	void HandleRightButtonClick() override;

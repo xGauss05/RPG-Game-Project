@@ -1,6 +1,8 @@
 #ifndef __BATTLE_WINDOW_MENU_H__
 #define __BATTLE_WINDOW_MENU_H__
 
+
+
 #include "Window_Factory.h"
 
 #include "AdjacencyGraph.h"
@@ -14,12 +16,14 @@ enum class ActionNames
 	SPECIAL_ATTACK = 1,
 	DEFEND = 2,
 	RUN = 3,
-	USE_ITEM = 4
+	ITEM = 4
 };
 
 struct BattleAction
 {
 	void ResetAction();
+
+	using ItemScope = Item::GeneralProperties::Scope;
 
 	ActionNames action = ActionNames::NONE;
 	int source = -1;
@@ -27,6 +31,8 @@ struct BattleAction
 	bool friendlySource = false;
 	bool friendlyTarget = false;
 	int speed = -1;
+	int actionID = -1;
+	ItemScope actionScope = ItemScope::NONE;
 };
 
 class Battle_Window_Menu
@@ -42,13 +48,12 @@ public:
 		SPECIAL,
 		INVENTORY,
 		DEFEND,
-		BATTLE_CURSOR
+		BATTLE_CURSOR,
+		SELECT_TARGET
 	};
 
 	Battle_Window_Menu() = default;
 	explicit Battle_Window_Menu(Window_Factory const &windowFac);
-
-	void InitializeLogicGraph();
 
 	void Start();
 
@@ -58,15 +63,16 @@ public:
 	void SetPlayerParty(GameParty* party);
 	void SetEnemyTroop(EnemyTroops* enemytroop);
 
-	MenuWindows GetCurrentState() const;
-
 	bool GetCompletedStatus() const;
+	bool GetInStatsMenu() const;
 
 	void StartNewTurn();
 
 	std::deque<BattleAction> &&GetActionQueue();
 
 private:
+	void InitializeLogicGraph();
+
 	void DrawStatsMenu() const;
 	void DrawPlayerStats(Battler const& character, int i) const;
 	void DrawSingleStat(Battler const& character, BaseStats stat, int x, int y) const;
@@ -81,9 +87,17 @@ private:
 		int textureID = -1;
 		SDL_Rect srcRect = { 0, 0, 0, 0 };
 		bool enabled = false;
+
+		int battlerTexture = -1;
+		SDL_Rect actionSection = { 0, 0, 0, 0 };
+		GuiSegmentedPanel actionMessage;
+		int actionIconTexture = -1;
+		std::string actionName = "";
 	};
 
 	BattleAction currentAction;
+
+	int mainMenuTexture = -1;
 
 	std::vector<std::unique_ptr<GuiMenuList>> panels;
 	std::unique_ptr<Window_Base> statsWindow;
@@ -104,7 +118,6 @@ private:
 	std::deque<BattleAction> actionQueue;
 
 	bool bInputCompleted = false;
-
 	bool bInStatsMenu = false;
 };
 

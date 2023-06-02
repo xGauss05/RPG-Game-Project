@@ -14,11 +14,14 @@ public:
 	GuiSegmentedPanel() = default;
 	virtual ~GuiSegmentedPanel();
 
-	void SetPanelArea(SDL_Rect const& destination);
+	virtual void SetPanelArea(SDL_Rect const& destination);
 	virtual void Draw() const;
 	void DrawArrow() const;
 	void DrawTopArrow() const;
 	void UpdateAnimations();
+
+	void SetActive(bool b);
+	bool IsActive() const;
 
 	const int segmentSize = 8;
 	const int numberOfSegments = 3;
@@ -54,6 +57,8 @@ protected:
 	int currentArrowFrame = 0;
 
 	SDL_Color windowColor = {255, 255, 255, 78 };
+
+	bool isActive = false;
 };
 
 #endif // __GUIPANELSEGMENTED_H__

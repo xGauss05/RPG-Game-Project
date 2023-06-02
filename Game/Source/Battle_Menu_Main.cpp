@@ -14,6 +14,11 @@ Battle_Menu_Main::~Battle_Menu_Main()
 	app->tex->Unload(textureID);
 }
 
+int Battle_Menu_Main::GetTextureID() const
+{
+	return textureID;
+}
+
 void Battle_Menu_Main::HandleLeftButtonClick(int result)
 {
 	SetClickHandled(true);

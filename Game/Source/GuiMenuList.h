@@ -55,7 +55,7 @@ protected:
 
 	void ClearMenuItems();
 	int GetPreviousPanelLastClick() const;
-	void SetDefaultBooleanValues();
+	virtual void SetDefaultBooleanValues();
 
 	void CreateMenuCharacter(Battler const& battler);
 	void CreateMenuItem(std::string_view left, std::string_view center, std::string_view right, int textureID = -1);

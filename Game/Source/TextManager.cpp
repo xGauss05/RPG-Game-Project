@@ -353,7 +353,7 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 	iPoint maxPositon =
 	{
-		params.section->w - params.section->x,
+		params.section->w + params.section->x,
 		params.section->y + params.section->h
 	};
 
@@ -437,7 +437,7 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 				params.position.x = textRuns.front().letter.front().position.x;
 			}
 
-			textRuns.push_back(newRun);
+			textRuns.emplace_back(newRun);
 			
 
 			params.position.y += fontInUse.lineHeight;
@@ -498,7 +498,7 @@ iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, Ali
 			if (auto it = font.charMap.find(elem);
 				it != font.charMap.end())
 			{
-				totalSize.x += it->second.rect.w + it->second.xAdvance + font.spacing.x;
+				totalSize.x += (it->second.rect.w * font.scale.x) + it->second.xAdvance + font.spacing.x;
 			}
 		}
 

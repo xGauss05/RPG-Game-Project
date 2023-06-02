@@ -12,6 +12,7 @@ GuiSegmentedPanel::~GuiSegmentedPanel()
 
 void GuiSegmentedPanel::SetPanelArea(SDL_Rect const& destination)
 {
+	isActive = true;
 	textureID = app->tex->Load("Assets/UI/WindowSkins.png");
 	dstRect = destination;
 	arrowAnimTimer = std::chrono::steady_clock::now();
@@ -146,5 +147,15 @@ void GuiSegmentedPanel::UpdateAnimations()
 		arrowAnimTimer = std::chrono::steady_clock::now();
 		currentArrowFrame++;
 	}
+}
+
+void GuiSegmentedPanel::SetActive(bool b)
+{
+	isActive = b;
+}
+
+bool GuiSegmentedPanel::IsActive() const
+{
+	return isActive;
 }
 
