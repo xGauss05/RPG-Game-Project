@@ -22,15 +22,20 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 	CheckBattleLossThenChangeState();
 
 	SDL_Rect camera = app->render->GetCamera();
-	int startingX = camera.w / 8;
-	int startingY = camera.h / party->party.size();
+	int startingX = 128;
+	int startingY = 72;
 
 	for (int i = 0; auto &elem : party->party)
 	{
 		elem.size = app->tex->GetSize(elem.battlerTextureID);
 		elem.size.x /= 4;
-		elem.position = {startingX - camera.x, startingY + (elem.size.y * i) - camera.y};
 		elem.currentAnimation = { 0, 0, elem.size.x, elem.size.y };
+		elem.size =
+		{
+			static_cast<int>(elem.size.x * 1.25f),
+			static_cast<int>(elem.size.y * 1.25f)
+		};
+		elem.position = {startingX - camera.x, startingY + (elem.size.y * i) - camera.y};
 		elem.animTimer = std::chrono::steady_clock::now();
 		elem.index = i;
 		i++;
@@ -118,16 +123,17 @@ void Scene_Battle::Draw()
 
 		drawAlly
 			.Flip(SDL_FLIP_HORIZONTAL)
-			.Section(&elem.currentAnimation);
+			.Section(&elem.currentAnimation)
+			.Scale({ 1.25f, 1.25f });
 
 		app->render->DrawTexture(drawAlly);
 
 		auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - elem.animTimer);
 		if (timeElapsed.count() >= 150)
 		{
-			elem.currentAnimation.x += elem.size.x;
+			elem.currentAnimation.x += elem.currentAnimation.w;
 			elem.animTimer = now;
-			if (elem.currentAnimation.x >= elem.size.x * 4)
+			if (elem.currentAnimation.x >= elem.currentAnimation.w * 4)
 			{
 				elem.currentAnimation.x = 0;
 			}
