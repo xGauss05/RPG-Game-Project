@@ -93,6 +93,8 @@ private:
 		GuiSegmentedPanel actionMessage;
 		int actionIconTexture = -1;
 		std::string actionName = "";
+
+		std::chrono::time_point<std::chrono::steady_clock> animTimer;
 	};
 
 	BattleAction currentAction;

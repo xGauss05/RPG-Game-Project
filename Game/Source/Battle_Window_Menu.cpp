@@ -30,11 +30,12 @@ Battle_Window_Menu::Battle_Window_Menu(Window_Factory const& windowFac)
 	menuLogic.AddVertex(SELECT_TARGET);
 
 	cursor.textureID = app->tex->Load("Assets/UI/Cursor.png");
+	cursor.animTimer = std::chrono::steady_clock::now();
 	cursor.srcRect =
 	{
 		0,
 		0,
-		app->tex->GetSize(cursor.textureID).x,
+		app->tex->GetSize(cursor.textureID).x / 4,
 		app->tex->GetSize(cursor.textureID).y
 	};
 }
@@ -177,6 +178,18 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 
 		app->fonts->DrawText(cursor.actionName, TextParameters(0, { 0, textPosition }).Align(AlignTo::ALIGN_CENTER));
 
+		auto now = std::chrono::steady_clock::now();
+		auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - cursor.animTimer);
+		if (timeElapsed.count() >= 150)
+		{
+			cursor.srcRect.x += cursor.srcRect.w;
+			cursor.animTimer = now;
+			if (cursor.srcRect.x >= cursor.srcRect.w * 4)
+			{
+				cursor.srcRect.x = 0;
+			}
+		}
+
 		return { false, currentAction };
 	}
 
@@ -219,7 +232,8 @@ void Battle_Window_Menu::Draw() const
 			if (elem.IsMouseHovering() && !elem.IsDead())
 			{
 				iPoint drawPosition = elem.position;
-				drawPosition.x += (elem.size.x / 2);
+				drawPosition.x += 20;
+				drawPosition.y += (elem.currentAnimation.h / 2);
 				app->render->DrawTexture(DrawParameters(cursor.textureID, drawPosition).Section(&cursor.srcRect));
 			}
 		}
@@ -378,7 +392,7 @@ void Battle_Window_Menu::GoToNextPanel()
 		const Item& item = playerParty->dbItems->GetItem(currentAction.actionID);
 		currentAction.actionScope = item.general.scope;
 		currentAction.speed = item.invocation.speed + playerParty->party[currentSource].GetStat(BaseStats::SPEED);
-
+		
 		switch (currentAction.actionScope)
 		{
 			using enum Item::GeneralProperties::Scope;
@@ -404,6 +418,19 @@ void Battle_Window_Menu::GoToNextPanel()
 				currentAction.friendlyTarget = false;
 				break;
 		}
+
+		SDL_Point textureSize = app->tex->GetSizeSDLPoint(mainMenuTexture);
+
+		cursor.actionName = item.general.name;
+		cursor.battlerTexture = playerParty->party[currentSource].portraitTextureID;
+		cursor.actionSection =
+		{
+			textureSize.y * 2,
+			0,
+			textureSize.y,
+			textureSize.y
+		};
+		cursor.actionIconTexture = item.textureID;
 
 		cursor.enabled = true;
 	}

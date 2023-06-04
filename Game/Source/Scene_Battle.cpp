@@ -29,6 +29,7 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 	{
 		elem.size = app->tex->GetSize(elem.battlerTextureID);
 		elem.size.x /= 4;
+		elem.size.y /= 2;
 		elem.currentAnimation = { 0, 0, elem.size.x, elem.size.y };
 		elem.size =
 		{
@@ -94,15 +95,6 @@ void Scene_Battle::Draw()
 	{
 		messages.Draw();
 	}
-	else if (state == BattleState::PLAYER_INPUT)
-	{
-		menu->Draw();
-		if (menu->GetInStatsMenu())
-		{
-			return;
-		}
-	}
-
 
 	std::string text = "";
 	auto now = std::chrono::steady_clock::now();
@@ -110,16 +102,6 @@ void Scene_Battle::Draw()
 	for (auto & elem : party->party)
 	{
 		DrawParameters drawAlly(elem.battlerTextureID, elem.position);
-
-		if (elem.IsDead())
-		{
-			drawAlly.RotationAngle(90);
-
-			SDL_Point center = app->tex->GetSizeSDLPoint(elem.battlerTextureID);
-			center.x /= 2;
-
-			drawAlly.Center(center);
-		}
 
 		drawAlly
 			.Flip(SDL_FLIP_HORIZONTAL)
@@ -176,7 +158,14 @@ void Scene_Battle::Draw()
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
 	}
 
-
+	if (!messages.IsActive() && state == BattleState::PLAYER_INPUT)
+	{
+		menu->Draw();
+		if (menu->GetInStatsMenu())
+		{
+			return;
+		}
+	}
 }
 
 TransitionScene Scene_Battle::Update()
@@ -583,6 +572,7 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 	if (receiver.currentHP <= 0)
 	{
 		BattlerJustDied(receiver);
+		receiver.currentAnimation.y = 96;
 	}
 
 	return AddSaveData(damageMessage, source.name, receiver.name, damage);

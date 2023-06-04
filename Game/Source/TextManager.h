@@ -145,7 +145,7 @@ private:
 	void CreateTextRuns(TextParameters const& textParams, int fontId, std::string_view text);
 
 	iPoint GetAnchorPosition(iPoint position, AnchorTo anchor) const;
-	iPoint GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const& font) const;
+	iPoint GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const& font, iPoint maxPosition = { 0, 0 }) const;
 	int GetDistanceToNextDrawingPositon(int advance, int spacing, int offset, float scale = 1.0f) const;
 
 	std::string path;

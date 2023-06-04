@@ -342,20 +342,21 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 		return;
 	}
 
-
 	Font const& fontInUse = fonts[fontId];
 	TextRun newRun = {};
 	DrawParameters params = textParams.params;
-
-	// Get starting drawing position
-	params.position = GetAlignPosition(text, params.position, textParams.align, fontInUse);
-	params.position = GetAnchorPosition(params.position, textParams.anchor);
+	iPoint originalPosition = params.position;
 
 	iPoint maxPositon =
 	{
 		params.section->w + params.section->x,
 		params.section->y + params.section->h
 	};
+
+	// Get starting drawing position
+	params.position = GetAlignPosition(text, params.position, textParams.align, fontInUse, maxPositon);
+	params.position = GetAnchorPosition(params.position, textParams.anchor);
+
 
 	for (auto const& elem : text)
 	{
@@ -418,6 +419,7 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 				{
 					int firstXcoordinateBeforeFix = nextLineParameters.front().position.x;
 
+
 					for (auto& item : nextLineParameters)
 					{
 						item.position.x += newRun.letter.front().position.x - firstXcoordinateBeforeFix;
@@ -438,7 +440,6 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 			}
 
 			textRuns.emplace_back(newRun);
-			
 
 			params.position.y += fontInUse.lineHeight;
 			std::swap(newRun.letter, nextLineParameters);
@@ -457,9 +458,22 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 		// Set Y to original position
 		params.position.y -= charInfo.offset.y;
+
 	}
 
 	textRuns.push_back(newRun);
+
+	if (textParams.align == AlignTo::ALIGN_CENTER)
+	{
+		int yOffset = fontInUse.lineHeight / 2;
+		for (auto& run : textRuns)
+		{
+			for (auto& letter : run.letter)
+			{
+				letter.position.y -= (yOffset * (textRuns.size() - 1));
+			}
+		}
+	}
 }
 
 inline iPoint TextManager::GetAnchorPosition(iPoint position, AnchorTo anchor) const
@@ -475,7 +489,7 @@ inline iPoint TextManager::GetAnchorPosition(iPoint position, AnchorTo anchor) c
 	}
 }
 
-iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const &font) const
+iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, AlignTo align, Font const &font, iPoint maxPosition) const
 {
 	if (align == AlignTo::ALIGN_TOP_LEFT)
 		return position;
@@ -498,7 +512,15 @@ iPoint TextManager::GetAlignPosition(std::string_view text, iPoint position, Ali
 			if (auto it = font.charMap.find(elem);
 				it != font.charMap.end())
 			{
-				totalSize.x += (it->second.rect.w * font.scale.x) + it->second.xAdvance + font.spacing.x;
+				int sizeToAdd = (it->second.rect.w * font.scale.x) + it->second.xAdvance + font.spacing.x;
+
+				if (!maxPosition.IsZero() && totalSize.x + sizeToAdd >= maxPosition.x)
+				{
+					totalSize.x -= sizeToAdd;
+					break;
+				}
+
+				totalSize.x += sizeToAdd;
 			}
 		}
 
