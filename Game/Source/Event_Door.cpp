@@ -45,7 +45,6 @@ EventTrigger Event_Door::OnTrigger()
 
 void Event_Door::Create(pugi::xml_node const& node)
 {
-	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
 	AttachToGlobalSwitches();
 	SetInteractedGid();

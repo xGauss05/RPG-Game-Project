@@ -14,6 +14,7 @@
 #include "Log.h"
 
 #include <cstdlib>
+#include <array>
 
 EventManager::EventManager() = default;
 
@@ -22,9 +23,6 @@ EventManager::~EventManager() = default;
 
 void EventManager::Initialize()
 {
-	if (!events.empty())
-		drawIterator = events.begin();
-
 	periodicSFXs.clear();
 }
 
@@ -70,7 +68,6 @@ bool EventManager::CreateEvents(Publisher& publisher, pugi::xml_node const& node
 			continue;
 		}
 
-		event->type = child.attribute("type").as_string();
 		event->Create(child);
 		
 		if (auto const& SFXNode = child.child("properties").find_child_by_attribute("name", "PeriodicSFX");
@@ -97,6 +94,9 @@ bool EventManager::CreateEvents(Publisher& publisher, pugi::xml_node const& node
 
 		events.push_back(std::move(event));
 	}
+
+	LoadEventTextures();
+
 	return true;
 }
 
@@ -106,11 +106,6 @@ void EventManager::SubscribeEventsToGlobalSwitches() const
 	{
 		elem->AttachToGlobalSwitches();
 	}
-}
-
-int EventManager::GetEventLayerSize() const
-{
-	return events.size();
 }
 
 bool EventManager::IsWalkable(iPoint position) const
@@ -132,13 +127,16 @@ bool EventManager::IsWalkable(iPoint position) const
 	return true;
 }
 
-void EventManager::RedrawnCompleted()
+void EventManager::DrawEvents() const
 {
-	alreadyRedrawnEvents.clear();
-}
-
-void EventManager::DrawEvent(iPoint position) const
-{
+	for (auto const& elem : events)
+	{
+		if (auto sprite = dynamic_cast<Sprite*>(elem.get());
+			sprite)
+		{
+			sprite->Draw(elem->GetPosition());
+		}
+	}
 }
 
 EventTrigger EventManager::TriggerActionButtonEvent(iPoint position) const
@@ -191,6 +189,34 @@ std::vector<AmbienceSFX>& EventManager::GetPeriodicSFXs()
 	return periodicSFXs;
 }
 
+void EventManager::LoadEventTextures() const
+{
+	pugi::xml_document doc;
+	if (auto result = doc.load_file(eventsTileset.c_str());
+		!result)
+	{
+		LOG("Could not load event tileset %s. XML error %s", eventsTileset, result.description());
+		return;
+	}
+
+	pugi::xml_node tileset = doc.child("tileset");
+
+	for (auto const& elem : events)
+	{
+		auto sprite = dynamic_cast<Sprite*>(elem.get());
+
+		if (sprite)
+		{
+			int gid = sprite->GetGid() - firstGID;
+			for (auto const& tileNode : tileset)
+			{
+				if (tileNode.attribute("id").as_int() == gid)
+					sprite->LoadTextures(tileNode);
+			}
+		}
+	}
+}
+
 std::pair<EventTrigger, bool> EventManager::TriggerEvent(iPoint position, Event_Base * event) const
 {
 	iPoint eventPos = event->GetPosition();
@@ -203,89 +229,14 @@ std::pair<EventTrigger, bool> EventManager::TriggerEvent(iPoint position, Event_
 
 	return { EventTrigger(), false };
 }
- 
-std::tuple<int, iPoint, bool> EventManager::GetDrawEventInfo([[maybe_unused]] int index)
+
+void EventManager::SetEventsTilesetPath(std::string_view path, int gid)
 {
-	if (events.empty() || drawIterator == events.end())
-		return std::make_tuple(0, iPoint(0, 0), false);
+	while(path.starts_with("../"))
+		path.remove_prefix(3);
 
-	return std::make_tuple(0, iPoint(0, 0), false);
-
-	auto sprite = dynamic_cast<Sprite*>(drawIterator->get());
-	
-	if (!sprite)
-	{
-		++drawIterator;
-		
-		if (drawIterator == events.end())
-		{
-			drawIterator = events.begin();
-			return std::make_tuple(0, iPoint(0, 0), false);
-		}
-		return std::make_tuple(0, iPoint(0, 0), true);
-	}
-
-	auto gid = sprite->GetGid(drawIterator->get()->state);
-
-	auto pos = dynamic_cast<Transform*>(drawIterator->get())->GetPosition();
-
-	// Set the position of the event to its feet so it draws correctly
-	pos -= dynamic_cast<Transform*>(drawIterator->get())->GetSize();
-	pos = pos + tileSize;
-	
-	do {
-		++drawIterator;
-		if (drawIterator == events.end())
-		{
-			drawIterator = events.begin();
-			return std::make_tuple(gid, pos, false);
-		}
-	} while (!drawIterator->get()->IsEventActive());
-
-	return std::make_tuple(gid, pos, true);
-}
-
-std::pair<int, iPoint> EventManager::GetRedrawEventGID(iPoint position)
-{
-	for (auto const& event : events)
-	{
-		if (!event->IsEventActive()
-			||event->position.x > position.x + tileSize
-			|| event->position.x < position.x - tileSize)
-		{
-			continue;
-		}
-
-		if (auto sprite = dynamic_cast<Sprite*>(event.get());
-			sprite)
-		{
-			// Set the position of the event to its feet so it draws correctly
-			auto const &eventTransform = dynamic_cast<Transform*>(event.get());
-
-			if (auto [it, success] = alreadyRedrawnEvents.insert(event.get());
-			!success || eventTransform->GetPosition().y < position.y)
-			{
-				continue;
-			}
-
-			auto eventPosition = eventTransform->GetPosition();
-			eventPosition.y -= eventTransform->GetSize().y;
-			eventPosition.y += tileSize;
-			if (eventPosition.y <= position.y)
-			{
-				return { sprite->GetGid(event->state), eventPosition };
-			}
-		}
-
-	}
-
-	return { 0, iPoint(0, 0) };
-}
-
-void EventManager::SetEventsTilesetPath(std::string_view path)
-{
-	path.remove_prefix(2);
-	eventsTileset = path;
+	eventsTileset = std::format("Assets/{}", path);
+	firstGID = gid;
 }
 
 AmbienceSFX::AmbienceSFX(pugi::xml_node const& node)

@@ -60,7 +60,7 @@ int TextureManager::Load(std::string const &path)
 
 	if (!surface)
 	{
-		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
+		LOG("Could not load surface with path: %s.", path);
 		return -1;
 	}
 

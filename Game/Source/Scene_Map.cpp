@@ -223,7 +223,6 @@ void Scene_Map::Draw()
 	map.Draw();
 	player.Draw();
 	map.RedrawBelowPlayer(player.position);
-	map.RedrawnCompleted();
 	map.DrawLastLayer();
 
 	if (godMode)

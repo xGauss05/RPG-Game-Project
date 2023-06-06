@@ -1,6 +1,9 @@
 #ifndef __EVENT_BASE_H__
 #define __EVENT_BASE_H__
 
+#include "App.h"
+#include "TextureManager.h"
+
 #include "Point.h"
 #include "Transform.h"
 #include "Defs.h"
@@ -180,6 +183,8 @@ struct EventTrigger
 class Event_Base : public Transform
 {
 public:
+
+
 	Event_Base() = default;
 	~Event_Base() override = default;
 	virtual void parseXMLProperties(pugi::xml_node const& node) = 0;
@@ -207,11 +212,12 @@ public:
 	}
 
 	virtual void AttachToGlobalSwitches() {};
-
+	
 	int id = -1;
 	std::string name = "";
 	std::string type = "";
 	EventProperties::CommonProperties common;
+
 
 	bool walkable = false;
 

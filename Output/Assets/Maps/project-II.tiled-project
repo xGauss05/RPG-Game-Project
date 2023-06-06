@@ -13,7 +13,17 @@
             "id": 26,
             "members": [
                 {
-                    "name": "XML Path",
+                    "name": "Loop",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "LoopTimer",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "Path",
                     "type": "file",
                     "value": ""
                 }
@@ -92,6 +102,40 @@
             "type": "class",
             "useAs": [
                 "property"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 27,
+            "members": [
+                {
+                    "name": "Off",
+                    "propertyType": "Animation",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "On",
+                    "propertyType": "Animation",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "Triggered",
+                    "propertyType": "Animation",
+                    "type": "class",
+                    "value": {
+                    }
+                }
+            ],
+            "name": "Event Animations",
+            "type": "class",
+            "useAs": [
+                "property",
+                "tileset"
             ]
         },
         {

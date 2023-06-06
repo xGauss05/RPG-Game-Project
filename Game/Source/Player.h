@@ -121,6 +121,7 @@ private:
 	int speed = 8;
 	const int tileSize = 48;
 
+	int textureID = -1;
 	int animIncrease = 1;
 	int animTimer = 0;
 

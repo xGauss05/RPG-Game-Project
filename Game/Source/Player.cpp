@@ -42,15 +42,15 @@ bool Player::IsStandingStill() const
 
 void Player::Draw() const
 {
-	DrawParameters drawPlayer(GetTextureID(), drawPosition);
+	DrawParameters drawPlayer(textureID, drawPosition);
 	app->render->DrawTexture(drawPlayer.Section(&currentSpriteSlice));
 }
 
 void Player::Create()
 {
-	app->tex->Load("Assets/Textures/Main_Characters/Antonio/Antonio.png");	//This should not be done like this, all of this should load from the map XML.
-	Sprite::Initialize("Assets/Textures/Main_Characters/Antonio/Antonio.png", 0);
-	
+	Sprite::Initialize(0);
+	textureID = app->tex->Load("Assets/Textures/Main_Characters/Antonio/Antonio.png");
+
 	if(position.IsZero())
 		position = { 192, 2304 };
 

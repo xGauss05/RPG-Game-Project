@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="14">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="16">
  <properties>
   <property name="RandomEncounters" type="bool" value="false"/>
  </properties>
@@ -297,7 +297,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,104,104,183,104,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,103,104,104,104,104,104,104,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,104,104,183,104,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -360,7 +360,7 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
-  <object id="2" name="Chest" type="Event Chest" gid="261" x="1008" y="2496" width="48" height="48">
+  <object id="2" name="Chest" type="Event Chest" gid="261" x="816" y="2496" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -375,7 +375,7 @@
     </property>
    </properties>
   </object>
-  <object id="3" name="Sign" type="Event NPC" gid="63" x="624" y="2544" width="48" height="48">
+  <object id="3" name="Sign_Small" type="Event NPC" gid="267" x="624" y="2496" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -401,29 +401,7 @@
     </property>
    </properties>
   </object>
-  <object id="9" type="Event Torch" gid="266" x="816" y="2352" width="48" height="96">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="201"/>
-     </properties>
-    </property>
-    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="4"/>
-      <property name="ID" type="int" value="211"/>
-     </properties>
-    </property>
-    <property name="PeriodicSFX" type="class" propertytype="Automatic SFX">
-     <properties>
-      <property name="SFX" type="file" value="../Audio/Fx/S_Dungeon-Torch.wav"/>
-     </properties>
-    </property>
-    <property name="state" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="10" type="Event Torch" gid="264" x="720" y="2352" width="48" height="96">
+  <object id="10" type="Event Torch" gid="264" x="720" y="2448" width="48" height="96">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -491,6 +469,17 @@
       <property name="Destination Y" type="int" value="8"/>
      </properties>
     </property>
+   </properties>
+  </object>
+  <object id="14" name="Sign_Tall" type="Event NPC" gid="268" x="288" y="2400" width="48" height="144">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Directions.xml"/>
+   </properties>
+  </object>
+  <object id="15" name="Sign_Big" type="Event NPC" gid="270" x="384" y="2448" width="96" height="96">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Danger.xml"/>
    </properties>
   </object>
  </objectgroup>

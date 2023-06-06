@@ -56,7 +56,6 @@ public:
 	
 	// Called each loop iteration
 	void Draw();
-	bool DrawObjectLayer(int index);
 	void DrawTileLayer(const MapLayer& layer) const;
 	void DrawTile(int gid, iPoint pos) const;
 
@@ -83,7 +82,6 @@ public:
 	bool AreThereEnemyEncounters() const;
 
 	void RedrawBelowPlayer(iPoint position);
-	void RedrawnCompleted();
 
 	void DrawLastLayer() const;
 

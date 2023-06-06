@@ -51,38 +51,28 @@ public:
 
 	void SubscribeEventsToGlobalSwitches() const;
 
-	int GetEventLayerSize() const;
-
 	bool IsWalkable(iPoint position) const;
 
-	void RedrawnCompleted();
-
-	void DrawEvent(iPoint position) const;
+	void DrawEvents() const;
 
 	EventTrigger TriggerActionButtonEvent(iPoint position) const;
 	EventTrigger TriggerPlayerTouchEvent(iPoint position) const;
 
 	std::vector<AmbienceSFX>& GetPeriodicSFXs();
 
-	// Returns Gid, position, keepDrawing ? true : false;
-	std::tuple<int, iPoint, bool> GetDrawEventInfo(int index = 0);
-	std::pair<int, iPoint> GetRedrawEventGID(iPoint position);
-
-	void SetEventsTilesetPath(std::string_view path);
+	void SetEventsTilesetPath(std::string_view path, int gid);
 
 private:
 	const int tileSize = 48;
+	void LoadEventTextures() const;
 	std::pair<EventTrigger, bool> TriggerEvent(iPoint position, Event_Base * const event) const;
 
 	std::vector<std::unique_ptr<Event_Base>> events;
 
-	std::vector<std::unique_ptr<Event_Base>>::const_iterator drawIterator;
-
-	std::unordered_set<Event_Base*> alreadyRedrawnEvents;
-
 	std::vector<AmbienceSFX> periodicSFXs;
 
 	std::string eventsTileset = "";
+	int firstGID = -1;
 };
 
 

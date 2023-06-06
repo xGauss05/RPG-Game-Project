@@ -388,17 +388,17 @@
  </tile>
  <tile id="77" probability="0">
   <properties>
-   <property name="isWalkable" type="bool" value="false"/>
+   <property name="isWalkable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="78" probability="0">
   <properties>
-   <property name="isWalkable" type="bool" value="false"/>
+   <property name="isWalkable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="79" probability="0">
   <properties>
-   <property name="isWalkable" type="bool" value="false"/>
+   <property name="isWalkable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="80">

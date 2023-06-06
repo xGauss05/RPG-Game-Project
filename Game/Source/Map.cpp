@@ -62,16 +62,15 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 	{
 		if (StrEquals(child.name(), "tileset"))
 		{
-			std::string_view checkIfEventTileset = child.attribute("source").as_string();
+			std::string_view tileSetPath = child.attribute("source").as_string();
 
-			// Only tileset that starts with ../ should be the events one
-			if (!checkIfEventTileset.starts_with(".."))
+			if (tileSetPath.ends_with("Events.tsx"))
 			{
-				tilesets.emplace_back(child, directory);
+				eventManager.SetEventsTilesetPath(tileSetPath, child.attribute("firstgid").as_int());
 			}
 			else
 			{
-				eventManager.SetEventsTilesetPath(checkIfEventTileset);
+				tilesets.emplace_back(child, directory);
 			}
 		}
 		else if (StrEquals(child.name(), "layer"))
@@ -85,7 +84,7 @@ bool Map::Load(const std::string& directory, const std::string& level, Publisher
 			// the EventManager to create and store them
 			if (StrEquals("Layer of Events", child.attribute("class").as_string()))
 			{
-				drawOrder.emplace_back(LayerType::EVENT_LAYER, eventManager.GetEventLayerSize());
+				drawOrder.emplace_back(LayerType::EVENT_LAYER, 0);
 				eventManager.CreateEvents(publisher, child);
 			}
 			else 
@@ -175,24 +174,12 @@ void Map::Draw()
 				DrawTileLayer(tileLayers[index]);
 				break;
 			case EVENT_LAYER:
-				while(DrawObjectLayer(index));
+				eventManager.DrawEvents();
 				break;
 			case OBJECT_LAYER:
 				break;
 		}
 	}
-}
-
-bool Map::DrawObjectLayer(int index)
-{
-	auto [gid, pos, keepDrawing] = eventManager.GetDrawEventInfo(index);
-	
-	if (gid > 0)
-	{
-		DrawTile(gid, pos);
-	}
-
-	return keepDrawing;
 }
 
 void Map::DrawTileLayer(const MapLayer& layer) const
@@ -368,19 +355,15 @@ void Map::RedrawBelowPlayer(iPoint position)
 			iPoint positionToCheck = { i, j };
 			positionToCheck.CeilToNearest(GetTileSize());
 
+		/*	
 			eventManager.DrawEvent(position);
-		/*	if (auto const &[resultGID, eventPosition] = eventManager.GetRedrawEventGID(positionToCheck);
+			if (auto const &[resultGID, eventPosition] = eventManager.GetRedrawEventGID(positionToCheck);
 				resultGID > 0)
 			{
 				DrawTile(resultGID, eventPosition);
 			}*/
 		}
 	}
-}
-
-void Map::RedrawnCompleted()
-{
-	eventManager.RedrawnCompleted();
 }
 
 void Map::DrawLastLayer() const

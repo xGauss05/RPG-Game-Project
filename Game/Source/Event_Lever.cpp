@@ -55,7 +55,6 @@ EventTrigger Event_Lever::OnTrigger()
 
 void Event_Lever::Create(pugi::xml_node const& node)
 {
-	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
 	SetInteractedGid();
 
