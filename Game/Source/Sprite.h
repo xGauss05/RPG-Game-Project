@@ -32,7 +32,6 @@ public:
 			);
 		}
 	};
-	virtual void UpdateAnim() const {};
 
 	void LoadTextures(pugi::xml_node const& node)
 	{
@@ -94,6 +93,16 @@ public:
 			}
 		}
 	}
+
+	iPoint GetSize() const
+	{
+		return
+		{ 
+			animation.at(currentAnim).currentAnimFrame.w,
+			animation.at(currentAnim).currentAnimFrame.h 
+		};
+	}
+
 protected:
 
 	void Initialize(int index)

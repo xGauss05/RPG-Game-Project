@@ -52,8 +52,8 @@ void Player::Create()
 	textureID = app->tex->Load("Assets/Textures/Main_Characters/Antonio/Antonio.png");
 
 	if(position.IsZero())
-		//position = { 192, 2304 };
-		position = { 144, 528 };
+		position = { 192, 2304 };
+	//position = { 144, 528 };
 
 	size = { 48, 96 };
 

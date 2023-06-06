@@ -42,7 +42,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 {
 	if (currentMap.empty())
 	{
-		currentMap = "AAAAAA";
+		currentMap = "Village";
 	}
 	auto publisherParty = static_cast<Publisher*>(playerParty);
 

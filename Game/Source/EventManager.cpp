@@ -114,13 +114,34 @@ bool EventManager::IsWalkable(iPoint position) const
 
 	for (auto const& elem : events)
 	{
-		iPoint eventPos = elem->position;
-
 		if (!elem->IsEventActive() || elem->walkable)
 			continue;
 
-		if (eventPos == position)
-			return false;
+		iPoint eventPos = elem->position;
+
+		auto sprite = dynamic_cast<Sprite*>(elem.get());
+
+		if (sprite)
+		{
+			iPoint eventSize = sprite->GetSize();
+			eventPos.y += eventSize.y;
+			eventPos.y = eventPos.y - tileSize;
+
+			iPoint originalPosition = eventPos;
+
+			while (eventPos.x < originalPosition.x + eventSize.x)
+			{
+				if (eventPos == position)
+					return false;
+
+				eventPos.x += tileSize;
+			}
+		}
+		else
+		{
+			if (eventPos == position)
+				return false;
+		}
 
 	}
 
