@@ -49,7 +49,7 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
       <property name="Destination X" type="int" value="81"/>
-      <property name="Destination Y" type="int" value="8"/>
+      <property name="Destination Y" type="int" value="10"/>
      </properties>
     </property>
    </properties>

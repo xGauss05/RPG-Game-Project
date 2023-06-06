@@ -50,6 +50,7 @@ EventTrigger NPC_Generic::OnTrigger()
 
 void NPC_Generic::Create(pugi::xml_node const& node)
 {
+	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
 }
 

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="20">
+ <tileset firstgid="1" source="Tileset.tsx"/>
+ <tileset firstgid="257" source="../Textures/Events/Static/Events.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="16" height="16">
+  <data encoding="csv">
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
+</data>
+ </layer>
+ <layer id="3" name="Tile Layer 2" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,225,226,227,0,0,0,0,0,0,0,0,0,0,0,
+0,0,241,242,243,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,18,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,18,18,0,0,0,
+0,0,0,0,18,18,0,0,0,0,18,18,0,0,0,0,
+0,0,0,18,18,18,18,18,0,18,18,0,0,0,0,0,
+0,0,0,0,0,0,0,18,18,18,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1" class="Layer of Events">
+  <object id="1" name="Torch" type="Event Torch" gid="264" x="288" y="384" width="48" height="96">
+   <properties>
+    <property name="Animation" type="class" propertytype="Event Animations">
+     <properties>
+      <property name="Off" type="class" propertytype="Animation">
+       <properties>
+        <property name="Path" type="file" value="../Textures/Events/Torch_Off.png"/>
+       </properties>
+      </property>
+      <property name="On" type="class" propertytype="Animation">
+       <properties>
+        <property name="Loop" type="bool" value="false"/>
+        <property name="LoopTimer" type="int" value="0"/>
+        <property name="Path" type="file" value="../Textures/Events/Torch_On.png"/>
+       </properties>
+      </property>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="2" name="Aether" type="Event NPC" gid="259" x="0" y="384" width="48" height="96">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Aether01.xml"/>
+   </properties>
+  </object>
+  <object id="7" name="Chest" type="Event Chest" gid="261" x="240" y="432" width="48" height="48">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
+     </properties>
+    </property>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="1"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="8" name="Market" type="Event NPC" gid="267" x="336" y="432" width="48" height="48">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Market.xml"/>
+   </properties>
+  </object>
+  <object id="9" name="Directions" type="Event NPC" gid="268" x="384" y="336" width="48" height="144">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Directions.xml"/>
+   </properties>
+  </object>
+  <object id="10" name="Danger" type="Event NPC" gid="270" x="432" y="384" width="96" height="96">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sign_Danger.xml"/>
+   </properties>
+  </object>
+  <object id="11" name="Door" type="Event Door" gid="271" x="528" y="384" width="144" height="96"/>
+  <object id="12" name="Balphogor" type="Event NPC" gid="260" x="48" y="384" width="48" height="96">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Balphogor01.xml"/>
+   </properties>
+  </object>
+  <object id="16" name="Aether" type="Event NPC" gid="262" x="96" y="384" width="48" height="96">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Captain01.xml"/>
+   </properties>
+  </object>
+  <object id="17" name="NPC01" type="Event NPC" gid="263" x="144" y="384" width="48" height="96">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+   </properties>
+  </object>
+  <object id="18" name="Aether" type="Event NPC" gid="265" x="192" y="384" width="48" height="96">
+   <properties>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Tycoon01.xml"/>
+   </properties>
+  </object>
+  <object id="19" name="Village" type="Event Teleport" x="672" y="480" width="96" height="192">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
+    <property name="Destination" type="class" propertytype="Helper Destination">
+     <properties>
+      <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
+      <property name="Destination X" type="int" value="5"/>
+      <property name="Destination Y" type="int" value="49"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="4" name="Tile Layer 3" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

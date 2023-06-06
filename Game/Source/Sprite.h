@@ -103,6 +103,12 @@ protected:
 			: iPoint((index - 4) * 3, 4);
 	}
 
+	void Initialize(pugi::xml_node const& node)
+	{
+		gid = node.attribute("gid").as_uint();
+
+	};
+
 	void SetInteractedGid()
 	{
 		interactedGid = gid + 1;

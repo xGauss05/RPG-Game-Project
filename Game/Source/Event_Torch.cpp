@@ -47,6 +47,7 @@ EventTrigger Event_Torch::OnTrigger()
 
 void Event_Torch::Create(pugi::xml_node const& node)
 {
+	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
 	AttachToGlobalSwitches();
 	SetInteractedGid();

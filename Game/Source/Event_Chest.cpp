@@ -72,6 +72,7 @@ EventTrigger Event_Chest::OnTrigger()
 
 void Event_Chest::Create(pugi::xml_node const& node)
 {
+	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
 	SetInteractedGid();
 }

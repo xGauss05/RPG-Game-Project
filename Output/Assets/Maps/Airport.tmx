@@ -46,6 +46,11 @@
  <objectgroup id="3" name="Interactible" class="Layer of Events">
   <object id="5" name="To Village" type="Event Teleport" x="624" y="96" width="144" height="48">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Village"/>
