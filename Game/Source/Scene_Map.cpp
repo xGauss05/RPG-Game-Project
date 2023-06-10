@@ -69,11 +69,7 @@ void Scene_Map::Load(std::string const& path, LookUpXMLNodeFromString const& inf
 		if (auto result = windowFac.CreateWindow(window.attribute("name").as_string());
 			result != nullptr)
 		{
-			if (StrEquals("PauseButtonMenu", window.attribute("name").as_string()))
-			{
-				windows.push_back(std::move(result));
-			}
-			else if (StrEquals("PauseMenu", window.attribute("name").as_string()))
+			if (StrEquals("PauseMenu", window.attribute("name").as_string()))
 			{
 				pauseWindow.push_back(std::move(result));
 			}
