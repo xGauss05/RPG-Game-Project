@@ -447,8 +447,14 @@
                 "Undefined",
                 "HP Potion",
                 "MP Potion",
-                "Revive",
-                "Coins"
+                "Bottled Fairy",
+                "Coins",
+                "Super HP Potion",
+                "Omni HP Potion",
+                "Tous Necklace",
+                "Adidas Sports Pants",
+                "Gucci Shoes",
+                "Weird Cylinder"
             ],
             "valuesAsFlags": false
         },

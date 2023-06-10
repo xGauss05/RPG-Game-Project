@@ -207,13 +207,23 @@
   <object id="70" name="Chest1" type="Event Chest" gid="261" x="384" y="1872" width="48" height="48">
    <properties>
     <property name="Base" value=""/>
-    <property name="Loot1" value=""/>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="1"/>
+     </properties>
+    </property>
    </properties>
   </object>
   <object id="71" name="Chest1" type="Event Chest" gid="261" x="1296" y="768" width="48" height="48">
    <properties>
     <property name="Base" value=""/>
-    <property name="Loot1" value=""/>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="Bottled Fairy"/>
+      <property name="Quantity" type="int" value="2"/>
+     </properties>
+    </property>
    </properties>
   </object>
   <object id="72" name="NPC_Generic_02" type="Event NPC" gid="263" x="1920" y="1008" width="48" height="96">
@@ -249,7 +259,12 @@
   <object id="77" name="Chest1" type="Event Chest" gid="261" x="3216" y="1392" width="48" height="48">
    <properties>
     <property name="Base" value=""/>
-    <property name="Loot1" value=""/>
+    <property name="Loot1" type="class" propertytype="Helper Loot">
+     <properties>
+      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
+      <property name="Quantity" type="int" value="1"/>
+     </properties>
+    </property>
    </properties>
   </object>
   <object id="78" name="NPC_Generic_02" type="Event NPC" gid="263" x="4128" y="1200" width="48" height="96">
