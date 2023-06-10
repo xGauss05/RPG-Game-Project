@@ -229,13 +229,13 @@
   <object id="72" name="NPC_Generic_02" type="Event NPC" gid="263" x="1920" y="1008" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../../../RPG-Game-Project-913093aa6d33db2393b6ac798a77acecfbacd6f7/Output/data/Dialogues/NPC02.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
   </object>
   <object id="73" name="NPC_Generic_01" type="Event NPC" gid="263" x="1008" y="1440" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../../../RPG-Game-Project-913093aa6d33db2393b6ac798a77acecfbacd6f7/Output/data/Dialogues/NPC01.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
   <object id="74" name="NPC_Generic_01" type="Event NPC" gid="263" x="1104" y="2448" width="48" height="96">

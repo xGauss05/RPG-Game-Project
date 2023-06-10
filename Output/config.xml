@@ -251,7 +251,7 @@
 					<texture_properties tileX="0" tileY="0" tileW="32" tileH="32" advance="4" horizontalsegments="3" verticalsegments="3" />
 				</panel>
 			</window>
-			<window name="MenuListFallback" class="MenuList" x="0" y="0" width="0" y="0" ishorizontal="false" isonlyicons="false" maxelements="-1" hasbackground="false">
+			<window name="MenuListFallback" class="MenuList" x="0" y="0" width="0" ishorizontal="false" isonlyicons="false" maxelements="-1" hasbackground="false">
 				<itemlist iconSize="0" outterMargin="0,0" innerMargin="0,0" />
 			</window>
 			<window name="MenuBattleFightOrFlee" class="MenuList" x="448" y="592" ishorizontal="true" isonlyicons="true" maxelements="3">
