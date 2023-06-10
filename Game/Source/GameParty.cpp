@@ -56,6 +56,26 @@ bool Battler::UseItem(Item const& item)
 			return to_bool(restoredHP);
 			break;
 		}
+		case 12:
+		{
+			int restoredMP = RestoreMP(item.effect.param1, item.effect.param2);
+
+			if (item.effect.text.size() >= 2)
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentMana ?
+					AddSaveData(item.effect.text[0], name, restoredMP) :
+					AddSaveData(item.effect.text[1], name);
+			}
+			else
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentMana ?
+					std::format("{} recovers {} HP!", name, restoredMP) :
+					std::format("{}'s HP is fully recovered!", name);
+			}
+
+			return to_bool(restoredMP);
+			break;
+		}
 		default:
 			LOG("Function effect %i not added", item.effect.functionToCall);
 			return false;
@@ -98,6 +118,34 @@ int Battler::RestoreHP(float amount1, float amount2)
 	int HPHealed = currentHP - HPBeforeHealing;
 
 	return HPHealed;
+}
+
+int Battler::RestoreMP(float amount1, float amount2)
+{
+	int maxMP = GetStat(BaseStats::MAX_MANA);
+	int MPBeforeHealing = currentMana;
+
+	if (currentMana <= 0 || currentMana >= maxMP)
+		return 0;
+
+	auto GetAmountToAdd = [maxMP](float n)
+	{
+		if (ceilf(n) == n)
+			return static_cast<int>(n);
+		else
+			return static_cast<int>(n * static_cast<float>(maxMP));
+	};
+
+	currentMana += GetAmountToAdd(amount1) + GetAmountToAdd(amount2);
+
+	if (currentMana > maxMP)
+	{
+		currentMana = maxMP;
+	}
+
+	int MPHealed = currentHP - MPBeforeHealing;
+
+	return MPHealed;
 }
 
 void Battler::AddStat(int value)

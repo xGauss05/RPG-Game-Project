@@ -68,6 +68,7 @@ struct Battler
 
 private:
 	int RestoreHP(float amount1, float amount2);
+	int RestoreMP(float amount1, float amount2);
 
 	int currentXP = 0;
 	std::vector<int> stats;
