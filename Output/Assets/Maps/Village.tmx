@@ -231,19 +231,19 @@
   <object id="74" name="NPC_Generic_01" type="Event NPC" gid="263" x="1104" y="2448" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../../../RPG-Game-Project-913093aa6d33db2393b6ac798a77acecfbacd6f7/Output/data/Dialogues/NPC01.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
   <object id="75" name="NPC_Generic_02" type="Event NPC" gid="263" x="2400" y="2112" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../../../RPG-Game-Project-913093aa6d33db2393b6ac798a77acecfbacd6f7/Output/data/Dialogues/NPC02.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
   </object>
   <object id="76" name="NPC_Generic_01" type="Event NPC" gid="263" x="2976" y="1632" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../../../RPG-Game-Project-913093aa6d33db2393b6ac798a77acecfbacd6f7/Output/data/Dialogues/NPC01.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
   <object id="77" name="Chest1" type="Event Chest" gid="261" x="3216" y="1392" width="48" height="48">
@@ -255,13 +255,13 @@
   <object id="78" name="NPC_Generic_02" type="Event NPC" gid="263" x="4128" y="1200" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../../../RPG-Game-Project-913093aa6d33db2393b6ac798a77acecfbacd6f7/Output/data/Dialogues/NPC02.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
   </object>
   <object id="79" name="NPC_Generic_01" type="Event NPC" gid="263" x="4464" y="2064" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../../../RPG-Game-Project-913093aa6d33db2393b6ac798a77acecfbacd6f7/Output/data/Dialogues/NPC01.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
    </properties>
   </object>
   <object id="80" name="Sign_Small" type="Event NPC" gid="267" x="5808" y="2112" width="48" height="48">

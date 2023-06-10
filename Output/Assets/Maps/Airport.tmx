@@ -67,7 +67,7 @@
       <property name="Dialogue" type="bool" value="true"/>
       <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
       <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/Captain01.xml"/>
@@ -106,7 +106,7 @@
       <property name="Dialogue" type="bool" value="true"/>
       <property name="SFX" type="file" value="../Audio/Fx/hello_man.wav"/>
       <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>

@@ -101,7 +101,7 @@
     <property name="Loot1" type="class" propertytype="Helper Loot">
      <properties>
       <property name="Item" propertytype="Helper Items" value="Coins"/>
-      <property name="Quantity" type="int" value="1"/>
+      <property name="Quantity" type="int" value="80"/>
      </properties>
     </property>
    </properties>
@@ -116,7 +116,7 @@
     <property name="Loot1" type="class" propertytype="Helper Loot">
      <properties>
       <property name="Item" propertytype="Helper Items" value="Coins"/>
-      <property name="Quantity" type="int" value="1"/>
+      <property name="Quantity" type="int" value="69"/>
      </properties>
     </property>
    </properties>
@@ -131,7 +131,7 @@
     <property name="Loot1" type="class" propertytype="Helper Loot">
      <properties>
       <property name="Item" propertytype="Helper Items" value="Coins"/>
-      <property name="Quantity" type="int" value="1"/>
+      <property name="Quantity" type="int" value="78"/>
      </properties>
     </property>
    </properties>
@@ -146,7 +146,7 @@
     <property name="Loot1" type="class" propertytype="Helper Loot">
      <properties>
       <property name="Item" propertytype="Helper Items" value="Coins"/>
-      <property name="Quantity" type="int" value="1"/>
+      <property name="Quantity" type="int" value="43"/>
      </properties>
     </property>
    </properties>
