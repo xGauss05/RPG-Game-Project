@@ -191,10 +191,7 @@ void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 {
 	iPoint camera = { app->render->GetCamera().x, app->render->GetCamera().y };
 
-	iPoint allyPosition(170 - camera.x, i - camera.y + 55);
-	iPoint hpBarPosition(140 - camera.x, i - camera.y + 80);
-
-	DrawHPBar(character.portraitTextureID, character.currentHP, character.GetStat(BaseStats::MAX_HP), hpBarPosition);
+	iPoint allyPosition(140 - camera.x, i - camera.y + 30);
 
 	DrawParameters drawAlly(character.portraitTextureID, allyPosition);
 
@@ -214,8 +211,6 @@ void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 		drawAlly.Center(pivot);
 	}
 
-	//drawAlly.Scale(fPoint(3.0f, 3.0f));
-
 	app->render->DrawTexture(drawAlly);
 
 	using enum BaseStats;
@@ -224,17 +219,17 @@ void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 	DrawSingleStat(character, ATTACK, 620, 50 + i);
 	DrawSingleStat(character, SPECIAL_ATTACK, 860, 50 + i);
 
-	DrawSingleStat(character, MAX_MANA, 280, 90 + i);
-	DrawSingleStat(character, DEFENSE, 620, 90 + i);
-	DrawSingleStat(character, SPECIAL_DEFENSE, 860, 90 + i);
+	DrawSingleStat(character, MAX_MANA, 280, 94 + i);
+	DrawSingleStat(character, DEFENSE, 620, 94 + i);
+	DrawSingleStat(character, SPECIAL_DEFENSE, 860, 94 + i);
 
-	DrawSingleStat(character, LEVEL, 450, 130 + i);
-	DrawSingleStat(character, XP, 620, 130 + i);
-	DrawSingleStat(character, SPEED, 860, 130 + i);
+	DrawSingleStat(character, LEVEL, 450, 138 + i);
+	DrawSingleStat(character, XP, 620, 138 + i);
+	DrawSingleStat(character, SPEED, 860, 138 + i);
 
 	app->fonts->DrawText(
 		character.name,
-		iPoint(280, 130 + i)
+		iPoint(280, 138 + i)
 	);
 }
 
@@ -244,27 +239,4 @@ void Map_Window_Menu::DrawSingleStat(Battler const& character, BaseStats stat, i
 		character.GetStatDisplay(stat),
 		iPoint(x, y)
 	);
-}
-
-void Map_Window_Menu::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const
-{
-	int w = 0;
-	int h = 0;
-	app->tex->GetSize(app->GetTexture(textureID), w, h);
-
-	SDL_Rect hpBar{};
-	hpBar.x = position.x + 2;
-	hpBar.y = position.y + h * 2 + 10;
-	hpBar.h = 10;
-
-	hpBar.w = 100;
-	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
-
-	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
-	hpBar.w = hp > 0 ? static_cast<int>(hp * 100.0f) : 0;
-
-	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
-	auto green = static_cast<Uint8>(250.0f * hp);
-
-	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
 }
