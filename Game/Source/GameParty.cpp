@@ -37,71 +37,77 @@ bool Battler::UseItem(Item const& item)
 {
 	switch (item.effect.functionToCall)
 	{
-		case 11:
-		{
-			int restoredHP = RestoreHP(item.effect.param1, item.effect.param2);
+	case 11:
+	{
+		int restoredHP = RestoreHP(item.effect.param1, item.effect.param2);
 
-			if (restoredHP <= 0)
+		if (restoredHP <= 0)
+		{
+			itemTextToDisplay = std::format("It has no effect...");
+		}
+		else
+		{
+			if (item.effect.text.size() >= 2)
 			{
-				itemTextToDisplay = std::format("It has no effect...");
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					AddSaveData(item.effect.text[0], name, restoredHP) :
+					AddSaveData(item.effect.text[1], name);
 			}
 			else
 			{
-				if (item.effect.text.size() >= 2)
-				{
-					itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
-						AddSaveData(item.effect.text[0], name, restoredHP) :
-						AddSaveData(item.effect.text[1], name);
-				}
-				else
-				{
-					itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
-						std::format("{} recovers {} HP!", name, restoredHP) :
-						std::format("{}'s HP is fully recovered!", name);
-				}
-
-				if (!item.general.sfxPath.empty())
-				{
-					app->audio->PlayFx(item.general.sfxID);
-				}
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					std::format("{} recovers {} HP!", name, restoredHP) :
+					std::format("{}'s HP is fully recovered!", name);
 			}
 
-			return to_bool(restoredHP);
-		}
-		case 12:
-		{
-			int restoredMP = RestoreMP(item.effect.param1, item.effect.param2);
-	
-			if (restoredMP <= 0)
+			if (!item.general.sfxPath.empty())
 			{
-				itemTextToDisplay = std::format("It has no effect...");
+				app->audio->PlayFx(item.general.sfxID);
+			}
+		}
+
+		return to_bool(restoredHP);
+	}
+	case 12:
+	{
+		int restoredMP = RestoreMP(item.effect.param1, item.effect.param2);
+
+		if (restoredMP <= 0)
+		{
+			itemTextToDisplay = std::format("It has no effect...");
+		}
+		else
+		{
+			if (item.effect.text.size() >= 2)
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
+					AddSaveData(item.effect.text[0], name, restoredMP) :
+					AddSaveData(item.effect.text[1], name);
 			}
 			else
 			{
-				if (item.effect.text.size() >= 2)
-				{
-					itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
-						AddSaveData(item.effect.text[0], name, restoredMP) :
-						AddSaveData(item.effect.text[1], name);
-				}
-				else
-				{
-					itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
-						std::format("{} recovers {} Mana!", name, restoredMP) :
-						std::format("{}'s Mana is fully recovered!", name);
-				}
-				if (!item.general.sfxPath.empty())
-				{
-					app->audio->PlayFx(item.general.sfxID);
-				}
+				itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
+					std::format("{} recovers {} Mana!", name, restoredMP) :
+					std::format("{}'s Mana is fully recovered!", name);
 			}
-
-			return to_bool(restoredMP);
+			if (!item.general.sfxPath.empty())
+			{
+				app->audio->PlayFx(item.general.sfxID);
+			}
 		}
-		case 13:
-		{
-			int revivedHP = Revive(item.effect.param1, item.effect.param2);
 
+		return to_bool(restoredMP);
+	}
+	case 13:
+	{
+		int revivedHP = Revive(item.effect.param1, item.effect.param2);
+
+		if (revivedHP <= 0)
+		{
+			itemTextToDisplay = std::format("It has no effect...");
+		}
+		else
+		{
 			if (item.effect.text.size() >= 2)
 			{
 				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
@@ -115,17 +121,17 @@ bool Battler::UseItem(Item const& item)
 					std::format("{} is fully revived!", name);
 			}
 
-			if (item.general.sfxID != -1)
+			if (!item.general.sfxPath.empty())
 			{
 				app->audio->PlayFx(item.general.sfxID);
 			}
-
-			return to_bool(revivedHP);
-			break;
 		}
-		default:
-			LOG("Function effect %i not added", item.effect.functionToCall);
-			return false;
+
+		return to_bool(revivedHP);
+	}
+	default:
+		LOG("Function effect %i not added", item.effect.functionToCall);
+		return false;
 	}
 }
 
@@ -148,12 +154,12 @@ int Battler::RestoreHP(float amount1, float amount2)
 		return 0;
 
 	auto GetAmountToAdd = [maxHP](float n)
-		{
-			if (ceilf(n) == n)
-				return static_cast<int>(n);
-			else
-				return static_cast<int>(n * static_cast<float>(maxHP));
-		};
+	{
+		if (ceilf(n) == n)
+			return static_cast<int>(n);
+		else
+			return static_cast<int>(n * static_cast<float>(maxHP));
+	};
 
 	currentHP += GetAmountToAdd(amount1) + GetAmountToAdd(amount2);
 
@@ -190,7 +196,7 @@ int Battler::RestoreMP(float amount1, float amount2)
 		currentMana = maxMP;
 	}
 
-	int MPHealed = currentHP - MPBeforeHealing;
+	int MPHealed = currentMana - MPBeforeHealing;
 
 	return MPHealed;
 }
@@ -198,8 +204,8 @@ int Battler::RestoreMP(float amount1, float amount2)
 int Battler::Revive(float amount1, float amount2)
 {
 	int maxHP = GetStat(BaseStats::MAX_HP);
-	
-	if (currentHP >= 0)
+
+	if (currentHP > 0)
 		return 0;
 
 	auto GetAmountToAdd = [maxHP](float n)
@@ -210,7 +216,7 @@ int Battler::Revive(float amount1, float amount2)
 			return static_cast<int>(n * static_cast<float>(maxHP));
 	};
 
-	currentHP += GetAmountToAdd(amount1) + GetAmountToAdd(amount2);
+	currentHP += GetAmountToAdd(amount2);
 
 	if (currentHP > maxHP)
 	{
@@ -234,23 +240,23 @@ std::string Battler::GetStatDisplay(BaseStats stat, bool choosingChar) const
 	{
 		if (stat == LEVEL)
 			return std::format("Lvl. {}", level);
-		else if(stat == MAX_HP)
+		else if (stat == MAX_HP)
 			return std::format("{} / {}", currentHP, GetStat(MAX_HP));
-		else if(stat == BaseStats::MAX_MANA)
+		else if (stat == BaseStats::MAX_MANA)
 			return std::format("{} / {}", currentMana, GetStat(MAX_MANA));
 	}
 
 	switch (stat)
 	{
-		case MAX_HP:			return std::format("HP: {} / {}", currentHP, GetStat(MAX_HP));
-		case MAX_MANA:			return std::format("MP: {} / {}", currentMana, GetStat(MAX_MANA));
-		case ATTACK:			return std::format("Atk: {}", GetStat(ATTACK));
-		case DEFENSE:			return std::format("Def: {}", GetStat(DEFENSE));
-		case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", GetStat(SPECIAL_ATTACK));
-		case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", GetStat(SPECIAL_DEFENSE));
-		case SPEED:				return std::format("Speed: {}", GetStat(SPEED));
-		case LEVEL:				return std::format("Lvl. {}", level);
-		case XP:				return std::format("EXP: {}", currentXP);
+	case MAX_HP:			return std::format("HP: {} / {}", currentHP, GetStat(MAX_HP));
+	case MAX_MANA:			return std::format("MP: {} / {}", currentMana, GetStat(MAX_MANA));
+	case ATTACK:			return std::format("Atk: {}", GetStat(ATTACK));
+	case DEFENSE:			return std::format("Def: {}", GetStat(DEFENSE));
+	case SPECIAL_ATTACK: 	return std::format("Sp. Atk: {}", GetStat(SPECIAL_ATTACK));
+	case SPECIAL_DEFENSE:	return std::format("Sp. Def: {}", GetStat(SPECIAL_DEFENSE));
+	case SPEED:				return std::format("Speed: {}", GetStat(SPEED));
+	case LEVEL:				return std::format("Lvl. {}", level);
+	case XP:				return std::format("EXP: {}", currentXP);
 	}
 }
 
@@ -323,7 +329,7 @@ void GameParty::AcceptQuest(int id)
 		success)
 	{
 		auto objectivesSet = it->second->GetQuestTypeSet();
-		for(auto const &elem : objectivesSet)
+		for (auto const& elem : objectivesSet)
 		{
 			currentQuestsCategories[elem].emplace_back(id);
 		}
@@ -412,7 +418,7 @@ void GameParty::SetGlobalSwitchState(int id, bool newState)
 	Notify(id, globalSwitches[id]);
 }
 
-void GameParty::Attach(ISubscriber* sub, int id)
+void GameParty::Attach(ISubscriber * sub, int id)
 {
 	/*if (!GlobalSwitchExists(id))
 	{
@@ -425,11 +431,11 @@ void GameParty::Notify(int id, bool state)
 {
 	Publisher::Notify(id, state);
 
-	auto &gSToUpdate = GetGlobalSwitchsToUpdate();
+	auto& gSToUpdate = GetGlobalSwitchsToUpdate();
 
 	while (!gSToUpdate.empty())
 	{
-		auto const &[index, gSState] = gSToUpdate.top();
+		auto const& [index, gSState] = gSToUpdate.top();
 		gSToUpdate.pop();
 
 		SetGlobalSwitchState(index, !gSState);
@@ -438,13 +444,13 @@ void GameParty::Notify(int id, bool state)
 
 std::pair<bool, bool> GameParty::AddGlobalSwitch(int id, bool state)
 {
-	auto const &[it, success] = globalSwitches.try_emplace(id, state);
-	if(success)
+	auto const& [it, success] = globalSwitches.try_emplace(id, state);
+	if (success)
 	{
 		Notify(id, globalSwitches[id]);
 		LOG(std::format("Succesfully added global Switch {} with state {}.", id, state).c_str());
 	}
-	else	
+	else
 	{
 		LOG(std::format("Couldn't add global Switch {}.", id).c_str());
 	}
