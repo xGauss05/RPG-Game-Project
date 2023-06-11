@@ -1,8 +1,6 @@
 #ifndef __BATTLE_WINDOW_MENU_H__
 #define __BATTLE_WINDOW_MENU_H__
 
-
-
 #include "Window_Factory.h"
 
 #include "AdjacencyGraph.h"

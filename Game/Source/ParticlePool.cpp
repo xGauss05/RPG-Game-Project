@@ -2,15 +2,20 @@
 
 #include <assert.h>
 
-
-ParticlePool::ParticlePool(size_t numberOfParticles, ParticleDB const* atlas, ParticleDB::BluePrintTypes name)
-	: m_ParticlePrototype(atlas->GetParticlePrototypeFromBluePrint(name))
+ParticlePool::ParticlePool(iPoint position, size_t amountOfParticles, Pair_PropertiesAndRandom const& properties)
+	: m_ParticlePrototype(properties)
 {
-	m_Particles.reserve(numberOfParticles);
+	m_ParticlePrototype.m_Original.m_Position 
+		+=  {
+			static_cast<float>(position.x),
+			static_cast<float>(position.y) 
+			};
+	m_Particles.reserve(amountOfParticles);
 }
 
 void ParticlePool::SetNewBluePrint(size_t amountOfParticles, Pair_PropertiesAndRandom const& properties)
 {
+	m_AliveParticles = 0;
 	m_Particles.reserve(amountOfParticles);
 	m_ParticlePrototype.m_Original = properties.first;
 	m_ParticlePrototype.m_Modifiers = properties.second;

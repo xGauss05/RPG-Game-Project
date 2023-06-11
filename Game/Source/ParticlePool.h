@@ -11,11 +11,8 @@ class ParticlePool
 {
 public:
 	using Pair_PropertiesAndRandom = std::pair<Particle::Properties, ParticleDB::BluePrint::RandomValues>;
-	explicit ParticlePool(
-		size_t numberOfParticles,
-		ParticleDB const* atlas,
-		ParticleDB::BluePrintTypes name
-	);
+
+	explicit ParticlePool(iPoint position, size_t amountOfParticles, Pair_PropertiesAndRandom const& properties);
 
 	void SetNewBluePrint(size_t amountOfParticles, Pair_PropertiesAndRandom const& properties);
 
