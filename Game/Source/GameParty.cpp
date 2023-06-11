@@ -98,6 +98,31 @@ bool Battler::UseItem(Item const& item)
 
 			return to_bool(restoredMP);
 		}
+		case 13:
+		{
+			int revivedHP = Revive(item.effect.param1, item.effect.param2);
+
+			if (item.effect.text.size() >= 2)
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					AddSaveData(item.effect.text[0], name, revivedHP) :
+					AddSaveData(item.effect.text[1], name);
+			}
+			else
+			{
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					std::format("{} revived for {} HP!", name, revivedHP) :
+					std::format("{} is fully revived!", name);
+			}
+
+			if (item.general.itemSfx != -1)
+			{
+				app->audio->PlayFx(item.general.itemSfx);
+			}
+
+			return to_bool(revivedHP);
+			break;
+		}
 		default:
 			LOG("Function effect %i not added", item.effect.functionToCall);
 			return false;
@@ -168,6 +193,33 @@ int Battler::RestoreMP(float amount1, float amount2)
 	int MPHealed = currentHP - MPBeforeHealing;
 
 	return MPHealed;
+}
+
+int Battler::Revive(float amount1, float amount2)
+{
+	int maxHP = GetStat(BaseStats::MAX_HP);
+	
+	if (currentHP >= 0)
+		return 0;
+
+	auto GetAmountToAdd = [maxHP](float n)
+	{
+		if (ceilf(n) == n)
+			return static_cast<int>(n);
+		else
+			return static_cast<int>(n * static_cast<float>(maxHP));
+	};
+
+	currentHP += GetAmountToAdd(amount1) + GetAmountToAdd(amount2);
+
+	if (currentHP > maxHP)
+	{
+		currentHP = maxHP;
+	}
+
+	int HPHealed = currentHP;
+
+	return HPHealed;
 }
 
 void Battler::AddStat(int value)
