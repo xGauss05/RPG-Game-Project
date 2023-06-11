@@ -7,7 +7,6 @@
 Scene_Map::Scene_Map(GameParty* party)
 {
 	SetPlayerParty(party);
-	app->audio->RemoveAllFx();
 }
 
 Scene_Map::Scene_Map(std::string const& newMap, GameParty* party)
