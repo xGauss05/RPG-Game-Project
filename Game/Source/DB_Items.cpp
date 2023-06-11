@@ -1,5 +1,6 @@
 #include "App.h"
 #include "DB_Items.h"
+#include "Audio.h"
 #include "TextureManager.h"
 #include "Log.h"
 #include "PugiXml/src/pugixml.hpp"
@@ -15,7 +16,14 @@ Item::GeneralProperties::GeneralProperties(pugi::xml_node const& node)
 	consumable(node.child("consumable").text().as_bool()),
 	scope(static_cast<Scope>(node.child("scope").text().as_int())),
 	ocasion(static_cast<Ocasion>(node.child("ocasion").text().as_int()))
-{}
+{
+	if (node.child("sfxpath")) 
+	{
+		std::string str = node.child("sfxpath").text().as_string();
+		str = "Assets/Audio/Fx/" + str;
+		itemSfx = app->audio->LoadFx(str);
+	}
+}
 
 Item::BattleProperties::BattleProperties(pugi::xml_node const& node)
 	:

@@ -41,6 +41,7 @@ struct Item
 		bool consumable = true;
 		Scope scope = Scope::ONE_ALLY;
 		Ocasion ocasion = Ocasion::ALWAYS;
+		int itemSfx = -1;
 	};
 
 	struct BattleProperties

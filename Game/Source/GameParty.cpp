@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Audio.h"
 #include "GameParty.h"
 #include "TextureManager.h"
 #include "Log.h"
@@ -53,6 +54,11 @@ bool Battler::UseItem(Item const& item)
 					std::format("{}'s HP is fully recovered!", name);
 			}
 
+			if (item.general.itemSfx != -1) 
+			{
+				app->audio->PlayFx(item.general.itemSfx);
+			}
+
 			return to_bool(restoredHP);
 			break;
 		}
@@ -62,15 +68,19 @@ bool Battler::UseItem(Item const& item)
 
 			if (item.effect.text.size() >= 2)
 			{
-				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentMana ?
+				itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
 					AddSaveData(item.effect.text[0], name, restoredMP) :
 					AddSaveData(item.effect.text[1], name);
 			}
 			else
 			{
-				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentMana ?
-					std::format("{} recovers {} HP!", name, restoredMP) :
-					std::format("{}'s HP is fully recovered!", name);
+				itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
+					std::format("{} recovers {} Mana!", name, restoredMP) :
+					std::format("{}'s Mana is fully recovered!", name);
+			}
+			if (item.general.itemSfx != -1) 
+			{
+				app->audio->PlayFx(item.general.itemSfx);
 			}
 
 			return to_bool(restoredMP);
@@ -453,6 +463,7 @@ void GameParty::RemoveItemFromInventory(int itemToRemove, int amountToRemove)
 		if (it->first == itemToRemove)
 		{
 			RemoveItemFromInventory(it, amountToRemove);
+			return;
 		}
 	}
 }
