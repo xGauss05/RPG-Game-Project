@@ -41,49 +41,86 @@ bool Battler::UseItem(Item const& item)
 		{
 			int restoredHP = RestoreHP(item.effect.param1, item.effect.param2);
 
-			if(item.effect.text.size() >= 2)
+			if (restoredHP <= 0)
 			{
-				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
-					AddSaveData(item.effect.text[0], name, restoredHP) :
-					AddSaveData(item.effect.text[1], name);
+				itemTextToDisplay = std::format("It has no effect...");
 			}
 			else
 			{
-				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
-					std::format("{} recovers {} HP!", name, restoredHP) :
-					std::format("{}'s HP is fully recovered!", name);
-			}
+				if (item.effect.text.size() >= 2)
+				{
+					itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+						AddSaveData(item.effect.text[0], name, restoredHP) :
+						AddSaveData(item.effect.text[1], name);
+				}
+				else
+				{
+					itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+						std::format("{} recovers {} HP!", name, restoredHP) :
+						std::format("{}'s HP is fully recovered!", name);
+				}
 
-			if (item.general.itemSfx != -1) 
-			{
-				app->audio->PlayFx(item.general.itemSfx);
+				if (!item.general.sfxPath.empty())
+				{
+					app->audio->PlayFx(item.general.sfxID);
+				}
 			}
 
 			return to_bool(restoredHP);
-			break;
 		}
 		case 12:
 		{
 			int restoredMP = RestoreMP(item.effect.param1, item.effect.param2);
+	
+			if (restoredMP <= 0)
+			{
+				itemTextToDisplay = std::format("It has no effect...");
+			}
+			else
+			{
+				if (item.effect.text.size() >= 2)
+				{
+					itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
+						AddSaveData(item.effect.text[0], name, restoredMP) :
+						AddSaveData(item.effect.text[1], name);
+				}
+				else
+				{
+					itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
+						std::format("{} recovers {} Mana!", name, restoredMP) :
+						std::format("{}'s Mana is fully recovered!", name);
+				}
+				if (!item.general.sfxPath.empty())
+				{
+					app->audio->PlayFx(item.general.sfxID);
+				}
+			}
+
+			return to_bool(restoredMP);
+		}
+		case 13:
+		{
+			int revivedHP = Revive(item.effect.param1, item.effect.param2);
 
 			if (item.effect.text.size() >= 2)
 			{
-				itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
-					AddSaveData(item.effect.text[0], name, restoredMP) :
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					AddSaveData(item.effect.text[0], name, revivedHP) :
 					AddSaveData(item.effect.text[1], name);
 			}
 			else
 			{
-				itemTextToDisplay = GetStat(BaseStats::MAX_MANA) > currentMana ?
-					std::format("{} recovers {} Mana!", name, restoredMP) :
-					std::format("{}'s Mana is fully recovered!", name);
-			}
-			if (item.general.itemSfx != -1) 
-			{
-				app->audio->PlayFx(item.general.itemSfx);
+				itemTextToDisplay = GetStat(BaseStats::MAX_HP) > currentHP ?
+					std::format("{} revived for {} HP!", name, revivedHP) :
+					std::format("{} is fully revived!", name);
 			}
 
-			return to_bool(restoredMP);
+			if (item.general.sfxID != -1)
+			{
+				app->audio->PlayFx(item.general.sfxID);
+			}
+
+			return to_bool(revivedHP);
 			break;
 		}
 		default:
@@ -156,6 +193,33 @@ int Battler::RestoreMP(float amount1, float amount2)
 	int MPHealed = currentHP - MPBeforeHealing;
 
 	return MPHealed;
+}
+
+int Battler::Revive(float amount1, float amount2)
+{
+	int maxHP = GetStat(BaseStats::MAX_HP);
+	
+	if (currentHP >= 0)
+		return 0;
+
+	auto GetAmountToAdd = [maxHP](float n)
+	{
+		if (ceilf(n) == n)
+			return static_cast<int>(n);
+		else
+			return static_cast<int>(n * static_cast<float>(maxHP));
+	};
+
+	currentHP += GetAmountToAdd(amount1) + GetAmountToAdd(amount2);
+
+	if (currentHP > maxHP)
+	{
+		currentHP = maxHP;
+	}
+
+	int HPHealed = currentHP;
+
+	return HPHealed;
 }
 
 void Battler::AddStat(int value)

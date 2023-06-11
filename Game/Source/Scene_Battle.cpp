@@ -74,8 +74,8 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	sfx["Critical"] = app->audio->LoadFx("Fx/S_Battle-AttackCrit.wav");
 	sfx["Block"] = app->audio->LoadFx("Fx/S_Battle-Block.wav");
 	sfx["Run"] = app->audio->LoadFx("Fx/S_Battle-Escape.wav");
-	sfx["Heal"] = app->audio->LoadFx("Fx/S_Battle-Potion-HP.wav");
-	sfx["Revive"] = app->audio->LoadFx("Fx/S_Battle-Potion-Revive.wav");
+	//sfx["Heal"] = app->audio->LoadFx("Fx/S_Battle-Potion-HP.wav");
+	//sfx["Revive"] = app->audio->LoadFx("Fx/S_Battle-Potion-Revive.wav");
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
