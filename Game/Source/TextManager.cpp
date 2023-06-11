@@ -471,11 +471,13 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 	if (textParams.align == AlignTo::ALIGN_CENTER)
 	{
 		int yOffset = fontInUse.lineHeight / 2;
+		int xOffset = 20;
 		for (auto& run : textRuns)
 		{
 			for (auto& letter : run.letter)
 			{
 				letter.position.y -= (yOffset * (textRuns.size() - 1));
+				letter.position.x -= (xOffset * (textRuns.size() - 1));
 			}
 		}
 	}
