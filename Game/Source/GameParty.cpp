@@ -296,7 +296,7 @@ void GameParty::CreateParty()
 			memberToAdd.AddStat(stat.attribute("value").as_int());
 		}
 		memberToAdd.currentHP = memberToAdd.GetStat(BaseStats::MAX_HP);
-		memberToAdd.currentMana = memberToAdd.GetStat(BaseStats::MAX_HP);
+		memberToAdd.currentMana = memberToAdd.GetStat(BaseStats::MAX_MANA);
 		party.emplace_back(memberToAdd);
 	}
 

@@ -4,7 +4,7 @@
 	<portraittexture path="Assets/Textures/Battlers/Antonio_Portrait.png"/>
 	<stats>
 		<maxhp value="100"/>
-		<maxmana value="100"/>
+		<maxmana value="12"/>
 		<attack value="15"/>
 		<defense value="15"/>
 		<specialattack value="12"/>
@@ -18,7 +18,7 @@
 	<portraittexture path="Assets/Textures/Battlers/Sayori_Portrait.png"/>
 	<stats>
 		<maxhp value="100"/>
-		<maxmana value="100"/>
+		<maxmana value="36"/>
 		<attack value="8"/>
 		<defense value="6"/>
 		<specialattack value="25"/>
@@ -32,7 +32,7 @@
 	<portraittexture path="Assets/Textures/Battlers/Yona_Portrait.png"/>
 	<stats>
 		<maxhp value="100"/>
-		<maxmana value="100"/>
+		<maxmana value="8"/>
 		<attack value="25"/>
 		<defense value="5"/>
 		<specialattack value="9"/>
@@ -46,7 +46,7 @@
 	<portraittexture path="Assets/Textures/Battlers/Rocio_Portrait.png"/>
 	<stats>
 		<maxhp value="100"/>
-		<maxmana value="100"/>
+		<maxmana value="32"/>
 		<attack value="8"/>
 		<defense value="12"/>
 		<specialattack value="20"/>

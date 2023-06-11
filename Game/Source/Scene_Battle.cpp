@@ -480,12 +480,21 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 		}
 		case SPECIAL_ATTACK:
 		{
-			text = BattlerAttacking(
-				source,
-				receiver[currentAction.target],
-				BaseStats::SPECIAL_ATTACK,
-				BaseStats::SPECIAL_DEFENSE
-			);
+			if (source.currentMana >= 4) 
+			{
+				text = BattlerAttacking(
+					source,
+					receiver[currentAction.target],
+					BaseStats::SPECIAL_ATTACK,
+					BaseStats::SPECIAL_DEFENSE
+				);
+				source.currentMana -= 4;
+			}
+			else 
+			{
+				text = std::format("{} does not have enough Mana!", source.name);
+			}
+
 			break;
 		}
 		case DEFEND:

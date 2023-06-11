@@ -177,7 +177,7 @@
         <name>MP Potion</name>
         <article>an</article>
         <iconIndex>002</iconIndex>
-        <description>Recovers MP by 10 points.</description>
+        <description>Recovers MP by 8 points.</description>
         <itypeId>1</itypeId> <!-- 1 - Regular Item || 2 - Key Item || 3 - Hidden Item -->
         <price>100</price>
         <consumable>true</consumable>
@@ -203,7 +203,7 @@
         <code>12</code> <!-- Map<int, std::func(void *)> -> Key to the function that it will call. See Button UI for more info -->
         <dataId>0</dataId> <!-- e.g.: Removes a debuff. Which one? The one in this value (e.g.: 1 - poison || 2 - blind...). See the corresponding database.-->
         <value1>0</value1> <!-- Argument 1, if floating point it's a % from 0 to 1 (e.g.: 0.5 == 50%, 1.5 == 150%) -->
-        <value2>10</value2> <!-- Argument 2, if floating point it's a % from 0 to 1 (e.g.: 0.5 == 50%, 1.5 == 150%)  -->
+        <value2>8</value2> <!-- Argument 2, if floating point it's a % from 0 to 1 (e.g.: 0.5 == 50%, 1.5 == 150%)  -->
     </effects>
     <note></note> <!-- Additional comments, mainly for development purposes -->
 </item>
