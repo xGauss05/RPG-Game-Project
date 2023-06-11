@@ -193,6 +193,8 @@ int Audio::LoadFx(std::string_view p)
 	m_PathToLoadedInfo.try_emplace(p, InfoLoadedSFX(availableID, 1));
 	m_IndexToPath[availableID] = p;
 
+	LOG("Loaded %s", p);
+
 	return availableID;
 }
 

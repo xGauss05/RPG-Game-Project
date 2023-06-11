@@ -19,9 +19,8 @@ Item::GeneralProperties::GeneralProperties(pugi::xml_node const& node)
 {
 	if (!node.child("sfxpath").text().empty()) 
 	{
-		std::string str = node.child("sfxpath").text().as_string();
-		str = "Fx/" + str;
-		itemSfx = app->audio->LoadFx(str);
+		sfxPath = "Fx/" + std::string(node.child("sfxpath").text().as_string());
+		sfxID = app->audio->LoadFx(sfxPath);
 	}
 }
 
