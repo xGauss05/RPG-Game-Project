@@ -10,22 +10,25 @@
 class ParticlePool
 {
 public:
+	using Pair_PropertiesAndRandom = std::pair<Particle::Properties, ParticleDB::BluePrint::RandomValues>;
 	explicit ParticlePool(
 		size_t numberOfParticles,
 		ParticleDB const* atlas,
-		ParticleDB::BluePrint name
+		ParticleDB::BluePrintTypes name
 	);
+
+	void SetNewBluePrint(size_t amountOfParticles, Pair_PropertiesAndRandom const& properties);
 
 	void CreateParticle(size_t amount = 1);
 
 private:
 	struct ParticlePrototype
 	{
-		explicit ParticlePrototype(std::pair<Particle::Properties, ParticleDB::RandomValues>  const&name);
+		explicit ParticlePrototype(Pair_PropertiesAndRandom const& name);
 		Particle::Properties GenerateProperties();
 
 		Particle::Properties m_Original;
-		ParticleDB::RandomValues m_Modifiers;
+		ParticleDB::BluePrint::RandomValues m_Modifiers;
 
 		std::mt19937 m_RandomEngine{ (std::random_device())() };
 

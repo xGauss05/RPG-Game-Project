@@ -11,8 +11,10 @@ EnemyTroops::~EnemyTroops()
 {
 	for (auto const& elem : troop)
 	{
-		app->tex->Unload(elem.battlerTextureID);
-		app->tex->Unload(elem.portraitTextureID);
+		if (elem.battlerTextureID)
+			app->tex->Unload(elem.battlerTextureID);
+		if (elem.portraitTextureID)
+			app->tex->Unload(elem.portraitTextureID);
 	}
 }
 

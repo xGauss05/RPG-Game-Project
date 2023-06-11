@@ -3,10 +3,17 @@
 #include <assert.h>
 
 
-ParticlePool::ParticlePool(size_t numberOfParticles, ParticleDB const* atlas, ParticleDB::BluePrint name)
-	: m_ParticlePrototype(atlas->GetBluePrint(name))
+ParticlePool::ParticlePool(size_t numberOfParticles, ParticleDB const* atlas, ParticleDB::BluePrintTypes name)
+	: m_ParticlePrototype(atlas->GetParticlePrototypeFromBluePrint(name))
 {
 	m_Particles.reserve(numberOfParticles);
+}
+
+void ParticlePool::SetNewBluePrint(size_t amountOfParticles, Pair_PropertiesAndRandom const& properties)
+{
+	m_Particles.reserve(amountOfParticles);
+	m_ParticlePrototype.m_Original = properties.first;
+	m_ParticlePrototype.m_Modifiers = properties.second;
 }
 
 void ParticlePool::CreateParticle(size_t amount)
@@ -33,7 +40,7 @@ void ParticlePool::KillParticle(size_t index)
 	std::swap(m_Particles[index], m_Particles[m_AliveParticles]);
 }
 
-ParticlePool::ParticlePrototype::ParticlePrototype(std::pair<Particle::Properties, ParticleDB::RandomValues> const& name)
+ParticlePool::ParticlePrototype::ParticlePrototype(Pair_PropertiesAndRandom const& name)
 	: m_Original(name.first)
 	, m_Modifiers(name.second)
 {
