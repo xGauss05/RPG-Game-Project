@@ -17,10 +17,10 @@ Item::GeneralProperties::GeneralProperties(pugi::xml_node const& node)
 	scope(static_cast<Scope>(node.child("scope").text().as_int())),
 	ocasion(static_cast<Ocasion>(node.child("ocasion").text().as_int()))
 {
-	if (node.child("sfxpath")) 
+	if (!node.child("sfxpath").text().empty()) 
 	{
 		std::string str = node.child("sfxpath").text().as_string();
-		str = "Assets/Audio/Fx/" + str;
+		str = "Fx/" + str;
 		itemSfx = app->audio->LoadFx(str);
 	}
 }

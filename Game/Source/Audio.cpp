@@ -205,6 +205,7 @@ bool Audio::PlayFx(int id, int repeat)
 	if (auto result = m_sfxMap.find(id);
 		result != m_sfxMap.end())
 	{
+		LOG("Playing %i", id);
 		Mix_PlayChannel(-1, result->second, repeat);
 		return true;
 	}
