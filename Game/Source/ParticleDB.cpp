@@ -9,9 +9,10 @@ ParticleDB::ParticleDB()
 	CreateBluePrints();
 }
 
-std::pair<Particle::Properties, ParticleDB::RandomValues> ParticleDB::GetBluePrint(BluePrint name) const
+auto ParticleDB::GetParticlePrototypeFromBluePrint(BluePrintTypes name) const
+	-> std::pair<Particle::Properties, ParticleDB::BluePrint::RandomValues>
 {
-	return m_Data.at(name);
+	return { m_Data[static_cast<int>(name)].m_BaseParticle, m_Data[static_cast<int>(name)].m_RandomProperties };
 }
 
 void ParticleDB::CreateBluePrints()
@@ -19,7 +20,7 @@ void ParticleDB::CreateBluePrints()
 	int textureID = app->tex->Load("Assets/Textures/Particles/Particle.png");
 	auto textureSize = app->tex->GetSize(textureID);
 
-	Particle::Properties p
+	m_Data[static_cast<int>(BluePrintTypes::FIRE)].m_BaseParticle = 
 	{
 		.m_Position = {0, 0},
 		.m_Physics =
@@ -58,7 +59,7 @@ void ParticleDB::CreateBluePrints()
 		.m_FramesLeft = 25
 	};
 
-	RandomValues r =
+	m_Data[static_cast<int>(BluePrintTypes::FIRE)].m_RandomProperties =
 	{
 		.m_MinPosition = { 0, 0 },
 		.m_MaxPosition = {1, 1},
@@ -69,10 +70,4 @@ void ParticleDB::CreateBluePrints()
 		.m_MinSize = { 0, 0 },
 		.m_MaxSize = { 1 , 1}
 	};
-
-	m_Data.try_emplace(
-		BluePrint::FIRE,
-		p,
-		r
-	);
 }
