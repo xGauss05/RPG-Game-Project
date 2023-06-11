@@ -74,8 +74,6 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	sfx["Critical"] = app->audio->LoadFx("Fx/S_Battle-AttackCrit.wav");
 	sfx["Block"] = app->audio->LoadFx("Fx/S_Battle-Block.wav");
 	sfx["Run"] = app->audio->LoadFx("Fx/S_Battle-Escape.wav");
-	//sfx["Heal"] = app->audio->LoadFx("Fx/S_Battle-Potion-HP.wav");
-	//sfx["Revive"] = app->audio->LoadFx("Fx/S_Battle-Potion-Revive.wav");
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 }
@@ -462,7 +460,7 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 		return text;
 	}
 
-	if (receiver[currentAction.target].IsDead())
+	if (currentAction.actionScope != Item::GeneralProperties::Scope::ONE_DEAD_ALLY && receiver[currentAction.target].IsDead())
 	{
 		action = ActionNames::DEFEND;
 	}
@@ -509,6 +507,8 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 			switch (currentAction.actionScope)
 			{
 				using enum Item::GeneralProperties::Scope;
+			case ONE_DEAD_ALLY:
+				receiver[currentAction.target].currentAnimation.y = 0;
 			case ONE_ENEMY:
 			case ONE_ALLY:
 			{

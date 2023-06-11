@@ -90,7 +90,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 		{
 			for (auto const& elem : *currentTargetParty)
 			{
-				if (elem.IsMouseHovering() && !elem.IsDead())
+				bool isDead = (currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY) ? elem.IsDead() : !elem.IsDead();
+				if (elem.IsMouseHovering() && isDead)
 				{
 					currentAction.target = elem.index;
 					actionQueue.push_back(currentAction);
@@ -229,11 +230,13 @@ void Battle_Window_Menu::Draw() const
 	{
 		for (auto const& elem : *currentTargetParty)
 		{
-			if (elem.IsMouseHovering() && !elem.IsDead())
+			bool isDead = (currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY) ? elem.IsDead() : !elem.IsDead();
+			if (elem.IsMouseHovering() && isDead)
 			{
 				iPoint drawPosition = elem.position;
 				drawPosition.x += 20;
 				drawPosition.y += (elem.currentAnimation.h / 2);
+
 				app->render->DrawTexture(DrawParameters(cursor.textureID, drawPosition).Section(&cursor.srcRect));
 			}
 		}
@@ -595,6 +598,7 @@ void Battle_Window_Menu::DrawSingleStat(Battler const& character, BaseStats stat
 void BattleAction::ResetAction()
 {
 	action = ActionNames::NONE;
+	actionScope = Item::GeneralProperties::Scope::ONE_ALLY;
 	source = -1;
 	target = -1;
 	friendlySource = false;
