@@ -101,4 +101,3 @@ public:
 };
 
 #endif //__DB_ITEMS_H__
-

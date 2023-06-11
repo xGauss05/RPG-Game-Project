@@ -115,9 +115,9 @@ bool Battler::UseItem(Item const& item)
 					std::format("{} is fully revived!", name);
 			}
 
-			if (item.general.itemSfx != -1)
+			if (item.general.sfxID != -1)
 			{
-				app->audio->PlayFx(item.general.itemSfx);
+				app->audio->PlayFx(item.general.sfxID);
 			}
 
 			return to_bool(revivedHP);
