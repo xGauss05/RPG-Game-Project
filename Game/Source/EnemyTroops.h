@@ -63,13 +63,13 @@ struct Battler
 
 	std::string GetStatDisplay(BaseStats stat, bool choosingChar = false) const;
 	std::string GetTextToDisplay() const;
-	
+
 	void AddStat(int value);
 
 private:
 	int RestoreHP(float amount1, float amount2);
 	int RestoreMP(float amount1, float amount2);
-
+	int Revive(float amount1, float amount2);
 	int currentXP = 0;
 	std::vector<int> stats;
 	std::vector<int> equipment;
@@ -85,7 +85,7 @@ public:
 	~EnemyTroops();
 
 	void CreateFight(std::string_view nodeName);
-	
+
 
 	std::vector<Battler> troop;
 };
