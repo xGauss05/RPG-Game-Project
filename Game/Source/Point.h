@@ -112,6 +112,14 @@ public:
 		return *this;
 	}
 
+	const Point& operator *=(const Point &v)
+	{
+		x *= v.x;
+		y *= v.y;
+
+		return *this;
+	}
+
 	auto operator <=>(const Point &v) const = default;
 
 	// Utils ------------------------------------------------

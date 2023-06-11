@@ -347,16 +347,17 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 	DrawParameters params = textParams.params;
 	iPoint originalPosition = params.position;
 
-	iPoint maxPositon =
+	iPoint maxPosition =
 	{
 		params.section->w + params.section->x,
 		params.section->y + params.section->h
 	};
 
-	// Get starting drawing position
-	params.position = GetAlignPosition(text, params.position, textParams.align, fontInUse, maxPositon);
 	params.position = GetAnchorPosition(params.position, textParams.anchor);
 
+	maxPosition += (params.position - originalPosition);
+	// Get starting drawing position
+	params.position = GetAlignPosition(text, params.position, textParams.align, fontInUse, maxPosition);
 
 	for (auto const& elem : text)
 	{
@@ -393,7 +394,7 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 		newRun.letter.emplace_back(params);
 		newRun.letterRect.push_back(newSection);
-		if (params.position.x + charInfo.rect.w > maxPositon.x)
+		if (params.position.x + charInfo.rect.w > maxPosition.x)
 		{
 			std::deque<DrawParameters> nextLineParameters;
 			std::deque<SDL_Rect> nextLineRects;
@@ -402,7 +403,11 @@ void TextManager::CreateTextRuns(TextParameters const& textParams, int fontId, s
 
 			if (textParams.wrap == TextParameters::WrapMode::SPACE)
 			{
-				auto lastSpace = newRun.text.size() - newRun.text.find_last_of(' ');
+				auto lastSpace = newRun.text.size();
+				if (newRun.text.find_last_not_of(' ') != std::string::npos)
+				{
+					lastSpace -= newRun.text.find_last_of(' ');
+				}
 				text.remove_prefix(newRun.text.find_last_of(' ') + 1);
 				newRun.text.remove_suffix(lastSpace);
 

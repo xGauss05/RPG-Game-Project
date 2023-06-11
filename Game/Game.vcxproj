@@ -98,6 +98,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\Battle_Menu_Inventory.cpp" />
     <ClCompile Include="Source\Battle_Menu_Main.cpp" />
@@ -117,6 +118,9 @@
     <ClCompile Include="Source\Map_Menu_Inventory.cpp" />
     <ClCompile Include="Source\Map_Menu_MainCategories.cpp" />
     <ClCompile Include="Source\Map_Window_Menu.cpp" />
+    <ClCompile Include="Source\ParticleDB.cpp" />
+    <ClCompile Include="Source\ParticleEmitter.cpp" />
+    <ClCompile Include="Source\ParticlePool.cpp" />
     <ClCompile Include="Source\physfs.c" />
     <ClCompile Include="Source\physfs_archiver_7z.c" />
     <ClCompile Include="Source\physfs_archiver_dir.c" />
@@ -180,6 +184,7 @@
     <ClCompile Include="Source\Window_Factory.cpp" />
     <ClCompile Include="Source\Window_List.cpp" />
     <ClInclude Include="Source\AdjacencyGraph.h" />
+    <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\AssetManager.h" />
     <ClInclude Include="Source\Battle_Menu_Inventory.h" />
     <ClInclude Include="Source\Battle_Menu_Main.h" />
@@ -202,6 +207,9 @@
     <ClInclude Include="Source\Map_Menu_MainCategories.h" />
     <ClInclude Include="Source\Map_Window_Menu.h" />
     <ClInclude Include="Source\ObserverPattern.h" />
+    <ClInclude Include="Source\ParticleDB.h" />
+    <ClInclude Include="Source\ParticleEmitter.h" />
+    <ClInclude Include="Source\ParticlePool.h" />
     <ClInclude Include="Source\physfs.h" />
     <ClInclude Include="Source\physfs_casefolding.h" />
     <ClInclude Include="Source\physfs_internal.h" />

@@ -131,6 +131,15 @@
     <ClCompile Include="Source\Battle_Window_Menu.cpp" />
     <ClCompile Include="Source\Battle_Menu_Main.cpp" />
     <ClCompile Include="Source\Battle_Menu_Inventory.cpp" />
+    <ClCompile Include="Source\Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticlePool.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticleDB.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -227,6 +236,15 @@
     <ClInclude Include="Source\Battle_Window_Menu.h" />
     <ClInclude Include="Source\Battle_Menu_Main.h" />
     <ClInclude Include="Source\Battle_Menu_Inventory.h" />
+    <ClInclude Include="Source\Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticlePool.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticleDB.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />
@@ -243,6 +261,9 @@
   <ItemGroup>
     <Filter Include="PhysFS">
       <UniqueIdentifier>{e431b13d-2166-498c-abe0-9654a9b724fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{0bcd51b1-a92a-44ef-b9d8-bba213e729f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
