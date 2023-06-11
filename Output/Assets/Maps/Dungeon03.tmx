@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="4" nextobjectid="46">
+ <properties>
+  <property name="RandomEncounters" type="bool" value="true"/>
+ </properties>
  <tileset firstgid="1" source="Dungeon.tsx"/>
- <tileset firstgid="65" source="Balphogor.tsx"/>
- <tileset firstgid="66" source="NPCs.tsx"/>
- <tileset firstgid="66" source="../Textures/Events/Static/Events.tsx"/>
+ <tileset firstgid="65" source="../Textures/Events/Static/Events.tsx"/>
  <layer id="1" name="Capa de patrones 1" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -74,7 +75,7 @@
     </property>
    </properties>
   </object>
-  <object id="32" name="Balphogor" type="Event Boss Combat" gid="69" x="480" y="384" width="48" height="96">
+  <object id="32" name="Balphogor" type="Event Boss Combat" gid="68" x="480" y="384" width="48" height="96">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>

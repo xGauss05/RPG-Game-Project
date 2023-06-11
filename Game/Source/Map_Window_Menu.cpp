@@ -194,9 +194,9 @@ void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 	iPoint allyPosition(170 - camera.x, i - camera.y + 55);
 	iPoint hpBarPosition(140 - camera.x, i - camera.y + 80);
 
-	DrawHPBar(character.battlerTextureID, character.currentHP, character.GetStat(BaseStats::MAX_HP), hpBarPosition);
+	DrawHPBar(character.portraitTextureID, character.currentHP, character.GetStat(BaseStats::MAX_HP), hpBarPosition);
 
-	DrawParameters drawAlly(character.battlerTextureID, allyPosition);
+	DrawParameters drawAlly(character.portraitTextureID, allyPosition);
 
 	if (character.currentHP <= 0)
 	{
@@ -204,7 +204,7 @@ void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 
 		int w = 0;
 		int h = 0;
-		app->tex->GetSize(app->GetTexture(character.battlerTextureID), w, h);
+		app->tex->GetSize(app->GetTexture(character.portraitTextureID), w, h);
 
 		SDL_Point pivot = {
 			w / 2,
@@ -214,7 +214,7 @@ void Map_Window_Menu::DrawPlayerStats(Battler const& character, int i) const
 		drawAlly.Center(pivot);
 	}
 
-	drawAlly.Scale(fPoint(3.0f, 3.0f));
+	//drawAlly.Scale(fPoint(3.0f, 3.0f));
 
 	app->render->DrawTexture(drawAlly);
 
