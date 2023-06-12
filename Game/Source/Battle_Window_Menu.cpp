@@ -445,7 +445,6 @@ void Battle_Window_Menu::Draw() const
 					(currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY)
 					? elem.IsDead()
 					: !elem.IsDead();
-
 				if (cursor.currentSelection == i && isDead)
 				{
 					iPoint drawPosition = elem.position;
