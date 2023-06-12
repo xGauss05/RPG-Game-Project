@@ -1,0 +1,7 @@
+<dialog voicetype="mid" name="Sayori">
+  <message1 text="Oh, konnichiwa Antonio-san!" next="message2"/>
+  <message2 text="Huh? What awe you saying?" next="message3"/>
+  <message3 text="You want to know how my taiw moves?" next="confirmation" yes="message4" no="message5"/>
+  <message4 text="... *stawes intently at the scween*" next="end"/>
+  <message4 text="Oh, then it is my misundewstanding." next="end"/>
+</dialog>
