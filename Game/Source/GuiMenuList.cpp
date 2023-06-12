@@ -325,25 +325,33 @@ void GuiMenuList::HandleInput()
 	{
 		HandleControllerConfirm();
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-	{
-		closeAllMenus = true;
-	}
-	else if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	else if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
 		SelectAndScrollUpIfNeeded(1);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
 		SelectAndScrollDownIfNeeded(1);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+
+	else if (app->input->controllerCount > 0)
 	{
-		SelectAndScrollDownIfNeeded(5);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
-	{
-		SelectAndScrollUpIfNeeded(5);
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_DOWN || app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_DOWN)
+		{
+			SelectAndScrollUpIfNeeded(1);
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_DOWN || app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_DOWN)
+		{
+			SelectAndScrollDownIfNeeded(1);
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			HandleControllerConfirm();
+		}
+		else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		{
+			HandleRightButtonClick();
+		}
 	}
 
 	lastTimeSinceScrolled++;

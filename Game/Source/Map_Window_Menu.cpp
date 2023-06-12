@@ -56,6 +56,11 @@ bool Map_Window_Menu::Update()
 			bInStatsMenu = false;
 		}
 
+		if (app->input->controllerCount > 0 && app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
+		{
+			bInStatsMenu = false;
+		}
+
 		return true;
 	}
 

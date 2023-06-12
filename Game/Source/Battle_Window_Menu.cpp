@@ -125,6 +125,10 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 		{
 			cursor.enabled = false;
 		}
+		else if (app->input->controllerCount > 0 && app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
+		{
+			cursor.enabled = false;
+		}
 
 		SDL_Rect camera = app->render->GetCamera();
 		iPoint drawPosition = { camera.x * -1, camera.y * -1 };
@@ -199,6 +203,10 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 		statsWindow->Update();
 
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+		{
+			bInStatsMenu = false;
+		}
+		else if (app->input->controllerCount > 0 && app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
 		{
 			bInStatsMenu = false;
 		}
