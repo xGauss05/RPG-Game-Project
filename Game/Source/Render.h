@@ -86,7 +86,6 @@ public:
 
 	// Called each loop iteration
 	bool PreUpdate() final;
-	bool Update(float dt) final;
 	bool PostUpdate() final;
 
 	bool Pause(int phase) final;
@@ -165,26 +164,6 @@ private:
 	// -------- Vsync
 	bool vSyncActive = false;
 	bool vSyncOnRestart = true;
-
-	// -------- No Vsync
-	// Max fps we want to achieve
-	uint32 fpsTarget = 60;
-	
-	// -------- Required for capping FPS
-	// Delay required in ms to get the fps target
-	uint32 ticksForNextFrame = 0;
-	// Last tick in which we updated render
-	uint32 renderLastTime = 0;
-	// Remember last fps for the 30fps toggle option
-	uint32 prevFPSTarget = 0;
-	
-	// -------- Required for showing FPS on screen
-	// FPS on last update
-	uint32 fps = 0;
-	// Frames since last tick
-	uint32 fpsCounter = 0;
-	// Last tick in which we updated the current fps
-	uint32 fpsLast = 0;
 };
 
 #endif // __RENDER_H__

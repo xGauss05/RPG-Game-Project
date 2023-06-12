@@ -67,18 +67,24 @@ void Player::Create()
 		size.y
 	};
 
+	directionMeaning.try_emplace(UP, 0, -1);
+	directionMeaning.try_emplace(DOWN, 0, 1);
+	directionMeaning.try_emplace(LEFT, -1, 0);
+	directionMeaning.try_emplace(RIGHT, 1, 0);
+
 	actionControls.emplace(SDL_SCANCODE_E, INTERACT_REPEAT);
-	actionControls.emplace(SDL_SCANCODE_SPACE, INTERACT_REPEAT);
 
 	movementControls.emplace(SDL_SCANCODE_W, FORWARD_REPEAT);
 	movementControls.emplace(SDL_SCANCODE_S, BACKWARD_REPEAT);
 	movementControls.emplace(SDL_SCANCODE_A, LEFT_REPEAT);
 	movementControls.emplace(SDL_SCANCODE_D, RIGHT_REPEAT);
-
-	directionMeaning.try_emplace(UP, 0, -1);
-	directionMeaning.try_emplace(DOWN, 0, 1);
-	directionMeaning.try_emplace(LEFT, -1, 0);
-	directionMeaning.try_emplace(RIGHT, 1, 0);
+	 
+	// Controller equivalent :/
+	actionControls.emplace(SDL_SCANCODE_SPACE, INTERACT_REPEAT);
+	movementControls.emplace(SDL_SCANCODE_UP, FORWARD_REPEAT);
+	movementControls.emplace(SDL_SCANCODE_DOWN, BACKWARD_REPEAT);
+	movementControls.emplace(SDL_SCANCODE_LEFT, LEFT_REPEAT);
+	movementControls.emplace(SDL_SCANCODE_RIGHT, RIGHT_REPEAT);
 }
 
 Player::PlayerAction Player::HandleInput()
@@ -95,6 +101,8 @@ Player::PlayerAction Player::HandleInput()
 	auto IsNotZero = [](uint16_t num) -> bool { return ((num | (~num + 1)) >> (sizeof(num) * CHAR_BIT - 1)) & 1; };
 	auto IsZero = [IsNotZero](uint16_t num) { return !IsNotZero(num); };
 
+	std::set<Player::PlayerMoveControlsToBind> directionStillPressed;
+
 	// Check keys pressed and add/remove them to the collection
 	// If it's a new input (aka Key_Down), put it on top of the direction stack
 	for (uint16_t movementKeysFlags = GetMovementKeysPressed(), repeatHelper = FORWARD_REPEAT;
@@ -109,18 +117,20 @@ Player::PlayerAction Player::HandleInput()
 		}
 		if (pressedKeys & ANY_KEY_REPEAT)
 		{
+			directionStillPressed.emplace(CastToEnum(ANY_KEY_REPEAT & repeatHelper));
 			movementKeysPressed.insert(CastToEnum(ANY_KEY_REPEAT & repeatHelper));
 		}
 		else if (pressedKeys & ANY_KEY_DOWN)
 		{
+			directionStillPressed.emplace(CastToEnum((ANY_KEY_DOWN & repeatHelper) >> 1));
 			directionQueue.push(static_cast<Direction>((ANY_KEY_DOWN & repeatHelper) >> 1));
 			movementKeysPressed.insert(CastToEnum((ANY_KEY_DOWN & repeatHelper) >> 1));
 		}
-		else if (pressedKeys & ANY_KEY_UP)
+		else if ((pressedKeys & ANY_KEY_UP) && !directionStillPressed.contains(CastToEnum((ANY_KEY_UP & repeatHelper) >> 2)))
 		{
 			movementKeysPressed.erase(CastToEnum((ANY_KEY_UP & repeatHelper) >> 2));
 		}
-		else if (pressedKeys & ANY_KEY_IDLE)
+		else if ((pressedKeys & ANY_KEY_IDLE) && !directionStillPressed.contains(CastToEnum((ANY_KEY_IDLE & repeatHelper) >> 3)))
 		{
 			movementKeysPressed.erase(CastToEnum((ANY_KEY_IDLE & repeatHelper) >> 3));
 		}

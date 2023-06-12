@@ -50,7 +50,8 @@ bool Map_Window_Menu::Update()
 	{
 		statsWindow->Update();
 
-		if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+		if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN
+			|| app->input->GetKey(SDL_SCANCODE_X) == KeyState::KEY_DOWN) // Controller equivalent :/
 		{
 			bInStatsMenu = false;
 		}

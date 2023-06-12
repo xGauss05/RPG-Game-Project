@@ -317,19 +317,52 @@ void GuiMenuList::HandleInput()
 	{
 		HandleLeftClick();
 	}
-	else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 	{
 		HandleRightButtonClick();
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) // Controller equivalent :/
+	{
+		HandleControllerConfirm();
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		closeAllMenus = true;
+	}
+	else if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	{
+		SelectAndScrollUpIfNeeded(1);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	{
+		SelectAndScrollDownIfNeeded(1);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		SelectAndScrollDownIfNeeded(5);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+	{
+		SelectAndScrollUpIfNeeded(5);
 	}
 
 	lastTimeSinceScrolled++;
 
 	if (lastTimeSinceScrolled >= 10)
 		HandleWheelScroll();
+}
+
+void GuiMenuList::HandleControllerConfirm()
+{
+	if (items.empty() || (currentItemSelected < 0 && currentItemSelected >= items.size()))
+	{
+		return;
+	}
+
+	SetLastClick(currentItemSelected);
+	currentAlpha = 195;
+	alphaDirection = -1;
+	HandleLeftButtonClick(currentItemSelected);
 }
 
 void GuiMenuList::HandleLeftClick()

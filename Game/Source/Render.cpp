@@ -11,9 +11,6 @@
 #include <algorithm>
 #include <numbers>		// std::numbers::pi
 
-constexpr auto ticks_for_next_frame = (1000 / 60);
-constexpr auto fps_UI_seconds_interval = 1.0f;
-
 Render::Render() : Module()
 {
 	name = "render";
@@ -61,8 +58,6 @@ bool Render::Awake(pugi::xml_node& config)
 			.w = app->win->GetSurface()->w,
 			.h = app->win->GetSurface()->h
 		};
-	
-	ticksForNextFrame = 1000/fpsTarget;
 
 	return true;
 }
@@ -80,41 +75,7 @@ bool Render::Start()
 // Called each loop iteration
 bool Render::PreUpdate()
 {
-	if(!vSyncActive)
-	{
-		while(SDL_GetTicks() - renderLastTime < ticksForNextFrame)
-		{
-			SDL_Delay(1);
-		}
-	}
-	
 	SDL_RenderClear(renderer.get());
-	return true;
-}
-
-bool Render::Update(float dt)
-{
-	using enum KeyState;
-
-	int cameraSpeed = 1;
-	if(app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
-		cameraSpeed *= 10;
-	if(app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		cameraSpeed *= 100;
-	if(app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-		cameraSpeed *= 250;
-
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		camera.y += cameraSpeed;
-
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		camera.y -= cameraSpeed;
-
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		camera.x += cameraSpeed;
-
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		camera.x -= cameraSpeed;
 
 	return true;
 }
@@ -130,41 +91,6 @@ bool Render::PostUpdate()
 	
 	SDL_RenderPresent(renderer.get());
 	
-	// I -> increases fps target || O ->decreases fps target
-	/*if(app->input->GetKey(SDL_SCANCODE_I) == KeyState::KEY_DOWN && fpsTarget < 1000)
-	{
-		fpsTarget += 10;
-		ticksForNextFrame = 1000/fpsTarget;
-	}
-	if(app->input->GetKey(SDL_SCANCODE_K) == KeyState::KEY_DOWN && fpsTarget > 10)
-	{
-		fpsTarget -= 10;
-		ticksForNextFrame = 1000/fpsTarget;
-	}*/
-	if(app->input->GetKey(SDL_SCANCODE_F11) == KeyState::KEY_DOWN)
-	{
-		if(fpsTarget != 30)
-		{
-			prevFPSTarget = fpsTarget;
-			fpsTarget = 30;
-		}
-		else
-		{
-			fpsTarget = prevFPSTarget;
-			prevFPSTarget = 30;
-		}
-		ticksForNextFrame = 1000/fpsTarget;
-	}
-	
-	if(!vSyncActive) renderLastTime = SDL_GetTicks();
-	
-	fpsCounter++;
-	if(fpsLast < SDL_GetTicks() - static_cast<uint32>(fps_UI_seconds_interval * 1000))
-	{
-		fpsLast = SDL_GetTicks();
-		fps = fpsCounter;
-		fpsCounter = 0;
-	}
 	return true;
 }
 
@@ -369,7 +295,6 @@ bool Render::LoadState(pugi::xml_node const &data)
 {
 	
 	vSyncOnRestart = data.child("graphics").attribute("vsync").as_bool();
-	fpsTarget = data.child("graphics").attribute("targetfps").as_uint();
 
 	return true;
 }
@@ -380,7 +305,6 @@ pugi::xml_node Render::SaveState(pugi::xml_node const &data) const
 	node = node.append_child("render");
 	
 	node.append_child("graphics").append_attribute("vsync").set_value(vSyncOnRestart ? "true" : "false");
-	node.child("graphics").append_attribute("targetfps").set_value(std::to_string(fpsTarget).c_str());
 
 	return node;
 }

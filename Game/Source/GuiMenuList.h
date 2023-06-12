@@ -65,6 +65,7 @@ protected:
 private:
 	void HandleInput();
 	void HandleLeftClick();
+	void HandleControllerConfirm();
 	void HandleWheelScroll();
 	void SelectAndScrollUpIfNeeded(int amount = 1);
 	void SelectAndScrollDownIfNeeded(int amount = 1);
