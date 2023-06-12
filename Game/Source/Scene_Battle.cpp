@@ -353,6 +353,10 @@ void Scene_Battle::UpdatePlayerInputText()
 
 bool Scene_Battle::IsAdvanceTextButtonDown() const
 {
+	if (app->input->controllerCount > 0)
+	{
+		return app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN;
+	}
 	return (app->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_DOWN || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN);
 }
 

@@ -86,14 +86,188 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 
 	if (cursor.enabled)
 	{
-		if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+		if (app->input->controllerCount <= 0)
 		{
-			for (auto const& elem : *currentTargetParty)
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
-				bool isDead = (currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY) ? elem.IsDead() : !elem.IsDead();
-				if (elem.IsMouseHovering() && isDead)
+				for (auto const& elem : *currentTargetParty)
 				{
-					currentAction.target = elem.index;
+					bool isDead =
+						(currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY)
+						? elem.IsDead()
+						: !elem.IsDead();
+
+					if (elem.IsMouseHovering() && isDead)
+					{
+						currentAction.target = elem.index;
+						actionQueue.push_back(currentAction);
+						cursor.enabled = false;
+						currentAction.ResetAction();
+
+						currentSource = GetNextBattler();
+						currentAction.source = currentSource;
+
+						if (currentSource == -1)
+						{
+							bInputCompleted = true;
+						}
+						else
+						{
+							while (menuLogic.At(currentActivePanel).value != MenuWindows::FIGHT)
+							{
+								currentActivePanel = panelHistory.top();
+								panelHistory.pop();
+							}
+
+							panels[currentActivePanel]->SetActive(true);
+							panels[currentActivePanel]->Start();
+						}
+
+						return { true, actionQueue.back() };
+					}
+				}
+			}
+			else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
+			{
+				cursor.enabled = false;
+			}
+		}
+		else
+		{
+			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KeyState::KEY_DOWN)
+			{
+				bool found = false;
+				for (int i = cursor.currentSelection - 1; i >= 0; i--)
+				{
+					switch (currentAction.actionScope)
+					{
+						case Item::GeneralProperties::Scope::ONE_DEAD_ALLY:
+						{
+							if (currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								found = true;
+								break;
+							}
+						}
+						case Item::GeneralProperties::Scope::ONE_ENEMY:
+						case Item::GeneralProperties::Scope::ONE_ALLY:
+						{
+							if (!currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								found = true;
+								break;
+							}
+						}
+						default:
+							break;
+					}
+				}
+				if (!found)
+				{
+					for (int i = currentTargetParty->size() - 1; i > cursor.currentSelection; i--)
+					{
+						switch (currentAction.actionScope)
+						{
+						case Item::GeneralProperties::Scope::ONE_DEAD_ALLY:
+						{
+							if (currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								break;
+							}
+						}
+						case Item::GeneralProperties::Scope::ONE_ENEMY:
+						case Item::GeneralProperties::Scope::ONE_ALLY:
+						{
+							if (!currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								break;
+							}
+						}
+						default:
+							break;
+						}
+					}
+				}
+			}
+			else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KeyState::KEY_DOWN)
+			{
+				bool found = false;
+				for (int i = cursor.currentSelection + 1; i < currentTargetParty->size(); i++)
+				{
+					switch (currentAction.actionScope)
+					{
+						case Item::GeneralProperties::Scope::ONE_DEAD_ALLY:
+						{
+							if (currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								found = true;
+								break;
+							}
+						}
+						case Item::GeneralProperties::Scope::ONE_ENEMY:
+						case Item::GeneralProperties::Scope::ONE_ALLY:
+						{
+							if (!currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								found = true;
+								break;
+							}
+						}
+						default:
+							break;
+					}
+				}
+				if (!found)
+				{
+					for (int i = 0; i < cursor.currentSelection; i++)
+					{
+						switch (currentAction.actionScope)
+						{
+						case Item::GeneralProperties::Scope::ONE_DEAD_ALLY:
+						{
+							if (currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								break;
+							}
+						}
+						case Item::GeneralProperties::Scope::ONE_ENEMY:
+						case Item::GeneralProperties::Scope::ONE_ALLY:
+						{
+							if (!currentTargetParty->at(i).IsDead())
+							{
+								cursor.currentSelection = i;
+								break;
+							}
+						}
+						default:
+							break;
+						}
+					}
+				}
+			}
+			else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
+			{
+
+				if (cursor.currentSelection == -1)
+				{
+					return { false, currentAction };
+				}
+
+				bool isDead =
+					(currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY)
+					? currentTargetParty->at(cursor.currentSelection).IsDead()
+					: !currentTargetParty->at(cursor.currentSelection).IsDead();
+
+				if (isDead)
+				{
+					currentAction.target = cursor.currentSelection;
 					actionQueue.push_back(currentAction);
 					cursor.enabled = false;
 					currentAction.ResetAction();
@@ -120,14 +294,10 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 					return { true, actionQueue.back() };
 				}
 			}
-		}
-		else if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
-		{
-			cursor.enabled = false;
-		}
-		else if (app->input->controllerCount > 0 && app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
-		{
-			cursor.enabled = false;
+			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
+			{
+				cursor.enabled = false;
+			}
 		}
 
 		SDL_Rect camera = app->render->GetCamera();
@@ -236,20 +406,41 @@ void Battle_Window_Menu::Draw() const
 
 	if (cursor.enabled)
 	{
-		for (auto const& elem : *currentTargetParty)
+		if(app->input->controllerCount <= 0)
 		{
-			bool isDead = (currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY) ? elem.IsDead() : !elem.IsDead();
-			if (elem.IsMouseHovering() && isDead)
+			for (auto const& elem : *currentTargetParty)
 			{
-				iPoint drawPosition = elem.position;
-				drawPosition.x += 20;
-				drawPosition.y += (elem.currentAnimation.h / 2);
+				bool isDead = (currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY) ? elem.IsDead() : !elem.IsDead();
+				if (elem.IsMouseHovering() && isDead)
+				{
+					iPoint drawPosition = elem.position;
+					drawPosition.x += 20;
+					drawPosition.y += (elem.currentAnimation.h / 2);
 
-				app->render->DrawTexture(DrawParameters(cursor.textureID, drawPosition).Section(&cursor.srcRect));
+					app->render->DrawTexture(DrawParameters(cursor.textureID, drawPosition).Section(&cursor.srcRect));
+				}
 			}
 		}
+		else
+		{
+			for (int i = 0; auto const& elem : *currentTargetParty)
+			{
+				bool isDead =
+					(currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY)
+					? elem.IsDead()
+					: !elem.IsDead();
 
+				if (cursor.currentSelection == i && isDead)
+				{
+					iPoint drawPosition = elem.position;
+					drawPosition.x += 20;
+					drawPosition.y += (elem.currentAnimation.h / 2);
 
+					app->render->DrawTexture(DrawParameters(cursor.textureID, drawPosition).Section(&cursor.srcRect));
+				}
+				i++;
+			}
+		}
 	}
 	else
 	{
@@ -442,6 +633,7 @@ void Battle_Window_Menu::GoToNextPanel()
 			textureSize.y
 		};
 		cursor.actionIconTexture = item.textureID;
+		cursor.currentSelection = -1;
 
 		cursor.enabled = true;
 	}
