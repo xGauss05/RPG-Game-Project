@@ -48,4 +48,6 @@ fPoint Particle::Properties::Physics::Parameters::GetLerp(float dt)
 				dt
 			),
 	};
+
+	return m_Current;
 }

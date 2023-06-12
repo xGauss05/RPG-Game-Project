@@ -56,7 +56,7 @@ void ParticleDB::CreateBluePrints()
 					.m_End = {255, 0, 0, 0},
 				}
 			},
-			.m_FramesLeft = 25
+			.m_FramesAlive = 25
 		},
 		{
 			.m_MinPosition = { 0, 0 },
