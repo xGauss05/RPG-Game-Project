@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="48" tileheight="48" infinite="0" nextlayerid="12" nextobjectid="86">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="144" height="64" tilewidth="48" tileheight="48" infinite="0" nextlayerid="12" nextobjectid="87">
  <properties>
   <property name="RandomEncounters" type="bool" value="false"/>
  </properties>
@@ -147,18 +147,8 @@
  <objectgroup id="9" name="Interactible" class="Layer of Events">
   <object id="28" name="To Market Left" type="Event Teleport" x="672" y="2112" width="144" height="48">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
-      <property name="Destination X" type="int" value="5"/>
-      <property name="Destination Y" type="int" value="11"/>
-     </properties>
-    </property>
+    <property name="Base" type="class"/>
+    <property name="Destination" type="class"/>
    </properties>
   </object>
   <object id="39" name="Sign_Tall" type="Event NPC" gid="268" x="2496" y="2064" width="48" height="144">
@@ -213,23 +203,13 @@
   <object id="70" name="Chest1" type="Event Chest" gid="261" x="384" y="1872" width="48" height="48">
    <properties>
     <property name="Base" value=""/>
-    <property name="Loot1" type="class" propertytype="Helper Loot">
-     <properties>
-      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
-      <property name="Quantity" type="int" value="1"/>
-     </properties>
-    </property>
+    <property name="Loot1" type="class"/>
    </properties>
   </object>
   <object id="71" name="Chest1" type="Event Chest" gid="261" x="1296" y="768" width="48" height="48">
    <properties>
     <property name="Base" value=""/>
-    <property name="Loot1" type="class" propertytype="Helper Loot">
-     <properties>
-      <property name="Item" propertytype="Helper Items" value="Bottled Fairy"/>
-      <property name="Quantity" type="int" value="2"/>
-     </properties>
-    </property>
+    <property name="Loot1" type="class"/>
    </properties>
   </object>
   <object id="72" name="NPC_Generic_02" type="Event NPC" gid="263" x="1920" y="1008" width="48" height="96">
@@ -238,10 +218,10 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
   </object>
-  <object id="73" name="NPC_Generic_01" type="Event NPC" gid="263" x="1008" y="1440" width="48" height="96">
+  <object id="73" name="NPC_Generic_04" type="Event NPC" gid="263" x="1008" y="1440" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC04.xml"/>
    </properties>
   </object>
   <object id="74" name="NPC_Generic_01" type="Event NPC" gid="263" x="1104" y="2448" width="48" height="96">
@@ -265,12 +245,7 @@
   <object id="77" name="Chest1" type="Event Chest" gid="261" x="3216" y="1392" width="48" height="48">
    <properties>
     <property name="Base" value=""/>
-    <property name="Loot1" type="class" propertytype="Helper Loot">
-     <properties>
-      <property name="Item" propertytype="Helper Items" value="HP Potion"/>
-      <property name="Quantity" type="int" value="1"/>
-     </properties>
-    </property>
+    <property name="Loot1" type="class"/>
    </properties>
   </object>
   <object id="78" name="NPC_Generic_02" type="Event NPC" gid="263" x="4128" y="1200" width="48" height="96">
@@ -279,10 +254,10 @@
     <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC02.xml"/>
    </properties>
   </object>
-  <object id="79" name="NPC_Generic_01" type="Event NPC" gid="263" x="4464" y="2064" width="48" height="96">
+  <object id="79" name="NPC_Generic_03" type="Event NPC" gid="263" x="4464" y="2064" width="48" height="96">
    <properties>
     <property name="Base" value=""/>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC01.xml"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/NPC03.xml"/>
    </properties>
   </object>
   <object id="80" name="Sign_Small" type="Event NPC" gid="267" x="5808" y="2112" width="48" height="48">
@@ -293,66 +268,32 @@
   </object>
   <object id="82" name="To Market Left" type="Event Teleport" x="1632" y="2112" width="144" height="48">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Market"/>
-      <property name="Destination X" type="int" value="25"/>
-      <property name="Destination Y" type="int" value="11"/>
-     </properties>
-    </property>
+    <property name="Base" type="class"/>
+    <property name="Destination" type="class"/>
    </properties>
   </object>
   <object id="83" name="To Airport" type="Event Teleport" x="1776" y="2832" width="768" height="96">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Airport"/>
-      <property name="Destination X" type="int" value="14"/>
-      <property name="Destination Y" type="int" value="3"/>
-     </properties>
-    </property>
+    <property name="Base" type="class"/>
+    <property name="Destination" type="class"/>
    </properties>
   </object>
   <object id="84" name="To Lab Exterior" type="Event Teleport" x="3744" y="384" width="336" height="96">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Lab_Exterior"/>
-      <property name="Destination X" type="int" value="16"/>
-      <property name="Destination Y" type="int" value="13"/>
-     </properties>
-    </property>
+    <property name="Base" type="class"/>
+    <property name="Destination" type="class"/>
    </properties>
   </object>
   <object id="85" name="To Dungeon" type="Event Teleport" x="5280" y="1968" width="672" height="96">
    <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
-     </properties>
-    </property>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="5"/>
-      <property name="Destination Y" type="int" value="11"/>
-     </properties>
-    </property>
+    <property name="Base" type="class"/>
+    <property name="Destination" type="class"/>
+   </properties>
+  </object>
+  <object id="86" name="Sayori" type="Event NPC" gid="272" x="2736" y="624" width="48" height="96">
+   <properties>
+    <property name="Base" value=""/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Sayori01.xml"/>
    </properties>
   </object>
  </objectgroup>
