@@ -5,8 +5,11 @@
 #include "GameParty.h"
 #include "EnemyTroops.h"
 
+#include "ParticleDB.h"
+
 #include "Battle_Window_Menu.h"
 #include "GuiSegmentedMessageBox.h"
+
 
 #include <random>
 
@@ -106,6 +109,8 @@ private:
 
     bool bBattleResolved = false;
     int DebugAmount = 0;
+
+    ParticleDB particleDB;
  };
 
 #endif //__SCENE_BATTLE_H__

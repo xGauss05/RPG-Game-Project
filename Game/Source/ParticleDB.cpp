@@ -69,10 +69,35 @@ void ParticleDB::CreateBluePrints()
 			.m_MaxSize = { 1 , 1}
 		}
 	);
+
+	m_Data[static_cast<int>(BluePrintTypes::FIRE)].SetEmitter(
+		{
+			.m_EmissionRate = 10,
+			.m_MinVariance = 0,
+			.m_MaxVariance = 0,
+			.m_MaxAge = 50,
+			.m_AmountOfParticles = 50
+		}
+	);
+}
+
+ParticleDB::BluePrint ParticleDB::GetBluePrint(BluePrintTypes type) const
+{
+	return m_Data.at(static_cast<int>(type));
 }
 
 void ParticleDB::BluePrint::SetParticle(Particle::Properties const& p, RandomValues const& r)
 {
 	m_BaseParticle = p;
 	m_RandomProperties = r;
+}
+
+void ParticleDB::BluePrint::SetEmitter(EmitterProperties const& e)
+{
+	m_EmitterProperties = e;
+}
+
+ParticleDB::BluePrint::EmitterProperties ParticleDB::BluePrint::GetEmitterProperties() const
+{
+	return m_EmitterProperties;
 }

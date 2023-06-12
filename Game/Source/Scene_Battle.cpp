@@ -76,6 +76,11 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	sfx["Run"] = app->audio->LoadFx("Fx/S_Battle-Escape.wav");
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
+
+	for (auto & elem : enemies->troop)
+	{
+		elem.SetParticleEmitters(particleDB);
+	}
 }
 
 Scene_Battle::~Scene_Battle()
@@ -124,7 +129,6 @@ void Scene_Battle::Draw()
 
 	for (auto& elem : enemies->troop)
 	{
-
 		DrawParameters drawEnemy(elem.battlerTextureID, elem.position);
 		drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
 		drawEnemy.Scale(fPoint(2, 2));
@@ -154,6 +158,8 @@ void Scene_Battle::Draw()
 		}
 
 		app->render->DrawTexture(drawEnemy);
+
+		elem.UpdateParticles();
 
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
 	}

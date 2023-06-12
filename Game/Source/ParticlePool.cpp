@@ -23,9 +23,9 @@ void ParticlePool::SetNewBluePrint(size_t amountOfParticles, Pair_PropertiesAndR
 
 void ParticlePool::CreateParticle(size_t amount)
 {
-	if (m_AliveParticles + amount > m_Particles.size())
+	if (m_AliveParticles + amount > m_Particles.capacity())
 	{
-		amount = m_Particles.size() - m_AliveParticles;
+		amount = m_Particles.capacity() - m_AliveParticles;
 	}
 
 	while(amount > 0)
@@ -33,6 +33,17 @@ void ParticlePool::CreateParticle(size_t amount)
 		m_Particles[m_AliveParticles].Init(m_ParticlePrototype.GenerateProperties());
 		m_AliveParticles++;
 		amount--;
+	}
+}
+
+void ParticlePool::Update()
+{
+	for (int i = 0; i < m_AliveParticles; i++)
+	{
+		if (!m_Particles[i].Update())
+		{
+			KillParticle(i);
+		}
 	}
 }
 

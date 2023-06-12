@@ -18,6 +18,8 @@ public:
 
 	void CreateParticle(size_t amount = 1);
 
+	void Update();
+
 private:
 	struct ParticlePrototype
 	{

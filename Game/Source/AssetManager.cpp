@@ -74,7 +74,7 @@ uint AssetManager::LoadData(const char* file, char** buffer) const
 			LOG("Error while reading from file %s: %s\n", file, PHYSFS_getLastError());
 			if (buffer)
 			{
-				delete buffer; //We delete the buffer
+				delete[] *buffer; //We delete the buffer
 				buffer = nullptr;
 			}
 		}

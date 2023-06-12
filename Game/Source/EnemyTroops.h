@@ -1,6 +1,7 @@
 #ifndef __GAME_ENEMY_H__
 #define __GAME_ENEMY_H__
 
+#include "ParticleSystem.h"
 #include "Point.h"
 
 #include <vector>
@@ -66,16 +67,21 @@ struct Battler
 
 	void AddStat(int value);
 
+	void SetParticleEmitters(ParticleDB const& db);
+	bool AreEmittersSet() const;
+	void UpdateParticles();
+
 private:
 	int RestoreHP(float amount1, float amount2);
 	int RestoreMP(float amount1, float amount2);
 	int Revive(float amount1, float amount2);
 	int currentXP = 0;
 	std::vector<int> stats;
-	std::vector<int> equipment;
 	std::vector<int> skills;
 
 	std::string itemTextToDisplay;
+
+	ParticleSystem particles;
 };
 
 class EnemyTroops
@@ -85,7 +91,6 @@ public:
 	~EnemyTroops();
 
 	void CreateFight(std::string_view nodeName);
-
 
 	std::vector<Battler> troop;
 };

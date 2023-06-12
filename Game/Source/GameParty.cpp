@@ -173,6 +173,14 @@ int Battler::RestoreHP(float amount1, float amount2)
 	return HPHealed;
 }
 
+void Battler::SetParticleEmitters(ParticleDB const &db)
+{
+	if(!AreEmittersSet())
+	{
+		particles.AddEmitter(db, ParticleDB::BluePrintTypes::FIRE, position);
+	}
+}
+
 int Battler::RestoreMP(float amount1, float amount2)
 {
 	int maxMP = GetStat(BaseStats::MAX_MANA);
@@ -201,6 +209,11 @@ int Battler::RestoreMP(float amount1, float amount2)
 	return MPHealed;
 }
 
+bool Battler::AreEmittersSet() const
+{
+	return particles.IsValid();
+}
+
 int Battler::Revive(float amount1, float amount2)
 {
 	int maxHP = GetStat(BaseStats::MAX_HP);
@@ -226,6 +239,11 @@ int Battler::Revive(float amount1, float amount2)
 	int HPHealed = currentHP;
 
 	return HPHealed;
+}
+
+void Battler::UpdateParticles()
+{
+	particles.Update();
 }
 
 void Battler::AddStat(int value)

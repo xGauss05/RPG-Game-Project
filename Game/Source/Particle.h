@@ -48,6 +48,8 @@ public:
 
 	void Init(Properties const& data);
 
+	bool Update();
+
 private:
 	Properties m_Data;
 };

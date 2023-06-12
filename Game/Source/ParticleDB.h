@@ -33,18 +33,32 @@ public:
 			fPoint m_MaxSize = { 0, 0 };
 		};
 
+		struct EmitterProperties
+		{
+			int m_EmissionRate = 0;
+			int m_MinVariance = 0;
+			int m_MaxVariance = 0;
+			int m_MaxAge = 0;
+			int m_AmountOfParticles = 0;
+		};
+
 		void SetParticle(Particle::Properties const&, RandomValues const&);
+		void SetEmitter(EmitterProperties const&);
 
 		std::pair<Particle::Properties, RandomValues>
 			GetParticlePrototype() const;
 
+		EmitterProperties GetEmitterProperties() const;
+
 	private:
 		Particle::Properties m_BaseParticle;
 		RandomValues m_RandomProperties;
-
+		EmitterProperties m_EmitterProperties;
 	};
 
 	ParticleDB();
+
+	BluePrint GetBluePrint(BluePrintTypes type) const;
 
 private:
 	void CreateBluePrints();
