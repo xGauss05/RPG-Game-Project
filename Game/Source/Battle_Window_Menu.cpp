@@ -134,10 +134,26 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 		}
 		else
 		{
-			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KeyState::KEY_DOWN)
+			if (cursor.currentSelection == -1)
+			{
+				for (int i = 0; auto const& elem : *currentTargetParty)
+				{
+					bool isDead =
+						(currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY)
+						? elem.IsDead()
+						: !elem.IsDead();
+
+					if (isDead)
+					{
+						cursor.currentSelection = i;
+					}
+					i++;
+				}
+			}
+			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == KeyState::KEY_DOWN)
 			{
 				bool found = false;
-				for (int i = cursor.currentSelection - 1; i >= 0; i--)
+				for (int i = cursor.currentSelection - 1; !found && i >= 0; i--)
 				{
 					switch (currentAction.actionScope)
 					{
@@ -147,8 +163,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							{
 								cursor.currentSelection = i;
 								found = true;
-								break;
 							}
+								break;
 						}
 						case Item::GeneralProperties::Scope::ONE_ENEMY:
 						case Item::GeneralProperties::Scope::ONE_ALLY:
@@ -157,8 +173,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							{
 								cursor.currentSelection = i;
 								found = true;
-								break;
 							}
+								break;
 						}
 						default:
 							break;
@@ -175,8 +191,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							if (currentTargetParty->at(i).IsDead())
 							{
 								cursor.currentSelection = i;
-								break;
 							}
+								break;
 						}
 						case Item::GeneralProperties::Scope::ONE_ENEMY:
 						case Item::GeneralProperties::Scope::ONE_ALLY:
@@ -184,8 +200,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							if (!currentTargetParty->at(i).IsDead())
 							{
 								cursor.currentSelection = i;
-								break;
 							}
+								break;
 						}
 						default:
 							break;
@@ -196,7 +212,7 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 			else if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KeyState::KEY_DOWN)
 			{
 				bool found = false;
-				for (int i = cursor.currentSelection + 1; i < currentTargetParty->size(); i++)
+				for (int i = cursor.currentSelection + 1; !found && i < currentTargetParty->size(); i++)
 				{
 					switch (currentAction.actionScope)
 					{
@@ -206,8 +222,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							{
 								cursor.currentSelection = i;
 								found = true;
-								break;
 							}
+								break;
 						}
 						case Item::GeneralProperties::Scope::ONE_ENEMY:
 						case Item::GeneralProperties::Scope::ONE_ALLY:
@@ -216,8 +232,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							{
 								cursor.currentSelection = i;
 								found = true;
-								break;
 							}
+								break;
 						}
 						default:
 							break;
@@ -234,8 +250,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							if (currentTargetParty->at(i).IsDead())
 							{
 								cursor.currentSelection = i;
-								break;
 							}
+								break;
 						}
 						case Item::GeneralProperties::Scope::ONE_ENEMY:
 						case Item::GeneralProperties::Scope::ONE_ALLY:
@@ -243,8 +259,8 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 							if (!currentTargetParty->at(i).IsDead())
 							{
 								cursor.currentSelection = i;
-								break;
 							}
+								break;
 						}
 						default:
 							break;
@@ -583,6 +599,7 @@ void Battle_Window_Menu::GoToNextPanel()
 
 		currentTargetParty = &enemies->troop;
 		cursor.enabled = true;
+		cursor.currentSelection = -1;
 	}
 	else if (menuLogic.At(currentActivePanel).value == MenuWindows::INVENTORY)
 	{
