@@ -1,4 +1,4 @@
-<dialog voicetype="mid" name="Generic2">
+<dialog voicetype="mid" name="Generic4">
 	<message1 text="Hello there, traveler!" next="message2"/>
 	<message2 text="Do you want to hear a rumor?" next="confirmation" yes="message3" no="message4"/>
 	<message3 text="I'm glad you do! It seems that the demon king likes bathing himself in roses." next="message6" yes="message5" no="message7"/>
