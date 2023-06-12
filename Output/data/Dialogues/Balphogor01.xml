@@ -1,6 +1,6 @@
 <dialog voicetype="low" name="Balphogor" globalswitch="2000" switchtype="SET" value="true">
-  <message1 text="You look like a weeabo" next="message2"/>
-  <message2 text="Now you are trapped here" next="message3"/>
-  <message3 text="I'm going to kick your ass!" next="combat" fightname="boss"/>
+  <message1 text="Hmph, thou seemest like a Japanophile. And thou hast no manners to boot." next="message2"/>
+  <message2 text="In case thou art wondering who is I, that standeth before thee, my name is Balphogor of the Underworld full of the Undead and reigner of all-kinds-of-life... and a bit more! Thou shalt not come back freely from whence thou came." next="message3"/>
+  <message3 text="For I am going to purge the world of rude pathetic beings who do not know their place, such as thee!" next="combat" fightname="boss"/>
   <victory text="If you see this line contact Uri." next="end"/>
 </dialog>
