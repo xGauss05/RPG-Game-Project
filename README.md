@@ -1,8 +1,15 @@
 # Return -A JRPG PARODY-
 
+![logo_studio](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/logo_return.png)
 ## Description
 
 A parody JRPG that combines fantasy and steampunk in a turn-based battle system with the protagonists attempting to return to their own world. The plot revolves around Antonio García López and his best friends, Yonatan Dos Santos (also known as "er Yona"), Rocío Moreno Gómez, and an exchange student named Sayori Sakamoto. They are all students at Colegio Santa Isabel de Almería. The protagonists' main goal is to return to their home world.
+
+![scene0](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/Intro/intro01.png)
+![scene1](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/Intro/intro02.png)
+![scene2](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/Intro/intro03.png)
+![scene3](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/Intro/intro04.png)
+![scene4](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/Intro/intro05.png)
 
 ## Key Features
 - Turn-based battle system
@@ -19,39 +26,36 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 ## Controls
 
 ### Keyboard
-| Key | Description |
-| :----: | :-----------: | 
-| <code>W</code> | Up movement / Menu up | 
-| <code>S</code> | Down movement / Menu down | 
-| <code>A</code> | Left movement | 
-| <code>D</code> | Right movement | 
-| <code>ESC</code> | Pause | 
-| <code>C</code> | Open menu | 
-| <code>E</code> | Interact / Next dialogue |
-| <code>MOUSE LMB</code> | Select button |
-| <code>MOUSE RMB</code> | Return previous menu / Close menu |
+- W: Up movement / Menu up
+- S: Down movement / Menu down
+- A: Left movement
+- D: Right movement
+- ESC: Pause
+- C: Open menu
+- E: Interact / Next dialogue
+- MOUSE LMB: Select button
+- MOUSE RMB: Return previous menu / Close menu
 
 ### Controller (PS4 Layout)
-| Key | Description |
-| :----: | :-----------: | 
-| <code>D-PAD UP</code> | Up movement / Menu up | 
-| <code>D-PAD DOWN</code> | Down movement / Menu down | 
-| <code>D-PAD LEFT</code> | Left movement | 
-| <code>D-PAD RIGHT</code> | Right movement | 
-| <code>OPTIONS</code> | Pause | 
-| <code>SQUARE</code> | Interact / Next dialogue |
-| <code>X</code> | Select button |
+- D-PAD UP: Up movement / Menu up 
+- D-PAD DOWN: Down movement / Menu down
+- D-PAD LEFT: Left movement
+- D-PAD RIGHT: Right movement
+- OPTIONS: Pause
+- SQUARE: Interact / Next dialogue
+- X: Select button
 
 ### Debug options
-| Key | Description |
-| :----: | :-----------: | 
-| <code>F5</code> | Save | 
-| <code>F6</code> | Load | 
-| <code>F7</code> | Toggle windowed | 
-| <code>F8</code> | Toggle full-screen | 
-| <code>F10</code> | Show bounds, position, No-clip | 
-
+- F5: Save
+- F6: Load
+- F7: Toggle windowed
+- F8: Toggle full-screen
+- F10: Show bounds, position, No-clip
+- 
+## Trailer
+*todo*
 ## Developers
+![logo_game](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png)
 
 + [Jonathan Cacay Llanes](https://github.com/xGauss05): Team Lead, Code, Management, Design
 
@@ -72,5 +76,3 @@ A parody JRPG that combines fantasy and steampunk in a turn-based battle system 
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
-
-{AdditionalLicenses}
