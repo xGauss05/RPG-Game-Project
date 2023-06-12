@@ -14,6 +14,6 @@
 	<quest text="I reckon ye might need sum trainin', wanna challenge?" next="confirmation" yes="acceptquest" no="declinequest"/>
 
   <acceptquest text="Aye, let's send those slimy scallywags to Davy Jones' locker!" next="end" questid="6"/>
-  <declinequest text="Ahoy matey, that be a shameful display of cowardice." next="end"/>
+  <declinequest text="Ahoy matey, that be a shameful display o' cowardice." next="end"/>
   
 </dialog>
