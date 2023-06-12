@@ -140,6 +140,12 @@
     <ClCompile Include="Source\ParticleDB.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ParticleEmitter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticleSystem.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EnemyTroops.h" />
@@ -243,6 +249,12 @@
       <Filter>Particles</Filter>
     </ClInclude>
     <ClInclude Include="Source\ParticleDB.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticleEmitter.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticleSystem.h">
       <Filter>Particles</Filter>
     </ClInclude>
   </ItemGroup>

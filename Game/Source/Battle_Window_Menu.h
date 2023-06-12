@@ -85,6 +85,8 @@ private:
 		SDL_Rect srcRect = { 0, 0, 0, 0 };
 		bool enabled = false;
 
+		int currentSelection = -1;
+
 		int battlerTexture = -1;
 		SDL_Rect actionSection = { 0, 0, 0, 0 };
 		GuiSegmentedPanel actionMessage;
