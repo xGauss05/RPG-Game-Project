@@ -80,11 +80,11 @@ void Player::Create()
 	movementControls.emplace(SDL_SCANCODE_D, RIGHT_REPEAT);
 	 
 	// Controller equivalent :/
-	actionControls.emplace(SDL_SCANCODE_SPACE, INTERACT_REPEAT);
-	movementControls.emplace(SDL_SCANCODE_UP, FORWARD_REPEAT);
-	movementControls.emplace(SDL_SCANCODE_DOWN, BACKWARD_REPEAT);
-	movementControls.emplace(SDL_SCANCODE_LEFT, LEFT_REPEAT);
-	movementControls.emplace(SDL_SCANCODE_RIGHT, RIGHT_REPEAT);
+	actionControls.emplace((SDL_Scancode)SDL_CONTROLLER_BUTTON_A, INTERACT_REPEAT);
+	movementControls.emplace((SDL_Scancode)SDL_CONTROLLER_BUTTON_DPAD_UP, FORWARD_REPEAT);
+	movementControls.emplace((SDL_Scancode)SDL_CONTROLLER_BUTTON_DPAD_DOWN, BACKWARD_REPEAT);
+	movementControls.emplace((SDL_Scancode)SDL_CONTROLLER_BUTTON_DPAD_LEFT, LEFT_REPEAT);
+	movementControls.emplace((SDL_Scancode)SDL_CONTROLLER_BUTTON_DPAD_RIGHT, RIGHT_REPEAT);
 }
 
 Player::PlayerAction Player::HandleInput()
@@ -292,21 +292,21 @@ uint16_t Player::GetActionKeysPressed() const
 uint16_t Player::GetKeyState(SDL_Scancode key, uint16_t action) const
 {
 	using enum KeyState;
-	switch (app->input->GetKey(key))
+
+	auto keyPressed = (app->input->controllerCount <= 0) ? app->input->GetKey(key) : app->input->GetControllerKey(0, (SDL_GameControllerButton)key);
+
+	switch (keyPressed)
 	{
 	case KEY_IDLE:
 		return static_cast<uint16_t>(action << 3);
-		break;
 	case KEY_UP:
 		return static_cast<uint16_t>(action << 2);
-		break;
 	case KEY_DOWN:
 		return static_cast<uint16_t>(action << 1);
-		break;
 	case KEY_REPEAT:
 		return action;
-		break;
 	}
+	
 
 	return 0;
 }

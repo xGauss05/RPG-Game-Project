@@ -572,6 +572,15 @@ TransitionScene Scene_Map::Update()
 			if (int buttonClicked = windows.back()->Update();
 				buttonClicked == 200 || buttonClicked == 201)
 			{
+				if (!acceptsInput)
+				{
+					if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
+					{
+						acceptsInput = true;
+					}
+					break;
+				}
+
 				// Remove Yes/No confirmation window
 				windows.pop_back();
 
@@ -648,6 +657,10 @@ TransitionScene Scene_Map::Update()
 				}
 				else if (StrEquals(nextDialogName, "confirmation"))
 				{
+					if (app->input->controllerCount > 0)
+					{
+						acceptsInput = false;
+					}
 					// Create Yes/No window
 					windows.emplace_back(windowFactory->CreateWindow("Confirmation"));
 					state = MapState::ON_MENU_SELECTION;

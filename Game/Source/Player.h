@@ -100,6 +100,7 @@ private:
 	uint16_t GetMovementKeysPressed() const;
 
 	uint16_t GetKeyState(SDL_Scancode key, uint16_t action) const;
+	uint16_t GetKeyState(SDL_GameControllerButton key, uint16_t action) const;
 
 	uint16_t GetActionKeysPressed() const;
 

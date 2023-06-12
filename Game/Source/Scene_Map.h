@@ -137,6 +137,10 @@ private:
 	
 	std::string_view nextFightName = "";
 	std::tuple<EventProperties::GlobalSwitchOnInteract, int, bool> globalSwitchWaiting;
+
+	int confirmationDelay = 0;
+
+	bool acceptsInput = true;
 };
 
 
