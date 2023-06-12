@@ -19,6 +19,8 @@ public:
 				fPoint m_Start = { 0, 0 };
 				fPoint m_Current = { 0, 0 };
 				fPoint m_End = { 0, 0 };
+
+				fPoint GetLerp(float dt);
 			};
 
 			Parameters m_Speed;
@@ -43,7 +45,7 @@ public:
 		fPoint m_Position = { 0, 0 };
 		Physics m_Physics;
 		Rendering m_Texture;
-		float m_FramesLeft = 0;
+		float m_FramesAlive = 0;
 	};
 
 	void Init(Properties const& data);
@@ -52,6 +54,7 @@ public:
 
 private:
 	Properties m_Data;
+	float m_TotalFrames = 0;
 };
 
 #endif //__PARTICLE_H__

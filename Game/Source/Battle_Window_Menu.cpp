@@ -134,6 +134,21 @@ std::pair<bool, BattleAction>  Battle_Window_Menu::Update()
 		}
 		else
 		{
+			if (cursor.currentSelection == -1)
+			{
+				for (int i = 0; auto const& elem : *currentTargetParty)
+				{
+					bool isDead =
+						(currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY)
+						? elem.IsDead()
+						: !elem.IsDead();
+					if (isDead)
+					{
+						cursor.currentSelection = i;
+					}
+				}
+			}
+
 			if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KeyState::KEY_DOWN)
 			{
 				bool found = false;
@@ -429,7 +444,13 @@ void Battle_Window_Menu::Draw() const
 					(currentAction.actionScope == Item::GeneralProperties::Scope::ONE_DEAD_ALLY)
 					? elem.IsDead()
 					: !elem.IsDead();
-
+				if (isDead)
+				{
+					if (cursor.currentSelection == -1)
+					{
+						cursor.currentSelection = i;
+					}
+				}
 				if (cursor.currentSelection == i && isDead)
 				{
 					iPoint drawPosition = elem.position;
