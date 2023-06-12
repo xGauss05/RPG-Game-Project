@@ -1,0 +1,7 @@
+<dialog voicetype="mid" name="Generic2">
+	<message1 text="Greetings traveler..." next="message2"/>
+	<message2 text="Do you wish to hear about something that may aid in your adventures?" next="confirmation" yes="message3" no="message4"/>
+	<message3 text="My pleasure to tell you. East of here lies a dungeon where you may find what you seek." next="message6" yes="message5" no="message7"/>
+	<message4 text="Do come back if you wish to learn about it afterward." next="message6"/>
+	<message5 text="I hope you find what you seek." next="end"/>
+</dialog>
