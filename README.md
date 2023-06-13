@@ -73,8 +73,10 @@ In this story, anyone can identify themselves in this universe. Characters such 
 - F10: Show bounds, position, No-clip
 
 ## Trailer
-*todo*
-  
+CLICK ON THE IMAGE TO WATCH IT !
+
+[<img src="https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/title_bg%20old.png" width="50%">](https://www.youtube.com/watch?v=ku00IwTCamE)
+
 ## Developers
   
 ![logo_game](https://raw.githubusercontent.com/xGauss05/RPG-Game-Project/gh-pages/Output/Assets/Textures/Backgrounds/logo_not_that_pocho_studios.png)
