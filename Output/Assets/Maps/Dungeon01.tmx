@@ -197,7 +197,7 @@
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon02"/>
       <property name="Destination X" type="int" value="9"/>
-      <property name="Destination Y" type="int" value="17"/>
+      <property name="Destination Y" type="int" value="18"/>
      </properties>
     </property>
    </properties>

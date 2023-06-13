@@ -32,5 +32,6 @@ EventTrigger Event_Boss_Combat::OnTrigger()
 
 void Event_Boss_Combat::Create(pugi::xml_node const& node)
 {
+	Sprite::Initialize(node);
 	Event_Base::Initialize(node);
 }

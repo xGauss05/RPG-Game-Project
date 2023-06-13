@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="47">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="60">
  <properties>
   <property name="RandomEncounters" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="Dungeon.tsx"/>
  <tileset firstgid="65" source="../Textures/Events/Static/Events.tsx"/>
+ <layer id="3" name="Tile Layer 2" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,0,0,
+0,44,1,2,3,4,3,4,2,3,4,4,2,3,4,3,5,44,0,0,
+0,44,9,11,11,11,11,11,11,11,11,11,11,11,11,11,13,44,0,0,
+0,44,9,11,11,11,11,11,11,11,11,11,11,11,11,11,21,44,0,0,
+0,44,17,11,11,11,11,11,11,11,11,11,11,11,11,11,13,44,0,0,
+0,44,25,11,11,11,11,11,11,11,11,11,11,11,11,11,21,44,0,0,
+0,44,25,11,11,11,11,11,11,11,11,11,11,11,11,11,29,44,0,0,
+0,44,9,11,11,11,11,11,11,11,11,11,11,11,11,11,13,44,0,0,
+0,44,9,11,11,11,11,11,11,11,11,11,11,11,11,11,21,44,0,0,
+0,44,17,11,11,11,11,11,11,11,11,11,11,11,11,11,13,44,0,0,
+0,44,25,11,11,11,11,11,11,11,11,11,11,11,19,11,21,44,0,0,
+0,44,9,11,11,11,11,11,11,11,11,11,11,11,19,11,13,44,0,0,
+0,44,9,11,11,11,11,11,11,11,11,11,11,11,19,11,21,44,0,0,
+0,44,17,11,11,11,11,11,11,11,11,11,11,11,11,11,29,44,0,0,
+0,44,25,11,11,11,11,11,11,11,11,11,11,11,11,11,29,44,0,0,
+0,44,33,34,35,36,34,19,19,19,19,19,34,35,36,35,37,44,0,0,
+0,44,44,44,44,44,44,42,43,43,43,43,44,44,44,44,44,44,0,0,
+0,0,0,0,0,0,44,42,43,43,43,43,44,0,0,0,0,0,0,0,
+0,0,0,0,0,0,44,42,43,43,43,43,44,0,0,0,0,0,0,0
+</data>
+ </layer>
  <layer id="1" name="Capa de patrones 1" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,0,
-0,0,15,1,2,2,4,2,2,4,2,2,2,2,4,2,2,5,15,0,
-0,0,15,9,19,19,19,19,19,19,19,19,12,10,11,12,19,13,15,0,
-0,0,15,17,19,19,19,19,19,19,19,19,19,18,19,20,19,21,15,0,
-0,0,15,9,19,19,10,11,12,19,19,19,19,26,27,28,19,13,15,0,
-0,0,15,9,19,19,18,19,20,19,19,19,19,19,19,19,19,13,15,0,
-0,0,15,9,19,12,26,27,28,19,19,19,19,19,19,12,19,13,15,0,
-0,0,15,17,19,19,19,19,19,19,19,19,19,19,19,19,19,13,15,0,
-0,0,15,9,19,19,19,19,10,11,12,19,19,19,19,19,19,13,15,0,
-0,0,15,9,19,19,19,19,18,19,20,19,19,19,19,19,19,21,15,0,
-0,0,15,9,19,19,19,19,26,27,28,10,11,12,19,19,19,13,15,0,
-0,0,15,9,19,19,19,19,19,19,19,18,19,20,19,19,19,13,15,0,
-0,0,15,17,19,10,11,12,19,19,19,26,27,28,19,19,19,13,15,0,
-0,0,15,9,19,18,19,20,19,19,19,19,19,19,12,19,19,13,15,0,
-0,0,15,9,19,26,27,28,12,19,19,19,19,19,19,19,19,21,15,0,
-0,0,15,33,34,36,34,34,51,19,19,19,50,34,34,36,34,37,15,0,
-0,0,15,15,15,15,15,15,42,43,43,43,43,15,15,15,15,15,15,0,
-0,0,0,0,0,0,0,15,42,43,43,43,43,15,0,0,0,0,0,0
-</data>
- </layer>
- <layer id="3" name="Tile Layer 2" width="20" height="20">
-  <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -44,137 +46,15 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,63,0,0,0,64,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,63,0,0,0,64,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,84,0,0,0,84,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,84,0,0,0,84,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="2" name="Events" class="Layer of Events">
-  <object id="12" type="Event Door" gid="84" x="384" y="768" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="32" name="Balphogor" type="Event Boss Combat" gid="68" x="480" y="384" width="48" height="96">
-   <properties>
-    <property name="Base" type="class" propertytype="Base Event">
-     <properties>
-      <property name="Dialogue" type="bool" value="true"/>
-      <property name="SFX" value="C:/Users/Victor/Documents/github repositories/RPG-Game-Project/Output/Assets/Audio/Fx/hello_man.wav"/>
-      <property name="Static" type="bool" value="true"/>
-      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
-     </properties>
-    </property>
-    <property name="DialoguePath" type="file" value="../../data/Dialogues/Balphogor01.xml"/>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="1"/>
-      <property name="ID" type="int" value="2000"/>
-      <property name="Set To" type="bool" value="true"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="37" type="Event Door" gid="84" x="384" y="816" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="38" type="Event Door" gid="82" x="432" y="816" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="39" type="Event Door" gid="82" x="432" y="768" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="40" type="Event Door" gid="81" x="480" y="768" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="41" type="Event Door" gid="81" x="480" y="816" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="42" type="Event Door" gid="83" x="528" y="816" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="43" type="Event Door" gid="83" x="528" y="768" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="44" type="Event Door" gid="84" x="576" y="768" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="45" type="Event Door" gid="84" x="576" y="816" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="int" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="2000"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="46" name="To Dungeon01" type="Event Teleport" x="384" y="864" width="240" height="48">
+  <object id="48" name="To Dungeon01" type="Event Teleport" x="336" y="816" width="240" height="96">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
@@ -190,8 +70,81 @@
     </property>
    </properties>
   </object>
+  <object id="50" type="Event Door" gid="81" x="384" y="720" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2000"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="51" type="Event Door" gid="81" x="432" y="720" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2000"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="52" type="Event Door" gid="81" x="480" y="720" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2000"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="55" type="Event Door" gid="81" x="480" y="768" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2000"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="56" type="Event Door" gid="81" x="432" y="768" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2000"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="57" type="Event Door" gid="81" x="384" y="768" width="48" height="48">
+   <properties>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
+      <property name="ID" type="int" value="2000"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
+  <object id="59" name="NPC_Generic_02" type="Event Boss Combat" gid="68" x="432" y="336" width="48" height="96">
+   <properties>
+    <property name="Base" type="class" propertytype="Base Event"/>
+    <property name="DialoguePath" type="file" value="../../data/Dialogues/Balphogor01.xml"/>
+    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
+     <properties>
+      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="1"/>
+      <property name="ID" type="int" value="2000"/>
+      <property name="Set To" type="bool" value="true"/>
+     </properties>
+    </property>
+   </properties>
+  </object>
  </objectgroup>
- <layer id="4" name="Tile Layer 3" width="20" height="20">
+ <layer id="4" name="Tile Layer 3" width="20" height="20" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -209,7 +162,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,84,0,0,0,84,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

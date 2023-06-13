@@ -57,6 +57,15 @@ void Event_Torch::UpdateSubscriber(int id, bool s)
 {
 	state = !state;
 
+	if (state)
+	{
+		SetAnimation(AnimationState::STATE_OFF);
+	}
+	else
+	{
+		SetAnimation(AnimationState::STATE_ON);
+	}
+
 	for (auto const& elem : globalSwitch)
 	{
 		if (elem.functionOnInteract == EventProperties::GlobalSwitchOnInteract::SAME_VALUE_AS_STATE)

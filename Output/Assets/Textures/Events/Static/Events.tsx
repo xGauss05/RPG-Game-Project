@@ -11,7 +11,7 @@
   <properties>
    <property name="Animation" type="class" propertytype="Event Animations"/>
   </properties>
-  <image width="48" height="96" source="Balphogor.png"/>
+  <image width="48" height="96" source="../Balphogor.png"/>
  </tile>
  <tile id="5">
   <properties>

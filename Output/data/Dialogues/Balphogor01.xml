@@ -1,8 +1,11 @@
 <dialog voicetype="low" name="Balphogor" globalswitch="2000" switchtype="SET" value="true">
   <message1 text="Hmph, thou seemest like a Japanophile. And thou hast no manners to boot." next="message2"/>
   <message2	text="(Translation: He called you a weeaboo with no manners.)"	next="message3"/>
-  <message3 text="In case thou art wondering who is I, that standeth before thee, my name is Balphogor of the Underworld full of the Undead and reigner of all-kinds-of-life... and a bit more! Thou shalt not come back freely from whence thou came." next="message3"/>
-  <message4	text="(Translation: He is Balphogor, the final boss. You can't run away.)"	next="message5">
-  <message5 text="For I am going to purge the world of rude pathetic beings who do not know their place, such as thee! Mwahahahahaha!" next="combat" fightname="boss"/>
+  <message3 text="In case thou art wondering who is I, that standeth before" next="message4"/>
+  <message4 text="thee, my name is Balphogor of the Underworld full of the" next="message5"/>
+  <message5 text="Undead and reigner of all-kinds-of-life... and a bit more!" next="message6"/>
+  <message6 text="Thou shalt not come back freely from whence thou came." next="message7"/>
+  <message7 text="For I am going to purge the world of rude pathetic beings" next="message8"/>
+  <message8 text="who do not know their place, such as thee! Mwahahahahaha!" next="combat" fightname="boss"/>
   <victory text="If you see this line contact Uri." next="end"/>
 </dialog>
