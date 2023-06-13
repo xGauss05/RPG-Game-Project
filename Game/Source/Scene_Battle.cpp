@@ -127,6 +127,10 @@ void Scene_Battle::Draw()
 	for (auto & elem : party->party)
 	{
 		DrawParameters drawAlly(elem.battlerTextureID, elem.position);
+		DrawHPBar(elem.currentHP, elem.GetStat(BaseStats::MAX_HP), elem.position, 50, 10);
+		iPoint manaPosition = { 0, 20 };
+		manaPosition += elem.position;
+		DrawManaBar(elem.currentMana, elem.GetStat(BaseStats::MAX_MANA), manaPosition, 50, 10);
 
 		drawAlly
 			.Flip(SDL_FLIP_HORIZONTAL)
@@ -780,30 +784,125 @@ void Scene_Battle::PlayActionSFX(std::string_view sfxKey) const
 	}
 }
 
-void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const
+void Scene_Battle::DrawHPBar(int currentHP, int maxHP, iPoint pos, int hpBarWidth, int barHeight) const
 {
-	iPoint texSize = app->tex->GetSize(textureID);
-	
 	SDL_Rect hpBar{};
-	hpBar.x = position.x + 2;
-	hpBar.y = position.y + texSize.y * 2 + 10;
-	hpBar.h = 10;
 
-	// Draw Background bar with a fixed width of 100
-	hpBar.w = 100;
+	hpBar.x = pos.x;
+	hpBar.y = pos.y;
+	hpBar.w = hpBarWidth;
+	hpBar.h = barHeight;
+
+	hpBar.x -= 2;
+	hpBar.y -= 2;
+	hpBar.w += 4;
+	hpBar.h += 4;
+
 	app->render->DrawShape(hpBar, true, SDL_Color(0, 0, 0, 255));
 
-	// Draw HP bar with width equal to the % remaining
+	hpBar.x += 2;
+	hpBar.y += 2;
+	hpBar.w -= 4;
+	hpBar.h -= 4;
+
+	app->render->DrawShape(hpBar, true, SDL_Color(5, 8, 38, 255));
+
 	float hp = static_cast<float>(currentHP) / static_cast<float>(maxHP);
-	hpBar.w = hp > 0 ? static_cast<int>(hp * 100.0f) : 0;
+	hpBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(hpBar.w)) : 0;
 
-	// Assign colour (Green = max HP -> Red = 0 HP) depending on % hp remaining
-	auto red = static_cast<Uint8>(250.0f - (250.0f * hp));
-	auto green = static_cast<Uint8>(250.0f * hp);
+	auto red = static_cast<uint8_t>(250.0f - (250.0f * hp));
+	auto green = static_cast<uint8_t>(250.0f * hp);
 
-	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
+	if (hp > 0)
+	{
+		if (hpBar.w > 1)
+		{
+			hpBar.w /= 2;
+		}
+
+		app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
+
+		if (hpBar.w <= 0)
+		{
+			return;
+		}
+
+		hpBar.x += hpBar.w;
+
+		auto camera = app->render->GetCamera();
+
+		hpBar.x = camera.x + hpBar.x;
+		hpBar.y = camera.y + hpBar.y;
+
+		app->render->DrawGradientBar(
+			hpBar,
+			SDL_Color(red, green, 0, 255),
+			SDL_Color(red, green, 122, 255),
+			hpBar.w > 255 ? 255 : static_cast<uint8_t>(hpBar.w)
+		);
+
+	}
 }
 
+void Scene_Battle::DrawManaBar(int currentMana, int maxMana, iPoint pos, int manaBarWidth, int manaBarHeight) const
+{
+	SDL_Rect manaBar{};
+
+	manaBar.x = pos.x;
+	manaBar.y = pos.y;
+	manaBar.w = manaBarWidth;
+	manaBar.h = manaBarHeight;
+
+	manaBar.x -= 2;
+	manaBar.y -= 2;
+	manaBar.w += 4;
+	manaBar.h += 4;
+
+	app->render->DrawShape(manaBar, true, SDL_Color(0, 0, 0, 255));
+
+	manaBar.x += 2;
+	manaBar.y += 2;
+	manaBar.w -= 4;
+	manaBar.h -= 4;
+
+	app->render->DrawShape(manaBar, true, SDL_Color(5, 8, 38, 255));
+
+	float hp = static_cast<float>(currentMana) / static_cast<float>(maxMana);
+	manaBar.w = hp > 0 ? static_cast<int>(hp * static_cast<float>(manaBar.w)) : 0;
+
+	SDL_Color startColor = { 0, 0, 184, 255 };
+	SDL_Color endColor = { 24, 75, 184, 255 };
+
+	if (hp > 0)
+	{
+		if (manaBar.w > 1)
+		{
+			manaBar.w /= 2;
+		}
+
+		app->render->DrawShape(manaBar, true, startColor);
+
+		if (manaBar.w <= 0)
+		{
+			return;
+		}
+
+		manaBar.x += manaBar.w;
+
+		auto camera = app->render->GetCamera();
+
+		manaBar.x = camera.x + manaBar.x;
+		manaBar.y = camera.y + manaBar.y;
+
+		app->render->DrawGradientBar(
+			manaBar,
+			startColor,
+			endColor,
+			manaBar.w > 255 ? 255 : static_cast<uint8_t>(manaBar.w)
+		);
+
+	}
+}
 bool Scene_Battle::Animation::Draw()
 {
 	app->render->DrawTexture(DrawParameters(textureID, position).Section(&current));

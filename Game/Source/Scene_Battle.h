@@ -70,8 +70,8 @@ private:
     void PlayBattlerSFX(Battler const &battler) const;
     void PlayActionSFX(std::string_view sfxKey) const;
 
-    void DrawHPBar(int textureID, int currentHP, int maxHP, iPoint position) const;
-
+    void DrawHPBar(int currentHP, int maxHP, iPoint pos, int hpBarWidth, int barHeight) const;
+    void DrawManaBar(int currentMana, int maxMana, iPoint pos, int manaBarWidth, int manaBarHeight) const;
     int backgroundTexture = 0;
 
     GameParty* party = nullptr;
