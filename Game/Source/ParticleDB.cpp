@@ -43,7 +43,7 @@ void ParticleDB::CreateBluePrints()
 					.m_Current = {0, 0},
 					.m_End = {0, 0}
 				},
-				.m_Acceleration = { 0, 100 }
+				.m_Acceleration = { 1, 0 }
 			},
 			.m_Texture =
 			{
@@ -56,7 +56,7 @@ void ParticleDB::CreateBluePrints()
 					.m_End = {255, 0, 0, 0},
 				}
 			},
-			.m_FramesAlive = 25
+			.m_FramesAlive = 50
 		},
 		{
 			.m_MinPosition = { 0, 0 },
@@ -75,7 +75,7 @@ void ParticleDB::CreateBluePrints()
 			.m_EmissionRate = 10,
 			.m_MinVariance = 0,
 			.m_MaxVariance = 0,
-			.m_MaxAge = 50,
+			.m_MaxAge = 0,
 			.m_AmountOfParticles = 50
 		}
 	);

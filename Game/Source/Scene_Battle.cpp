@@ -110,8 +110,7 @@ void Scene_Battle::Draw()
 
 		drawAlly
 			.Flip(SDL_FLIP_HORIZONTAL)
-			.Section(&elem.currentAnimation)
-			.Scale({ 1.25f, 1.25f });
+			.Section(&elem.currentAnimation);
 
 		app->render->DrawTexture(drawAlly);
 
@@ -131,7 +130,6 @@ void Scene_Battle::Draw()
 	{
 		DrawParameters drawEnemy(elem.battlerTextureID, elem.position);
 		drawEnemy.Flip(SDL_FLIP_HORIZONTAL);
-		drawEnemy.Scale(fPoint(2, 2));
 
 		// Rotate texture if enemy is dead
 		if (elem.IsDead())
