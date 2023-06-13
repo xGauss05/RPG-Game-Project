@@ -352,9 +352,19 @@ void Scene_Map::StateNormal_HandleInput()
 	}
 
 	// Pause game on Escape press
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
+	if (app->input->controllerCount > 0)
 	{
-		app->PauseGame();
+		if (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_START) == KeyState::KEY_DOWN)
+		{
+			app->PauseGame();
+		}
+	}
+	else
+	{
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
+		{
+			app->PauseGame();
+		}
 	}
 }
 
@@ -527,6 +537,13 @@ void Scene_Map::StateNormal_HandlePlayerInteract()
 
 bool Scene_Map::IsMenuInputPressed() const
 {
+	bool result = false;
+
+	if (app->input->controllerCount > 0)
+	{
+		return (app->input->GetControllerKey(0, SDL_CONTROLLER_BUTTON_Y) == KeyState::KEY_DOWN);
+	}
+
 	return (app->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN
 		|| app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN);
 }
