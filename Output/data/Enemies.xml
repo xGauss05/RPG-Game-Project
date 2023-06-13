@@ -134,7 +134,7 @@
   </stats>
 </Skeleton_G>
 <Balphogor>
-  <texture path="Assets/Textures/Battlers/Balphogor_Right.png"/>
+  <texture path="Assets/Textures/Battlers/Balphogor.png"/>
   <deadaudio path="Assets/Audio/Fx/S_Battle-Driller-Death.wav"/>
   <stats>
     <maxhp value="200"/>
