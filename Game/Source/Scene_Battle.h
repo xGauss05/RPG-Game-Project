@@ -111,6 +111,31 @@ private:
     int DebugAmount = 0;
 
     ParticleDB particleDB;
+
+    
+    enum class AvailableAnims
+    {
+        Attack,
+        Crit_Attack,
+        Special,
+        Item,
+        Death
+    };
+    std::unordered_map<AvailableAnims, int> textures;
+
+    struct Animation
+    {
+        SDL_Rect current;
+        int frameWidth;
+        int totalWidth;
+        int textureID;
+        iPoint position;
+
+        bool Draw();
+    };
+
+    std::vector<Animation> currentAnimations;
+
  };
 
 #endif //__SCENE_BATTLE_H__

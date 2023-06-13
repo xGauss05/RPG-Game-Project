@@ -77,15 +77,35 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 
 	backgroundTexture = app->tex->Load("Assets/Textures/Backgrounds/batte_bg.png");
 
-	for (auto & elem : enemies->troop)
-	{
-		elem.SetParticleEmitters(particleDB);
-	}
+	textures.emplace(
+		AvailableAnims::Attack,
+		app->tex->Load("Assets/Textures/Particles/attack.png")
+	);
+	textures.emplace(
+		AvailableAnims::Special,
+		app->tex->Load("Assets/Textures/Particles/special.png")
+	);
+	textures.emplace(
+		AvailableAnims::Crit_Attack,
+		app->tex->Load("Assets/Textures/Particles/critical_attack.png")
+	);
+	textures.emplace(
+		AvailableAnims::Item,
+		app->tex->Load("Assets/Textures/Particles/item.png")
+	);
+	textures.emplace(
+		AvailableAnims::Death,
+		app->tex->Load("Assets/Textures/Particles/death.png")
+	);
 }
 
 Scene_Battle::~Scene_Battle()
 {
 	LOG("Destroying Scene");
+	for (auto const& [texture, id] : textures)
+	{
+		app->tex->Unload(id);
+	}
 }
 
 void Scene_Battle::Start(){}
@@ -157,9 +177,13 @@ void Scene_Battle::Draw()
 
 		app->render->DrawTexture(drawEnemy);
 
-		elem.UpdateParticles();
-
 		SDL_SetTextureAlphaMod(app->GetTexture(elem.battlerTextureID), 255);
+	}
+
+	for (auto& animation : currentAnimations)
+	{
+		if (!animation.Draw())
+			currentAnimations.erase(currentAnimations.begin());
 	}
 
 	if (!messages.IsActive() && state == BattleState::PLAYER_INPUT)
@@ -484,6 +508,7 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 				BaseStats::ATTACK,
 				BaseStats::DEFENSE
 			);
+
 			break;
 		}
 		case SPECIAL_ATTACK:
@@ -534,8 +559,25 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 					party->RemoveItemFromInventory(currentAction.actionID);
 				}
 				messages.AddMessageToQueue(std::format("{} uses {} {}!", source.name, itemUsed.general.article, itemUsed.general.name));
+				
+				int textureID = textureID = textures.at(AvailableAnims::Item);
 
 				text = receiver[currentAction.target].GetTextToDisplay();
+
+				iPoint size = app->tex->GetSize(textureID);
+
+				int frameWidth = size.x / 30;
+				int totalWidth = size.x;
+
+				SDL_Rect current = { 0, 0, frameWidth, size.y };
+
+				currentAnimations.emplace_back(
+						current,
+						frameWidth,
+						totalWidth,
+						textureID,
+						receiver[currentAction.target].position + (receiver[currentAction.target].size / 2)
+				);
 				break;
 			}
 			default:
@@ -572,17 +614,28 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 
 	std::string damageMessage = "";
 
+	int textureID = 0;
+
+
 	if (random100(gen) <= 10)
 	{
 		damage = CalculateDamage(attack, defense, receiver.isDefending, 1.5f);
 		damageMessage = "{} attacks {}! Criticals for {} damage!!!";
 		PlayActionSFX("Critical");
+		if (offensiveStat == BaseStats::SPECIAL_ATTACK)
+			textureID = textures.at(AvailableAnims::Special);
+		else
+			textureID = textures.at(AvailableAnims::Crit_Attack);
 	}
 	else
 	{
 		damage = CalculateDamage(attack, defense, receiver.isDefending);
 		damageMessage = "{} attacks {}! Deals {} damage.";
 		PlayActionSFX("Attack");
+		if (offensiveStat == BaseStats::SPECIAL_ATTACK)
+			textureID = textures.at(AvailableAnims::Special);
+		else	
+			textureID = textures.at(AvailableAnims::Attack);
 	}
 
 	receiver.isDefending = false;
@@ -592,10 +645,25 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 	{
 		BattlerJustDied(receiver);
 		receiver.currentAnimation.y = 96;
+		textureID = textures.at(AvailableAnims::Death);
 	}
 
-	return AddSaveData(damageMessage, source.name, receiver.name, damage);
+	iPoint size = app->tex->GetSize(textureID);
 
+	int frameWidth = size.x / 30;
+	int totalWidth = size.x;
+
+	SDL_Rect current = { 0, 0, frameWidth, size.y };
+
+	currentAnimations.emplace_back(
+			current,
+			frameWidth,
+			totalWidth,
+			textureID,
+			receiver.position
+	);
+
+	return AddSaveData(damageMessage, source.name, receiver.name, damage);
 }
 
 int Scene_Battle::CalculateDamage(int atk, int def, bool defending, float crit)
@@ -734,4 +802,16 @@ void Scene_Battle::DrawHPBar(int textureID, int currentHP, int maxHP, iPoint pos
 	auto green = static_cast<Uint8>(250.0f * hp);
 
 	app->render->DrawShape(hpBar, true, SDL_Color(red, green, 0, 255));
+}
+
+bool Scene_Battle::Animation::Draw()
+{
+	app->render->DrawTexture(DrawParameters(textureID, position).Section(&current));
+
+	if(current.x + frameWidth >= totalWidth)
+		return false;
+
+	current.x += frameWidth;
+	
+	return true;
 }
