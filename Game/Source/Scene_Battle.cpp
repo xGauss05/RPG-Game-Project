@@ -14,10 +14,16 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 	: party(gameParty)
 {
 	enemies = std::make_unique<EnemyTroops>();
-	if (fightName.empty())
+	if (fightName.empty()) 
+	{
+		app->audio->PlayMusic("Music/M_Battle-Main.ogg");
 		enemies->CreateFight(GetRandomEncounter());
-	else
+	}
+	else 
+	{
+		app->audio->PlayMusic("Music/M_Battle-Boss.ogg");
 		enemies->CreateFight(fightName);
+	}
 
 	CheckBattleLossThenChangeState();
 
@@ -25,7 +31,7 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 	int startingX = 128;
 	int startingY = 72;
 
-	for (int i = 0; auto &elem : party->party)
+	for (int i = 0; auto & elem : party->party)
 	{
 		elem.size = app->tex->GetSize(elem.battlerTextureID);
 		elem.size.x /= 4;
@@ -36,7 +42,7 @@ Scene_Battle::Scene_Battle(GameParty* gameParty, std::string_view fightName)
 			static_cast<int>(elem.size.x * 1.25f),
 			static_cast<int>(elem.size.y * 1.25f)
 		};
-		elem.position = {startingX - camera.x, startingY + (elem.size.y * i) - camera.y};
+		elem.position = { startingX - camera.x, startingY + (elem.size.y * i) - camera.y };
 		elem.animTimer = std::chrono::steady_clock::now();
 		elem.index = i;
 		i++;
@@ -63,8 +69,6 @@ void Scene_Battle::Load(std::string const& path, LookUpXMLNodeFromString const& 
 	// This produces random values uniformly distributed from 0 to 40 and 1 to 100 respectively
 	random40.param(std::uniform_int_distribution<>::param_type(0, 40));
 	random100.param(std::uniform_int_distribution<>::param_type(1, 100));
-
-	app->audio->PlayMusic("Music/M_Battle-Main.ogg");
 
 	sfx["Antonio"] = app->audio->LoadFx("Fx/S_Battle-Antonio-Turn.wav");
 	sfx["Sayori"] = app->audio->LoadFx("Fx/S_Battle-Sayori-Turn.wav");
@@ -108,7 +112,7 @@ Scene_Battle::~Scene_Battle()
 	}
 }
 
-void Scene_Battle::Start(){}
+void Scene_Battle::Start() {}
 
 void Scene_Battle::Draw()
 {
@@ -124,7 +128,7 @@ void Scene_Battle::Draw()
 	std::string text = "";
 	auto now = std::chrono::steady_clock::now();
 
-	for (auto & elem : party->party)
+	for (auto& elem : party->party)
 	{
 		DrawParameters drawAlly(elem.battlerTextureID, elem.position);
 		DrawHPBar(elem.currentHP, elem.GetStat(BaseStats::MAX_HP), elem.position, 50, 10);
@@ -222,7 +226,7 @@ TransitionScene Scene_Battle::Update()
 	}
 	case BATTLE_WON:
 	{
-		if(!bBattleResolved)
+		if (!bBattleResolved)
 			ResolveWinningBattle();
 
 		if (IsAdvanceTextButtonDown() && !messages.RemoveCurrentMessage())
@@ -358,7 +362,7 @@ void Scene_Battle::UpdatePlayerInputText()
 		}
 	}
 
-	if(text.empty())
+	if (text.empty())
 	{
 		if (actionSelected == ActionNames::ATTACK || actionSelected == ActionNames::SPECIAL_ATTACK)
 		{
@@ -434,7 +438,7 @@ void Scene_Battle::ResolveActionQueue()
 {
 	if (messages.IsInputLocked())
 	{
-		if(IsAdvanceTextButtonDown())
+		if (IsAdvanceTextButtonDown())
 		{
 			messages.RemoveCurrentMessage();
 
@@ -504,96 +508,96 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 	switch (action)
 	{
 		using enum ActionNames;
-		case ATTACK:
+	case ATTACK:
+	{
+		text = BattlerAttacking(
+			source,
+			receiver[currentAction.target],
+			BaseStats::ATTACK,
+			BaseStats::DEFENSE
+		);
+
+		break;
+	}
+	case SPECIAL_ATTACK:
+	{
+		if (source.currentMana >= 4)
 		{
 			text = BattlerAttacking(
 				source,
 				receiver[currentAction.target],
-				BaseStats::ATTACK,
-				BaseStats::DEFENSE
+				BaseStats::SPECIAL_ATTACK,
+				BaseStats::SPECIAL_DEFENSE
 			);
-
-			break;
+			source.currentMana -= 4;
 		}
-		case SPECIAL_ATTACK:
+		else
 		{
-			if (source.currentMana >= 4) 
+			text = std::format("{} does not have enough Mana!", source.name);
+		}
+
+		break;
+	}
+	case DEFEND:
+	{
+		text = BattlerDefending(source);
+		break;
+	}
+	case RUN:
+	{
+		text = "You run from battle. Shame.";
+		PlayActionSFX("Run");
+		state = BattleState::RUN_FROM_BATTLE;
+
+		break;
+	}
+	case ITEM:
+	{
+		Item const& itemUsed = party->dbItems->GetItem(currentAction.actionID);
+		switch (currentAction.actionScope)
+		{
+			using enum Item::GeneralProperties::Scope;
+		case ONE_DEAD_ALLY:
+			receiver[currentAction.target].currentAnimation.y = 0;
+		case ONE_ENEMY:
+		case ONE_ALLY:
+		{
+			if (receiver[currentAction.target].UseItem(itemUsed))
 			{
-				text = BattlerAttacking(
-					source,
-					receiver[currentAction.target],
-					BaseStats::SPECIAL_ATTACK,
-					BaseStats::SPECIAL_DEFENSE
-				);
-				source.currentMana -= 4;
+				party->RemoveItemFromInventory(currentAction.actionID);
 			}
-			else 
-			{
-				text = std::format("{} does not have enough Mana!", source.name);
-			}
+			messages.AddMessageToQueue(std::format("{} uses {} {}!", source.name, itemUsed.general.article, itemUsed.general.name));
 
+			int textureID = textureID = textures.at(AvailableAnims::Item);
+
+			text = receiver[currentAction.target].GetTextToDisplay();
+
+			iPoint size = app->tex->GetSize(textureID);
+
+			int frameWidth = size.x / 30;
+			int totalWidth = size.x;
+
+			SDL_Rect current = { 0, 0, frameWidth, size.y };
+
+			currentAnimations.emplace_back(
+				current,
+				frameWidth,
+				totalWidth,
+				textureID,
+				receiver[currentAction.target].position + iPoint(35, 0)
+			);
 			break;
 		}
-		case DEFEND:
-		{
-			text = BattlerDefending(source);
+		default:
 			break;
 		}
-		case RUN:
-		{
-			text = "You run from battle. Shame.";
-			PlayActionSFX("Run");
-			state = BattleState::RUN_FROM_BATTLE;
-
-			break;
-		}
-		case ITEM:
-		{
-			Item const& itemUsed = party->dbItems->GetItem(currentAction.actionID);
-			switch (currentAction.actionScope)
-			{
-				using enum Item::GeneralProperties::Scope;
-			case ONE_DEAD_ALLY:
-				receiver[currentAction.target].currentAnimation.y = 0;
-			case ONE_ENEMY:
-			case ONE_ALLY:
-			{
-				if (receiver[currentAction.target].UseItem(itemUsed))
-				{
-					party->RemoveItemFromInventory(currentAction.actionID);
-				}
-				messages.AddMessageToQueue(std::format("{} uses {} {}!", source.name, itemUsed.general.article, itemUsed.general.name));
-				
-				int textureID = textureID = textures.at(AvailableAnims::Item);
-
-				text = receiver[currentAction.target].GetTextToDisplay();
-
-				iPoint size = app->tex->GetSize(textureID);
-
-				int frameWidth = size.x / 30;
-				int totalWidth = size.x;
-
-				SDL_Rect current = { 0, 0, frameWidth, size.y };
-
-				currentAnimations.emplace_back(
-						current,
-						frameWidth,
-						totalWidth,
-						textureID,
-						receiver[currentAction.target].position + iPoint(35,0)
-				);
-				break;
-			}
-			default:
-				break;
-			}
-			break;
-		}
-		case NONE:
-		{
-			state = BattleState::BATTLE_LOSS;
-			break;
-		}
+		break;
+	}
+	case NONE:
+	{
+		state = BattleState::BATTLE_LOSS;
+		break;
+	}
 	}
 
 	return text;
@@ -638,7 +642,7 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 		PlayActionSFX("Attack");
 		if (offensiveStat == BaseStats::SPECIAL_ATTACK)
 			textureID = textures.at(AvailableAnims::Special);
-		else	
+		else
 			textureID = textures.at(AvailableAnims::Attack);
 	}
 
@@ -660,11 +664,11 @@ std::string Scene_Battle::BattlerAttacking(Battler const& source, Battler& recei
 	SDL_Rect current = { 0, 0, frameWidth, size.y };
 
 	currentAnimations.emplace_back(
-			current,
-			frameWidth,
-			totalWidth,
-			textureID,
-			receiver.position
+		current,
+		frameWidth,
+		totalWidth,
+		textureID,
+		receiver.position
 	);
 
 	return AddSaveData(damageMessage, source.name, receiver.name, damage);
@@ -907,10 +911,10 @@ bool Scene_Battle::Animation::Draw()
 {
 	app->render->DrawTexture(DrawParameters(textureID, position).Section(&current));
 
-	if(current.x + frameWidth >= totalWidth)
+	if (current.x + frameWidth >= totalWidth)
 		return false;
 
 	current.x += frameWidth;
-	
+
 	return true;
 }
