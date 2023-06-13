@@ -450,7 +450,10 @@
                 "Bottled Fairy",
                 "Coins",
                 "Super HP Potion",
-                "Omni HP Potion"
+                "Omni HP Potion",
+                "Super MP Potion",
+                "Hyper MP Potion",
+                "Hyper HP Potion"
             ],
             "valuesAsFlags": false
         },

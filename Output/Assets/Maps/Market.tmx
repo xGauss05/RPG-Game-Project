@@ -103,8 +103,8 @@
     </property>
     <property name="Loot1" type="class" propertytype="Helper Loot">
      <properties>
-      <property name="Item" propertytype="Helper Items" value="Coins"/>
-      <property name="Quantity" type="int" value="80"/>
+      <property name="Item" propertytype="Helper Items" value="Super MP Potion"/>
+      <property name="Quantity" type="int" value="1"/>
      </properties>
     </property>
    </properties>
@@ -148,8 +148,8 @@
     </property>
     <property name="Loot1" type="class" propertytype="Helper Loot">
      <properties>
-      <property name="Item" propertytype="Helper Items" value="Coins"/>
-      <property name="Quantity" type="int" value="43"/>
+      <property name="Item" propertytype="Helper Items" value="Hyper HP Potion"/>
+      <property name="Quantity" type="int" value="1"/>
      </properties>
     </property>
    </properties>
