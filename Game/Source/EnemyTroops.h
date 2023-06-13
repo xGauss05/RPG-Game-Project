@@ -33,9 +33,9 @@ struct Battler
 
 	bool isDefending = false;
 
-	iPoint position{};
-	iPoint size{};
-	SDL_Rect currentAnimation;
+	iPoint position{ 0,0 };
+	iPoint size{ 0,0 };
+	SDL_Rect currentAnimation = {0,0,0,0};
 	std::chrono::time_point<std::chrono::steady_clock> animTimer;
 
 	int index;

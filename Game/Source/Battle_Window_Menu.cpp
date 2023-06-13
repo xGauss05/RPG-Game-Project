@@ -448,8 +448,8 @@ void Battle_Window_Menu::Draw() const
 				if (cursor.currentSelection == i && isDead)
 				{
 					iPoint drawPosition = elem.position;
-					drawPosition.x += 20;
-					drawPosition.y += (elem.currentAnimation.h / 2);
+					drawPosition.x -= 20;
+					drawPosition.y += (elem.currentAnimation.h / 2) + 10;
 
 					app->render->DrawTexture(DrawParameters(cursor.textureID, drawPosition).Section(&cursor.srcRect));
 				}
@@ -583,7 +583,8 @@ void Battle_Window_Menu::GoToNextPanel()
 		currentAction.friendlyTarget = false;
 		currentAction.source = currentSource;
 		currentAction.speed = actionSpeed;
-		
+		currentAction.actionScope = Item::GeneralProperties::Scope::ONE_ENEMY;
+
 		SDL_Point textureSize = app->tex->GetSizeSDLPoint(mainMenuTexture);
 
 		cursor.battlerTexture = playerParty->party[currentSource].portraitTextureID;
@@ -598,7 +599,7 @@ void Battle_Window_Menu::GoToNextPanel()
 
 		currentTargetParty = &enemies->troop;
 		cursor.enabled = true;
-		cursor.currentSelection = -1;
+		cursor.currentSelection = 0;
 	}
 	else if (menuLogic.At(currentActivePanel).value == MenuWindows::INVENTORY)
 	{
