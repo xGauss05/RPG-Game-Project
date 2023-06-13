@@ -1,8 +1,33 @@
 <random1>
-  <Bat_B name="Jose luis el Pajaro" level="1"/>
-  <Bat_B name="Murciano el Murcielago" level="1"/>
-  <Bat_B name="Murcielago" level="1"/>
+  <Bat_R name="Bat_R" level="1"/>
+  <Bat_G name="Bat_G" level="1"/>
+  <Bat_B name="Bat_B" level="1"/>
 </random1>
+<random2>
+  <Slime_R name="Slime_R" level="1"/>
+  <Slime_G name="Slime_G" level="1"/>
+  <Slime_B name="Slime_B" level="1"/>
+</random2>
+<random3>
+  <Skeleton_R name="Skeleton_R" level="1"/>
+  <Skeleton_G name="Skeleton_G" level="1"/>
+  <Skeleton_B name="Skeleton_B" level="1"/>
+</random3>
+<random4>
+  <Slime_R name="Slime_R 1" level="1"/>
+  <Slime_G name="Slime_G" level="1"/>
+  <Slime_R name="Slime_R 2" level="1"/>
+</random4>
+<random5>
+  <Slime_R name="Slime_R" level="1"/>
+  <Skeleton_G name="Skeleton_G" level="1"/>
+  <Bat_B name="Bat_B" level="1"/>
+</random5>
+<random6>
+  <Bat_R name="Bat_R" level="1"/>
+  <Slime_G name="Slime_G" level="1"/>
+  <Skeleton_B name="Skeleton_B" level="1"/>
+</random6>
 <boss>
   <Balphogor name="Balphogor" level="3"/>
 </boss>
