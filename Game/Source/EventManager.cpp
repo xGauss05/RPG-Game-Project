@@ -152,6 +152,9 @@ void EventManager::DrawEvents() const
 {
 	for (auto const& elem : events)
 	{
+		if (!elem->IsEventActive())
+			continue;
+
 		if (auto sprite = dynamic_cast<Sprite*>(elem.get());
 			sprite)
 		{

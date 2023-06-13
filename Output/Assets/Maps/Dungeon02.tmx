@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="4" nextobjectid="108">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="111">
  <properties>
   <property name="RandomEncounters" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="Dungeon.tsx"/>
+ <tileset firstgid="65" source="../Textures/Events/Static/Events.tsx"/>
  <layer id="1" name="Ground" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,15,42,43,43,43,43,15,
@@ -35,8 +36,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,0,0,53,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,0,0,0,61,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,0,0,53,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,0,0,0,61,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,53,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,0,61,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -46,80 +47,14 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,53,0,0,0,0,0,53,0,0,0,0,0,0,0,
-0,0,0,0,0,0,61,0,0,0,0,0,61,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,53,0,0,0,53,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,61,0,0,0,61,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="2" name="Events" class="Layer of Events">
-  <object id="22" name="To Dungeon 01" type="Event Teleport" x="336" y="912" width="48" height="48">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
-      <property name="Destination X" type="int" value="13"/>
-      <property name="Destination Y" type="int" value="4"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="28" name="To Dungeon 03" type="Event Teleport" x="672" y="0" width="48" height="48">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
-      <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="13"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="62" name="To Dungeon 03" type="Event Teleport" x="720" y="0" width="48" height="48">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
-      <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="13"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="63" name="To Dungeon 03" type="Event Teleport" x="768" y="0" width="48" height="48">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
-      <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="13"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="64" name="To Dungeon 03" type="Event Teleport" x="816" y="0" width="48" height="48">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
-      <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="13"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="65" name="To Dungeon 03" type="Event Teleport" x="864" y="0" width="48" height="48">
-   <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
-     <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
-      <property name="Destination X" type="int" value="10"/>
-      <property name="Destination Y" type="int" value="13"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
-  <object id="66" type="Event Door" gid="63" x="672" y="48" width="48" height="48">
+  <object id="66" type="Event Door" gid="82" x="672" y="48" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -153,7 +88,7 @@
     </property>
    </properties>
   </object>
-  <object id="68" type="Event Door" gid="56" x="720" y="48" width="48" height="48">
+  <object id="68" type="Event Door" gid="81" x="720" y="48" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -187,7 +122,7 @@
     </property>
    </properties>
   </object>
-  <object id="69" type="Event Door" gid="56" x="768" y="48" width="48" height="48">
+  <object id="69" type="Event Door" gid="81" x="768" y="48" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -221,7 +156,7 @@
     </property>
    </properties>
   </object>
-  <object id="70" type="Event Door" gid="56" x="816" y="48" width="48" height="48">
+  <object id="70" type="Event Door" gid="81" x="816" y="48" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -255,7 +190,7 @@
     </property>
    </properties>
   </object>
-  <object id="71" type="Event Door" gid="64" x="864" y="48" width="48" height="48">
+  <object id="71" type="Event Door" gid="83" x="864" y="48" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -289,7 +224,7 @@
     </property>
    </properties>
   </object>
-  <object id="72" type="Event Door" gid="64" x="864" y="96" width="48" height="48">
+  <object id="72" type="Event Door" gid="83" x="864" y="96" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -323,7 +258,7 @@
     </property>
    </properties>
   </object>
-  <object id="73" type="Event Door" gid="56" x="816" y="96" width="48" height="48">
+  <object id="73" type="Event Door" gid="81" x="816" y="96" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -357,7 +292,7 @@
     </property>
    </properties>
   </object>
-  <object id="74" type="Event Door" gid="56" x="768" y="96" width="48" height="48">
+  <object id="74" type="Event Door" gid="81" x="768" y="96" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -391,7 +326,7 @@
     </property>
    </properties>
   </object>
-  <object id="75" type="Event Door" gid="56" x="720" y="96" width="48" height="48">
+  <object id="75" type="Event Door" gid="81" x="720" y="96" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -425,7 +360,7 @@
     </property>
    </properties>
   </object>
-  <object id="76" type="Event Door" gid="63" x="672" y="96" width="48" height="48">
+  <object id="76" type="Event Door" gid="82" x="672" y="96" width="48" height="48">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -459,7 +394,7 @@
     </property>
    </properties>
   </object>
-  <object id="77" type="Event Torch" gid="61" x="144" y="480" width="48" height="48">
+  <object id="77" type="Event Torch" gid="72" x="144" y="432" width="48" height="96">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -476,24 +411,7 @@
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="82" type="Event Torch" gid="53" x="144" y="432" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="201"/>
-     </properties>
-    </property>
-    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="4"/>
-      <property name="ID" type="int" value="211"/>
-     </properties>
-    </property>
-    <property name="state" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="87" type="Event Torch" gid="61" x="240" y="480" width="48" height="48">
+  <object id="87" type="Event Torch" gid="72" x="240" y="432" width="48" height="96">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -510,24 +428,7 @@
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="88" type="Event Torch" gid="53" x="240" y="432" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="202"/>
-     </properties>
-    </property>
-    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="4"/>
-      <property name="ID" type="int" value="212"/>
-     </properties>
-    </property>
-    <property name="state" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="89" type="Event Torch" gid="61" x="336" y="480" width="48" height="48">
+  <object id="89" type="Event Torch" gid="72" x="336" y="432" width="48" height="96">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -544,24 +445,7 @@
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="90" type="Event Torch" gid="53" x="336" y="432" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="203"/>
-     </properties>
-    </property>
-    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="4"/>
-      <property name="ID" type="int" value="213"/>
-     </properties>
-    </property>
-    <property name="state" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="91" type="Event Torch" gid="61" x="432" y="480" width="48" height="48">
+  <object id="91" type="Event Torch" gid="72" x="432" y="432" width="48" height="96">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -578,24 +462,7 @@
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="92" type="Event Torch" gid="53" x="432" y="432" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="204"/>
-     </properties>
-    </property>
-    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="4"/>
-      <property name="ID" type="int" value="214"/>
-     </properties>
-    </property>
-    <property name="state" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="93" type="Event Torch" gid="61" x="528" y="480" width="48" height="48">
+  <object id="93" type="Event Torch" gid="72" x="528" y="432" width="48" height="96">
    <properties>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
      <properties>
@@ -612,28 +479,11 @@
     <property name="state" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="94" type="Event Torch" gid="53" x="528" y="432" width="48" height="48">
-   <properties>
-    <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="3"/>
-      <property name="ID" type="int" value="205"/>
-     </properties>
-    </property>
-    <property name="GlobalSwitch2" type="class" propertytype="Global Switch">
-     <properties>
-      <property name="Function" type="qlonglong" propertytype="Helper Switch Function" value="4"/>
-      <property name="ID" type="int" value="215"/>
-     </properties>
-    </property>
-    <property name="state" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="95" type="Event Lever" gid="45" x="144" y="624" width="48" height="48">
+  <object id="95" type="Event Lever" gid="85" x="144" y="624" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Trigger" type="qlonglong" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
@@ -651,11 +501,11 @@
     </property>
    </properties>
   </object>
-  <object id="100" type="Event Lever" gid="45" x="240" y="624" width="48" height="48">
+  <object id="100" type="Event Lever" gid="85" x="240" y="624" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Trigger" type="qlonglong" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
@@ -673,11 +523,11 @@
     </property>
    </properties>
   </object>
-  <object id="101" type="Event Lever" gid="45" x="336" y="624" width="48" height="48">
+  <object id="101" type="Event Lever" gid="85" x="336" y="624" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Trigger" type="qlonglong" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
@@ -695,11 +545,11 @@
     </property>
    </properties>
   </object>
-  <object id="102" type="Event Lever" gid="45" x="432" y="624" width="48" height="48">
+  <object id="102" type="Event Lever" gid="85" x="432" y="624" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Trigger" type="qlonglong" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
@@ -723,11 +573,11 @@
     </property>
    </properties>
   </object>
-  <object id="103" type="Event Lever" gid="45" x="528" y="624" width="48" height="48">
+  <object id="103" type="Event Lever" gid="85" x="528" y="624" width="48" height="48">
    <properties>
     <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Trigger" type="qlonglong" propertytype="Helper Trigger" value="1"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="0"/>
      </properties>
     </property>
     <property name="GlobalSwitch1" type="class" propertytype="Global Switch">
@@ -745,49 +595,71 @@
     </property>
    </properties>
   </object>
-  <object id="104" name="To Dungeon 01" type="Event Teleport" x="384" y="912" width="48" height="48">
+  <object id="108" name="To Dungeon01" type="Event Teleport" x="336" y="864" width="240" height="96">
    <properties>
+    <property name="Base" type="class" propertytype="Base Event">
+     <properties>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
+     </properties>
+    </property>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
       <property name="Destination X" type="int" value="13"/>
-      <property name="Destination Y" type="int" value="4"/>
+      <property name="Destination Y" type="int" value="3"/>
      </properties>
     </property>
    </properties>
   </object>
-  <object id="105" name="To Dungeon 01" type="Event Teleport" x="432" y="912" width="48" height="48">
+  <object id="109" name="Chest1" type="Event Chest" gid="69" x="672" y="336" width="48" height="48">
    <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
+    <property name="Loot1" type="class" propertytype="Helper Loot">
      <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
-      <property name="Destination X" type="int" value="13"/>
-      <property name="Destination Y" type="int" value="4"/>
+      <property name="Item" propertytype="Helper Items" value="Bottled Fairy"/>
+      <property name="Quantity" type="int" value="2"/>
      </properties>
     </property>
    </properties>
   </object>
-  <object id="106" name="To Dungeon 01" type="Event Teleport" x="480" y="912" width="48" height="48">
+  <object id="110" name="To Dungeon01" type="Event Teleport" x="672" y="0" width="240" height="48">
    <properties>
-    <property name="Destination" type="class" propertytype="Helper Destination">
+    <property name="Base" type="class" propertytype="Base Event">
      <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
-      <property name="Destination X" type="int" value="13"/>
-      <property name="Destination Y" type="int" value="4"/>
+      <property name="Trigger" type="int" propertytype="Helper Trigger" value="1"/>
      </properties>
     </property>
-   </properties>
-  </object>
-  <object id="107" name="To Dungeon 01" type="Event Teleport" x="528" y="912" width="48" height="48">
-   <properties>
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
-      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon01"/>
-      <property name="Destination X" type="int" value="13"/>
-      <property name="Destination Y" type="int" value="4"/>
+      <property name="Destination Map" propertytype="Helper Maps" value="Dungeon03"/>
+      <property name="Destination X" type="int" value="10"/>
+      <property name="Destination Y" type="int" value="15"/>
      </properties>
     </property>
    </properties>
   </object>
  </objectgroup>
+ <layer id="4" name="Tile Layer 3" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,0,0,53,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
 </map>
