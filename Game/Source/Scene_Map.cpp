@@ -340,7 +340,7 @@ void Scene_Map::StateNormal_HandleInput()
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
 		godMode = !godMode;
-		int newSpeed = godMode ? 16 : 16;
+		int newSpeed = godMode ? 16 : 8;
 		player.SetSpeed(newSpeed);
 	}
 
