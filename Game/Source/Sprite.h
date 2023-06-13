@@ -13,6 +13,14 @@
 class Sprite
 {
 public:
+	enum class AnimationState
+	{
+		BASE,
+		STATE_OFF,
+		STATE_ON,
+		TRIGGERED
+	};
+
 	int GetGid(bool interacted = false) const
 	{ 
 		return interacted ? interactedGid : gid;
@@ -76,7 +84,13 @@ public:
 					anim.textureID = app->tex->Load(std::format("Assets/Textures/Events/{}", p));
 				}
 			}
-
+			anim.currentAnimFrame =
+			{
+				0,
+				0,
+				app->tex->GetSize(anim.textureID).x,
+				app->tex->GetSize(anim.textureID).y
+			};
 			std::string animName = stateAnim.attribute("name").as_string();
 
 			if (StrEquals(animName, "Off"))
@@ -123,18 +137,19 @@ protected:
 		interactedGid = gid + 1;
 	}
 
+	void SetAnimation(AnimationState state)
+	{
+		if (auto it = animation.find(state);
+			it != animation.end())
+		{
+			currentAnim = state;
+		}
+	}
+
 private:
 	int gid = -1;
 	int interactedGid = -1;
 	iPoint textureIndex = { 0, 0 };
-
-	enum class AnimationState
-	{
-		BASE,
-		STATE_OFF,
-		STATE_ON,
-		TRIGGERED
-	};
 
 	struct Animation
 	{

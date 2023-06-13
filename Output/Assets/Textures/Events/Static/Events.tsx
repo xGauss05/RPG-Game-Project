@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="Events" class="Tileset of Events" tilewidth="144" tileheight="144" tilecount="12" columns="1" objectalignment="topleft">
+<tileset version="1.10" tiledversion="1.10.1" name="Events" class="Tileset of Events" tilewidth="144" tileheight="144" tilecount="17" columns="1" objectalignment="topleft">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="2">
   <properties>
@@ -68,8 +68,7 @@
      </property>
      <property name="Triggered" type="class" propertytype="Animation">
       <properties>
-       <property name="Loop" type="bool" value="true"/>
-       <property name="LoopTimer" type="int" value="200"/>
+       <property name="Loop" type="bool" value="false"/>
        <property name="Path" type="file" value="../Chest_Triggered.png"/>
       </properties>
      </property>
@@ -104,5 +103,104 @@
    <property name="Animation" type="class" propertytype="Event Animations"/>
   </properties>
   <image width="48" height="96" source="../Sayori.png"/>
+ </tile>
+ <tile id="16">
+  <properties>
+   <property name="Animation" type="class" propertytype="Event Animations">
+    <properties>
+     <property name="Off" type="class" propertytype="Animation">
+      <properties>
+       <property name="Path" type="file" value="../DungeonDoor_Center.png"/>
+      </properties>
+     </property>
+     <property name="Triggered" type="class" propertytype="Animation">
+      <properties>
+       <property name="Loop" type="bool" value="false"/>
+       <property name="Path" type="file" value="../Chest_Triggered.png"/>
+      </properties>
+     </property>
+    </properties>
+   </property>
+  </properties>
+  <image width="48" height="48" source="DungeonDoor_Center.png"/>
+ </tile>
+ <tile id="17">
+  <properties>
+   <property name="Animation" type="class" propertytype="Event Animations">
+    <properties>
+     <property name="Off" type="class" propertytype="Animation">
+      <properties>
+       <property name="Path" type="file" value="../DungeonDoor_Left.png"/>
+      </properties>
+     </property>
+     <property name="Triggered" type="class" propertytype="Animation">
+      <properties>
+       <property name="Loop" type="bool" value="false"/>
+       <property name="Path" type="file" value="../Chest_Triggered.png"/>
+      </properties>
+     </property>
+    </properties>
+   </property>
+  </properties>
+  <image width="48" height="48" source="DungeonDoor_Left.png"/>
+ </tile>
+ <tile id="18">
+  <properties>
+   <property name="Animation" type="class" propertytype="Event Animations">
+    <properties>
+     <property name="Off" type="class" propertytype="Animation">
+      <properties>
+       <property name="Path" type="file" value="../DungeonDoor_Right.png"/>
+      </properties>
+     </property>
+     <property name="Triggered" type="class" propertytype="Animation">
+      <properties>
+       <property name="Loop" type="bool" value="false"/>
+       <property name="Path" type="file" value="../Chest_Triggered.png"/>
+      </properties>
+     </property>
+    </properties>
+   </property>
+  </properties>
+  <image width="48" height="48" source="DungeonDoor_Right.png"/>
+ </tile>
+ <tile id="19">
+  <properties>
+   <property name="Animation" type="class" propertytype="Event Animations">
+    <properties>
+     <property name="Off" type="class" propertytype="Animation">
+      <properties>
+       <property name="Path" type="file" value="../DungeonDoor_Alone.png"/>
+      </properties>
+     </property>
+     <property name="Triggered" type="class" propertytype="Animation">
+      <properties>
+       <property name="Loop" type="bool" value="false"/>
+       <property name="Path" type="file" value="../Chest_Triggered.png"/>
+      </properties>
+     </property>
+    </properties>
+   </property>
+  </properties>
+  <image width="48" height="48" source="DungeonDoor_Alone.png"/>
+ </tile>
+ <tile id="20">
+  <properties>
+   <property name="Animation" type="class" propertytype="Event Animations">
+    <properties>
+     <property name="Off" type="class" propertytype="Animation">
+      <properties>
+       <property name="Path" type="file" value="../Lever_Off.png"/>
+      </properties>
+     </property>
+     <property name="On" type="class" propertytype="Animation">
+      <properties>
+       <property name="Path" type="file" value="../Lever_On.png"/>
+      </properties>
+     </property>
+    </properties>
+   </property>
+  </properties>
+  <image width="48" height="48" source="Lever.png"/>
  </tile>
 </tileset>

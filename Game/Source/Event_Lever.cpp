@@ -35,10 +35,12 @@ EventTrigger Event_Lever::OnTrigger()
 	if (state) 
 	{
 		app->audio->PlayFx(levelOpenSfx);
+		SetAnimation(AnimationState::STATE_ON);
 	}
 	else 
 	{
 		app->audio->PlayFx(leverCloseSfx);
+		SetAnimation(AnimationState::STATE_OFF);
 	}
 
 	EventTrigger returnTrigger;

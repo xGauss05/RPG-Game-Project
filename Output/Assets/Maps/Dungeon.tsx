@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="Dungeon" tilewidth="48" tileheight="48" tilecount="576" columns="8" objectalignment="topleft">
+<tileset version="1.10" tiledversion="1.10.1" name="Dungeon" tilewidth="48" tileheight="48" tilecount="64" columns="8" objectalignment="topleft">
  <grid orientation="orthogonal" width="16" height="16"/>
  <image source="dungeon_tileset.png" width="384" height="384"/>
  <tile id="0">
@@ -104,20 +104,155 @@
  </tile>
  <tile id="20">
   <properties>
-   <property name="isWalkable" type="bool" value="false"/>
+   <property name="isWalkable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="21">
   <properties>
-   <property name="isWalkable" type="bool" value="false"/>
+   <property name="isWalkable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="22">
   <properties>
-   <property name="isWalkable" type="bool" value="false"/>
+   <property name="isWalkable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="23">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="24">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="28">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="29">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="30">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="31">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="32">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="34">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="35">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="36">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="37">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="38">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="40">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="41">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="42">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="43">
+  <properties>
+   <property name="isWalkable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="48">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="49">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="50">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="51">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="52">
+  <properties>
+   <property name="isWalkable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="53">
+  <properties>
+   <property name="isWalkable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="56">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="57">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="58">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="59">
+  <properties>
+   <property name="isWalkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="60">
+  <properties>
+   <property name="isWalkable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="61">
   <properties>
    <property name="isWalkable" type="bool" value="false"/>
   </properties>
