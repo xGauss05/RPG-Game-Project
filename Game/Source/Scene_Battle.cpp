@@ -580,7 +580,7 @@ std::string Scene_Battle::ResolveAction(BattleAction const& currentAction)
 						frameWidth,
 						totalWidth,
 						textureID,
-						receiver[currentAction.target].position + (receiver[currentAction.target].size / 2)
+						receiver[currentAction.target].position + iPoint(35,0)
 				);
 				break;
 			}
