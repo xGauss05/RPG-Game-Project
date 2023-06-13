@@ -334,8 +334,8 @@
     <property name="Destination" type="class" propertytype="Helper Destination">
      <properties>
       <property name="Destination Map" propertytype="Helper Maps" value="Dungeon_Outside"/>
-      <property name="Destination X" type="int" value="5"/>
-      <property name="Destination Y" type="int" value="11"/>
+      <property name="Destination X" type="int" value="11"/>
+      <property name="Destination Y" type="int" value="30"/>
      </properties>
     </property>
    </properties>
