@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Log.h"
 #include "Window.h"
+#include "GuiBox.h"
 
 Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 {
@@ -37,8 +38,8 @@ Window_List::Window_List(pugi::xml_node const& node) : Window_Base(node)
 	AddFunctionToMap("ToggleVSync", std::bind_front(&Window_List::ToggleVSync, this));
 
 	CreatePanels(node);
-	CreateButtons(node);
 	CreateCheckboxes(node);
+	CreateButtons(node);
 
 	if (app->input->controllerCount > 0)
 	{
@@ -57,6 +58,12 @@ void Window_List::HandleInput()
 			if (currentHoveredButton >= GetNumberWidgets() - 1) [[unlikely]]
 			{
 				currentHoveredButton = 0;
+
+				auto currentwidget = dynamic_cast<GuiBox*>(widgets[currentHoveredButton].get());
+				if (currentwidget != nullptr)
+				{
+					currentHoveredButton++;
+				}
 			}
 			else [[likely]]
 			{
@@ -76,6 +83,10 @@ void Window_List::HandleInput()
 			else [[likely]]
 			{
 				currentHoveredButton--;
+
+				auto currentwidget = dynamic_cast<GuiBox*>(widgets[currentHoveredButton].get());
+				if (currentwidget)
+					currentHoveredButton = GetNumberWidgets() - 1;
 			}
 
 			ControllerHoveringWidget(currentHoveredButton);

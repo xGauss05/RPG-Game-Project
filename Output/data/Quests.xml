@@ -61,7 +61,7 @@
       <description>Visit every location in the Village.</description>
     </general>
     <questtype type="Visit">
-      <objective objectiveName="Village" amountNeeded="1"/>
+      <objective objectiveName="Dungeon_Outside" amountNeeded="1"/>
     </questtype>
     <questtype type="Hunt">
       <objective objectiveName="Slime_R" amountNeeded="4"/>

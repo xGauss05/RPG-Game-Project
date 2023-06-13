@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="Events" class="Tileset of Events" tilewidth="144" tileheight="144" tilecount="11" columns="1" objectalignment="topleft">
+<tileset version="1.10" tiledversion="1.10.1" name="Events" class="Tileset of Events" tilewidth="144" tileheight="144" tilecount="12" columns="1" objectalignment="topleft">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="2">
   <properties>
@@ -98,5 +98,11 @@
  </tile>
  <tile id="14">
   <image width="144" height="96" source="Door_Off.png"/>
+ </tile>
+ <tile id="15">
+  <properties>
+   <property name="Animation" type="class" propertytype="Event Animations"/>
+  </properties>
+  <image width="48" height="96" source="../Sayori.png"/>
  </tile>
 </tileset>
