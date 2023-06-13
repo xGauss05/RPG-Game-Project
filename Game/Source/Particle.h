@@ -55,6 +55,7 @@ public:
 private:
 	Properties m_Data;
 	float m_TotalFrames = 0;
+	int timer = 0;
 };
 
 #endif //__PARTICLE_H__
